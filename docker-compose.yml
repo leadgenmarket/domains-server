@@ -1,0 +1,87 @@
+version: '3'
+networks:
+    graylog-net:
+      driver: bridge
+    app-net:
+      driver: bridge
+services:
+  mongo:
+    image: mongo:4.2
+    networks:
+      - graylog-net
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch-oss:7.10.2
+    environment:
+      - http.host=0.0.0.0
+      - transport.host=localhost
+      - network.host=0.0.0.0
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    deploy:
+      resources:
+        limits:
+          memory: 1g
+    networks:
+      - graylog-net
+  graylog:
+    image: graylog/graylog:4.2
+    environment:
+      - GRAYLOG_PASSWORD_SECRET=somepasswordpepper
+      - GRAYLOG_ROOT_PASSWORD_SHA2=8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918
+      - GRAYLOG_HTTP_EXTERNAL_URI=http://127.0.0.1:9000/
+    entrypoint: /usr/bin/tini -- wait-for-it elasticsearch:9200 --  /docker-entrypoint.sh
+    networks:
+      - graylog-net
+    restart: always
+    depends_on:
+      - mongo
+      - elasticsearch
+    ports:
+      # Graylog web interface and REST API
+      - 9000:9000
+      # Syslog TCP
+      - 1514:1514
+      # Syslog UDP
+      - 1514:1514/udp
+      # GELF TCP
+      - 12201:12201
+      # GELF UDP
+      - 12201:12201/udp
+  mongo-db:
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: leadgen
+      MONGO_INITDB_ROOT_PASSWORD: j.,)Lx;q;;6j
+    networks:
+      - app-net
+  mongo-express:
+    image: mongo-express
+    restart: always
+    ports:
+      - 8081:8081
+    networks:
+      - app-net
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: 7;x'JF}4h!&`
+      ME_CONFIG_MONGODB_URL: mongodb://leadgen:j.,)Lx;q;;6j@mongo-db:27017/
+  app:
+    build:
+      context: .
+    ports:
+      - 8080:8080
+    depends_on:
+      - graylog
+    networks:
+      - app-net
+      - graylog-net
+    environment:
+      APP_PORT : 8080
+      APP_DSN : mongo-db:2717/domains-server
+      APP_SERVICE_NAME : domain-server
+      APP_LOG_LEVEL : 5
+      APP_GRAY_LOG_HOST : graylog:12201
