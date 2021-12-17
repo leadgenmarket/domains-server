@@ -7,7 +7,10 @@ export APP_SERVICE_NAME := domain-server
 export APP_LOG_LEVEL := 5
 export APP_GRAY_LOG_HOST := graylog:12201
 
-make up:
+up:
 	@docker-compose up -d
-make run:
+run:
 	@cd cmd/app && go run main.go
+swaggen:
+	@mkdir -p internal/generated
+	@swagger generate server -f ./api/api.yml -t ./internal/generated

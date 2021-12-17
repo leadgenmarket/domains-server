@@ -1,0 +1,20 @@
+swagger: "2.0"
+info:
+  version: "1.0.0"
+  title: "Templates server"
+host: "domain-server"
+paths:
+  /:
+    get:
+      summary: "Get template"
+      produces:
+        - text/html
+      responses:
+        "200":
+          description: "return a site"
+        "400":
+          description: "bad request"
+        "404":
+          description: "unknown domain name"
+        "500":
+          description: "Internal Server Error"
