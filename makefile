@@ -11,6 +11,10 @@ up:
 	@docker-compose up -d
 run:
 	@cd cmd/app && go run main.go
+build:
+	@cd cmd/app && go build -o ../../main main.go && cd ../.. && ./main
+runb:
+	@./main
 swaggen:
 	@mkdir -p internal/generated
 	@swagger generate server -f ./api/api.yml -t ./internal/generated
