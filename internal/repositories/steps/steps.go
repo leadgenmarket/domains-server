@@ -4,27 +4,33 @@ import (
 	"domain-server/internal/models"
 
 	mongodb "github.com/globalsign/mgo"
+	"github.com/globalsign/mgo/bson"
 )
 
 type Repository interface {
-	AddStep() (models.Step, error)
+	AddStep(step models.Step) (models.Step, error)
 	GetSteps() ([]models.Step, error)
 }
 
 type repositroyDB struct {
-	domains *mongodb.Collection
+	steps *mongodb.Collection
 }
 
 func New(dbClient *mongodb.Database) Repository {
 	return &repositroyDB{
-		domains: dbClient.C("steps"),
+		steps: dbClient.C("steps"),
 	}
 }
 
-func (r *repositroyDB) AddStep() (models.Step, error) {
-	return models.Step{}, nil
+func (r *repositroyDB) AddStep(step models.Step) (models.Step, error) {
+	step.ID = bson.NewObjectId()
+	err := r.steps.Insert(&step)
+	if err != nil {
+		return step, err
+	}
+	return step, nil
 }
 
-func (r *repositroyDB) GetSteps() ([]models.Step, error) {
+func (r *repositroyDB) GetDomainSteps(domainID string) ([]models.Step, error) {
 	return nil, nil
 }

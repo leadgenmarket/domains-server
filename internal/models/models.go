@@ -28,13 +28,13 @@ type Lead struct {
 }
 
 type Domain struct {
-	ID  bson.ObjectId `bson:"_id" json:"id"`
-	Url string        `bson:"url" json:"url" binding:"required"`
-	//TemplateID bson.ObjectId `bson:"template_id" json:"template_id"`
-	//SettingsID bson.ObjectId `bson:"settings_id" json:"settings_id"`
-	//CreatedBy  bson.ObjectId `bson:"created_by"`
-	CreatedAt time.Time `bson:"created_at"`
-	UpdatedAt time.Time `bson:"updated_at"`
+	ID         bson.ObjectId `bson:"_id" json:"id"`
+	Url        string        `bson:"url" json:"url" binding:"required"`
+	TemplateID string        `bson:"template_id" json:"template_id"`
+	SettingsID string        `bson:"settings_id" json:"settings_id"`
+	CreatedBy  string        `bson:"created_by"`
+	CreatedAt  time.Time     `bson:"created_at"`
+	UpdatedAt  time.Time     `bson:"updated_at"`
 }
 
 type Template struct {

@@ -40,7 +40,6 @@ func (r *repositroyDB) AddDomain(domain models.Domain) (models.Domain, error) {
 	domain.UpdatedAt = time.Now()
 	err := r.domains.Insert(&domain)
 	if err != nil {
-		fmt.Println(err)
 		return domain, err
 	}
 	return domain, nil
