@@ -13,7 +13,7 @@ import (
 
 type Handlers interface {
 	AddUser(c *gin.Context)
-	UpdateUsers(c *gin.Context)
+	UpdateUser(c *gin.Context)
 	DeleteUser(c *gin.Context)
 	GetUsersList(c *gin.Context)
 }
@@ -58,7 +58,7 @@ type updateUsersInput struct {
 	Role  string `bson:"role"`
 }
 
-func (s *usersHandlers) UpdateUsers(c *gin.Context) {
+func (s *usersHandlers) UpdateUser(c *gin.Context) {
 	input := updateUsersInput{}
 	err := c.BindJSON(&input)
 	if err != nil {

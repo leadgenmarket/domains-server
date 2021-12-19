@@ -57,3 +57,7 @@ func (r *repositroyDB) GetUserById(id string) ([]models.User, error) {
 	}
 	return users, nil
 }
+
+func (r *repositroyDB) CheckUserCredetinals(login string, pass string) (bool, error) {
+	return false, nil
+}
