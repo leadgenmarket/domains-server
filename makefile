@@ -8,10 +8,15 @@ export APP_LOG_LEVEL := 5
 export APP_GRAY_LOG_HOST := graylog:12201
 export APP_PORTAL_URL := https://api.g-n.ru/v1
 export APP_PORTAL_KEY := 8N3783vyK7V3230v
+export APP_INITIAL_ROOT_PASSWORD := Qwerty123
+export APP_SALT := secret
+ 
 up:
 	@docker-compose up -d
 run:
 	@cd cmd/app && go run main.go
+setup:
+	@cd cmd/setup && go run main.go
 build:
 	@cd cmd/app && go build -o ../../main main.go && cd ../.. && ./main
 runb:

@@ -1,7 +1,9 @@
 package users
 
 import (
+	"domain-server/internal/config"
 	"domain-server/internal/models"
+	"domain-server/internal/utils"
 
 	mongodb "github.com/globalsign/mgo"
 	"github.com/globalsign/mgo/bson"
@@ -12,20 +14,24 @@ type Repository interface {
 	GetUserById(id string) ([]models.User, error)
 	UpdateUser(user models.User) error
 	DeleteUser(id string) error
+	GetUserByLogin(login string) (models.User, error)
 }
 
 type repositroyDB struct {
-	users *mongodb.Collection
+	users  *mongodb.Collection
+	config *config.Config
 }
 
-func New(dbClient *mongodb.Database) Repository {
+func New(dbClient *mongodb.Database, config *config.Config) Repository {
 	return &repositroyDB{
-		users: dbClient.C("users"),
+		users:  dbClient.C("users"),
+		config: config,
 	}
 }
 
 func (r *repositroyDB) AddUser(user models.User) (models.User, error) {
 	user.ID = bson.NewObjectId()
+	user.Pass = utils.GenerateHashPassword(user.Pass, r.config.Salt)
 	err := r.users.Insert(&user)
 	if err != nil {
 		return user, err
@@ -56,6 +62,15 @@ func (r *repositroyDB) GetUserById(id string) ([]models.User, error) {
 		return users, err
 	}
 	return users, nil
+}
+
+func (r *repositroyDB) GetUserByLogin(login string) (models.User, error) {
+	user := models.User{}
+	err := r.users.Find(bson.M{"login": login}).One(&user)
+	if err != nil {
+		return user, err
+	}
+	return user, nil
 }
 
 func (r *repositroyDB) CheckUserCredetinals(login string, pass string) (bool, error) {

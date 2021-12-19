@@ -24,7 +24,7 @@ func main() {
 	if err != nil {
 		logger.GetInstance().Panic("error initializing config: %w", err)
 	}
-	repo := repositories.New(sess.DB("leadgen"))
+	repo := repositories.New(sess.DB("leadgen"), cfg)
 	router := gin.Default()
 	servicesContainer := services.Setup(cfg)
 	handlersService := handlers.New(router, repo, servicesContainer, logger)

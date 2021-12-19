@@ -1,6 +1,7 @@
 package repositories
 
 import (
+	"domain-server/internal/config"
 	answer "domain-server/internal/repositories/answers"
 	"domain-server/internal/repositories/cities"
 	"domain-server/internal/repositories/domains"
@@ -30,7 +31,7 @@ type Repositories struct {
 	Locations     locations.Repository
 }
 
-func New(dbClient *mongodb.Database) *Repositories {
+func New(dbClient *mongodb.Database, cfg *config.Config) *Repositories {
 	return &Repositories{
 		Answers:       answer.New(dbClient),
 		Cities:        cities.New(dbClient),
@@ -41,7 +42,7 @@ func New(dbClient *mongodb.Database) *Repositories {
 		Steps:         steps.New(dbClient),
 		Templates:     templates.New(dbClient),
 		Titles:        titles.New(dbClient),
-		Users:         users.New(dbClient),
+		Users:         users.New(dbClient, cfg),
 		Locations:     locations.New(dbClient),
 	}
 }

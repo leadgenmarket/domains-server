@@ -7,13 +7,15 @@ import (
 )
 
 type Config struct {
-	DSN         string
-	Port        string
-	ServiceName string
-	LogLevel    uint32
-	GrayLogHost string
-	PortalKey   string
-	PortalUrl   string
+	DSN                 string
+	Port                string
+	ServiceName         string
+	LogLevel            uint32
+	GrayLogHost         string
+	PortalKey           string
+	PortalUrl           string
+	InitialRootPassword string
+	Salt                string
 }
 
 func InitConfig(prefix string) (*Config, error) {
