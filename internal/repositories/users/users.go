@@ -4,32 +4,56 @@ import (
 	"domain-server/internal/models"
 
 	mongodb "github.com/globalsign/mgo"
+	"github.com/globalsign/mgo/bson"
 )
 
 type Repository interface {
 	AddUser(user models.User) (models.User, error)
-	GetUsersList() ([]models.User, error)
-	ChangeUsersPass(login string, pass string) error
+	GetUserById(id string) ([]models.User, error)
+	UpdateUser(user models.User) error
+	DeleteUser(id string) error
 }
 
 type repositroyDB struct {
-	domains *mongodb.Collection
+	users *mongodb.Collection
 }
 
 func New(dbClient *mongodb.Database) Repository {
 	return &repositroyDB{
-		domains: dbClient.C("users"),
+		users: dbClient.C("users"),
 	}
 }
 
 func (r *repositroyDB) AddUser(user models.User) (models.User, error) {
-	return models.User{}, nil
+	user.ID = bson.NewObjectId()
+	err := r.users.Insert(&user)
+	if err != nil {
+		return user, err
+	}
+	return user, nil
 }
 
-func (r *repositroyDB) GetUsersList() ([]models.User, error) {
-	return nil, nil
-}
-
-func (r *repositroyDB) ChangeUsersPass(login string, pass string) error {
+func (r *repositroyDB) UpdateUser(user models.User) error {
+	err := r.users.Find(bson.M{"_id": user}).One(&user)
+	if err != nil {
+		return err
+	}
 	return nil
+}
+
+func (r *repositroyDB) DeleteUser(id string) error {
+	err := r.users.Remove(bson.M{"_id": bson.ObjectIdHex(id)})
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (r *repositroyDB) GetUserById(id string) ([]models.User, error) {
+	users := []models.User{}
+	err := r.users.Find(bson.M{"_id": bson.ObjectIdHex(id)}).All(&users)
+	if err != nil {
+		return users, err
+	}
+	return users, nil
 }

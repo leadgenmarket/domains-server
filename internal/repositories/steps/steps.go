@@ -9,7 +9,9 @@ import (
 
 type Repository interface {
 	AddStep(step models.Step) (models.Step, error)
-	GetSteps() ([]models.Step, error)
+	GetDomainSteps(domainID string) ([]models.Step, error)
+	UpdateStep(step models.Step) error
+	DeleteStep(id string) error
 }
 
 type repositroyDB struct {
@@ -31,6 +33,27 @@ func (r *repositroyDB) AddStep(step models.Step) (models.Step, error) {
 	return step, nil
 }
 
+func (r *repositroyDB) UpdateStep(step models.Step) error {
+	err := r.steps.Find(bson.M{"_id": step}).One(&step)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (r *repositroyDB) DeleteStep(id string) error {
+	err := r.steps.Remove(bson.M{"_id": bson.ObjectIdHex(id)})
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 func (r *repositroyDB) GetDomainSteps(domainID string) ([]models.Step, error) {
-	return nil, nil
+	steps := []models.Step{}
+	err := r.steps.Find(bson.M{"domain_id": bson.ObjectIdHex(domainID)}).All(&steps)
+	if err != nil {
+		return steps, err
+	}
+	return steps, nil
 }

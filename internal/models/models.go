@@ -60,9 +60,11 @@ type Settings struct {
 
 type Step struct {
 	ID           bson.ObjectId `bson:"_id"`
+	DomainID     string        `bson:"domain_id"`
 	Question     string        `bson:"question"`
 	SendQuestion string        `bson:"send_question"`
 	Type         string        `bson:"type"`
+	Order        int           `bson:"order"`
 	Answers      []Answer      `bson:"answers"`
 }
 
