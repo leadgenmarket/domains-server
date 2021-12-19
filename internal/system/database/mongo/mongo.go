@@ -14,6 +14,7 @@ type repository struct {
 
 func NewRepository(dsn string) (Repository, error) {
 	sess, err := mongodb.Dial(dsn)
+	sess.DB("leadgen")
 	if err != nil {
 		return nil, err
 	}

@@ -53,22 +53,12 @@ services:
   mongo-db:
     image: mongo
     restart: always
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: leadgen
-      MONGO_INITDB_ROOT_PASSWORD: j.,)Lx;q;;6j
     networks:
       - app-net
-  mongo-express:
-    image: mongo-express
-    restart: always
     ports:
-      - 8081:8081
-    networks:
-      - app-net
-    environment:
-      ME_CONFIG_MONGODB_ADMINUSERNAME: root
-      ME_CONFIG_MONGODB_ADMINPASSWORD: 7;x'JF}4h!&`
-      ME_CONFIG_MONGODB_URL: mongodb://leadgen:j.,)Lx;q;;6j@mongo-db:27017/
+      - "27017:27017"
+    volumes:
+      - './data:/data/db'
   app:
     build:
       context: .

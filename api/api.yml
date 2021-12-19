@@ -1,20 +1,37 @@
 swagger: "2.0"
 info:
   version: "1.0.0"
-  title: "Templates server"
-host: "domain-server"
+  title: "GO-12 01: Синхронное взаимодействие через REST"
+host: "server-domain"
+schemes:
+- "http"
 paths:
-  /:
-    get:
-      summary: "Get template"
+  /send:
+    post:
+      summary: "Send file to pdf compose"
+      consumes:
+         - multipart/form-data
+      parameters:
+        - in: formData
+          name: upfile1
+          type: file
+          required: true
+        - in: formData
+          name: upfile2
+          type: file
+          required: false
+        - in: formData
+          name: upfile3
+          type: file
+          required: false
       produces:
-        - text/html
+        - application/pdf
       responses:
         "200":
-          description: "return a site"
+          description: A PDF file.
+          schema:
+            type: file
         "400":
-          description: "bad request"
-        "404":
-          description: "unknown domain name"
+          description: "Bad request"
         "500":
           description: "Internal Server Error"

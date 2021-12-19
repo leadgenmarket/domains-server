@@ -12,12 +12,12 @@ type Repository interface {
 }
 
 type repositroyDB struct {
-	dbClient *mongodb.Session
+	domains *mongodb.Collection
 }
 
-func New(dbClient *mongodb.Session) Repository {
+func New(dbClient *mongodb.Database) Repository {
 	return &repositroyDB{
-		dbClient: dbClient,
+		domains: dbClient.C("titles"),
 	}
 }
 

@@ -12,6 +12,8 @@ type Config struct {
 	ServiceName string
 	LogLevel    uint32
 	GrayLogHost string
+	PortalKey   string
+	PortalUrl   string
 }
 
 func InitConfig(prefix string) (*Config, error) {

@@ -5,6 +5,7 @@ import (
 	"domain-server/internal/repositories/cities"
 	"domain-server/internal/repositories/domains"
 	"domain-server/internal/repositories/leads"
+	"domain-server/internal/repositories/locations"
 	organization "domain-server/internal/repositories/organizations"
 	"domain-server/internal/repositories/settings"
 	"domain-server/internal/repositories/steps"
@@ -26,9 +27,10 @@ type Repositories struct {
 	Templates     templates.Repository
 	Titles        titles.Repository
 	Users         users.Repository
+	Locations     locations.Repository
 }
 
-func New(dbClient *mongodb.Session) *Repositories {
+func New(dbClient *mongodb.Database) *Repositories {
 	return &Repositories{
 		Answers:       answer.New(dbClient),
 		Cities:        cities.New(dbClient),
@@ -40,5 +42,6 @@ func New(dbClient *mongodb.Session) *Repositories {
 		Templates:     templates.New(dbClient),
 		Titles:        titles.New(dbClient),
 		Users:         users.New(dbClient),
+		Locations:     locations.New(dbClient),
 	}
 }

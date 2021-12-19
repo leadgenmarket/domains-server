@@ -2,11 +2,14 @@ package main
 
 import (
 	"domain-server/internal/config"
+	"domain-server/internal/handlers"
 	"domain-server/internal/logger"
-	"net/http"
-	"strings"
+	"domain-server/internal/repositories"
+	"domain-server/internal/services"
+	"fmt"
 
 	"github.com/gin-gonic/gin"
+	mongo "github.com/globalsign/mgo"
 	"github.com/sirupsen/logrus"
 )
 
@@ -17,23 +20,14 @@ func main() {
 	}
 	logger := logger.NewLogger(cfg.ServiceName, cfg.LogLevel, cfg.GrayLogHost)
 	logger.GetInstance().Info("server started")
-
+	sess, err := mongo.Dial(cfg.DSN)
+	if err != nil {
+		logger.GetInstance().Panic("error initializing config: %w", err)
+	}
+	repo := repositories.New(sess.DB("leadgen"))
 	router := gin.Default()
-	router.Static("/aivazovskiy", "./aivazovskiy")
-	router.LoadHTMLFiles("./aivazovskiy/aivazovskiy.html")
-	//router.LoadHTMLGlob("./aivazovskiy/*")
-	router.GET("/", func(c *gin.Context) {
-		//
-		domain := strings.Split(c.Request.Host, ":")[0]
-		if domain != "127.0.0.1" {
-			c.HTML(http.StatusOK, "aivazovskiy.html", nil)
-			return
-		} else {
-			c.JSON(200, gin.H{
-				"host": domain,
-			})
-		}
-		//c.Data(http.StatusOK, "text/html; charset=utf-8", []byte("<html></html>"))
-	})
-	router.Run()
+	servicesContainer := services.Setup(cfg)
+	handlersService := handlers.New(router, repo, servicesContainer, logger)
+	handlersService.Registry()
+	router.Run(fmt.Sprintf(":%s", cfg.Port))
 }
