@@ -4,8 +4,29 @@ import { bindActionCreators } from 'redux';
 import { fetchLogin } from "../../../actions";
 import { compose } from "../../../utils";
 import { withApiService } from "../../hoc";
-const LoginPage = () => {
-    console.log('login')
+const LoginPage = ({loading, error, fetchLogin}) => {
+    const [showPass, setShowPass] = useState(false)
+    const [formIn, setForm] = useState({
+        login: "",
+        pass: "",
+    })
+
+    const inputChange = (event) => {
+        setForm({
+            ...formIn,
+            [event.target.name]: event.target.value,
+        })
+    }
+
+    const showPassChange = (event)=> {
+        event.preventDefault()
+        setShowPass(!showPass)
+    }
+
+    const sendForm = (event) => {
+        event.preventDefault()
+        fetchLogin(formIn)
+    }
     return <div className="auth-page">
             <div className="container-fluid p-0">
                 <div className="row g-0">
@@ -15,7 +36,7 @@ const LoginPage = () => {
                                 <div className="d-flex flex-column h-100">
                                     <div className="mb-4 mb-md-5 text-center">
                                         <a href="index.html" className="d-block auth-logo">
-                                            <img src="assets/images/logo-sm.svg" alt="" height="28" /> <span className="logo-txt">Панель управления</span>
+                                            <span className="logo-txt">Панель управления</span>
                                         </a>
                                     </div>
                                     <div className="auth-content my-auto">
@@ -26,7 +47,7 @@ const LoginPage = () => {
                                         <form className="custom-form mt-4 pt-2" action="index.html">
                                             <div className="mb-3">
                                                 <label className="form-label">Логин</label>
-                                                <input type="text" className="form-control" id="username" placeholder="Введите логин" />
+                                                <input type="text" className="form-control" onChange={inputChange} value={formIn.login} name="login" id="username" placeholder="Введите логин" />
                                             </div>
                                             <div className="mb-3">
                                                 <div className="d-flex align-items-start">
@@ -41,8 +62,8 @@ const LoginPage = () => {
                                                 </div>
                                                 
                                                 <div className="input-group auth-pass-inputgroup">
-                                                    <input type="password" className="form-control" placeholder="Введите пароль" aria-label="Password" aria-describedby="password-addon" />
-                                                    <button className="btn btn-light ms-0" type="button" id="password-addon"><i className="mdi mdi-eye-outline"></i></button>
+                                                    <input type={showPass?"text":"password"} className="form-control" onChange={inputChange} value={formIn.pass} name="pass" placeholder="Введите пароль" aria-label="Password" aria-describedby="password-addon" />
+                                                    <button className="btn btn-light ms-0" type="button" id="password-addon" onClick={showPassChange}><i className={showPass?"mdi mdi-eye-off-outline":"mdi mdi-eye-outline"}></i></button>
                                                 </div>
                                             </div>
                                             <div className="row mb-4">
@@ -57,7 +78,7 @@ const LoginPage = () => {
                                                 
                                             </div>
                                             <div className="mb-3">
-                                                <button className="btn btn-primary w-100 waves-effect waves-light" type="submit">Войти</button>
+                                                <button className="btn btn-primary w-100 waves-effect waves-light" onClick={sendForm} type="submit">Войти</button>
                                             </div>
                                             <br />
                                             <br />
@@ -101,17 +122,12 @@ const LoginPage = () => {
                                                     <div className="testi-contain text-white">
                                                         <i className="bx bxs-quote-alt-left text-success display-6"></i>
 
-                                                        <h4 className="mt-4 fw-medium lh-base text-white">“I feel confident
-                                                            imposing change
-                                                            on myself. It's a lot more progressing fun than looking back.
-                                                            That's why
-                                                            I ultricies enim
-                                                            at malesuada nibh diam on tortor neaded to throw curve balls.”
+                                                        <h4 className="mt-4 fw-medium lh-base text-white">“Цитатка для поднятия духа”
                                                         </h4>
                                                         <div className="mt-4 pt-3 pb-5">
                                                             <div className="d-flex align-items-start">
                                                                 <div className="flex-shrink-0">
-                                                                    <img src="assets/images/users/avatar-1.jpg" className="avatar-md img-fluid rounded-circle" alt="..." />
+                                                                   
                                                                 </div>
                                                                 <div className="flex-grow-1 ms-3 mb-4">
                                                                     <h5 className="font-size-18 text-white">Richard Drews
@@ -127,16 +143,11 @@ const LoginPage = () => {
                                                     <div className="testi-contain text-white">
                                                         <i className="bx bxs-quote-alt-left text-success display-6"></i>
 
-                                                        <h4 className="mt-4 fw-medium lh-base text-white">“Our task must be to
-                                                            free ourselves by widening our circle of compassion to embrace
-                                                            all living
-                                                            creatures and
-                                                            the whole of quis consectetur nunc sit amet semper justo. nature
-                                                            and its beauty.”</h4>
+                                                        <h4 className="mt-4 fw-medium lh-base text-white">“Вторая цитатка для поднятия духа.”</h4>
                                                         <div className="mt-4 pt-3 pb-5">
                                                             <div className="d-flex align-items-start">
                                                                 <div className="flex-shrink-0">
-                                                                    <img src="assets/images/users/avatar-2.jpg" className="avatar-md img-fluid rounded-circle" alt="..." />
+                                                                    
                                                                 </div>
                                                                 <div className="flex-grow-1 ms-3 mb-4">
                                                                     <h5 className="font-size-18 text-white">Rosanna French
@@ -160,7 +171,7 @@ const LoginPage = () => {
                                                             feel.”</h4>
                                                         <div className="mt-4 pt-3 pb-5">
                                                             <div className="d-flex align-items-start">
-                                                                <img src="assets/images/users/avatar-3.jpg" className="avatar-md img-fluid rounded-circle" alt="..." />
+                                                               
                                                                 <div className="flex-1 ms-3 mb-4">
                                                                     <h5 className="font-size-18 text-white">Ilse R. Eaton</h5>
                                                                     <p className="mb-0 text-white-50">Manager
@@ -190,14 +201,14 @@ class LoginPageContainer extends Component {
     }
   
     render() {
-      const { /*auth, loading, error, fetchLogin*/ } = this.props;
+      const { auth, loading, error, fetchLogin } = this.props;
   
-      return <LoginPage /*loading={loading} error={error} fetch={fetchLogin}*//>;
+      return <LoginPage loading={loading} error={error} fetchLogin={fetchLogin} />;
     }
   }
   
-  const mapStateToProps = ({ /*authStatus: { auth, loading, error }*/}) => {
-    return { /*auth, loading, error*/ };
+  const mapStateToProps = ({ authStatus: { auth, loading, error }}) => {
+    return { auth, loading, error };
   };
   
   const mapDispatchToProps = (dispatch, { apiService}) => {
@@ -205,7 +216,9 @@ class LoginPageContainer extends Component {
         fetchLogin: fetchLogin(apiService),
     }, dispatch);
   };
+
   export default compose(
     withApiService(),
     connect(mapStateToProps, mapDispatchToProps)
   )(LoginPageContainer);
+  
