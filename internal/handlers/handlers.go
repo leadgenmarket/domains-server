@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"domain-server/internal/handlers/answers"
+	"domain-server/internal/handlers/auth"
 	"domain-server/internal/handlers/cities"
 	"domain-server/internal/handlers/domains"
 	"domain-server/internal/handlers/leads"
@@ -29,6 +30,7 @@ type Handlers interface {
 }
 
 type handlers struct {
+	Auth          auth.Handlers
 	Domains       domains.Handlers
 	Cities        cities.Handlers
 	Locations     locations.Handlers
@@ -47,6 +49,7 @@ type handlers struct {
 
 func New(router *gin.Engine, repositories *repositories.Repositories, services *services.Services, logger logger.Log) Handlers {
 	return &handlers{
+		Auth:          auth.New(repositories.Users, services, logger),
 		Domains:       domains.New(repositories.Domains, logger),
 		Cities:        cities.New(repositories.Cities, services, logger),
 		Locations:     locations.New(repositories.Locations, services, logger),
@@ -68,6 +71,7 @@ func (h *handlers) Registry() {
 	h.router.Static("/templates", templatesFolder)
 	h.router.LoadHTMLFiles("./templates/aivazovskiy/aivazovskiy.html")
 	h.router.GET("/", h.Domains.GetTemplate)
+	h.router.POST("/sign-in", h.Auth.SignIn)
 
 	api := h.router.Group("/api", middlewares.TokenAuthMiddleware(h.logger))
 	{

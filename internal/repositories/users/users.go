@@ -15,6 +15,7 @@ type Repository interface {
 	UpdateUser(user models.User) error
 	DeleteUser(id string) error
 	GetUserByLogin(login string) (models.User, error)
+	CheckUserCredetinals(login string, pass string) (models.User, error)
 }
 
 type repositroyDB struct {
@@ -73,6 +74,12 @@ func (r *repositroyDB) GetUserByLogin(login string) (models.User, error) {
 	return user, nil
 }
 
-func (r *repositroyDB) CheckUserCredetinals(login string, pass string) (bool, error) {
-	return false, nil
+func (r *repositroyDB) CheckUserCredetinals(login string, pass string) (models.User, error) {
+	pass = utils.GenerateHashPassword(pass, r.config.Salt)
+	var user models.User
+	err := r.users.Find(bson.M{"login": login, "pass": pass}).One(&user)
+	if err != nil {
+		return user, err
+	}
+	return user, nil
 }

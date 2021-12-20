@@ -36,6 +36,13 @@ func (s *authHandlers) SignIn(c *gin.Context) {
 	var input inputAuth
 	if err := c.BindJSON(&input); err != nil {
 		s.logger.GetInstance().Error("bad credetinals")
-		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"payload": "bad credetinals"})
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"payload": "check request params"})
+		return
 	}
+	user, err := s.repository.CheckUserCredetinals(input.Login, input.Pass)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"payload": "bad users credetinals"})
+		return
+	}
+	c.JSON(http.StatusOK, user)
 }

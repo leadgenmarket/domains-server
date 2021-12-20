@@ -1,0 +1,31 @@
+
+.vertical-layout.vertical-menu-modern .main-menu .navigation > li > a i {
+    width: 20px !important;
+    height: 20px !important;
+    font-size: 0px !important;
+}
+.vertical-layout.vertical-menu-modern .main-menu .navigation > li > a i {
+  
+    width: 20px !important;
+    height: 20px !important;
+}
+
+.main-menu.menu-light .navigation > li > a i {
+    top: 0
+}
+
+.child-item-icon svg{
+    margin-bottom: 5px;
+}
+
+.menu-title{
+    flex: 1 1 auto;
+}
+
+
+.main-menu.menu-light .navigation li a {
+    padding: 10px 8px 10px 15px !important;
+}
+
+
+
