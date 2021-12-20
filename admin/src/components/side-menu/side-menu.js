@@ -8,18 +8,6 @@ const SideMenu = () =>{
     const generateMenuHtml = items.map((item) => {
         return <MenuItem key={item.url} item={item}/>
     })
-    /* 
-        badge может пригодиться
-        <li className=" nav-item"><a className="d-flex align-items-center" href="index.html"><i data-feather="home"></i><span className="menu-title text-truncate" data-i18n="Dashboards">Dashboards</span><span className="badge badge-light-warning badge-pill ml-auto mr-1">2</span></a>
-            <ul className="menu-content">
-                <li className="active"><a className="d-flex align-items-center" href="dashboard-analytics.html"><i data-feather="circle"></i><span className="menu-item text-truncate" data-i18n="Analytics">Analytics</span></a>
-                </li>
-                <li><a className="d-flex align-items-center" href="dashboard-ecommerce.html"><i data-feather="circle"></i><span className="menu-item text-truncate" data-i18n="eCommerce">eCommerce</span></a>
-                </li>
-            </ul>
-        </li> 
-    */
-
     const toggleClick = (e) => {
         e.preventDefault()
         if (collapsed) {
@@ -48,7 +36,23 @@ const SideMenu = () =>{
         }
     }
     return(
-        <div onMouseEnter={menuEnter} onMouseLeave={menuLeave} className="main-menu menu-fixed menu-light menu-accordion menu-shadow" data-scroll-to-active="true">
+        <div class="vertical-menu">
+
+                <div data-simplebar="init" class="h-100"><div class="simplebar-wrapper" style={{margin: "0px"}}><div class="simplebar-height-auto-observer-wrapper"><div class="simplebar-height-auto-observer"></div></div><div class="simplebar-mask"><div class="simplebar-offset" style={{right: "-15px", bottom: "0px"}}><div class="simplebar-content-wrapper" style={{height: "100%", overflow: "hidden scroll"}}><div class="simplebar-content" style={{padding: "0px"}}>
+                    <div id="sidebar-menu">
+                        <ul class="metismenu list-unstyled" id="side-menu">
+                            {generateMenuHtml}
+                        </ul>
+                    </div></div></div></div></div></div>
+                </div>
+            </div>
+    
+    )
+}
+
+export default SideMenu
+
+/*<div onMouseEnter={menuEnter} onMouseLeave={menuLeave} className="main-menu menu-fixed menu-light menu-accordion menu-shadow" data-scroll-to-active="true">
         <div className="navbar-header">
             <ul className="nav navbar-nav flex-row">
                 <li className="nav-item mr-auto"><a className="navbar-brand" style={{alignItems:"end"}} href="#">
@@ -69,9 +73,4 @@ const SideMenu = () =>{
                 {generateMenuHtml}
             </ul>
         </div>
-    </div>
-    
-    )
-}
-
-export default SideMenu
+    </div>*/

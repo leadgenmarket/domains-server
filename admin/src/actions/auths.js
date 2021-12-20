@@ -44,8 +44,12 @@ const fetchLogout = (apiService) => () => (dispatch) => {
 const checkAuth = (apiService) => () => (dispatch) => {
   dispatch(loginRequested());
   apiService.ping()
-    .then((data) => dispatch(loginSuccess(data)))
-    .catch(()=>{dispatch(notAuthorized())});
+    .then((data) => {
+      console.log(data)
+      dispatch(loginSuccess(data))
+    })
+    .catch(()=>{
+      dispatch(notAuthorized())});
 };
 
 export {

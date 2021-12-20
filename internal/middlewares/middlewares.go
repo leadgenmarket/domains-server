@@ -2,6 +2,7 @@ package middlewares
 
 import (
 	"domain-server/internal/logger"
+	"domain-server/internal/services"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -12,16 +13,21 @@ const (
 	userRoleCtx = "user_role"
 )
 
-func TokenAuthMiddleware(logger logger.Log) gin.HandlerFunc {
+func TokenAuthMiddleware(logger logger.Log, services *services.Services) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		payload, _ := c.Cookie("token")
-		sign, _ := c.Cookie("token_sign")
-		if payload != "" && sign != "" {
-			token := payload + "." + sign
-			logger.GetInstance().Info("you token", token)
-			c.Next()
-		} else {
+		token, _, err := services.Cookie.GetCookies(c)
+		if err != nil {
 			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"message": "please authorize"})
 		}
+		logger.GetInstance().Info("your token ", token)
+		userID, userRole, err := services.TokenManager.CheckToken(token)
+		if err != nil {
+			logger.GetInstance().Info("invalid token")
+			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"message": "please authorize"})
+		}
+		c.Set(userCtx, userID)
+		c.Set(userRoleCtx, userRole)
+		c.Next()
+
 	}
 }

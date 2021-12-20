@@ -9,17 +9,19 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { compose } from '../../utils';
 const MenuItem = ({item, logout}) => {
     const location = useLocation().pathname;
-    let history = useNavigate();
+    let navigate = useNavigate();
     
     const pushHistory = (url) => {
-        history.push(url);
+        navigate(url, { replace: true })
     }
 
     const childClick = (e) => {
         e.preventDefault()
-        console.log(e.currentTarget)
+        e.currentTarget.parentNode.querySelectorAll('li').forEach((el) => {
+            el.classList.remove('mm-active') 
+        })
         let menuItem = e.currentTarget
-        menuItem.classList.add('active') 
+        menuItem.classList.add('mm-active') 
         pushHistory(menuItem.getAttribute('url'))
     }
     const childrenHtml = item.children.map((item)=>{
@@ -32,27 +34,28 @@ const MenuItem = ({item, logout}) => {
             logout()
         }
         let menuItem = e.currentTarget.parentElement
-        if (menuItem.querySelector('.menu-content')!=undefined){
-            if ( menuItem.querySelector('.menu-content').style.display == "block") {
-                menuItem.querySelector('.menu-content').style.display = "none"
-                menuItem.classList.remove('open')
+        if (menuItem.querySelector('.sub-menu')!=undefined){
+            if ( menuItem.querySelector('.sub-menu').classList.contains("mm-collapse")) {
+                menuItem.classList.add('mm-active')
+                menuItem.querySelector('.sub-menu').classList.remove('mm-collapse')
             }
             else {
-                menuItem.querySelector('.menu-content').style.display = "block"
-                menuItem.classList.add('open')
+                menuItem.classList.remove('mm-active')
+                menuItem.querySelector('.sub-menu').classList.add('mm-collapse')
             }
         } else {
-            document.querySelectorAll('#main-menu-navigation li').forEach((el) => {
-                el.classList.remove('active')
+            document.querySelectorAll('#side-menu li').forEach((el) => {
+                el.classList.remove('mm-active')
             })
-            menuItem.classList.add('active') 
+            menuItem.classList.add('mm-active')
             pushHistory(menuItem.getAttribute('url'))
         }
     }
     return (
-        <li key={item.url} url={item.url} className={item.children.length==0?location==item.url?"nav-item active":"nav-item":location==item.url?"nav-item has-sub active":"nav-item has-sub "}><a onClick={menuClick} className="d-flex align-items-center" href="#"><i className="nav-item-icon">{item.icon}</i><span className="menu-title text-truncate" data-i18n="Invoice">{item.name}</span></a>
+        <li key={item.url} url={item.url}>
+            <a onClick={menuClick} className={item.children.length!=0?"has-arrow active":"active"} href="#"><i className="nav-item-icon">{item.icon}</i><span>{item.name}</span></a>
             {item.children.length!=0?
-                <ul key={item.url+"_expand"} className="menu-content">
+                <ul key={item.url+"_expand"} className="sub-menu mm-collapse">
                     {childrenHtml}
                 </ul>:
                 ""}

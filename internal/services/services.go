@@ -4,18 +4,19 @@ import (
 	"domain-server/internal/config"
 	"domain-server/internal/services/cookies"
 	"domain-server/internal/services/portal"
+	"domain-server/internal/services/token_manager"
 )
 
 type Services struct {
-	Portal portal.Portal
-	Cookie cookies.Cookies
+	Portal       portal.Portal
+	Cookie       cookies.Cookies
+	TokenManager token_manager.TokenManager
 }
 
 func Setup(cfg *config.Config) *Services {
-	portal := portal.NewPortalService(cfg.PortalUrl, cfg.PortalKey)
-	cookies := cookies.NewCookiesService()
 	return &Services{
-		Portal: portal,
-		Cookie: cookies,
+		Portal:       portal.NewPortalService(cfg.PortalUrl, cfg.PortalKey),
+		Cookie:       cookies.NewCookiesService(cfg),
+		TokenManager: token_manager.NewTokenManager(cfg),
 	}
 }

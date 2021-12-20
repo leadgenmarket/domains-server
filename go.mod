@@ -4,6 +4,7 @@ go 1.17
 
 require (
 	github.com/banzaicloud/logrus-runtime-formatter v0.0.0-20190729070250-5ae5475bae5e
+	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/fabienm/go-logrus-formatters v1.0.0
 	github.com/gin-gonic/gin v1.7.7
 	github.com/globalsign/mgo v0.0.0-20181015135952-eeefdecb41b8

@@ -2,6 +2,7 @@ package config
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/vrischmann/envconfig"
 )
@@ -16,6 +17,9 @@ type Config struct {
 	PortalUrl           string
 	InitialRootPassword string
 	Salt                string
+	TokenTTL            time.Duration
+	RefreshTokenTTL     time.Duration
+	TokenSecret         string
 }
 
 func InitConfig(prefix string) (*Config, error) {

@@ -16,12 +16,14 @@ const updateAuthStatus = (state, action) => {
           error: null,
       };
       case 'FETCH_LOGIN_REQUEST':
+        
         return {
           auth: state.authStatus.auth,
           loading: true,
           error: null,
       };
       case 'FETCH_LOGIN_ERROR':
+        console.log('errr')
         return {
           auth: false,
           error: action.payload,

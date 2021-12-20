@@ -44,5 +44,23 @@ func (s *authHandlers) SignIn(c *gin.Context) {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"payload": "bad users credetinals"})
 		return
 	}
+	token, err := s.services.TokenManager.GenerateToken(user)
+	if err != nil {
+		s.logger.GetInstance().Error("error generating token")
+		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"payload": "error"})
+		return
+	}
+	refreshToken, err := s.services.TokenManager.GenerateToken(user)
+	if err != nil {
+		s.logger.GetInstance().Error("error generating refresh")
+		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"payload": "error"})
+		return
+	}
+	errC := s.services.Cookie.SetCookies(c, token, refreshToken)
+	if errC != nil {
+		s.logger.GetInstance().Error("error settting token to cookies")
+		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"payload": "error"})
+		return
+	}
 	c.JSON(http.StatusOK, user)
 }

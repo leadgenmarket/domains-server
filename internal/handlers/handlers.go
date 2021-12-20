@@ -15,6 +15,7 @@ import (
 	"domain-server/internal/logger"
 	"domain-server/internal/middlewares"
 	"domain-server/internal/repositories"
+	"net/http"
 
 	"domain-server/internal/services"
 
@@ -73,7 +74,7 @@ func (h *handlers) Registry() {
 	h.router.GET("/", h.Domains.GetTemplate)
 	h.router.POST("/sign-in", h.Auth.SignIn)
 
-	api := h.router.Group("/api", middlewares.TokenAuthMiddleware(h.logger))
+	api := h.router.Group("/api", middlewares.TokenAuthMiddleware(h.logger, h.services))
 	{
 		//domains
 		domainsGroup := api.Group("domains")
@@ -141,5 +142,9 @@ func (h *handlers) Registry() {
 		usersGroup.PUT("/", h.Users.AddUser)
 		usersGroup.DELETE("/", h.Users.DeleteUser)
 		usersGroup.POST("/", h.Users.UpdateUser)
+
+		api.GET("/ping", func(c *gin.Context) {
+			c.JSON(http.StatusOK, gin.H{"message": "i'm ok"})
+		})
 	}
 }

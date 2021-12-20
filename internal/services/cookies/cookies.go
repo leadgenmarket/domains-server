@@ -1,9 +1,11 @@
 package cookies
 
 import (
+	"domain-server/internal/config"
 	"errors"
 	"net/http"
 	"strings"
+	"time"
 
 	"github.com/gin-gonic/gin"
 )
@@ -12,8 +14,6 @@ const (
 	tokenPayload     = "payload"
 	tokenSign        = "sign"
 	refreshTokenName = "refresh"
-	tokenTTL         = 90000
-	refreshTTL       = 120000
 )
 
 type Cookies interface {
@@ -22,17 +22,20 @@ type Cookies interface {
 }
 
 type cookies struct {
+	cfg *config.Config
 }
 
-func NewCookiesService() Cookies {
-	return &cookies{}
+func NewCookiesService(cfg *config.Config) Cookies {
+	return &cookies{
+		cfg: cfg,
+	}
 }
 
 func (cks *cookies) SetCookies(ctx *gin.Context, token string, refreshToken string) error {
 	tokenSplit := strings.Split(token, ".")
-	setCookie(ctx, tokenPayload, tokenSplit[0]+"."+tokenSplit[1], false, tokenTTL)
-	setCookie(ctx, tokenSign, tokenSplit[2], true, tokenTTL)
-	setCookie(ctx, refreshTokenName, refreshToken, true, refreshTTL)
+	setCookie(ctx, tokenPayload, tokenSplit[0]+"."+tokenSplit[1], false, cks.cfg.TokenTTL)
+	setCookie(ctx, tokenSign, tokenSplit[2], true, cks.cfg.TokenTTL)
+	setCookie(ctx, refreshTokenName, refreshToken, true, cks.cfg.RefreshTokenTTL)
 	return nil
 }
 
@@ -55,13 +58,13 @@ func (cks *cookies) GetCookies(ctx *gin.Context) (token string, refreshToken str
 	return payload + "." + sign, refresh, nil
 }
 
-func setCookie(ctx *gin.Context, name string, payload string, secure bool, ttl int) {
+func setCookie(ctx *gin.Context, name string, payload string, secure bool, ttl time.Duration) {
 	http.SetCookie(ctx.Writer, &http.Cookie{
 		Name:  name,
 		Value: payload,
 		Path:  "/",
 		//Domain:,
-		MaxAge:   ttl,
+		MaxAge:   int(ttl.Seconds()),
 		Secure:   secure,
 		HttpOnly: false,
 		//SameSite: 3,
