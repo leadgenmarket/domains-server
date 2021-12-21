@@ -38,7 +38,7 @@ const App = ({ auth, phone, checkAuth}) => {
     } else if(auth==false){
         return (
             <Routes>
-                <Route path="/" element={<LoginPage />} />
+                <Route path="*" element={<LoginPage />} ></Route>
             </Routes>
         )
     } else {

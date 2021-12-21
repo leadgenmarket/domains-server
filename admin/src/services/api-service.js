@@ -36,6 +36,34 @@ export default class ApiService{
     }
 
     logout = () => {
-        return axios.get("/auth/logout")
+        return axios.get("/api/logout")
+    }
+
+    domainsList = () => {
+        return axios.get("/api/domains")
+    }
+
+    domain = (id) => {
+        return axios.get("/api/domains/"+id)
+    }
+
+    addDomain = () => {
+        return axios.put("/api/domains/")
+    }
+
+    deleteDomain = (id) => {
+        return axios.delete("/api/domains/"+id)
+    }
+
+    templatesList = () => {
+        return axios.get("/api/templates/")
+    }
+
+    citiesList = () => {
+        return axios.get("/api/cities/")
+    }
+
+    organizationsList = () => {
+        return axios.get("/api/organizations/")
     }
 }

@@ -1,8 +1,52 @@
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom"
 import PageTitle from "../../page-title"
+import ApiService from "../../../services/api-service";
 
 const DomainEdit = () => {
     const navigate= useNavigate();
+    const [type, setType] = useState("");
+    const [templates, setTemplates] = useState([])
+    const [cities, setCities] = useState([])
+    const [organizations, setOrganzations] = useState([])
+    const [step, setStep] = useState(1)
+    const [quizSteps, setQuizSteps] = useState([])
+    const [form, setForm] = useState({
+        url: "",
+        template_id: "", 
+    }) 
+    useEffect(()=>{
+        let apiService = new ApiService
+        apiService.templatesList().then((response) => {
+            setTemplates(response.data)
+        })
+        apiService.citiesList().then((response) => {
+            setCities(response.data)
+        })
+        apiService.organizationsList().then((response) => {
+            setOrganzations(response.data)
+        })
+    },[])
+    useEffect(()=> {
+        if (type != "") {
+
+        }
+    },[type])
+    const inputChange = (event) => {
+        setForm({
+            ...form,
+            [event.target.name]:event.target.value
+        })
+    }
+
+    const nextStepClick = () => {
+        if (form.url!="" && form.template_id!="") {
+            setStep(step+1)
+        }
+    }
+    const prevStepClick = () => {
+        setStep(step-1)
+    }
     return (<div className="main-content">
             <div class="page-content">
                     <div class="container-fluid">
@@ -27,10 +71,24 @@ const DomainEdit = () => {
                                                         </div>
                                                     </a>
                                                 </li>
+                                                <li class="nav-item">
+                                                    <a href="#company-document" class="nav-link" data-toggle="tab">
+                                                        <div class="step-icon" data-bs-toggle="tooltip" data-bs-placement="top" title="Company Document">
+                                                            <i class="feather-list"></i>
+                                                        </div>
+                                                    </a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a href="#company-document" class="nav-link" data-toggle="tab">
+                                                        <div class="step-icon" data-bs-toggle="tooltip" data-bs-placement="top" title="Company Document">
+                                                            <i class="feather-target"></i>
+                                                        </div>
+                                                    </a>
+                                                </li>
+                                                
                                             </ul>
-                                            <div class="tab-content
-                                                twitter-bs-wizard-tab-content">
-                                                <div class="tab-pane active" id="seller-details">
+                                            <div class="tab-content twitter-bs-wizard-tab-content">
+                                                <div class="tab-pane" id="seller-details">
                                                     <div class="text-center mb-4">
                                                         <h5>Информация о домене</h5>
                                                         <p class="card-title-desc">Заполните запрашиваемую информацию</p>
@@ -39,14 +97,19 @@ const DomainEdit = () => {
                                                         <div class="row">
                                                             <div class="col-lg-6">
                                                                 <div class="mb-3">
-                                                                    <label for="basicpill-firstname-input" class="form-label">Доменное имя (без http)</label>
-                                                                    <input type="text" class="form-control" id="basicpill-firstname-input" />
+                                                                    <label for="basicpill-firstname-input" name="url" class="form-label">Доменное имя (без http)</label>
+                                                                    <input type="text" onChange={inputChange} className="form-control" id="basicpill-firstname-input" name="url" value={form.url}/>
                                                                 </div>
                                                             </div>
                                                             <div class="col-lg-6">
                                                                 <div class="mb-3">
-                                                                    <label for="basicpill-lastname-input" class="form-label">Шаблон</label>
-                                                                    <input type="text" class="form-control" id="basicpill-lastname-input" />
+                                                                    <label for="basicpill-lastname-input" className="form-label">Шаблон</label>
+                                                                    <select onChange={inputChange} className="form-select custom-select" id="template" name="template_id" name="template_id" value={form.template_id}>
+                                                                        <option></option>
+                                                                        {templates.map((template) => {
+                                                                            return <option value={template.ID}>{template.Name}</option>
+                                                                        })}
+                                                                    </select>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -58,101 +121,30 @@ const DomainEdit = () => {
                                                 <div class="tab-pane" id="company-document">
                                                     <div>
                                                         <div class="text-center mb-4">
-                                                            <h5>Company Document</h5>
-                                                            <p class="card-title-desc">Fill all
-                                                                information below</p>
+                                                            <h5>Главные настройки</h5>
+                                                            <p class="card-title-desc">Заполните запрашиваемую информацию</p>
                                                         </div>
                                                         <form>
                                                             <div class="row">
                                                                 <div class="col-lg-6">
                                                                     <div class="mb-3">
-                                                                        <label for="basicpill-pancard-input" class="form-label">PAN
-                                                                            Card</label>
-                                                                        <input type="text" class="form-control" id="basicpill-pancard-input" />
+                                                                        <label for="basicpill-pancard-input" class="form-label">Город</label>
+                                                                        <select onChange={inputChange} className="form-select custom-select" id="template" name="template_id" name="city_id" value={form.template_id}>
+                                                                            <option></option>
+                                                                            {cities.map((city) => {
+                                                                                return <option value={city.ID}>{city.Name}</option>
+                                                                            })}
+                                                                        </select>
                                                                     </div>
                                                                 </div>
-
                                                                 <div class="col-lg-6">
                                                                     <div class="mb-3">
-                                                                        <label for="basicpill-vatno-input" class="form-label">VAT/TIN
-                                                                            No.</label>
-                                                                        <input type="text" class="form-control" id="basicpill-vatno-input" />
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="row">
-                                                                <div class="col-lg-6">
-                                                                    <div class="mb-3">
-                                                                        <label for="basicpill-cstno-input" class="form-label">CST
-                                                                            No.</label>
-                                                                        <input type="text" class="form-control" id="basicpill-cstno-input" />
-                                                                    </div>
-                                                                </div>
-
-                                                                <div class="col-lg-6">
-                                                                    <div class="mb-3">
-                                                                        <label for="basicpill-servicetax-input" class="form-label">Service
-                                                                            Tax No.</label>
-                                                                        <input type="text" class="form-control" id="basicpill-servicetax-input" />
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="row">
-                                                                <div class="col-lg-6">
-                                                                    <div class="mb-3">
-                                                                        <label for="basicpill-companyuin-input" class="form-label">Company
-                                                                            UIN</label>
-                                                                        <input type="text" class="form-control" id="basicpill-companyuin-input" />
-                                                                    </div>
-                                                                </div>
-
-                                                                <div class="col-lg-6">
-                                                                    <div class="mb-3">
-                                                                        <label for="basicpill-declaration-input" class="form-label">Declaration</label>
-                                                                        <input type="text" class="form-control" id="basicpill-declaration-input" />
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </form>
-                                                        <ul class="pager wizard
-                                                            twitter-bs-wizard-pager-link">
-                                                            <li class="previous disabled"><a href="javascript: void(0);" class="btn btn-primary" onclick="nextTab()"><i class="bx
-                                                                        bx-chevron-left me-1"></i>
-                                                                    Previous</a></li>
-                                                            <li class="next"><a href="javascript: void(0);" class="btn btn-primary" onclick="nextTab()">Next <i class="bx
-                                                                        bx-chevron-right ms-1"></i></a></li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                                <div class="tab-pane" id="bank-detail">
-                                                    <div>
-                                                        <div class="text-center mb-4">
-                                                            <h5>Bank Details</h5>
-                                                            <p class="card-title-desc">Fill all
-                                                                information below</p>
-                                                        </div>
-                                                        <form>
-                                                            <div class="row">
-                                                                <div class="col-lg-6">
-                                                                    <div class="mb-3">
-                                                                        <label for="basicpill-namecard-input" class="form-label">Name
-                                                                            on Card</label>
-                                                                        <input type="text" class="form-control" id="basicpill-namecard-input" />
-                                                                    </div>
-                                                                </div>
-
-                                                                <div class="col-lg-6">
-                                                                    <div class="mb-3">
-                                                                        <label class="form-label">Credit
-                                                                            Card Type</label>
-                                                                        <select class="form-select">
-                                                                            <option selected="">Select
-                                                                                Card Type</option>
-                                                                            <option value="AE">American
-                                                                                Express</option>
-                                                                            <option value="VI">Visa</option>
-                                                                            <option value="MC">MasterCard</option>
-                                                                            <option value="DI">Discover</option>
+                                                                        <label for="basicpill-vatno-input" class="form-label">Организация</label>
+                                                                        <select onChange={inputChange} className="form-select custom-select" id="template" name="template_id" name="template_id" value={form.template_id}>
+                                                                            <option></option>
+                                                                            {organizations.map((organization) => {
+                                                                                return <option value={organization.ID}>{organization.Name}</option>
+                                                                            })}
                                                                         </select>
                                                                     </div>
                                                                 </div>
@@ -160,37 +152,135 @@ const DomainEdit = () => {
                                                             <div class="row">
                                                                 <div class="col-lg-6">
                                                                     <div class="mb-3">
-                                                                        <label for="basicpill-cardno-input" class="form-label">Credit
-                                                                            Card Number</label>
-                                                                        <input type="text" class="form-control" id="basicpill-cardno-input" />
+                                                                        <label for="basicpill-cstno-input" id="upload-background" class="form-label">
+                                                                            Фоновая картинка
+                                                                        </label>
+                                                                        <input type="file" class="form-control" id="basicpill-cstno-input" />
+                                                                        <div class="col-lg-12 d-flex">
+                                                                            <input onClick={(event)=>{document.querySelector("#upload-background").click()}} type="text" disabled class="form-control" id="basicpill-cstno-input" />
+                                                                            <button className="btn btn-primary" onClick={(event)=>{event.preventDefault(); document.querySelector("#upload-background").click()}}>Загрузить</button>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
 
                                                                 <div class="col-lg-6">
                                                                     <div class="mb-3">
-                                                                        <label for="basicpill-card-verification-input" class="form-label">Card
-                                                                            Verification Number</label>
-                                                                        <input type="text" class="form-control" id="basicpill-card-verification-input" />
+                                                                        <label for="basicpill-servicetax-input" class="form-label">Главный цвет (прим. FF0000)</label>
+                                                                        <input type="text" class="form-control" name="main_color" id="basicpill-servicetax-input" />
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                             <div class="row">
                                                                 <div class="col-lg-6">
                                                                     <div class="mb-3">
-                                                                        <label for="basicpill-expiration-input" class="form-label">Expiration
-                                                                            Date</label>
-                                                                        <input type="text" class="form-control" id="basicpill-expiration-input" />
+                                                                        <label for="basicpill-companyuin-input" class="form-label">Вторичный цвет (прим. FF0000)</label>
+                                                                        <input type="text" class="form-control" name="secondary_color" id="basicpill-companyuin-input" />
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         </form>
                                                         <ul class="pager wizard
                                                             twitter-bs-wizard-pager-link">
-                                                            <li class="previous disabled"><a href="javascript: void(0);" class="btn btn-primary" onclick="nextTab()"><i class="bx
-                                                                        bx-chevron-left me-1"></i>
-                                                                    Previous</a></li>
-                                                            <li class="float-end"><a href="javascript: void(0);" class="btn btn-primary" data-bs-toggle="modal" data-bs-target=".confirmModal">Save
-                                                                    Changes</a></li>
+                                                            <li class="prev"><a href="javascript: void(0);" class="btn btn-primary" onclick="nextTab()"><i class="feather-arrow-left"></i> Назад </a></li>
+                                                            <li class="next"><a href="javascript: void(0);" class="btn btn-primary" onclick="nextTab()">Сохранить <i class="feather-check"></i></a></li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                                <div class="tab-pane" id="company-document">
+                                                    <div>
+                                                        <div class="text-center mb-4">
+                                                            <h5>Метрики</h5>
+                                                            <p class="card-title-desc">Заполните информацию по метрикам <br /><b style={{color:"white"}}>!! только идентификаторы счетчиков !!</ b></p>
+                                                        </div>
+                                                        <form>
+                                                            <div class="row">
+                                                                <div class="col-lg-6">
+                                                                    <div class="mb-3">
+                                                                        <label for="basicpill-servicetax-input" class="form-label">Yandex</label>
+                                                                        <input type="text" class="form-control" name="yandex" id="basicpill-servicetax-input" />
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-6">
+                                                                    <div class="mb-3">
+                                                                        <label for="basicpill-servicetax-input" class="form-label">Google</label>
+                                                                        <input type="text" class="form-control" name="google" id="basicpill-servicetax-input" />
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-lg-6">
+                                                                    <div class="mb-3">
+                                                                        <label for="basicpill-servicetax-input" class="form-label">Mail</label>
+                                                                        <input type="text" class="form-control" name="mail" id="basicpill-servicetax-input" />
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-6">
+                                                                    <div class="mb-3">
+                                                                        <label for="basicpill-servicetax-input" class="form-label">Roistat</label>
+                                                                        <input type="text" class="form-control" name="roistat" id="basicpill-servicetax-input" />
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-lg-6">
+                                                                    <div class="mb-3">
+                                                                        <label for="basicpill-servicetax-input" class="form-label">Marquiz</label>
+                                                                        <input type="text" class="form-control" name="marquiz" id="basicpill-servicetax-input" />
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-6">
+                                                                    <label for="basicpill-servicetax-input" class="form-label">Qoopler</label>
+                                                                    <select onChange={inputChange} className="form-select custom-select" id="template" name="template_id" name="qoopler" value={form.template_id}>
+                                                                            <option>Нет</option>
+                                                                            <option value="y">Да</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </form>
+                                                        <ul class="pager wizard
+                                                            twitter-bs-wizard-pager-link">
+                                                            <li class="prev"><a href="javascript: void(0);" class="btn btn-primary" onclick="nextTab()"><i class="feather-arrow-left"></i> Назад </a></li>
+                                                            <li class="next"><a href="javascript: void(0);" class="btn btn-primary" onclick="nextTab()">Сохранить <i class="feather-check"></i></a></li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                                <div class="tab-pane active" id="company-document">
+                                                    <div>
+                                                        <div class="text-center mb-4">
+                                                            <h5>Шаги</h5>
+                                                            <p class="card-title-desc">Заполните шаги (или оставьте стандартные)</p>
+                                                        </div>
+                                                        <div>
+                                                            <div class="row">
+                                                                <div class="mb-3">
+                                                                    Шаг 1 / 5
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-lg-6">
+                                                                    <div class="mb-3">
+                                                                        <label for="basicpill-servicetax-input" class="form-label">Текст вопроса</label>
+                                                                        <input type="text" class="form-control" name="mail" id="basicpill-servicetax-input" />
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-6">
+                                                                    <div class="mb-3">
+                                                                        <label for="basicpill-servicetax-input" class="form-label">Тип шага</label>
+                                                                        <select onChange={inputChange} className="form-select custom-select" id="template" name="template_id" name="qoopler" value={form.template_id}>
+                                                                                <option value="text">Текстовый</option>
+                                                                                <option value="slider">Слайдер</option>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <hr class="my-4"></hr>
+                                                        <div class="d-flex justify-content-center">
+                                                            <button href="javascript: void(0);" class="btn btn-primary" onclick="nextTab()"><i class="feather-plus"></i> Добавить шаг </button>
+                                                        </div>
+                                                        <ul class="pager wizard twitter-bs-wizard-pager-link">
+                                                            <li class="prev"><a href="javascript: void(0);" class="btn btn-primary" onclick="nextTab()"><i class="feather-arrow-left"></i> Назад </a></li>
+                                                            <li class="next"><a href="javascript: void(0);" class="btn btn-primary" onclick="nextTab()">Сохранить <i class="feather-check"></i></a></li>
                                                         </ul>
                                                     </div>
                                                 </div>

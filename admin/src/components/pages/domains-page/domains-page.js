@@ -2,8 +2,37 @@ import PageTitle from "../../page-title"
 import TableItem from "./table-item"
 import { Modals, showModal } from "../../modals"
 import forms from "./forms"
+import { compose } from "../../../utils";
+import { withApiService } from "../../hoc";
+import { connect } from "react-redux";
+import { bindActionCreators } from 'redux';
+import { Component, useEffect, useState } from "react";
+import { fetchDomains } from "../../../actions/domains";
+import { Spinner } from "../../spinner";
+import axios from "axios";
+import ApiService from "../../../services/api-service";
 
-const DomainsPage = () => {
+const DomainsPage = ({domains}) => {
+    const [templates, setTemplates] = useState(null)
+    useEffect(()=>{
+        let apiService=new ApiService
+        apiService.templatesList().then((response) => {
+            setTemplates(response.data)
+        })
+    },[])
+
+    const getTemplateById = (id) => {
+        let name = ""
+        if (templates!= null) {
+            templates.map(template => {
+                if (template.ID == id) {
+                    name = template.Name
+                }
+            });
+            
+        }
+        return name
+    }
     return(<div className="main-content">
         <div class="page-content">
             <div class="container-fluid">
@@ -44,20 +73,23 @@ const DomainsPage = () => {
                                                     <div class="form-check
                                                         font-size-16">
                                                         <input type="checkbox" name="check" class="form-check-input" id="checkAll" />
-                                                        <label class="form-check-label" for="checkAll"></label>
+                                                        <label class="form-check-label" htmlFor="checkAll"></label>
                                                     </div>
                                                 </th>
-                                                <th style={{width: "120px"}} className="sorting" >ID</th>
-                                                <th style={{width: "120px"}} className="sorting" >URL</th>
-                                                <th style={{width: "120px"}} className="sorting" >Шаблон</th>
-                                                <th style={{width: "120px"}} className="sorting" >Дата создания</th>
-                                                <th style={{width: "120px"}} className="sorting" >Действия</th>
+                                                <th style={{width: "80px"}} className="sorting" >ID</th>
+                                                <th style={{width: "80px"}} className="sorting" >URL</th>
+                                                <th style={{width: "80px"}} className="sorting" >Шаблон</th>
+                                                <th style={{width: "80px"}} className="sorting" >Дата создания</th>
+                                                <th style={{width: "80px"}} className="sorting" >Действия</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <TableItem />
-                                            <TableItem />
-                                            <TableItem />
+                                            {
+                                                domains.map((domain) => {
+                                                    domain.templateName = getTemplateById(domain.template_id)
+                                                    return  <TableItem domain = {domain} />
+                                                })
+                                            }
                                         </tbody>
                                     </table>
                                 </div>
@@ -99,4 +131,33 @@ const DomainsPage = () => {
     )
 }
 
-export default DomainsPage
+
+class DomainListPageContainer extends Component {
+    
+    componentDidMount() {
+      this.props.fetchDomains();
+    }
+  
+    render() {
+      const { domains, loading, error } = this.props;
+      if (loading || domains == null) {
+          return <Spinner />
+      }
+      return <DomainsPage domains={domains} loading={loading} error={error} />;
+    }
+  }
+  
+  const mapStateToProps = ({ domainsList: { domains, loading, error }}) => {
+    return { domains, loading, error };
+  };
+  
+  const mapDispatchToProps = (dispatch, { apiService}) => {
+    return bindActionCreators({
+        fetchDomains: fetchDomains(apiService),
+    }, dispatch);
+  };
+
+  export default compose(
+    withApiService(),
+    connect(mapStateToProps, mapDispatchToProps)
+  )(DomainListPageContainer);

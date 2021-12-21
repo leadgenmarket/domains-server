@@ -1,6 +1,29 @@
 import PageTitle from "../../page-title"
+import { compose } from "../../../utils";
+import { withApiService } from "../../hoc";
+import { connect } from "react-redux";
+import { bindActionCreators } from 'redux';
+import { useParams } from 'react-router-dom'
+import { Component, useEffect } from "react";
+import { fetchDomain } from "../../../actions/domain-detail";
+import { Spinner } from "../../spinner";
 
-const DomainDetail = () => {
+const DomainDetail = ({domain, loading, fetchDomain}) => {
+    const { id } = useParams()
+    useEffect(() => {
+        fetchDomain(id)
+    }, [id])
+
+    const convertDate = (inputFormat) => {
+        function pad(s) { return (s < 10) ? '0' + s : s; }
+        var d = new Date(inputFormat)
+        return [pad(d.getDate()), pad(d.getMonth()+1), d.getFullYear()].join(' / ')
+    }
+
+    if (loading || domain == null) {
+        return <Spinner />
+    }
+    
     return (<div className="main-content">
                 <div class="page-content">
                     <div class="container-fluid">
@@ -13,7 +36,7 @@ const DomainDetail = () => {
                                             <div class="d-flex align-items-start">
                                                 <div class="flex-grow-1">
                                                     <div class="mb-4">
-                                                        <img src="assets/images/logo-sm.svg" alt="" height="24" /><span class="logo-txt">Minia</span>
+                                                        <span class="logo-txt">{domain.url}</span>
                                                     </div>
                                                 </div>
                                                 <div class="flex-shrink-0">
@@ -22,9 +45,7 @@ const DomainDetail = () => {
                                                     </div>
                                                 </div>
                                             </div>
-                                            
-                
-                                            <p class="mb-1">1874 County Line Road City, FL 33566</p>
+                                            <p class="mb-1"><b>Дата создания:</b> {convertDate(Date.parse(domain.CreatedAt))}</p>
                                             <p class="mb-1"><i class="mdi mdi-email align-middle me-1"></i> abc@123.com</p>
                                             <p><i class="mdi mdi-phone align-middle me-1"></i> 012-345-6789</p>
                                         </div>
@@ -115,4 +136,30 @@ const DomainDetail = () => {
     )
 }
 
-export default DomainDetail
+
+class DomainPageContainer extends Component {
+    
+    componentDidMount() {
+    }
+  
+    render() {
+      const { domain, loading, error, fetchDomain } = this.props;
+
+      return <DomainDetail domain={domain} error={error} fetchDomain={fetchDomain} />;
+    }
+  }
+  
+  const mapStateToProps = ({ domainDetail: { domain, loading, error }}) => {
+    return { domain, loading, error };
+  };
+  
+  const mapDispatchToProps = (dispatch, { apiService}) => {
+    return bindActionCreators({
+        fetchDomain: fetchDomain(apiService),
+    }, dispatch);
+  };
+
+  export default compose(
+    withApiService(),
+    connect(mapStateToProps, mapDispatchToProps)
+  )(DomainPageContainer);
