@@ -5,6 +5,7 @@ import (
 	"domain-server/internal/models"
 	organization "domain-server/internal/repositories/organizations"
 	"domain-server/internal/services"
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -16,6 +17,7 @@ type Handlers interface {
 	UpdateOrganizations(c *gin.Context)
 	DeleteOrganization(c *gin.Context)
 	GetOrganization(c *gin.Context)
+	GetOrganizations(c *gin.Context)
 }
 
 type organizationHandlers struct {
@@ -91,7 +93,7 @@ func (s *organizationHandlers) DeleteOrganization(c *gin.Context) {
 }
 
 func (s *organizationHandlers) GetOrganization(c *gin.Context) {
-	input := c.Param("url")
+	input := c.Param("id")
 	organization, err := s.repository.GetOrganizationById(input)
 	if err != nil {
 		s.logger.GetInstance().Errorf("error getting organization %s", err)
@@ -99,4 +101,15 @@ func (s *organizationHandlers) GetOrganization(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, organization)
+}
+
+func (s *organizationHandlers) GetOrganizations(c *gin.Context) {
+	organizations, err := s.repository.GetOrganizations()
+	fmt.Println(organizations)
+	if err != nil {
+		s.logger.GetInstance().Errorf("error getting organizations list %s", err)
+		c.JSON(http.StatusBadRequest, gin.H{"paylod": "error"})
+		return
+	}
+	c.JSON(http.StatusOK, organizations)
 }

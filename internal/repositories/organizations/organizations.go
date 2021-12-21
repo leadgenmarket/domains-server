@@ -9,24 +9,25 @@ import (
 
 type Repository interface {
 	AddOrganization(step models.Organization) (models.Organization, error)
-	GetOrganizationById(id string) ([]models.Organization, error)
+	GetOrganizationById(id string) (models.Organization, error)
+	GetOrganizations() ([]models.Organization, error)
 	UpdateOrganization(step models.Organization) error
 	DeleteOrganization(id string) error
 }
 
 type repositroyDB struct {
-	steps *mongodb.Collection
+	organiozations *mongodb.Collection
 }
 
 func New(dbClient *mongodb.Database) Repository {
 	return &repositroyDB{
-		steps: dbClient.C("steps"),
+		organiozations: dbClient.C("organiozations"),
 	}
 }
 
 func (r *repositroyDB) AddOrganization(step models.Organization) (models.Organization, error) {
 	step.ID = bson.NewObjectId()
-	err := r.steps.Insert(&step)
+	err := r.organiozations.Insert(&step)
 	if err != nil {
 		return step, err
 	}
@@ -34,7 +35,7 @@ func (r *repositroyDB) AddOrganization(step models.Organization) (models.Organiz
 }
 
 func (r *repositroyDB) UpdateOrganization(step models.Organization) error {
-	err := r.steps.Find(bson.M{"_id": step}).One(&step)
+	err := r.organiozations.Find(bson.M{"_id": step}).One(&step)
 	if err != nil {
 		return err
 	}
@@ -42,18 +43,27 @@ func (r *repositroyDB) UpdateOrganization(step models.Organization) error {
 }
 
 func (r *repositroyDB) DeleteOrganization(id string) error {
-	err := r.steps.Remove(bson.M{"_id": bson.ObjectIdHex(id)})
+	err := r.organiozations.Remove(bson.M{"_id": bson.ObjectIdHex(id)})
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-func (r *repositroyDB) GetOrganizationById(id string) ([]models.Organization, error) {
-	steps := []models.Organization{}
-	err := r.steps.Find(bson.M{"_id": bson.ObjectIdHex(id)}).All(&steps)
+func (r *repositroyDB) GetOrganizationById(id string) (models.Organization, error) {
+	organiozations := models.Organization{}
+	err := r.organiozations.Find(bson.M{"_id": bson.ObjectIdHex(id)}).One(&organiozations)
 	if err != nil {
-		return steps, err
+		return organiozations, err
 	}
-	return steps, nil
+	return organiozations, nil
+}
+
+func (r *repositroyDB) GetOrganizations() ([]models.Organization, error) {
+	organiozations := []models.Organization{}
+	err := r.organiozations.Find(bson.M{}).All(&organiozations)
+	if err != nil {
+		return organiozations, err
+	}
+	return organiozations, nil
 }

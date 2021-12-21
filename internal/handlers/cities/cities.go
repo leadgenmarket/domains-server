@@ -29,7 +29,12 @@ func New(repository cities.Repository, services *services.Services, logger logge
 }
 
 func (ch *citiesHandlers) GetCitiesList(c *gin.Context) {
-
+	cities, err := ch.repository.GetAllCities()
+	if err != nil {
+		ch.logger.GetInstance().Errorf("error getting cities from portal %s", err)
+		c.JSON(http.StatusInternalServerError, gin.H{"payload": "error updating cities"})
+	}
+	c.JSON(http.StatusOK, cities)
 }
 func (ch *citiesHandlers) UpdateCities(c *gin.Context) {
 	cities, err := ch.services.Portal.GetCitiesList()

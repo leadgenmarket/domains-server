@@ -14,6 +14,7 @@ type Repository interface {
 	FindDomainByUrl(url string) (_ models.Domain, err error)
 	GetAllDomains() ([]models.Domain, error)
 	UpdateDomain(domain models.Domain) error
+	FindDomainByID(id string) (models.Domain, error)
 	DeleteDomainById(id string) error
 }
 
@@ -48,6 +49,15 @@ func (r *repositroyDB) AddDomain(domain models.Domain) (models.Domain, error) {
 func (r *repositroyDB) FindDomainByUrl(url string) (models.Domain, error) {
 	var domain models.Domain
 	err := r.domains.Find(bson.M{"url": url}).One(&domain)
+	if err != nil {
+		return domain, err
+	}
+	return domain, nil
+}
+
+func (r *repositroyDB) FindDomainByID(id string) (models.Domain, error) {
+	var domain models.Domain
+	err := r.domains.Find(bson.M{"_id": bson.ObjectIdHex(id)}).One(&domain)
 	if err != nil {
 		return domain, err
 	}

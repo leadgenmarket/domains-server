@@ -2,6 +2,7 @@ package cities
 
 import (
 	"domain-server/internal/models"
+	"fmt"
 
 	mongodb "github.com/globalsign/mgo"
 	"github.com/globalsign/mgo/bson"
@@ -22,8 +23,14 @@ func New(dbClient *mongodb.Database) Repository {
 	}
 }
 
-func (r *repositroyDB) GetAllCities() (_ []models.City, err error) {
-	return nil, nil
+func (r *repositroyDB) GetAllCities() ([]models.City, error) {
+	cities := []models.City{}
+	fmt.Println(cities)
+	err := r.cities.Find(bson.M{}).All(&cities)
+	if err != nil {
+		return cities, err
+	}
+	return cities, nil
 }
 
 func (r *repositroyDB) UpdateCities(cities []models.City) error {

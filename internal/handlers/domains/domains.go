@@ -4,6 +4,7 @@ import (
 	"domain-server/internal/logger"
 	"domain-server/internal/models"
 	"domain-server/internal/repositories/domains"
+	"fmt"
 	"net/http"
 	"strings"
 	"time"
@@ -18,7 +19,7 @@ type Handlers interface {
 	GetDomainsList(c *gin.Context)
 	UpdateDomain(c *gin.Context)
 	DeleteDomain(c *gin.Context)
-	FindDomainByURL(c *gin.Context)
+	FindDomainByID(c *gin.Context)
 }
 
 type domainsHandlers struct {
@@ -121,9 +122,10 @@ func (dh *domainsHandlers) DeleteDomain(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"payload": "success"})
 }
 
-func (dh *domainsHandlers) FindDomainByURL(c *gin.Context) {
-	url := c.Param("url")
-	domain, err := dh.repository.FindDomainByUrl(url)
+func (dh *domainsHandlers) FindDomainByID(c *gin.Context) {
+	id := c.Param("id")
+	fmt.Println(id)
+	domain, err := dh.repository.FindDomainByID(id)
 	if err != nil {
 		dh.logger.GetInstance().Errorf("requesting domain not found %s", err)
 		c.JSON(http.StatusInternalServerError, gin.H{"paylod": "error"})

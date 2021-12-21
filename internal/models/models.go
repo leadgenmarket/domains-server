@@ -38,7 +38,7 @@ type Domain struct {
 }
 
 type Template struct {
-	ID   bson.ObjectId `bson:"id"`
+	ID   bson.ObjectId `bson:"_id"`
 	Name string        `bson:"name"`
 	Path string        `bson:"path"`
 }
@@ -86,7 +86,7 @@ type Title struct {
 }
 
 type Organization struct {
-	ID      bson.ObjectId `bson:"_id"`
+	ID      bson.ObjectId `bson:"_id" json:"id"`
 	Name    string        `bson:"name"`
 	Address string        `bson:"address"`
 }

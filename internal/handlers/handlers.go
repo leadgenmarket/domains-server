@@ -10,6 +10,7 @@ import (
 	"domain-server/internal/handlers/organizations"
 	"domain-server/internal/handlers/settings"
 	"domain-server/internal/handlers/steps"
+	"domain-server/internal/handlers/templates"
 	"domain-server/internal/handlers/titles"
 	"domain-server/internal/handlers/users"
 	"domain-server/internal/logger"
@@ -42,6 +43,7 @@ type handlers struct {
 	Organizations organizations.Handlers
 	Titles        titles.Handlers
 	Users         users.Handlers
+	Templates     templates.Handlers
 	router        *gin.Engine
 	repositories  *repositories.Repositories
 	services      *services.Services
@@ -61,6 +63,7 @@ func New(router *gin.Engine, repositories *repositories.Repositories, services *
 		Organizations: organizations.New(repositories.Organizations, services, logger),
 		Titles:        titles.New(repositories.Titles, services, logger),
 		Users:         users.New(repositories.Users, services, logger),
+		Templates:     templates.New(repositories.Templates, services, logger),
 		router:        router,
 		repositories:  repositories,
 		services:      services,
@@ -82,7 +85,7 @@ func (h *handlers) Registry() {
 		domainsGroup.GET("/", h.Domains.GetDomainsList)
 		domainsGroup.POST("/", h.Domains.UpdateDomain)
 		domainsGroup.DELETE("/", h.Domains.DeleteDomain)
-		domainsGroup.GET("/:url", h.Domains.FindDomainByURL)
+		domainsGroup.GET("/:id", h.Domains.FindDomainByID)
 
 		//cities
 		citiesGroup := api.Group("cities")
@@ -124,6 +127,7 @@ func (h *handlers) Registry() {
 
 		//organizations
 		organizationsGroup := api.Group("organizations")
+		organizationsGroup.GET("/", h.Organizations.GetOrganizations)
 		organizationsGroup.GET("/:id", h.Organizations.GetOrganization)
 		organizationsGroup.PUT("/", h.Organizations.AddOrganization)
 		organizationsGroup.DELETE("/:id", h.Organizations.DeleteOrganization)
@@ -142,6 +146,10 @@ func (h *handlers) Registry() {
 		usersGroup.PUT("/", h.Users.AddUser)
 		usersGroup.DELETE("/", h.Users.DeleteUser)
 		usersGroup.POST("/", h.Users.UpdateUser)
+
+		//templates
+		templatesGroup := api.Group("templates")
+		templatesGroup.GET("/", h.Templates.GetTemplatesList)
 
 		api.GET("/ping", func(c *gin.Context) {
 			c.JSON(http.StatusOK, gin.H{"message": "i'm ok"})
