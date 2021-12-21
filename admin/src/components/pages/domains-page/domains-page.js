@@ -1,4 +1,7 @@
 import PageTitle from "../../page-title"
+import TableItem from "./table-item"
+import { Modals, showModal } from "../../modals"
+import forms from "./forms"
 
 const DomainsPage = () => {
     return(<div className="main-content">
@@ -11,7 +14,7 @@ const DomainsPage = () => {
                             <div class="card-body">
                                 <div className="" style={{display:"flex", justifyContent:"end"}}>
                                     <div class="mb-4">
-                                        <button type="button" class="btn btn-primary waves-effect waves-light"><i class="feather-plus"></i> Добавить домен</button>
+                                        <button onClick={() =>{showModal("addDomain")}} type="button" class="btn btn-primary waves-effect waves-light"><i class="feather-plus"></i> Добавить домен</button>
                                     </div>
                                 </div>
                                 <div class="table-responsive">
@@ -34,7 +37,7 @@ const DomainsPage = () => {
                             </div>
                             <div class="row">
                                 <div class="col-sm-12">
-                                    <table class="table align-middle datatable dt-responsive table-check nowrap dataTable no-footer" style={{borderCollapse: "collapse", borderSpacing: "0px 8px", width: "100%"}} >
+                                    <table class="table align-middle datatable dt-responsive table-check nowrap dataTable no-footer table-striped" style={{borderCollapse: "collapse", borderSpacing: "0px 8px", width: "100%"}} >
                                         <thead>
                                             <tr class="bg-transparent" role="row">
                                                 <th style={{width: "30px"}} className="sorting sorting_asc">
@@ -52,41 +55,9 @@ const DomainsPage = () => {
                                             </tr>
                                         </thead>
                                         <tbody>
-                                        <tr class="odd">
-                                                <td class="sorting_1">
-                                                    <div class="form-check
-                                                        font-size-16">
-                                                        <input type="checkbox" class="form-check-input" />
-                                                        <label class="form-check-label"></label>
-                                                    </div>
-                                                </td>
-                                                <td><a href="javascript: void(0);" class="text-dark fw-medium">#MN0215</a>
-                                                </td>
-                                                <td>
-                                                    12 Oct, 2020
-                                                </td>
-                                                <td>Connie Franco</td>
-                                                <td>
-                                                    <div class="badge badge-soft-success
-                                                        font-size-12">Paid</div>
-                                                </td>
-                                                <td>
-                                                    <div class="dropdown">
-                                                        <button class="btn btn-link
-                                                            font-size-16 shadow-none
-                                                            py-0 text-muted
-                                                            dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                                            <i class="bx
-                                                                bx-dots-horizontal-rounded"></i>
-                                                        </button>
-                                                        <ul class="dropdown-menu dropdown-menu-end">
-                                                            <li><a class="dropdown-item" href="#">Edit</a></li>
-                                                            <li><a class="dropdown-item" href="#">Print</a></li>
-                                                            <li><a class="dropdown-item" href="#">Delete</a></li>
-                                                        </ul>
-                                                    </div>
-                                                </td>
-                                            </tr>
+                                            <TableItem />
+                                            <TableItem />
+                                            <TableItem />
                                         </tbody>
                                     </table>
                                 </div>
@@ -115,13 +86,15 @@ const DomainsPage = () => {
                                         </div>
                                     </div>
                                 </div>
-                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
     </div>
-</div>
+    <Modals forms={forms} />
+
 </div>
     )
 }

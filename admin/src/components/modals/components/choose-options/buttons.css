@@ -1,0 +1,37 @@
+.buttons-list{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.buttons-list button {
+    margin-left: 5px;
+    margin-bottom: 10px;
+}
+
+
+.choose-header {
+    display: flex;
+    margin-bottom: 10px;
+}
+.choose-header button {
+    margin-left: 5px;
+}
+
+.option-image {
+
+}
+
+.option-image img{
+    width: 190px;
+    height: 140px;
+    object-fit: cover;
+    border-radius: 5%;
+    border: 2px solid transparent;
+    margin-bottom: 10px;
+    margin-left: 10px;
+}
+
+.option-image.act > img  {
+    border: 2px solid #7367f0 !important;
+}
