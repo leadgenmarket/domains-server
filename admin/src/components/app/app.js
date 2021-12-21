@@ -15,6 +15,8 @@ import ApiService from "../../services/api-service"
 import { LoginPage } from "../pages";
 import ToolBar from "../tool-bar";
 import DomainsPage from "../pages/domains-page";
+import DomainDetail from "../pages/domain-detail";
+import DomainEdit from "../pages/domain-edit";
 
 const App = ({ auth, phone, checkAuth}) => {
     const location = useLocation().pathname;
@@ -45,6 +47,8 @@ const App = ({ auth, phone, checkAuth}) => {
                 <ToolBar />
                 <SideMenu />
                 <Routes>
+                    <Route path="/edit/:id" element={<DomainEdit />} />
+                    <Route path="/:id" element={<DomainDetail />} />
                     <Route path="/" element={<DomainsPage />} />
                 </Routes>
             </React.Fragment>
