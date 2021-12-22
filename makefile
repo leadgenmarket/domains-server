@@ -10,7 +10,7 @@ export APP_PORTAL_URL := https://api.g-n.ru/v1
 export APP_PORTAL_KEY := 8N3783vyK7V3230v
 export APP_INITIAL_ROOT_PASSWORD := Qwerty123
 export APP_SALT := secret
-export APP_TOKEN_TTL:= 720s
+export APP_TOKEN_TTL:= 120m
 export APP_REFRESH_TOKEN_TTL:= 120m
 export APP_TOKEN_SECRET:= secret
  

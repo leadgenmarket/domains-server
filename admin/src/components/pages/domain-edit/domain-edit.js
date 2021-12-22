@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom"
 import PageTitle from "../../page-title"
 import ApiService from "../../../services/api-service";
+import StepsComponent from "./steps";
 
 const DomainEdit = () => {
     const navigate= useNavigate();
@@ -40,9 +41,7 @@ const DomainEdit = () => {
     }
 
     const nextStepClick = () => {
-        if (form.url!="" && form.template_id!="") {
-            setStep(step+1)
-        }
+        setStep(step+1)
     }
     const prevStepClick = () => {
         setStep(step-1)
@@ -58,28 +57,28 @@ const DomainEdit = () => {
                                         <div id="basic-pills-wizard" class="twitter-bs-wizard">
                                             <ul class="twitter-bs-wizard-nav nav nav-pills nav-justified">
                                                 <li class="nav-item">
-                                                    <a href="#seller-details" class="nav-link active" data-toggle="tab">
+                                                    <a href="#seller-details" class={step==1?"nav-link active":"nav-link"} data-toggle="tab">
                                                         <div class="step-icon" data-bs-toggle="tooltip" data-bs-placement="top" title="Seller Details">
                                                             <i class="feather-globe"></i>
                                                         </div>
                                                     </a>
                                                 </li>
                                                 <li class="nav-item">
-                                                    <a href="#company-document" class="nav-link" data-toggle="tab">
+                                                    <a href="#company-document" class={step==2?"nav-link active":"nav-link"} data-toggle="tab">
                                                         <div class="step-icon" data-bs-toggle="tooltip" data-bs-placement="top" title="Company Document">
-                                                            <i class="feather-settings"></i>
+                                                            <i class="feather-airplay"></i>
                                                         </div>
                                                     </a>
                                                 </li>
                                                 <li class="nav-item">
-                                                    <a href="#company-document" class="nav-link" data-toggle="tab">
+                                                    <a href="#company-document" class={step==3?"nav-link active":"nav-link"} data-toggle="tab">
                                                         <div class="step-icon" data-bs-toggle="tooltip" data-bs-placement="top" title="Company Document">
                                                             <i class="feather-list"></i>
                                                         </div>
                                                     </a>
                                                 </li>
                                                 <li class="nav-item">
-                                                    <a href="#company-document" class="nav-link" data-toggle="tab">
+                                                    <a href="#company-document" class={step==4?"nav-link active":"nav-link"} data-toggle="tab">
                                                         <div class="step-icon" data-bs-toggle="tooltip" data-bs-placement="top" title="Company Document">
                                                             <i class="feather-target"></i>
                                                         </div>
@@ -88,7 +87,7 @@ const DomainEdit = () => {
                                                 
                                             </ul>
                                             <div class="tab-content twitter-bs-wizard-tab-content">
-                                                <div class="tab-pane" id="seller-details">
+                                                <div class={step==1?"tab-pane active":"tab-pane"} id="seller-details">
                                                     <div class="text-center mb-4">
                                                         <h5>Информация о домене</h5>
                                                         <p class="card-title-desc">Заполните запрашиваемую информацию</p>
@@ -115,13 +114,13 @@ const DomainEdit = () => {
                                                         </div>
                                                     </form>
                                                     <ul class="pager wizard  twitter-bs-wizard-pager-link">
-                                                        <li class="next"><a href="javascript: void(0);" class="btn btn-primary" onclick="nextTab()">Далее <i class="feather-arrow-right"></i></a></li>
+                                                        <li class="next"><a onClick={nextStepClick} class="btn btn-primary" onclick="nextTab()">Далее <i class="feather-arrow-right"></i></a></li>
                                                     </ul>
                                                 </div>
-                                                <div class="tab-pane" id="company-document">
+                                                <div class={step==2?"tab-pane active":"tab-pane"} id="company-document">
                                                     <div>
                                                         <div class="text-center mb-4">
-                                                            <h5>Главные настройки</h5>
+                                                            <h5>Внешнее отображение</h5>
                                                             <p class="card-title-desc">Заполните запрашиваемую информацию</p>
                                                         </div>
                                                         <form>
@@ -179,14 +178,20 @@ const DomainEdit = () => {
                                                                 </div>
                                                             </div>
                                                         </form>
-                                                        <ul class="pager wizard
-                                                            twitter-bs-wizard-pager-link">
-                                                            <li class="prev"><a href="javascript: void(0);" class="btn btn-primary" onclick="nextTab()"><i class="feather-arrow-left"></i> Назад </a></li>
-                                                            <li class="next"><a href="javascript: void(0);" class="btn btn-primary" onclick="nextTab()">Сохранить <i class="feather-check"></i></a></li>
+                                                        <ul class="pager wizard twitter-bs-wizard-pager-link">
+                                                            <li class="prev"><a onClick={prevStepClick} class="btn btn-primary" onclick="nextTab()"><i class="feather-arrow-left"></i> Назад </a></li>
+                                                            <li class="next"><a onClick={nextStepClick} class="btn btn-primary" onclick="nextTab()">Далее <i class="feather-arrow-right"></i></a></li>
                                                         </ul>
                                                     </div>
                                                 </div>
-                                                <div class="tab-pane" id="company-document">
+                                                <div class={step==3?"tab-pane active":"tab-pane"} id="company-document">
+                                                    <StepsComponent quizSteps={quizSteps} setQuizSteps={setQuizSteps} />
+                                                    <ul class="pager wizard twitter-bs-wizard-pager-link">
+                                                            <li class="prev"><a onClick={prevStepClick} class="btn btn-primary" onclick="nextTab()"><i class="feather-arrow-left"></i> Назад </a></li>
+                                                            <li class="next"><a onClick={nextStepClick} class="btn btn-primary" onclick="nextTab()">Далее <i class="feather-arrow-right"></i></a></li>
+                                                    </ul>
+                                                </div>
+                                                <div class={step==4?"tab-pane active":"tab-pane"} id="company-document">
                                                     <div>
                                                         <div class="text-center mb-4">
                                                             <h5>Метрики</h5>
@@ -239,51 +244,12 @@ const DomainEdit = () => {
                                                         </form>
                                                         <ul class="pager wizard
                                                             twitter-bs-wizard-pager-link">
-                                                            <li class="prev"><a href="javascript: void(0);" class="btn btn-primary" onclick="nextTab()"><i class="feather-arrow-left"></i> Назад </a></li>
-                                                            <li class="next"><a href="javascript: void(0);" class="btn btn-primary" onclick="nextTab()">Сохранить <i class="feather-check"></i></a></li>
+                                                            <li class="prev"><a onClick={prevStepClick} class="btn btn-primary" onclick="nextTab()"><i class="feather-arrow-left"></i> Назад </a></li>
+                                                            <li class="next"><a onClick={nextStepClick} class="btn btn-primary" onclick="nextTab()">Сохранить <i class="feather-check"></i></a></li>
                                                         </ul>
                                                     </div>
                                                 </div>
-                                                <div class="tab-pane active" id="company-document">
-                                                    <div>
-                                                        <div class="text-center mb-4">
-                                                            <h5>Шаги</h5>
-                                                            <p class="card-title-desc">Заполните шаги (или оставьте стандартные)</p>
-                                                        </div>
-                                                        <div>
-                                                            <div class="row">
-                                                                <div class="mb-3">
-                                                                    Шаг 1 / 5
-                                                                </div>
-                                                            </div>
-                                                            <div class="row">
-                                                                <div class="col-lg-6">
-                                                                    <div class="mb-3">
-                                                                        <label for="basicpill-servicetax-input" class="form-label">Текст вопроса</label>
-                                                                        <input type="text" class="form-control" name="mail" id="basicpill-servicetax-input" />
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-lg-6">
-                                                                    <div class="mb-3">
-                                                                        <label for="basicpill-servicetax-input" class="form-label">Тип шага</label>
-                                                                        <select onChange={inputChange} className="form-select custom-select" id="template" name="template_id" name="qoopler" value={form.template_id}>
-                                                                                <option value="text">Текстовый</option>
-                                                                                <option value="slider">Слайдер</option>
-                                                                        </select>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <hr class="my-4"></hr>
-                                                        <div class="d-flex justify-content-center">
-                                                            <button href="javascript: void(0);" class="btn btn-primary" onclick="nextTab()"><i class="feather-plus"></i> Добавить шаг </button>
-                                                        </div>
-                                                        <ul class="pager wizard twitter-bs-wizard-pager-link">
-                                                            <li class="prev"><a href="javascript: void(0);" class="btn btn-primary" onclick="nextTab()"><i class="feather-arrow-left"></i> Назад </a></li>
-                                                            <li class="next"><a href="javascript: void(0);" class="btn btn-primary" onclick="nextTab()">Сохранить <i class="feather-check"></i></a></li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
+                                                
                                             </div>
                                         </div>
                                     </div>

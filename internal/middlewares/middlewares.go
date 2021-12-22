@@ -19,7 +19,6 @@ func TokenAuthMiddleware(logger logger.Log, services *services.Services) gin.Han
 		if err != nil {
 			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"message": "please authorize"})
 		}
-		logger.GetInstance().Info("your token ", token)
 		userID, userRole, err := services.TokenManager.CheckToken(token)
 		if err != nil {
 			logger.GetInstance().Info("invalid token")
