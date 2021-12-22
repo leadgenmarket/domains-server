@@ -20,6 +20,7 @@ type Config struct {
 	TokenTTL            time.Duration
 	RefreshTokenTTL     time.Duration
 	TokenSecret         string
+	FileStorePath       string
 }
 
 func InitConfig(prefix string) (*Config, error) {

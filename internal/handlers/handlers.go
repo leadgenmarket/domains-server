@@ -53,7 +53,7 @@ type handlers struct {
 func New(router *gin.Engine, repositories *repositories.Repositories, services *services.Services, logger logger.Log) Handlers {
 	return &handlers{
 		Auth:          auth.New(repositories.Users, services, logger),
-		Domains:       domains.New(repositories.Domains, logger),
+		Domains:       domains.New(repositories.Domains, services, logger),
 		Cities:        cities.New(repositories.Cities, services, logger),
 		Locations:     locations.New(repositories.Locations, services, logger),
 		Settings:      settings.New(repositories.Settings, services, logger),
@@ -86,6 +86,7 @@ func (h *handlers) Registry() {
 		domainsGroup.POST("/", h.Domains.UpdateDomain)
 		domainsGroup.DELETE("/", h.Domains.DeleteDomain)
 		domainsGroup.GET("/:id", h.Domains.FindDomainByID)
+		domainsGroup.POST("/add", h.Domains.AddDomainWithSettings)
 
 		//cities
 		citiesGroup := api.Group("cities")

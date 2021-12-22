@@ -7,12 +7,12 @@ const StepsComponent = ({quizSteps, setQuizSteps}) => {
     const answerChange = (event) => {
         let value = event.target.value
         setQuizSteps((prevState) => {
-            let stepIndex = parseInt(event.target.getAttribute('indexStep'))
-            let answerIndex = parseInt(event.target.getAttribute('indexAnswer'))
+            let stepindex = parseInt(event.target.getAttribute('indexstep'))
+            let answerindex = parseInt(event.target.getAttribute('indexanswer'))
             let newQuizSteps = Array.from(prevState)
-            newQuizSteps[stepIndex].answers[answerIndex] = value
-            if (answerIndex == newQuizSteps[stepIndex].answers.length-1 && value!="") {
-                newQuizSteps[stepIndex].answers[answerIndex+1]=""
+            newQuizSteps[stepindex].answers[answerindex] = value
+            if (answerindex == newQuizSteps[stepindex].answers.length-1 && value!="") {
+                newQuizSteps[stepindex].answers[answerindex+1]=""
             }
             return newQuizSteps
         })
@@ -20,11 +20,11 @@ const StepsComponent = ({quizSteps, setQuizSteps}) => {
 
     const questionChange = (event) => {
         let value = event.target.value
-        let stepIndex = parseInt(event.target.getAttribute('indexStep'))
+        let stepindex = parseInt(event.target.getAttribute('indexstep'))
               
         setQuizSteps((prevState)=> {
             let newQuizSteps = Array.from(prevState)
-            newQuizSteps[stepIndex].title = value
+            newQuizSteps[stepindex].title = value
             return newQuizSteps
         })
     }
@@ -52,20 +52,20 @@ const StepsComponent = ({quizSteps, setQuizSteps}) => {
     }
 
     const changeQuestionType = (event) => {
-        let stepIndex = parseInt(event.target.getAttribute('stepIndex'))
-        console.log(stepIndex)
+        let stepindex = parseInt(event.target.getAttribute('stepindex'))
+        console.log(stepindex)
         setQuizSteps((prevState) => {
             let newQuizSteps = Array.from(prevState)
-            newQuizSteps[stepIndex].type = event.target.value
-            if (newQuizSteps[stepIndex].type == "text") {
-                newQuizSteps[stepIndex].answers = [""]
+            newQuizSteps[stepindex].type = event.target.value
+            if (newQuizSteps[stepindex].type == "text") {
+                newQuizSteps[stepindex].answers = [""]
             }
             return newQuizSteps
         })
     }
 
     const sliderParamChange = (event) => {
-        let index = parseInt(event.target.getAttribute('indexStep'))
+        let index = parseInt(event.target.getAttribute('indexstep'))
         if (event.target.value[event.target.value.length-1] %1 === 0 || event.target.value[event.target.value.length-1] === ",") {
            
         setQuizSteps((prevState) => {
@@ -78,31 +78,31 @@ const StepsComponent = ({quizSteps, setQuizSteps}) => {
         })}
     }
 
-    return (<React.Fragment>
-        <div class="text-center mb-4">
+    return (<React.Fragment >
+        <div className="text-center mb-4">
             <h5>Шаги</h5>
-            <p class="card-title-desc">Заполните шаги (если ни один шаг не будет добавлен, то будут использованны, стандратные)</p>
+            <p className="card-title-desc">Заполните шаги (если ни один шаг не будет добавлен, то будут использованны, стандратные)</p>
         </div>
         
             {
                 quizSteps.map((step, i) => {
-                    return <React.Fragment><div>
-                                <div class="row">
-                                    <div class="mb-3">
+                    return <React.Fragment key={i}><div>
+                                <div className="row">
+                                    <div className="mb-3">
                                         Шаг {i+1} / {quizSteps.length}
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col-lg-6">
-                                        <div class="mb-3">
-                                            <label for="basicpill-servicetax-input" class="form-label">Текст вопроса</label>
-                                            <input type="text" indexStep={i} onChange={questionChange} class="form-control" name="mail" id="basicpill-servicetax-input" value={step.title} />
+                                <div className="row">
+                                    <div className="col-lg-6">
+                                        <div className="mb-3">
+                                            <label htmlFor="basicpill-servicetax-input" className="form-label">Текст вопроса</label>
+                                            <input type="text" indexstep={i} onChange={questionChange} className="form-control" name="mail" id="basicpill-servicetax-input" value={step.title} />
                                         </div>
                                     </div>
-                                    <div class="col-lg-6">
-                                        <div class="mb-3">
-                                            <label for="basicpill-servicetax-input" class="form-label">Тип шага</label>
-                                            <select onChange={changeQuestionType} stepIndex={i} className="form-select custom-select" id="template" name="template_id" name="qoopler" value={step.type} >
+                                    <div className="col-lg-6">
+                                        <div className="mb-3">
+                                            <label htmlFor="basicpill-servicetax-input" className="form-label">Тип шага</label>
+                                            <select onChange={changeQuestionType} stepindex={i} className="form-select custom-select" id="template" name="template_id" name="qoopler" value={step.type} >
                                                 <option value="text">Текстовый</option>
                                                 <option value="slider">Слайдер</option>
                                             </select>
@@ -118,7 +118,7 @@ const StepsComponent = ({quizSteps, setQuizSteps}) => {
                                         return <div key={i} className="column">
                                                 <div className="col-lg-6 ml-2">
                                                     <div className="mb-3" style={{display:"flex", marginLeft:"30px", alignItems:"center"}}>
-                                                        {index+1}.  <input style={{marginLeft:"10px", marginRight:"10px"}} type="text" autocomplete="off" onChange={answerChange} indexAnswer={index} indexStep={i} class="form-control" name="mail" id="basicpill-servicetax-input" value={answer}  /> {step.answers.length>1?<i onClick={() => {stepDelete(i, index)}} className="feather-trash" style={{color:"red"}} />:""}
+                                                        {index+1}.  <input style={{marginLeft:"10px", marginRight:"10px"}} type="text" autoComplete="off" onChange={answerChange} indexanswer={index} indexstep={i} className="form-control" name="mail" id="basicpill-servicetax-input" value={answer}  /> {step.answers.length>1?<i onClick={() => {stepDelete(i, index)}} className="feather-trash" style={{color:"red"}} />:""}
                                                     </div>
                                                 </div>
                                             </div>})
@@ -129,36 +129,36 @@ const StepsComponent = ({quizSteps, setQuizSteps}) => {
                                         <div className="mb-3" >
                                             <span>Параметры слайдера</span>
                                         </div>
-                                        <div class="row">
-                                            <div class="col-lg-6">
-                                                <div class="mb-3">
-                                                    <label for="basicpill-servicetax-input" class="form-label">От</label>
-                                                    <input type="text" indexStep={i} onChange={sliderParamChange} name="from" value={step.from} class="form-control" id="basicpill-servicetax-input" />
+                                        <div className="row">
+                                            <div className="col-lg-6">
+                                                <div className="mb-3">
+                                                    <label htmlFor="basicpill-servicetax-input" className="form-label">От</label>
+                                                    <input type="text" indexstep={i} onChange={sliderParamChange} name="from" value={step.from} className="form-control" id="basicpill-servicetax-input" />
                                                 </div>
                                             </div>
-                                            <div class="col-lg-6">
-                                                <div class="mb-3">
-                                                    <label for="basicpill-servicetax-input" class="form-label">До</label>
-                                                    <input type="text" indexStep={i} onChange={sliderParamChange} name="to" value={step.to} class="form-control" id="basicpill-servicetax-input" />
+                                            <div className="col-lg-6">
+                                                <div className="mb-3">
+                                                    <label htmlFor="basicpill-servicetax-input" className="form-label">До</label>
+                                                    <input type="text" indexstep={i} onChange={sliderParamChange} name="to" value={step.to} className="form-control" id="basicpill-servicetax-input" />
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="row">
-                                            <div class="mb-3">
-                                                <label for="basicpill-servicetax-input" class="form-label">Шаг</label>
-                                                <input type="text" indexStep={i} onChange={sliderParamChange} name="step" value={step.step} class="form-control" id="basicpill-servicetax-input" />
+                                        <div className="row">
+                                            <div className="mb-3">
+                                                <label htmlFor="basicpill-servicetax-input" className="form-label">Шаг</label>
+                                                <input type="text" indexstep={i} onChange={sliderParamChange} name="step" value={step.step} className="form-control" id="basicpill-servicetax-input" />
                                             </div>
                                         </div>
                                     </React.Fragment>
                                 }
                                 
                             </div>
-                            <hr class="my-4"></hr>
+                            <hr className="my-4"></hr>
                         </React.Fragment>
                 })
             }
-        <div class="d-flex justify-content-center">
-            <button class="btn btn-primary" onClick={addStep}><i class="feather-plus"></i> Добавить шаг </button>
+        <div className="d-flex justify-content-center">
+            <button className="btn btn-primary" onClick={addStep}><i className="feather-plus"></i> Добавить шаг </button>
         </div>
     </React.Fragment>)
 }

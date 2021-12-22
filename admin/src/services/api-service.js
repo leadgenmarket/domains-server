@@ -66,4 +66,13 @@ export default class ApiService{
     organizationsList = () => {
         return axios.get("/api/organizations/")
     }
+
+    domainSave = (data) => {
+        return axios({
+            url: "/api/domains/add",
+            method: "post",
+            data: data,
+            headers: { "Content-Type": "multipart/form-data" },
+        })
+    }
 }

@@ -50,7 +50,7 @@ services:
       - 12201:12201
       # GELF UDP
       - 12201:12201/udp
-  mongo-db:
+  mongodb:
     image: mongo
     restart: always
     networks:
@@ -69,9 +69,19 @@ services:
     networks:
       - app-net
       - graylog-net
+    volumes:
+      - './file-store:/file-store'
     environment:
-      APP_PORT : 8080
-      APP_DSN : mongo-db:2717/domains-server
-      APP_SERVICE_NAME : domain-server
-      APP_LOG_LEVEL : 5
-      APP_GRAY_LOG_HOST : graylog:12201
+      APP_PORT : ${APP_PORT}
+      APP_DSN : ${APP_DSN}
+      APP_SERVICE_NAME : ${APP_SERVICE_NAME}
+      APP_LOG_LEVEL : ${APP_LOG_LEVEL}
+      APP_GRAY_LOG_HOST : ${APP_GRAY_LOG_HOST}
+      APP_PORTAL_URL: ${APP_PORTAL_URL}
+      APP_PORTAL_KEY: ${APP_PORTAL_KEY}
+      APP_INITIAL_ROOT_PASSWORD: ${APP_INITIAL_ROOT_PASSWORD}
+      APP_SALT: ${APP_SALT}
+      APP_TOKEN_TTL: ${APP_TOKEN_TTL}
+      APP_REFRESH_TOKEN_TTL: ${APP_REFRESH_TOKEN_TTL}
+      APP_TOKEN_SECRET: ${APP_TOKEN_SECRET}
+      APP_FILE_STORE_PATH: ${APP_FILE_STORE_PATH}

@@ -4,7 +4,10 @@ import (
 	"domain-server/internal/logger"
 	"domain-server/internal/models"
 	"domain-server/internal/repositories/domains"
+	"domain-server/internal/services"
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"net/http"
 	"strings"
 	"time"
@@ -20,17 +23,20 @@ type Handlers interface {
 	UpdateDomain(c *gin.Context)
 	DeleteDomain(c *gin.Context)
 	FindDomainByID(c *gin.Context)
+	AddDomainWithSettings(c *gin.Context)
 }
 
 type domainsHandlers struct {
 	repository domains.Repository
+	services   *services.Services
 	logger     logger.Log
 }
 
-func New(repository domains.Repository, logger logger.Log) Handlers {
+func New(repository domains.Repository, services *services.Services, logger logger.Log) Handlers {
 	return &domainsHandlers{
 		repository: repository,
 		logger:     logger,
+		services:   services,
 	}
 }
 
@@ -133,3 +139,147 @@ func (dh *domainsHandlers) FindDomainByID(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, domain)
 }
+
+type DomainInput struct {
+	ID             string `form:"id"`
+	URL            string `form:"url"`
+	TemplateID     string `form:"template_id"`
+	CityID         string `form:"city_id"`
+	OrganizationID string `form:"organization_id"`
+	MainColor      string `form:"main_color"`
+	SecondaryColor string `form:"secondary_color"`
+	Yandex         string `bson:"yandex" form:"yandex"`
+	Google         string `bson:"google" form:"google"`
+	Mail           string `bson:"mail" form:"mail"`
+	Roistat        string `bson:"roistat" form:"roistat"`
+	Marquiz        string `bson:"marquiz" form:"marquiz"`
+	Qoopler        bool   `bson:"qoopler" form:"qoopler"`
+	Steps          string `bson:"steps"`
+}
+
+func (dh *domainsHandlers) AddDomainWithSettings(c *gin.Context) {
+	domainInput := DomainInput{}
+	if err := c.ShouldBind(&domainInput); err != nil {
+		dh.logger.GetInstance().Errorf("error binding json %s", err)
+		c.JSON(http.StatusInternalServerError, gin.H{"paylod": "error"})
+		return
+	}
+	form, err := c.MultipartForm()
+	if err != nil {
+		dh.logger.GetInstance().Errorf("error getting background image %s", err)
+	}
+	files := form.File["file"]
+	fileName := ""
+	for _, file := range files {
+		fileInstance, _ := file.Open()
+		fileBytes, _ := ioutil.ReadAll(fileInstance)
+		filename, _ := dh.services.FileStore.SaveFileToStore(fileBytes, file.Filename)
+		if err != nil {
+			dh.logger.GetInstance().Errorf("error saving background image %s", err)
+			c.JSON(http.StatusInternalServerError, gin.H{"paylod": "error"})
+			return
+		}
+		fileName = filename
+	}
+	domain := models.Domain{
+		Url:            domainInput.URL,
+		TemplateID:     bson.ObjectIdHex(domainInput.TemplateID),
+		CityID:         bson.ObjectIdHex(domainInput.CityID),
+		OrganizationID: domainInput.OrganizationID,
+		MainColor:      domainInput.MainColor,
+		SecondaryColor: domainInput.SecondaryColor,
+		Yandex:         domainInput.Yandex,
+		Google:         domainInput.Google,
+		Mail:           domainInput.Mail,
+		Roistat:        domainInput.Roistat,
+		Marquiz:        domainInput.Marquiz,
+		Qoopler:        domainInput.Qoopler,
+	}
+
+	if fileName != "" {
+		domain.Background = fileName
+	}
+
+	if domainInput.Steps != "" {
+		steps := []map[string]interface{}{}
+		err := json.Unmarshal([]byte(domainInput.Steps), &steps)
+		if err != nil {
+			dh.logger.GetInstance().Errorf("error unmarshaling steps json %s", err)
+			c.JSON(http.StatusBadRequest, err)
+			return
+		}
+		domain.Steps = steps
+	}
+
+	if domainInput.ID != "" {
+		domain.ID = bson.ObjectId(domainInput.ID)
+		//тут надо оставить CreatedBy старым
+	}
+
+	domain.ID = bson.NewObjectId()
+	domain.CreatedBy = bson.ObjectIdHex(c.GetString("user_id"))
+	dh.logger.GetInstance().Info(domain)
+	domainRes, err := dh.repository.AddDomain(domain)
+
+	if err != nil {
+		dh.logger.GetInstance().Errorf("error adding domain to db %s", err)
+		c.JSON(http.StatusBadRequest, err)
+		return
+	}
+
+	c.JSON(http.StatusOK, domainRes)
+
+	// Id
+	//CreatedBy:  bson.ObjectId(c.Param("user_id")), ставим - если новая заявка
+	//Steps:          json.Unmarshal(domainInput.Steps),
+}
+
+/*
+{
+  "url": "url домена",
+  "template_id": "61c1e39931e51cb588d44c56",
+  "city_id": "61c20cee31e51ce17385b12a",
+  "organization_id": "61c2119e31e51cea5ecd07e6",
+  "main_color": "FF00000",
+  "secondary_color": "FF00000",
+  "yandex": "yandex_id",
+  "google": "google_id",
+  "mail": "mail_id",
+  "roistat": "roistat_id",
+  "marquiz": "marquiz_id",
+  "qoopler": "y",
+  "steps": [
+    {
+      "title": "Шаг 1",
+      "type": "text",
+      "answers": [
+        "Ответ - 1",
+        "Ответ - 2",
+        "Ответ - 3",
+        "Ответ - 4"
+      ]
+    },
+    {
+      "title": "Шаг - 2",
+      "type": "text",
+      "answers": [
+        "Ответ - 1",
+        "Ответ - 2",
+        "Ответ - 3",
+        ""
+      ]
+    },
+    {
+      "title": "Slider",
+      "type": "slider",
+      "answers": [
+        ""
+      ],
+      "from": "100000000",
+      "to": "2000000000",
+      "step": "10000"
+    }
+  ]
+}
+
+*/

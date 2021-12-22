@@ -28,13 +28,24 @@ type Lead struct {
 }
 
 type Domain struct {
-	ID         bson.ObjectId `bson:"_id" json:"id"`
-	Url        string        `bson:"url" json:"url" binding:"required"`
-	TemplateID string        `bson:"template_id" json:"template_id"`
-	SettingsID string        `bson:"settings_id" json:"settings_id"`
-	CreatedBy  string        `bson:"created_by"`
-	CreatedAt  time.Time     `bson:"created_at"`
-	UpdatedAt  time.Time     `bson:"updated_at"`
+	ID             bson.ObjectId            `bson:"_id" json:"id"`
+	Url            string                   `bson:"url" json:"url" binding:"required"`
+	TemplateID     bson.ObjectId            `bson:"template_id" json:"template_id"`
+	CreatedBy      bson.ObjectId            `bson:"created_by"`
+	CityID         bson.ObjectId            `bson:"city_id" json:"city_id" binding:"required"`
+	Background     string                   `bson:"background" json:"background"`
+	MainColor      string                   `bson:"main_color" json:"main_color"`
+	SecondaryColor string                   `bson:"secondary_color" json:"secondary_color"`
+	Yandex         string                   `bson:"yandex" json:"yandex"`
+	Google         string                   `bson:"google" json:"google"`
+	Mail           string                   `bson:"mail" json:"mail"`
+	Roistat        string                   `bson:"roistat" json:"roistat"`
+	Marquiz        string                   `bson:"marquiz" json:"marquiz"`
+	Steps          []map[string]interface{} `bson:"steps"`
+	OrganizationID string                   `bson:"organization_id" json:"organization_id"`
+	Qoopler        bool                     `bson:"qoopler" form:"qoopler"`
+	CreatedAt      time.Time                `bson:"created_at"`
+	UpdatedAt      time.Time                `bson:"updated_at"`
 }
 
 type Template struct {

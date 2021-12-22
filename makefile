@@ -1,5 +1,3 @@
-export GOOSE_DRIVER := postgres
-export GOOSE_DBSTRING := host=localhost port=5432 user=postgres password=postgres dbname=module_13_db sslmode=disable
 export MONGO_DBSTRING := localhost:27017/leadgen
 export APP_PORT := 8080
 export APP_DSN := $(MONGO_DBSTRING)
@@ -13,9 +11,10 @@ export APP_SALT := secret
 export APP_TOKEN_TTL:= 120m
 export APP_REFRESH_TOKEN_TTL:= 120m
 export APP_TOKEN_SECRET:= secret
+export APP_FILE_STORE_PATH:= ./file-store
  
 up:
-	@docker-compose up -d
+	@docker-compose up -d 
 run:
 	@cd cmd/app && go run main.go
 setup:

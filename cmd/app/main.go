@@ -20,6 +20,7 @@ func main() {
 	}
 	logger := logger.NewLogger(cfg.ServiceName, cfg.LogLevel, cfg.GrayLogHost)
 	logger.GetInstance().Info("server started")
+	//logger.GetInstance().Info(cfg)
 	sess, err := mongo.Dial(cfg.DSN)
 	if err != nil {
 		logger.GetInstance().Panic("error initializing config: %w", err)

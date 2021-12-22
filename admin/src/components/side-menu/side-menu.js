@@ -36,11 +36,11 @@ const SideMenu = () =>{
         }
     }
     return(
-        <div class="vertical-menu">
+        <div className="vertical-menu">
 
-                <div data-simplebar="init" class="h-100"><div class="simplebar-wrapper" style={{margin: "0px"}}><div class="simplebar-height-auto-observer-wrapper"><div class="simplebar-height-auto-observer"></div></div><div class="simplebar-mask"><div class="simplebar-offset" style={{right: "-15px", bottom: "0px"}}><div class="simplebar-content-wrapper" style={{height: "100%", overflow: "hidden scroll"}}><div class="simplebar-content" style={{padding: "0px"}}>
+                <div data-simplebar="init" className="h-100"><div className="simplebar-wrapper" style={{margin: "0px"}}><div className="simplebar-height-auto-observer-wrapper"><div className="simplebar-height-auto-observer"></div></div><div className="simplebar-mask"><div className="simplebar-offset" style={{right: "-15px", bottom: "0px"}}><div className="simplebar-content-wrapper" style={{height: "100%", overflow: "hidden scroll"}}><div className="simplebar-content" style={{padding: "0px"}}>
                     <div id="sidebar-menu">
-                        <ul class="metismenu list-unstyled" id="side-menu">
+                        <ul className="metismenu list-unstyled" id="side-menu">
                             {generateMenuHtml}
                         </ul>
                     </div></div></div></div></div></div>
