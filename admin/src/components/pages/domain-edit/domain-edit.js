@@ -14,7 +14,7 @@ const DomainEdit = () => {
     const [quizSteps, setQuizSteps] = useState([])
     const [form, setForm] = useState({
         url: "",
-        template_id: "", 
+        template_id: "",
     }) 
     useEffect(()=>{
         let apiService = new ApiService
@@ -38,6 +38,7 @@ const DomainEdit = () => {
             ...form,
             [event.target.name]:event.target.value
         })
+        console.log(form)
     }
 
     const nextStepClick = () => {
@@ -128,7 +129,7 @@ const DomainEdit = () => {
                                                                 <div class="col-lg-6">
                                                                     <div class="mb-3">
                                                                         <label for="basicpill-pancard-input" class="form-label">Город</label>
-                                                                        <select onChange={inputChange} className="form-select custom-select" id="template" name="template_id" name="city_id" value={form.template_id}>
+                                                                        <select onChange={inputChange} className="form-select custom-select" id="template" name="city_id" value={form.city_id}>
                                                                             <option></option>
                                                                             {cities.map((city) => {
                                                                                 return <option value={city.ID}>{city.Name}</option>
@@ -139,10 +140,10 @@ const DomainEdit = () => {
                                                                 <div class="col-lg-6">
                                                                     <div class="mb-3">
                                                                         <label for="basicpill-vatno-input" class="form-label">Организация</label>
-                                                                        <select onChange={inputChange} className="form-select custom-select" id="template" name="template_id" name="template_id" value={form.template_id}>
+                                                                        <select onChange={inputChange} className="form-select custom-select" id="template" name="organization_id" value={form.organization_id}>
                                                                             <option></option>
                                                                             {organizations.map((organization) => {
-                                                                                return <option value={organization.ID}>{organization.Name}</option>
+                                                                                return <option value={organization.id}>{organization.Name}</option>
                                                                             })}
                                                                         </select>
                                                                     </div>
@@ -165,7 +166,7 @@ const DomainEdit = () => {
                                                                 <div class="col-lg-6">
                                                                     <div class="mb-3">
                                                                         <label for="basicpill-servicetax-input" class="form-label">Главный цвет (прим. FF0000)</label>
-                                                                        <input type="text" class="form-control" name="main_color" id="basicpill-servicetax-input" />
+                                                                        <input type="text" class="form-control" name="main_color" id="basicpill-servicetax-input" onChange={inputChange} value={form.main_color} />
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -173,7 +174,7 @@ const DomainEdit = () => {
                                                                 <div class="col-lg-6">
                                                                     <div class="mb-3">
                                                                         <label for="basicpill-companyuin-input" class="form-label">Вторичный цвет (прим. FF0000)</label>
-                                                                        <input type="text" class="form-control" name="secondary_color" id="basicpill-companyuin-input" />
+                                                                        <input type="text" class="form-control" name="secondary_color" onChange={inputChange} value={form.secondary_color} id="basicpill-companyuin-input" />
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -202,13 +203,13 @@ const DomainEdit = () => {
                                                                 <div class="col-lg-6">
                                                                     <div class="mb-3">
                                                                         <label for="basicpill-servicetax-input" class="form-label">Yandex</label>
-                                                                        <input type="text" class="form-control" name="yandex" id="basicpill-servicetax-input" />
+                                                                        <input type="text" class="form-control" name="yandex" onChange={inputChange} id="basicpill-servicetax-input" value={form.yandex} />
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-lg-6">
                                                                     <div class="mb-3">
                                                                         <label for="basicpill-servicetax-input" class="form-label">Google</label>
-                                                                        <input type="text" class="form-control" name="google" id="basicpill-servicetax-input" />
+                                                                        <input type="text" class="form-control" name="google" onChange={inputChange} id="basicpill-servicetax-input" value={form.google} />
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -216,13 +217,13 @@ const DomainEdit = () => {
                                                                 <div class="col-lg-6">
                                                                     <div class="mb-3">
                                                                         <label for="basicpill-servicetax-input" class="form-label">Mail</label>
-                                                                        <input type="text" class="form-control" name="mail" id="basicpill-servicetax-input" />
+                                                                        <input type="text" class="form-control" name="mail" onChange={inputChange} id="basicpill-servicetax-input" value={form.mail} />
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-lg-6">
                                                                     <div class="mb-3">
                                                                         <label for="basicpill-servicetax-input" class="form-label">Roistat</label>
-                                                                        <input type="text" class="form-control" name="roistat" id="basicpill-servicetax-input" />
+                                                                        <input type="text" class="form-control" name="roistat" onChange={inputChange} id="basicpill-servicetax-input" value={form.roistat} />
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -230,12 +231,12 @@ const DomainEdit = () => {
                                                                 <div class="col-lg-6">
                                                                     <div class="mb-3">
                                                                         <label for="basicpill-servicetax-input" class="form-label">Marquiz</label>
-                                                                        <input type="text" class="form-control" name="marquiz" id="basicpill-servicetax-input" />
+                                                                        <input type="text" class="form-control" name="marquiz" onChange={inputChange} id="basicpill-servicetax-input" value={form.marquiz} />
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-lg-6">
                                                                     <label for="basicpill-servicetax-input" class="form-label">Qoopler</label>
-                                                                    <select onChange={inputChange} className="form-select custom-select" id="template" name="template_id" name="qoopler" value={form.template_id}>
+                                                                    <select onChange={inputChange} className="form-select custom-select" id="template" name="qoopler" value={form.qoopler}>
                                                                             <option>Нет</option>
                                                                             <option value="y">Да</option>
                                                                     </select>
