@@ -154,7 +154,7 @@ type DomainInput struct {
 	Roistat        string `bson:"roistat" form:"roistat"`
 	Marquiz        string `bson:"marquiz" form:"marquiz"`
 	Qoopler        bool   `bson:"qoopler" form:"qoopler"`
-	Steps          string `bson:"steps"`
+	Steps          string `bson:"steps" form:"steps"`
 }
 
 func (dh *domainsHandlers) AddDomainWithSettings(c *gin.Context) {
@@ -208,6 +208,7 @@ func (dh *domainsHandlers) AddDomainWithSettings(c *gin.Context) {
 			c.JSON(http.StatusBadRequest, err)
 			return
 		}
+		fmt.Println(steps)
 		domain.Steps = steps
 	}
 
