@@ -1,7 +1,13 @@
 import React,{  useEffect, useState } from "react"
 import CityTitle from "../city-title"
 import { withStyles } from "@mui/styles";
-import { Slider } from "@mui/material";
+import Slider from "@material-ui/core/Slider";
+import { ThemeProvider } from "@material-ui/styles";
+import BtnComponent from "../btn-component";
+import { createTheme } from "@mui/material";
+import Checkbox from "@material-ui/core/Checkbox";
+
+const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
 const Step = ({ step, params, index, length, nextStep, prevStep }) => {
     const valuetext = (value) => {
@@ -21,6 +27,81 @@ const Step = ({ step, params, index, length, nextStep, prevStep }) => {
     useEffect(()=> {
         setValue(((max - min)/4)+min)
     },[step])
+    const sliderTheme = createTheme({
+        overrides: {
+          MuiSlider: {
+            root: {
+                color: `#${params.secondary_color} !important`,
+                height: 3,
+                padding: "13px 0",
+                marginTop: "-15px",
+            },
+            track: {
+                height: 4,
+                borderRadius: 2,
+                color:`#${params.main_color}`
+            },
+            thumb: {
+                marginTop: "-20px",
+                width: "46px !important",
+                height: "46px !important",
+                background: `#${params.secondary_color} !important`,
+                cursor: "pointer",
+                outlineStyle: "none",
+                border: `2px solid #${params.main_color}`,
+                webkitBoxSizing: "border-box",
+                mozBoxSizing: "border-box",
+                boxSizing: "border-box",
+                webkitBorderRadius: "50%",
+                borderRadius: "50%",
+            }
+          }
+        }
+    });
+
+    const theme = createTheme({
+        overrides: {
+          MuiCheckbox: {
+            colorSecondary: {
+              color: '#FFF',
+              '&$checked': {
+                color: 'FFF',
+              },
+            },
+          },
+        },
+    });
+    const CheckboxWithGreenCheck = withStyles({
+    root: {
+        "&:hover": {
+            backgroundColor: "transparent"
+          },
+      "&$checked": {
+          
+        "& .MuiIconButton-label": {
+          position: "relative",
+          zIndex: 0,
+          color: "#fff",
+        },
+        
+        "& .MuiIconButton-label:after": {
+            color: "#fff",
+          content: '""',
+          left: 4,
+          top: 4,
+          height: 15,
+          width: 15,
+          position: "absolute",
+          backgroundColor: `#${params.main_color}`,
+          zIndex: -1
+        }
+      }
+    },
+    checked: {}
+  })(Checkbox);
+
+    
+    
     return (<div style={{ display: "block" }} className="page_main pages ">
         <div class="page">
             <div class="page_inner">
@@ -29,25 +110,35 @@ const Step = ({ step, params, index, length, nextStep, prevStep }) => {
                     <div class="title_inner title_room">{step.title}</div>
                     {step.type == "text" ? <ul class="check_list_one check_list" id="kv_list">
                         {step.answers.map((answer) => {
-                            return <li className="act"><span>{answer}</span></li>
+                            return <div style={{position:"relative", cursor: "pointer", fontSize: "22px", color: "#FFF", lineHeight: "22px", textDecoration : "underline"}} className="act">
+                                <ThemeProvider theme={theme}>
+                                <CheckboxWithGreenCheck label={answer} />{answer}
+                                </ThemeProvider>
+                                </div>
+                          
+                            {/*<li className="act"><span>{answer}</span></li>*/}
                         })}
                     </ul> : <div class="in_slider">
-                        <div class="prpp" style={{ background: `#${params.main_color}` }} id="price_info">{value===min?"От":"До"} {value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")} руб.</div>
+                        <div class="prpp" style={{ background: `#${params.secondary_color}` }} id="price_info">{value===min?"От":"До"} {value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")} руб.</div>
                         <input id="max_price" type="hidden" value={valuetext} />
-                        <CustomSlider
-                            defaultValue={max-min}
-                            getAriaValueText={valuetext}
-                            aria-labelledby="non-linear-slider"
-                            step={stepS}
-                            value={value}
-                            onChange={handleChange}
-                            min={min}
-                            max={max}
-                        />
+                        <ThemeProvider theme={sliderTheme}>
+                            <Slider 
+                                defaultValue={max-min}
+                                getAriaValueText={valuetext}
+                                aria-labelledby="non-linear-slider"
+                                step={stepS}
+                                value={value}
+                                onChange={handleChange}
+                                min={min}
+                                max={max}
+                                color="default"
+                            />
+                        </ThemeProvider>
+                        
                     </div>}
                     <div class="btn_block">
-                        {index > 1 ? <a onClick={prevStep} style={{ background: `#${params.main_color}` }} class="btn" href="#">Назад</a> : ""}
-                        <a class="btn" style={{ background: `#${params.main_color}` }} onClick={nextStep}>Дальше</a>
+                        {index > 1 ? <BtnComponent text={"Назад"} params={params} clickFunct={prevStep}/> : ""}
+                        <BtnComponent text={"Дальше"} params={params} clickFunct={nextStep}/>
                     </div>
                 </div>
             </div>
@@ -57,31 +148,7 @@ const Step = ({ step, params, index, length, nextStep, prevStep }) => {
 }
 
 
-const CustomSlider = withStyles({
-    root: {
-        color: "#6f8eff",
-        height: 3,
-        padding: "13px 0",
-        marginTop: "-15px",
-    },
-    track: {
-        height: 4,
-        borderRadius: 2,
-        color:"white"
-    },
-    thumb: {
-        height: 20,
-        width: 20,
-        backgroundColor: "#fff",
-        border: "1px solid currentColor",
-        marginLeft: 0,
-        boxShadow: "#ebebeb 0 2px 2px",
-        "&:focus, &:hover, &$active": {
-            boxShadow: "#ccc 0 2px 3px 1px",
-        },
-        color: "#fff",
-    },
-})(Slider);
+
 
 
 export default Step

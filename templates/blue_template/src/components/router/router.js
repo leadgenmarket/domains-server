@@ -13,7 +13,7 @@ const Router = () => {
         city_id: "61c249a129fdc7316597f3cf",
         background: "fcba8eca-7113-4973-53dc-097ddb7adcbb.jpg",
         main_color: "3c6397",
-        secondary_color: "7a7fdc",
+        secondary_color: "032045",
         yandex: "86898916",
         google: "",
         mail: "",

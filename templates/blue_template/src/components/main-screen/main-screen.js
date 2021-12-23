@@ -1,5 +1,6 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
+import BtnComponent from "../btn-component"
 import CityTitle from "../city-title"
 import LocationPin from "../location-pin"
 
@@ -12,7 +13,7 @@ const MainScreen = ({params, nextStep}) => {
                             <CityTitle params={params} />
                             <h1>Недорогие новостройки</h1>
                             <div className="sub_title">Здесь собрана полная база квартир, более 30 000 вариантов. <br />За 1 минуту вы получите бесплатный доступ к самым выгодным предложениям!</div>
-                            <a className="btn" href="#" onClick={nextStep} style={{background:`#${params.main_color}`}}>Начать быстрый поиск </a>
+                            <BtnComponent text={"Начать быстрый поиск"} params={params} clickFunct={nextStep}/>
                         </div>
                     </div>
                 </div>

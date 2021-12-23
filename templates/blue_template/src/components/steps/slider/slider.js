@@ -1,53 +1,28 @@
-import * as React from 'react';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Slider from '@mui/material/Slider';
+import React from "react";
+import Slider from "@material-ui/core/Slider";
+import { createMuiTheme } from "@material-ui/core/styles";
+import { ThemeProvider } from "@material-ui/styles";
 
-function valueLabelFormat(value) {
-  const units = ['KB', 'MB', 'GB', 'TB'];
-
-  let unitIndex = 0;
-  let scaledValue = value;
-
-  while (scaledValue >= 1024 && unitIndex < units.length - 1) {
-    unitIndex += 1;
-    scaledValue /= 1024;
-  }
-
-  return `${scaledValue} ${units[unitIndex]}`;
-}
-
-function calculateValue(value) {
-  return 2 ** value;
-}
-
-export default function SliderSlice({setVal}) {
-  const [value, setValue] = React.useState(10);
-
-  const handleChange = (event, newValue) => {
-    if (typeof newValue === 'number') {
-      setValue(newValue);
-      setVal(newValue)
+const muiTheme = createMuiTheme({
+  overrides: {
+    MuiSlider: {
+      thumb: {
+        color: "yellow"
+      },
+      track: {
+        color: "red"
+      },
+      rail: {
+        color: "black"
+      }
     }
-  };
+  }
+});
 
+export default function V4Slider() {
   return (
-    <React.Fragment>
-      <Typography id="non-linear-slider" gutterBottom>
-        Storage: {valueLabelFormat(calculateValue(value))}
-      </Typography>
-      <Slider
-        value={value}
-        min={5}
-        step={1}
-        max={30}
-        scale={calculateValue}
-        getAriaValueText={valueLabelFormat}
-        valueLabelFormat={valueLabelFormat}
-        onChange={handleChange}
-        //valueLabelDisplay="auto"
-        aria-labelledby="non-linear-slider"
-      />
-    </React.Fragment>
+    <ThemeProvider theme={muiTheme}>
+      <Slider min={18} max={90} defaultValue={40} />
+    </ThemeProvider>
   );
 }
