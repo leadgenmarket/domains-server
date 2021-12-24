@@ -70,7 +70,7 @@ const Router = () => {
         setStep(step-1)
     }
     return <div className="container_main" style={{backgroundImage: `url("http://localhost:8080/file-store/${params.background}")`}}>
-            {step==null?<MainScreen params={params} nextStep={nextStep} />:params.Steps.length<=step?<FinishSteps params={params} />:<Step step={params.Steps[step]} params={params} index={step} length={params.Steps.length} nextStep={nextStep} prevStep={prevStep} form={form} setForm={setForm} />}
+            {step==null?<MainScreen params={params} nextStep={nextStep} />:params.Steps.length<=step?<FinishSteps form={form} setForm={setForm} params={params} />:<Step step={params.Steps[step]} params={params} index={step} length={params.Steps.length} nextStep={nextStep} prevStep={prevStep} form={form} setForm={setForm} />}
         </div>
 }
 

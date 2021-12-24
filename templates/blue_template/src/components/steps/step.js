@@ -9,7 +9,7 @@ import Checkbox from "@material-ui/core/Checkbox";
 
 const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
-const Step = ({ step, params, index, length, nextStep, prevStep }) => {
+const Step = ({ step, params, index, length, nextStep, prevStep, form, setForm }) => {
     const valuetext = (value) => {
         return `${value} руб.`;
     }
@@ -100,6 +100,27 @@ const Step = ({ step, params, index, length, nextStep, prevStep }) => {
     checked: {}
   })(Checkbox);
 
+  const checkChange = (event, flag) => {
+    console.log(flag)
+    console.log(step.title+" : "+event.target.value)
+    console.log('check changed')
+    if (flag) {
+      setAnswer(event.target.value)
+    }
+  }
+
+  const setAnswer = (answer) => {
+    //Object.keys(form).forEach((key) => {
+      //if 
+    //})
+    if (form[step.title] != undefined) {
+      console.log('обновлять надо')
+      
+    } else {
+      form[step.title] = answer
+    }
+  }
+
     
     
     return (<div style={{ display: "block" }} className="page_main pages ">
@@ -112,7 +133,7 @@ const Step = ({ step, params, index, length, nextStep, prevStep }) => {
                         {step.answers.map((answer) => {
                             return <div style={{position:"relative", cursor: "pointer", fontSize: "22px", color: "#FFF", lineHeight: "22px", textDecoration : "underline"}} className="act">
                                 <ThemeProvider theme={theme}>
-                                <CheckboxWithGreenCheck label={answer} />{answer}
+                                  <CheckboxWithGreenCheck onChange={checkChange} value={answer} />{answer}
                                 </ThemeProvider>
                                 </div>
                           

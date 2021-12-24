@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react"
 import CityTitle from "../city-title"
+import ProgressSvg from "../progress-svg"
 import NameStep from "./name-step"
 import PhoneStep from "./phone-step"
 import ResultStep from "./result-step"
-import { ReactSVG } from 'react-svg'
 
 const FinishSteps = ({params}) => {
     const [stage, setStage] = useState(0)
@@ -38,28 +38,13 @@ const Loading = ({setStage, params}) => {
             }
         }, 50);
     }, [percent])
-
-    const hexToRgbA = (hex) => {
-        var c;
-        if(/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)){
-            c= hex.substring(1).split('');
-            if(c.length== 3){
-                c= [c[0], c[0], c[1], c[1], c[2], c[2]];
-            }
-            c= '0x'+c.join('');
-            return 'rgba('+[(c>>16)&255, (c>>8)&255, c&255].join(',')+',1)';
-        }
-        throw new Error('Bad Hex');
-    }
     return <React.Fragment>
                 <div class="title_inner title_inner2"> 
                     Подбираются варианты.<i>Система подбирает подходящие варианты</i>
                 </div>
                 <div style={{color:params.main_color}} class="progress">
                     <div style={{color:`#${params.main_color}`}} class="progres_num" id="res_pers">{percent} %</div> 
-                    <div className="progress_inner" style={{background: `linear-gradient(94deg, ${hexToRgbA("#"+params.main_color)} ${percent}%, rgba(35,53,63,1) 0%, rgba(35,53,63,1) 100%)`}}>
-                        {/* <ReactSVG src="img/progress.svg" /> */}
-                    </div>
+                    <div className="progress_inner"><ProgressSvg fill={params.main_color}/></div>
                     {/* <div class="progress_inner"><span style={{backgroundColor:`#${params.main_color}`}} class="wl_progress" style={{width: percent+"%"}}></span></div> */}
                 </div>
                 <div class="progress_result">Обработано <span id="tatal_cnt">{Math.round(maxCnt*percent/100)}</span> предложения</div>
