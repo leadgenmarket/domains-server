@@ -42,7 +42,9 @@ const Loading = ({setStage, params}) => {
                     Подбираются варианты.<i>Система подбирает подходящие варианты</i>
                 </div>
                 <div style={{color:params.main_color}} class="progress">
-                    <div style={{color:`#${params.main_color}`}} class="progres_num" id="res_pers">{percent} %</div> <div class="progress_inner"><span style={{backgroundColor:`#${params.main_color}`}} class="wl_progress" style={{width: percent+"%"}}></span></div>
+                    <div style={{color:`#${params.main_color}`}} class="progres_num" id="res_pers">{percent} %</div> 
+                    <div className="progress_inner"></div>
+                    {/* <div class="progress_inner"><span style={{backgroundColor:`#${params.main_color}`}} class="wl_progress" style={{width: percent+"%"}}></span></div> */}
                 </div>
                 <div class="progress_result">Обработано <span id="tatal_cnt">{Math.round(maxCnt*percent/100)}</span> предложения</div>
             </React.Fragment>

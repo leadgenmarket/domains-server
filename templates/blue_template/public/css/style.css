@@ -284,7 +284,7 @@ footer .wmain{
     width: 320px;
     height: 24px;
     position: relative;
-    background: url("/img/progress.png") no-repeat left top;
+    background: url("/img/progress.svg") no-repeat left top;
     -webkit-background-size: 320px;
          -o-background-size: 320px;
             background-size: 320px;
