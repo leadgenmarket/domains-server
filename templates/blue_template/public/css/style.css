@@ -284,11 +284,13 @@ footer .wmain{
     width: 320px;
     height: 24px;
     position: relative;
-    
     /* background: url("/img/progress.svg") no-repeat left top; */
-    -webkit-background-size: 320px;
-         -o-background-size: 320px;
-            background-size: 320px;
+    /* -webkit-background-size: 320px; */
+    -o-background-size: 320px;
+    /* background-size: 320px; */
+    background: rgb(20,190,176);
+    background: linear-gradient(94deg, rgba(20,190,176,1) 0%, rgba(35,53,63,1) 0%, rgba(35,53,63,1) 100%);
+    -webkit-mask-image: url(/img/progress.svg);
 }
 
     .progress_inner span {
