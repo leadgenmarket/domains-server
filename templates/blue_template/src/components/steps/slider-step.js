@@ -1,11 +1,7 @@
 import React,{  useEffect, useState } from "react"
-import CityTitle from "../city-title"
-import { withStyles } from "@mui/styles";
 import Slider from "@material-ui/core/Slider";
 import { ThemeProvider } from "@material-ui/styles";
-import BtnComponent from "../btn-component";
 import { createTheme } from "@mui/material";
-import Checkbox from "@material-ui/core/Checkbox";
 
 const SliderStep = ({ step, params, index, length, nextStep, prevStep, form, setForm }) => {
     const [sliderValue, setValue] = useState(0)

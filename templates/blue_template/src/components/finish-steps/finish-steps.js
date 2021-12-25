@@ -3,9 +3,8 @@ import CityTitle from "../city-title"
 import NameStep from "./name-step"
 import PhoneStep from "./phone-step"
 import ResultStep from "./result-step"
-import { ReactSVG } from 'react-svg'
 
-const FinishSteps = ({params}) => {
+const FinishSteps = ({params, form, setForm}) => {
     const [stage, setStage] = useState(0)
     const nextStep = (event) => {
         event.preventDefault()
@@ -15,7 +14,7 @@ const FinishSteps = ({params}) => {
                 <div className="page_inner">
                     <div className="wmain">
                         <CityTitle params={params}/>
-                        {stage == 0?<Loading params={params} setStage={setStage} />:stage==1?<PhoneStep params={params} nextStep={nextStep}/>:stage==2?<NameStep params={params} nextStep={nextStep} />:<ResultStep params={params} />}
+                        {stage === 0?<Loading params={params} setStage={setStage} />:stage===1?<PhoneStep params={params} nextStep={nextStep} form={form} setForm={setForm} />:stage===2?<NameStep params={params} nextStep={nextStep} form={form} setForm={setForm} />:<ResultStep params={params} form={form} />}
                     </div>
                 </div>
             </div>
@@ -43,7 +42,7 @@ const Loading = ({setStage, params}) => {
         var c;
         if(/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)){
             c= hex.substring(1).split('');
-            if(c.length== 3){
+            if(c.length=== 3){
                 c= [c[0], c[0], c[1], c[1], c[2], c[2]];
             }
             c= '0x'+c.join('');

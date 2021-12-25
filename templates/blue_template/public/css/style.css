@@ -11,6 +11,12 @@ footer{
     padding-bottom: 12px;
 }
 
+.err {
+    color: red;
+    background: #ffafaf;
+    font-weight: bold;
+}
+
 .prpp{
     padding-top: 26px;
     display: block;

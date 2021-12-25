@@ -1,8 +1,6 @@
-import axios from "axios"
-import React, { useEffect, useState } from "react"
+import React from "react"
 import BtnComponent from "../btn-component"
 import CityTitle from "../city-title"
-import LocationPin from "../location-pin"
 
 const MainScreen = ({params, nextStep}) => {
     return <React.Fragment>
