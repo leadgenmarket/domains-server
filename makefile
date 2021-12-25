@@ -14,9 +14,11 @@ export APP_TOKEN_SECRET:= secret
 export APP_FILE_STORE_PATH:= ./file-store
  
 up:
-	@docker-compose up -d 
+	@docker-compose up -d
+client-run:
+	@cd admin && npm run start
 run:
-	@cd cmd/app && go run main.go
+	@go run cmd/app/main.go
 setup:
 	@cd cmd/setup && go run main.go
 build:

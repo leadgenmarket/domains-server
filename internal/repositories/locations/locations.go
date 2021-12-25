@@ -9,6 +9,7 @@ import (
 
 type Repository interface {
 	GetAllLocations() (_ []models.Location, err error)
+	GetRaionsOfTheCity(cityID string) ([]models.Location, error)
 	UpdateLocations(locations []models.Location) error
 }
 
@@ -54,6 +55,15 @@ func (r *repositroyDB) GetLocationByPortalId(id string) (models.Location, error)
 		return location, err
 	}
 	return location, nil
+}
+
+func (r *repositroyDB) GetRaionsOfTheCity(cityID string) ([]models.Location, error) {
+	var locations []models.Location
+	err := r.locations.Find(bson.M{"city_id": bson.ObjectIdHex(cityID), "type": "raions"}).All(&locations)
+	if err != nil {
+		return locations, err
+	}
+	return locations, nil
 }
 
 func (r *repositroyDB) AddLocation(location models.Location) (models.Location, error) {

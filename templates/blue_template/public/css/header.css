@@ -6,7 +6,7 @@ html, body {
 body {
     font-family: 'Ubuntu', 'sans-serif', 'arial', 'helvetica';
     -webkit-font-smoothing: antialiased;
-        background: url("/local/lp/vv_2/img/bg_body.jpg") center center;
+        /*background: url("/local/lp/vv_2/img/bg_body.jpg") center center;*/
 }
 input, textarea, select, button {
     font-family: 'Ubuntu', 'sans-serif', 'arial', 'helvetica';
@@ -117,7 +117,7 @@ footer .wmain{
     color: #87F3E0;
     line-height: 120%;
     padding-left: 50px;
-    background: url("/local/lp/vv_2/img/city_ico.png") no-repeat left top;
+    /*background: url("/local/lp/vv_2/img/city_ico.png") no-repeat left top;*/
     position: relative;
     -webkit-background-size: 22px;
          -o-background-size: 22px;

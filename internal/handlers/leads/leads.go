@@ -5,8 +5,8 @@ import (
 	"domain-server/internal/models"
 	"domain-server/internal/repositories/leads"
 	"domain-server/internal/services"
+	"fmt"
 	"net/http"
-	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/globalsign/mgo/bson"
@@ -33,6 +33,21 @@ func New(repository leads.Repository, services *services.Services, logger logger
 	}
 }
 
+/*
+type Lead struct {
+	ID          bson.ObjectId `bson:"_id"`
+	Url         string        `bson:"url"`
+	Name        string        `bson:"name"`
+	Phone       string        `bson:"phone"`
+	Text        string        `bson:"text"`
+	UserAgent   string        `bson:"uagent"`
+	SendCrm     bool          `bson:"sended_crm"`
+	CrmSendTime time.Time     `bson:"crm_send_time"`
+	CreatedAt   time.Time     `bson:"created_at"`
+	//LeadID      int       `bson:"lead_id"`
+}
+*/
+
 func (s *leadsHandlers) AddLead(c *gin.Context) {
 	leads := models.Lead{}
 	err := c.BindJSON(&leads)
@@ -52,15 +67,13 @@ func (s *leadsHandlers) AddLead(c *gin.Context) {
 }
 
 type updateLeadsInput struct {
-	ID          string    `json:"id"`
-	Url         string    `bson:"url"`
-	Name        string    `bson:"name"`
-	Phone       string    `bson:"phone"`
-	Text        string    `bson:"text"`
-	UserAgent   string    `bson:"uagent"`
-	SendCrm     bool      `bson:"sended_crm"`
-	CrmSendTime time.Time `bson:"crm_send_time"`
-	CreatedAt   time.Time `bson:"created_at"`
+	ID        string `json:"id"`
+	Url       string `json:"url"`
+	Name      string `json:"name"`
+	Phone     string `json:"phone"`
+	Text      string `json:"text"`
+	UserAgent string `json:"uagent"`
+	SendCrm   bool   `json:"sended_crm"`
 }
 
 func (s *leadsHandlers) UpdateLeads(c *gin.Context) {
@@ -72,14 +85,14 @@ func (s *leadsHandlers) UpdateLeads(c *gin.Context) {
 		return
 	}
 
+	fmt.Println(input)
+
 	errN := s.repository.UpdateLead(models.Lead{
-		ID:        bson.ObjectIdHex(input.ID),
-		Url:       input.Url,
-		Name:      input.Name,
-		Phone:     input.Phone,
-		Text:      input.Text,
-		UserAgent: input.UserAgent,
-		SendCrm:   input.SendCrm,
+		ID:    bson.ObjectIdHex(input.ID),
+		Url:   input.Url,
+		Name:  input.Name,
+		Phone: input.Phone,
+		Text:  input.Text,
 	})
 	if errN != nil {
 		s.logger.GetInstance().Errorf("error updating leads %s", errN)

@@ -1,7 +1,8 @@
+import axios from "axios"
 import React, { useEffect, useState } from "react"
 
-const StepsComponent = ({quizSteps, setQuizSteps}) => {
-    
+const StepsComponent = ({quizSteps, setQuizSteps, city_id}) => {
+    const [raions, setRaions] = useState([])
     const inputChange = (event) => {
     }
     const answerChange = (event) => {
@@ -78,6 +79,16 @@ const StepsComponent = ({quizSteps, setQuizSteps}) => {
         })}
     }
 
+    const getCityRaions = () => {
+        axios.get("/api/locations/raions/"+city_id).then((resp) => {
+            setRaions(resp.data.payload)
+        })
+    }
+
+    useEffect(()=>{
+        getCityRaions()
+    },[city_id])
+
     return (<React.Fragment >
         <div className="text-center mb-4">
             <h5>Шаги</h5>
@@ -105,6 +116,8 @@ const StepsComponent = ({quizSteps, setQuizSteps}) => {
                                             <select onChange={changeQuestionType} stepindex={i} className="form-select custom-select" id="template" name="template_id" name="qoopler" value={step.type} >
                                                 <option value="text">Текстовый</option>
                                                 <option value="slider">Слайдер</option>
+                                                <option value="raions">Районы</option>
+                                                <option value="slider_r">Слайдер (цены из района)</option>
                                             </select>
                                         </div>
                                     </div>
@@ -125,7 +138,22 @@ const StepsComponent = ({quizSteps, setQuizSteps}) => {
                                         }
                                         </React.Fragment>
                                     
-                                    :<React.Fragment>
+                                    :step.type == "raions"?<React.Fragment>
+                                         <div className="mb-3" >
+                                            <span>Районы города</span>
+                                        </div>
+                                        <div className="row">
+                                            {
+                                                raions.map((raion) => {
+                                                    return raion.Name+", "
+                                                })
+                                            }
+                                        </div>
+                                    </React.Fragment>:step.type == "slider_r"?<React.Fragment>
+                                         <div className="mb-3" >
+                                            <span>Слайдер подтянет цены по районам, параметры задавать не нужно, только тайтл шага</span>
+                                        </div>
+                                    </React.Fragment>:<React.Fragment>
                                         <div className="mb-3" >
                                             <span>Параметры слайдера</span>
                                         </div>

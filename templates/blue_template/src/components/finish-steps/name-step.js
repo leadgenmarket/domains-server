@@ -23,7 +23,7 @@ const NameStep = ({params, nextStep, form, setForm}) => {
         event.preventDefault()
         if (name.length !== 0) {
             setError(false)
-            SendData(form, () => nextStep(event))
+            SendData(form, setForm, () => nextStep(event))
         } else {
             setError(true)
         }

@@ -111,5 +111,6 @@ type Location struct {
 	NameFull     string        `bson:"name_full"` //UF_NAME
 	Type         string        `bson:"type"`      //UF_TYPE
 	Prices       string        `bson:"prices"`    //UF_DAT
+	CityID       bson.ObjectId `bson:"city_id"`
 	PortalCityID string        `bson:"portal_city_id"`
 }

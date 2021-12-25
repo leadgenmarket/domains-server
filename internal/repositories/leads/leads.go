@@ -36,7 +36,7 @@ func (r *repositroyDB) AddLead(lead models.Lead) (models.Lead, error) {
 }
 
 func (r *repositroyDB) UpdateLead(lead models.Lead) error {
-	err := r.leads.Find(bson.M{"_id": lead}).One(&lead)
+	err := r.leads.Update(bson.M{"_id": lead.ID}, lead)
 	if err != nil {
 		return err
 	}

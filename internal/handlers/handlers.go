@@ -53,9 +53,9 @@ type handlers struct {
 func New(router *gin.Engine, repositories *repositories.Repositories, services *services.Services, logger logger.Log) Handlers {
 	return &handlers{
 		Auth:          auth.New(repositories.Users, services, logger),
-		Domains:       domains.New(repositories.Domains, services, logger),
+		Domains:       domains.New(repositories.Domains, repositories.Locations, services, logger),
 		Cities:        cities.New(repositories.Cities, services, logger),
-		Locations:     locations.New(repositories.Locations, services, logger),
+		Locations:     locations.New(repositories.Locations, repositories.Cities, services, logger),
 		Settings:      settings.New(repositories.Settings, services, logger),
 		Steps:         steps.New(repositories.Steps, services, logger),
 		Answers:       answers.New(repositories.Answers, services, logger),
@@ -77,6 +77,8 @@ func (h *handlers) Registry() {
 	h.router.LoadHTMLFiles("./templates/aivazovskiy/aivazovskiy.html")
 	h.router.GET("/", h.Domains.GetTemplate)
 	h.router.POST("/sign-in", h.Auth.SignIn)
+	h.router.PUT("/lead/", h.Leads.AddLead)
+	h.router.POST("/lead/", h.Leads.UpdateLeads)
 
 	api := h.router.Group("/api", middlewares.TokenAuthMiddleware(h.logger, h.services))
 	{
@@ -98,6 +100,7 @@ func (h *handlers) Registry() {
 		locationsGroup := api.Group("locations")
 		locationsGroup.GET("/", h.Locations.GetLocationsList)
 		locationsGroup.GET("/update", h.Locations.UpdateLocations)
+		locationsGroup.GET("/raions/:id", h.Locations.GetRaionsOfTheCity)
 
 		//settings
 		settingsGroup := api.Group("settings")
@@ -123,9 +126,7 @@ func (h *handlers) Registry() {
 		//leads
 		leadsGroup := api.Group("lead")
 		leadsGroup.GET("/:url", h.Leads.GetLeadsOfSite)
-		leadsGroup.PUT("/", h.Leads.AddLead)
 		leadsGroup.DELETE("/", h.Leads.DeleteLead)
-		leadsGroup.POST("/", h.Leads.UpdateLeads)
 
 		//organizations
 		organizationsGroup := api.Group("organizations")

@@ -223,7 +223,7 @@ const DomainEdit = () => {
                                                     </div>
                                                 </div>
                                                 <div className={step==3?"tab-pane active":"tab-pane"} id="company-document">
-                                                    <StepsComponent quizSteps={quizSteps} setQuizSteps={setQuizSteps} />
+                                                    <StepsComponent quizSteps={quizSteps} setQuizSteps={setQuizSteps} city_id={form.city_id} />
                                                     <ul className="pager wizard twitter-bs-wizard-pager-link">
                                                             <li className="prev"><a onClick={prevStepClick} className="btn btn-primary"><i className="feather-arrow-left"></i> Назад </a></li>
                                                             <li className="next"><a onClick={nextStepClick} className="btn btn-primary">Далее <i className="feather-arrow-right"></i></a></li>

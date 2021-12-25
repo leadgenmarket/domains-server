@@ -4,6 +4,7 @@ import (
 	"domain-server/internal/logger"
 	"domain-server/internal/models"
 	"domain-server/internal/repositories/domains"
+	"domain-server/internal/repositories/locations"
 	"domain-server/internal/services"
 	"encoding/json"
 	"fmt"
@@ -28,28 +29,48 @@ type Handlers interface {
 
 type domainsHandlers struct {
 	repository domains.Repository
+	repoLoc    locations.Repository
 	services   *services.Services
 	logger     logger.Log
 }
 
-func New(repository domains.Repository, services *services.Services, logger logger.Log) Handlers {
+func New(repository domains.Repository, repoLoc locations.Repository, services *services.Services, logger logger.Log) Handlers {
 	return &domainsHandlers{
 		repository: repository,
+		repoLoc:    repoLoc,
 		logger:     logger,
 		services:   services,
 	}
 }
 
 func (dh *domainsHandlers) GetTemplate(c *gin.Context) {
-	domain := strings.Split(c.Request.Host, ":")[0]
-	if domain != "127.0.0.1" {
-		c.HTML(http.StatusOK, "aivazovskiy.html", nil)
+	result := map[string]interface{}{}
+	domainName := strings.Split(c.Request.Host, ":")[0]
+	domain, err := dh.repository.FindDomainByUrl(domainName)
+	if err != nil {
+		dh.logger.GetInstance().Errorf("error unmarshaling incoming json %s", err)
+		c.JSON(http.StatusBadRequest, err)
 		return
-	} else {
-		c.JSON(200, gin.H{
-			"host": domain,
-		})
 	}
+
+	if len(domain.Steps) == 0 {
+		//надо получить дефолтные шаги для города
+	}
+	result["domain"] = domain
+	for _, step := range domain.Steps {
+		if step["type"] == "raions" {
+			locations, err := dh.repoLoc.GetRaionsOfTheCity(domain.CityID.Hex())
+			if err != nil {
+				dh.logger.GetInstance().Errorf("error getting locations %s", err)
+				c.JSON(http.StatusBadRequest, err)
+				return
+			}
+			result["locations"] = locations
+			break
+		}
+	}
+
+	c.JSON(http.StatusOK, result)
 }
 
 func (dh *domainsHandlers) CreateDomain(c *gin.Context) {
@@ -229,58 +250,4 @@ func (dh *domainsHandlers) AddDomainWithSettings(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, domainRes)
-
-	// Id
-	//CreatedBy:  bson.ObjectId(c.Param("user_id")), ставим - если новая заявка
-	//Steps:          json.Unmarshal(domainInput.Steps),
 }
-
-/*
-{
-  "url": "url домена",
-  "template_id": "61c1e39931e51cb588d44c56",
-  "city_id": "61c20cee31e51ce17385b12a",
-  "organization_id": "61c2119e31e51cea5ecd07e6",
-  "main_color": "FF00000",
-  "secondary_color": "FF00000",
-  "yandex": "yandex_id",
-  "google": "google_id",
-  "mail": "mail_id",
-  "roistat": "roistat_id",
-  "marquiz": "marquiz_id",
-  "qoopler": "y",
-  "steps": [
-    {
-      "title": "Шаг 1",
-      "type": "text",
-      "answers": [
-        "Ответ - 1",
-        "Ответ - 2",
-        "Ответ - 3",
-        "Ответ - 4"
-      ]
-    },
-    {
-      "title": "Шаг - 2",
-      "type": "text",
-      "answers": [
-        "Ответ - 1",
-        "Ответ - 2",
-        "Ответ - 3",
-        ""
-      ]
-    },
-    {
-      "title": "Slider",
-      "type": "slider",
-      "answers": [
-        ""
-      ],
-      "from": "100000000",
-      "to": "2000000000",
-      "step": "10000"
-    }
-  ]
-}
-
-*/
