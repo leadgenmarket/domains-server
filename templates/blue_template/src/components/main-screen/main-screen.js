@@ -1,11 +1,11 @@
 import axios from "axios"
-import { useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import BtnComponent from "../btn-component"
 import CityTitle from "../city-title"
 import LocationPin from "../location-pin"
 
 const MainScreen = ({params, nextStep}) => {
-    return <div className="container_main" style={{backgroundImage: `url("http://localhost:8080/file-store/${params.background}")`}}>
+    return <React.Fragment>
                 <div style={{display: "block"}} className="page_main">
                 <div className="page page_1">
                     <div className="page_inner">
@@ -18,7 +18,7 @@ const MainScreen = ({params, nextStep}) => {
                     </div>
                 </div>
             </div>
-        </div>
+        </React.Fragment>
 }
 
 export default MainScreen

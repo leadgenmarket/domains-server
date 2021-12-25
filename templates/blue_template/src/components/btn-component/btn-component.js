@@ -6,7 +6,7 @@ const BtnComponent = ({params, clickFunct, text, analog}) => {
     
     const hoveredStyle = {background:`#${params.main_color}`, color: `#${params.secondary_color}`, borderColor:`#${params.secondary_color}`}
     if (analog) {
-        return <button class="btn" onMouseLeave={() => setStyle(defaultStyle)} onMouseEnter={() => setStyle(hoveredStyle)} onClick={clickFunct} style={styleC}>{text}</button>
+        return <button className="btn" onMouseLeave={() => setStyle(defaultStyle)} onMouseEnter={() => setStyle(hoveredStyle)} onClick={clickFunct} style={styleC}>{text}</button>
     }
     return <a className="btn" href="#" onMouseLeave={() => setStyle(defaultStyle)} onMouseEnter={() => setStyle(hoveredStyle)} onClick={clickFunct} style={styleC}>{text}</a>
 }

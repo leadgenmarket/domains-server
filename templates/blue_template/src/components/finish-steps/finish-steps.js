@@ -11,9 +11,9 @@ const FinishSteps = ({params}) => {
         event.preventDefault()
         setStage(stage+1)
     }
-    return <div class="page">
-                <div class="page_inner">
-                    <div class="wmain">
+    return <div className="page">
+                <div className="page_inner">
+                    <div className="wmain">
                         <CityTitle params={params}/>
                         {stage == 0?<Loading params={params} setStage={setStage} />:stage==1?<PhoneStep params={params} nextStep={nextStep}/>:stage==2?<NameStep params={params} nextStep={nextStep} />:<ResultStep params={params} />}
                     </div>
@@ -52,17 +52,14 @@ const Loading = ({setStage, params}) => {
         throw new Error('Bad Hex');
     }
     return <React.Fragment>
-                <div class="title_inner title_inner2"> 
+                <div className="title_inner title_inner2"> 
                     Подбираются варианты.<i>Система подбирает подходящие варианты</i>
                 </div>
-                <div style={{color:params.main_color}} class="progress">
-                    <div style={{color:`#${params.main_color}`}} class="progres_num" id="res_pers">{percent} %</div> 
-                    <div className="progress_inner" style={{background: `linear-gradient(94deg, ${hexToRgbA("#"+params.main_color)} ${percent}%, rgba(35,53,63,1) 0%, rgba(35,53,63,1) 100%)`}}>
-                        {/* <ReactSVG src="img/progress.svg" /> */}
-                    </div>
-                    {/* <div class="progress_inner"><span style={{backgroundColor:`#${params.main_color}`}} class="wl_progress" style={{width: percent+"%"}}></span></div> */}
+                <div style={{color:params.main_color}} className="progress">
+                    <div style={{color:`#${params.main_color}`}} className="progres_num" id="res_pers">{percent} %</div> 
+                    <div className="progress_inner" style={{background: `linear-gradient(94deg, ${hexToRgbA("#"+params.main_color)} ${percent}%, rgba(35,53,63,1) 0%, rgba(35,53,63,1) 100%)`}}></div>
                 </div>
-                <div class="progress_result">Обработано <span id="tatal_cnt">{Math.round(maxCnt*percent/100)}</span> предложения</div>
+                <div className="progress_result">Обработано <span id="tatal_cnt">{Math.round(maxCnt*percent/100)}</span> предложения</div>
             </React.Fragment>
 }
 

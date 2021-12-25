@@ -3,12 +3,9 @@ package main
 import (
 	"domain-server/internal/config"
 	"domain-server/internal/logger"
-	"domain-server/internal/models"
 	"domain-server/internal/repositories"
-	"fmt"
 
 	mongo "github.com/globalsign/mgo"
-	"github.com/globalsign/mgo/bson"
 
 	"github.com/sirupsen/logrus"
 )
@@ -54,7 +51,7 @@ func AddRootUserIfNotExists(repo *repositories.Repositories, pass string) error 
 }
 
 func AddFixtures(repo *repositories.Repositories) error {
-	id1 := bson.NewObjectId()
+	/*id1 := bson.NewObjectId()
 	id2 := bson.NewObjectId()
 	fmt.Println(id1)
 	template1 := models.Template{
@@ -101,6 +98,6 @@ func AddFixtures(repo *repositories.Repositories) error {
 		ID:      bson.NewObjectId(),
 		Name:    "StarkIndustries",
 		Address: "Smalvile, Main Street, 15",
-	})
+	})*/
 	return nil
 }
