@@ -13,19 +13,25 @@ const Step = ({ step, params, index, length, nextStep, prevStep, form, setForm }
     const valuetext = (value) => {
         return `${value} руб.`;
     }
-    const [value, setValue] = useState(null)
+
+    const [sliderValue, setValue] = useEffect(0)
     const min = parseFloat(step.from)
     const max = parseFloat(step.to)
+    const defaultValue = ((max - min)/4)+min
     
     const stepS = parseFloat(step.step)
     const handleChange = (event, newValue) => {
-        if (typeof newValue === 'number') {
-          setValue(newValue);
-        }
+        setValue(newValue)
+        form[step.title] = newValue
+        setForm(form)
     };
     
     useEffect(()=> {
-        setValue(((max - min)/4)+min)
+      if (form[step.title] === undefined && step.type == "slider") {
+        form[step.title] = defaultValue
+        setValue(defaultValue)
+        setForm(form)
+      }
     },[step])
     const sliderTheme = createTheme({
         overrides: {
@@ -100,24 +106,62 @@ const Step = ({ step, params, index, length, nextStep, prevStep, form, setForm }
     checked: {}
   })(Checkbox);
 
-  const checkChange = (event, flag) => {
-    console.log(flag)
-    console.log(step.title+" : "+event.target.value)
-    console.log('check changed')
+  const checkChange = (event, flag) => {    
     if (flag) {
       setAnswer(event.target.value)
+    } else {
+      unsetAnswer(event.target.value)
     }
   }
 
-  const setAnswer = (answer) => {
-    //Object.keys(form).forEach((key) => {
-      //if 
-    //})
-    if (form[step.title] != undefined) {
-      console.log('обновлять надо')
-      
+  const setAnswer = (answerIn) => {
+    if (form[step.title] != undefined && form[step.title] != "") {
+      let answers = form[step.title].split(", ")
+      let exists = false
+      answers.forEach((answer) => {
+        if (answer == answerIn) {
+          exists = true
+        }
+      })
+      if (!exists) {
+        answers.push(answerIn)
+      }
+      form[step.title] = answers.join(", ")
     } else {
-      form[step.title] = answer
+      form[step.title] = answerIn
+    }
+    setForm(form)
+  }
+
+  const unsetAnswer = (answerOut) => {
+    let answers = form[step.title].split(", ")
+    for (var key in answers) {
+      if (answers[key] === answerOut) {
+        answers.splice(key, 1);
+      }
+    }
+   
+    if (answers.length != 0) {
+      form[step.title] = answers.join(", ")
+    } else {
+      delete form[step.title]
+    }
+    setForm(form)
+  }
+
+  const checkIfChecked = (answerCh) => {
+    console.log(form[step.title])
+    if (typeof form[step.title] !== String) {
+      return false
+    } else {
+      let answers = form[step.title].split(", ")
+      let isset = false
+      answers.forEach((answer) => {
+        if (answer === answerCh) {
+          isset = true
+        }
+      })
+      return isset
     }
   }
 
@@ -133,29 +177,26 @@ const Step = ({ step, params, index, length, nextStep, prevStep, form, setForm }
                         {step.answers.map((answer) => {
                             return <div style={{position:"relative", cursor: "pointer", fontSize: "22px", color: "#FFF", lineHeight: "22px", textDecoration : "underline"}} className="act">
                                 <ThemeProvider theme={theme}>
-                                  <CheckboxWithGreenCheck onChange={checkChange} value={answer} />{answer}
+                                  <CheckboxWithGreenCheck defaultChecked={checkIfChecked(answer)} onChange={checkChange} value={answer} /><span>{answer}</span>
                                 </ThemeProvider>
                                 </div>
-                          
-                            {/*<li className="act"><span>{answer}</span></li>*/}
                         })}
                     </ul> : <div class="in_slider">
-                        <div class="prpp" style={{ background: `#${params.secondary_color}` }} id="price_info">{value===min?"От":"До"} {value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")} руб.</div>
+                        <div class="prpp" style={{ background: `#${params.secondary_color}` }} id="price_info">{form[step.title]===min?"От":"До"} {form[step.title] !==undefined ?form[step.title].toString().replace(/\B(?=(\d{3})+(?!\d))/g, " "):"0"} руб.</div>
                         <input id="max_price" type="hidden" value={valuetext} />
                         <ThemeProvider theme={sliderTheme}>
                             <Slider 
-                                defaultValue={max-min}
+                                //defaultValue={form[step.title]}
                                 getAriaValueText={valuetext}
                                 aria-labelledby="non-linear-slider"
                                 step={stepS}
-                                value={value}
+                                value={sliderValue}
                                 onChange={handleChange}
                                 min={min}
                                 max={max}
                                 color="default"
                             />
                         </ThemeProvider>
-                        
                     </div>}
                     <div class="btn_block">
                         {index > 1 ? <BtnComponent text={"Назад"} params={params} clickFunct={prevStep}/> : ""}
