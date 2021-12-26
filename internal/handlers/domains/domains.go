@@ -70,7 +70,11 @@ func (dh *domainsHandlers) GetTemplate(c *gin.Context) {
 		}
 	}
 
-	c.JSON(http.StatusOK, result)
+	c.HTML(http.StatusOK, "blue_template.html", gin.H{
+		"title": "Home Page",
+	})
+
+	//c.JSON(http.StatusOK, result)
 }
 
 func (dh *domainsHandlers) CreateDomain(c *gin.Context) {

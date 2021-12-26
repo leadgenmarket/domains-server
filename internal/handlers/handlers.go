@@ -74,7 +74,7 @@ func New(router *gin.Engine, repositories *repositories.Repositories, services *
 func (h *handlers) Registry() {
 	h.router.Static("/templates", templatesFolder)
 	h.router.Static("/file-store", "./file-store")
-	h.router.LoadHTMLFiles("./templates/aivazovskiy/aivazovskiy.html")
+	h.router.LoadHTMLFiles("./templates/blue_template/build/blue_template.html")
 	h.router.GET("/", h.Domains.GetTemplate)
 	h.router.POST("/sign-in", h.Auth.SignIn)
 	h.router.PUT("/lead/", h.Leads.AddLead)
