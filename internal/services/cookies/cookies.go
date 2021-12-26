@@ -34,8 +34,8 @@ func NewCookiesService(cfg *config.Config) Cookies {
 func (cks *cookies) SetCookies(ctx *gin.Context, token string, refreshToken string) error {
 	tokenSplit := strings.Split(token, ".")
 	setCookie(ctx, tokenPayload, tokenSplit[0]+"."+tokenSplit[1], false, cks.cfg.TokenTTL)
-	setCookie(ctx, tokenSign, tokenSplit[2], true, cks.cfg.TokenTTL)
-	setCookie(ctx, refreshTokenName, refreshToken, true, cks.cfg.RefreshTokenTTL)
+	setCookie(ctx, tokenSign, tokenSplit[2], false, cks.cfg.TokenTTL)
+	setCookie(ctx, refreshTokenName, refreshToken, false, cks.cfg.RefreshTokenTTL)
 	return nil
 }
 

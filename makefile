@@ -1,5 +1,5 @@
 export MONGO_DBSTRING := localhost:27017/leadgen
-export APP_PORT := 8080
+export APP_PORT := 80
 export APP_DSN := $(MONGO_DBSTRING)
 export APP_SERVICE_NAME := domain-server
 export APP_LOG_LEVEL := 5
