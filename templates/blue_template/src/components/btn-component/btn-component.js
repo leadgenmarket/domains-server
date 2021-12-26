@@ -1,8 +1,12 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 const BtnComponent = ({params, clickFunct, text, analog}) => {
     const defaultStyle = {background:`#${params.main_color}`}
     const [styleC, setStyle] = useState({background:`#${params.main_color}`})
+
+    useEffect(()=>{
+        setStyle({background:`#${params.main_color}`})
+    },[params])
     
     const hoveredStyle = {background:`#${params.main_color}`, color: `#${params.secondary_color}`, borderColor:`#${params.secondary_color}`}
     if (analog) {

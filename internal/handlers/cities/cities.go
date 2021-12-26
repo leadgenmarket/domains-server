@@ -36,6 +36,7 @@ func (ch *citiesHandlers) GetCitiesList(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, cities)
 }
+
 func (ch *citiesHandlers) UpdateCities(c *gin.Context) {
 	cities, err := ch.services.Portal.GetCitiesList()
 	if err != nil {

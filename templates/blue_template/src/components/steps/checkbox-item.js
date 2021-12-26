@@ -4,8 +4,8 @@ import { ThemeProvider } from "@material-ui/styles";
 import { createTheme } from "@mui/material";
 import Checkbox from "@material-ui/core/Checkbox";
 
-const CheckBoxItem = ({step, form, setForm, params,  answer}) => {
-    const [checked, setChecked] = useState(false)
+const CheckBoxItem = ({step, form, setForm, checked, updateCheck, index, params,nextStep, prevStep,  answer}) => {
+    const [checkedLoc, setChecked] = useState(false)
     const theme = createTheme({
         overrides: {
           MuiCheckbox: {
@@ -13,100 +13,73 @@ const CheckBoxItem = ({step, form, setForm, params,  answer}) => {
               color: '#FFF',
               '&$checked': {
                 color: 'FFF',
+                "& .MuiIconButton-label": {
+                    position: "relative",
+                    zIndex: 0,
+                    color: "#fff",
+                    },
+                    
+                    "& .MuiIconButton-label:after": {
+                        color: "#fff",
+                    content: '""',
+                    left: 4,
+                    top: 4,
+                    height: 15,
+                    width: 15,
+                    position: "absolute",
+                    backgroundColor: `#${params.main_color}`,
+                    zIndex: -1
+                    }
               },
             },
           },
         },
     });
 
-    const checkIfChecked = (answerCh) => {
-        if (typeof form[step.title] !== "string") {
-            return false
-        } else {
-            let answers = form[step.title].split(", ")
-            let isset = false
-            answers.forEach((answer) => {
-            if (answer === answerCh) {
-                isset = true
-                setChecked(true)
-            }
-            })
-            return isset
-        }
-    }
-
-    const CheckboxWithGreenCheck = withStyles({
-            root: {
-                "&:hover": {
-                    backgroundColor: "transparent"
-                },
-            "&$checked": {
-                
-                "& .MuiIconButton-label": {
-                position: "relative",
-                zIndex: 0,
-                color: "#fff",
-                },
-                
-                "& .MuiIconButton-label:after": {
-                    color: "#fff",
-                content: '""',
-                left: 4,
-                top: 4,
-                height: 15,
-                width: 15,
-                position: "absolute",
-                backgroundColor: `#${params.main_color}`,
-                zIndex: -1
-                }
-            }
-        },
-        checked: {}
-    })(Checkbox);
-
-    const checkChange = (event, flag) => {    
-        if (flag) {
-            setAnswer(event.target.value)
-        } else {
-            unsetAnswer(event.target.value)
-        }
-    }
-
-    const setAnswer = (answerIn) => {
-        if (form[step.title] !== undefined && form[step.title] !== "") {
-            let answers = form[step.title].split(", ")
-            let exists = false
-            answers.forEach((answer) => {
-                if (answer === answerIn) {
-                    exists = true
-                }
-            })
-            if (!exists) {
-                    answers.push(answerIn)
-                }
-                form[step.title] = answers.join(", ")
-            } else {
-                form[step.title] = answerIn
-            }
-            setChecked(true)
-            setForm(form)
-    }
-        
-    const unsetAnswer = (answerOut) => {
-        let answers = form[step.title].split(", ")
-        for (var key in answers) {
-            if (answers[key] === answerOut) {
-            answers.splice(key, 1);
-            }
-        }
     
-        if (answers.length !== 0) {
-            form[step.title] = answers.join(", ")
+
+    
+    /*const checkChange = (event, flag) => {
+        if (answer === "Все" && flag) {
+            //setAll()
+            unsetAll()
+        } else if (answer === "Все" && !flag) {
+            unsetAll()
         } else {
-            delete form[step.title]
+            if (flag) {
+                setAnswer(event.target.value)
+            } else {
+                unsetAnswer(event.target.value)
+            }
         }
-        setChecked(false)
-        setForm(form)
+    }
+
+    const setAll = () => {
+        let newMap = {};
+        for (var i in form) {
+            if (i != step.title) {
+                newMap[i] = form[i];
+            }
+        }
+        newMap[step.title] = "Все, "+domainSettings.locations.map((location)=> location.NameFull).join(", ")
+        setForm(newMap)
+
+        setTimeout(()=> {
+            console.log(form)
+        }, 200)
+    }
+
+    const unsetAll = () => {
+        setForm((prevState) => {
+            let newMap = {};
+            for (var i in prevState) {
+                if (i != step.title) {
+                    newMap[i] = form[i];
+                }
+            }
+            newMap[step.title] = ""
+            return newMap
+        })
     }
 
     const textClick = (event) => {
@@ -131,11 +104,16 @@ const CheckBoxItem = ({step, form, setForm, params,  answer}) => {
 
     useEffect(() => {
         checkIfChecked(answer)
-    }, [])
+    }, [form[step.title].length])*/
 
-    return <div key={answer} style={{position:"relative", cursor: "pointer", fontSize: "22px", color: "#FFF", lineHeight: "22px", textDecoration : "underline"}} className="act">
+    useEffect(()=>{
+        setChecked(checked)
+    },[checked])
+
+
+    return <div key={answer+"_wr"} style={{position:"relative", cursor: "pointer", fontSize: "22px", color: "#FFF", lineHeight: "22px", textDecoration : "underline"}} className="act">
             <ThemeProvider theme={theme}>
-                <CheckboxWithGreenCheck checked={checked} onChange={checkChange} value={answer} /><span onClick={textClick}>{answer}</span>
+                <Checkbox key={answer+"_ch"} checked={checkedLoc} onChange={() => {updateCheck(answer)}} value={answer} /><span>{answer}</span>
             </ThemeProvider>
         </div>
 }

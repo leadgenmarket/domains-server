@@ -163,7 +163,7 @@ footer .wmain{
     padding: 0;
     font-size: 18px;
     color: #FFF;
-    background: #5ABBB0;
+    background: transparent;
     padding-left: 40px;
     padding-right: 40px;
     line-height: 120%;
@@ -186,8 +186,8 @@ footer .wmain{
 
     .btn:hover {
         background: #FFF;
-        color: #5ABBB0;
-        border-color: #5ABBB0;
+        color: #FFF;
+        border-color: transparent;
     }
 
 .page_1 .btn {

@@ -3,6 +3,7 @@ package domains
 import (
 	"domain-server/internal/logger"
 	"domain-server/internal/models"
+	"domain-server/internal/repositories/cities"
 	"domain-server/internal/repositories/domains"
 	"domain-server/internal/repositories/locations"
 	"domain-server/internal/services"
@@ -31,14 +32,16 @@ type Handlers interface {
 type domainsHandlers struct {
 	repository domains.Repository
 	repoLoc    locations.Repository
+	cityRepo   cities.Repository
 	services   *services.Services
 	logger     logger.Log
 }
 
-func New(repository domains.Repository, repoLoc locations.Repository, services *services.Services, logger logger.Log) Handlers {
+func New(repository domains.Repository, repoLoc locations.Repository, cityRepo cities.Repository, services *services.Services, logger logger.Log) Handlers {
 	return &domainsHandlers{
 		repository: repository,
 		repoLoc:    repoLoc,
+		cityRepo:   cityRepo,
 		logger:     logger,
 		services:   services,
 	}
@@ -69,6 +72,12 @@ func (dh *domainsHandlers) GetTemplate(c *gin.Context) {
 			result["locations"] = locations
 			break
 		}
+	}
+	result["city"], err = dh.cityRepo.GetCityById(domain.CityID)
+	if err != nil {
+		dh.logger.GetInstance().Errorf("error getting city %s", err)
+		c.JSON(http.StatusBadRequest, err)
+		return
 	}
 
 	c.HTML(http.StatusOK, "blue_template.html", gin.H{

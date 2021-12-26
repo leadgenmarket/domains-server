@@ -296,7 +296,7 @@ footer .wmain{
     /* background-size: 320px; */
     background: rgb(20,190,176);
     background: linear-gradient(94deg, rgba(20,190,176,1) 0%, rgba(35,53,63,1) 0%, rgba(35,53,63,1) 100%);
-    -webkit-mask-image: url(/img/progress.svg);
+    -webkit-mask-image: url(/templates/blue_template/build/img/progress.svg);
 }
 
     .progress_inner span {

@@ -53,7 +53,7 @@ type handlers struct {
 func New(router *gin.Engine, repositories *repositories.Repositories, services *services.Services, logger logger.Log) Handlers {
 	return &handlers{
 		Auth:          auth.New(repositories.Users, services, logger),
-		Domains:       domains.New(repositories.Domains, repositories.Locations, services, logger),
+		Domains:       domains.New(repositories.Domains, repositories.Locations, repositories.Cities, services, logger),
 		Cities:        cities.New(repositories.Cities, services, logger),
 		Locations:     locations.New(repositories.Locations, repositories.Cities, services, logger),
 		Settings:      settings.New(repositories.Settings, services, logger),

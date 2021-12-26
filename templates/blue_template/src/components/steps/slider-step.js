@@ -5,8 +5,8 @@ import { createTheme } from "@mui/material";
 
 const SliderStep = ({ step, params, index, length, nextStep, prevStep, form, setForm }) => {
     const [sliderValue, setValue] = useState(0)
-    const min = parseFloat(step.from)
-    const max = parseFloat(step.to)
+    let min = parseFloat(step.from)
+    let max = parseFloat(step.to)
     const defaultValue = ((max - min)/4)+min
 
     const valuetext = (value) => {

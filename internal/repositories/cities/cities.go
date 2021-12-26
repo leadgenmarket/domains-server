@@ -11,6 +11,7 @@ import (
 type Repository interface {
 	GetAllCities() (_ []models.City, err error)
 	UpdateCities(cities []models.City) error
+	GetCityById(id bson.ObjectId) (models.City, error)
 }
 
 type repositroyDB struct {
@@ -64,6 +65,15 @@ func (r *repositroyDB) UpdateCities(cities []models.City) error {
 func (r *repositroyDB) GetCityByPortalId(id string) (models.City, error) {
 	var city models.City
 	err := r.cities.Find(bson.M{"portal_id": id}).One(&city)
+	if err != nil {
+		return city, err
+	}
+	return city, nil
+}
+
+func (r *repositroyDB) GetCityById(id bson.ObjectId) (models.City, error) {
+	var city models.City
+	err := r.cities.Find(bson.M{"_id": id}).One(&city)
 	if err != nil {
 		return city, err
 	}
