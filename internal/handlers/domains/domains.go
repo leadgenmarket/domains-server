@@ -6,6 +6,7 @@ import (
 	"domain-server/internal/repositories/domains"
 	"domain-server/internal/repositories/locations"
 	"domain-server/internal/services"
+	"domain-server/internal/utils"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -71,7 +72,7 @@ func (dh *domainsHandlers) GetTemplate(c *gin.Context) {
 	}
 
 	c.HTML(http.StatusOK, "blue_template.html", gin.H{
-		"title": "Home Page",
+		"scripts": utils.ScriptForTemplate(result),
 	})
 
 	//c.JSON(http.StatusOK, result)
