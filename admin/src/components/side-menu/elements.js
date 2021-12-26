@@ -5,45 +5,45 @@ export default [
         name: 'Домены',
         icon:  <i className="feather-globe" />,
         status: false,
-        url: "/",
+        url: "/admin/",
         children: []
     },
     {
         name: 'Шаблоны',
         icon: <i className="feather-clipboard" />,
         status: false,
-        url: "/templates",
+        url: "/admin/templates",
         children: []
     },
     {
         name: 'Лиды',
         icon: <i className="feather-dollar-sign" />,
         status: false,
-        url: "/leads",
+        url: "/admin/leads",
         children: []
     },
     {
         name: 'Подмены',  
         icon: <i className="feather-repeat" />,
         status: false,
-        url: "/titles",
+        url: "/admin/titles",
         children: []
     },
     {
         name: 'Портал',
         icon: <i className="feather-at-sign" />,
         status: false,
-        url: "/portal",
+        url: "/admin/portal",
         children: [
             {
                 name: 'Города',
                 status: false,
-                url: "/portal/cities", //ClientsAll
+                url: "/admin/portal/cities", //ClientsAll
             },
             {
                 name: 'Локации',
                 status: false,
-                url: "/portal/locations", //ClientsAll
+                url: "/admin/portal/locations", //ClientsAll
             },
         ]
     },
@@ -51,14 +51,14 @@ export default [
         name: 'Организации',
         icon: <i className="feather-command" />,
         status: false,
-        url: "/organizations",
+        url: "/admin/organizations",
         children: []
     },
     {
         name: 'Выход',
         icon: <i className="feather-lock" />,
         status: false,
-        url: "/log-out",
+        url: "/admin/log-out",
         children: []
     },
 ]
