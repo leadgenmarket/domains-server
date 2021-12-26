@@ -6,6 +6,8 @@ import Step from "../steps"
 const Router = () => {
     const [step, setStep] = useState(null)
     const [params, setParams] = useState({})
+    const [raionsName, setRaionsName] = useState("")
+    const [roomsName, setRoomsName] = useState("")
 
     const [form,setForm] = useState({})
     const nextStep = (event) => {
@@ -29,7 +31,13 @@ const Router = () => {
         console.log(domainSettings)
         let toAdd = []
         domainSettings.domain.Steps.forEach((step) => {
-            if (step.type == "raions" || step.type == "text") {
+            if (step.type == "raions" || step.type == "text" || step.type == "rooms") {
+                if (step.type == "raions") {
+                    setRaionsName(step.title)
+                }
+                if (step.type == "rooms") {
+                    setRoomsName(step.title)
+                }
                 toAdd.push(step)
             }
         })
@@ -44,7 +52,7 @@ const Router = () => {
         setParams(domainSettings.domain)
     }, [])
     return <div className="container_main" style={{background: `url("http://localhost:8080/file-store/${params.background}") repeat-y center top`}}> {/* http://localhost:8080/file-store/${params.background} */}
-            {step==null?<MainScreen params={params} nextStep={nextStep} />:params.Steps.length<=step?<FinishSteps form={form} form={form} setForm={setForm} params={params} />:<Step step={params.Steps[step]} params={params} index={step} length={params.Steps.length} nextStep={nextStep} prevStep={prevStep} form={form} setForm={setForm} />}
+            {step==null?<MainScreen params={params} nextStep={nextStep} />:params.Steps.length<=step?<FinishSteps form={form} form={form} setForm={setForm} params={params} />:<Step step={params.Steps[step]} raionsStep={raionsName} roomsStep={roomsName} params={params} index={step} length={params.Steps.length} nextStep={nextStep} prevStep={prevStep} form={form} setForm={setForm} />}
         </div>
 }
 

@@ -10,10 +10,12 @@ import { Component, useEffect, useState } from "react";
 import { fetchDomains } from "../../../actions/domains";
 import { Spinner } from "../../spinner";
 import axios from "axios";
+import { useNavigate } from "react-router-dom"
 import ApiService from "../../../services/api-service";
 
 const DomainsPage = ({domains}) => {
     const [templates, setTemplates] = useState(null)
+    const navigate= useNavigate();
     useEffect(()=>{
         let apiService=new ApiService
         apiService.templatesList().then((response) => {
@@ -43,7 +45,7 @@ const DomainsPage = ({domains}) => {
                             <div className="card-body">
                                 <div className="" style={{display:"flex", justifyContent:"end"}}>
                                     <div className="mb-4">
-                                        <button onClick={() =>{showModal("addDomain")}} type="button" className="btn btn-primary waves-effect waves-light"><i className="feather-plus"></i> Добавить домен</button>
+                                        <button onClick={() =>{navigate('/add', { replace: false })}} type="button" className="btn btn-primary waves-effect waves-light"><i className="feather-plus"></i> Добавить домен</button>
                                     </div>
                                 </div>
                                 <div className="table-responsive">

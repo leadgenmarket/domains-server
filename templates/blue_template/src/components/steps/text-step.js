@@ -1,50 +1,19 @@
 import React, {useState, useEffect} from "react"
 import CheckBoxItem from "./checkbox-item"
 import ColoredScrollbars from "../colored-scrollbars/colored-scrollbars";
-import { ThemeProvider } from "@material-ui/styles";
-import { createTheme } from "@mui/material";
-import Checkbox from "@material-ui/core/Checkbox";
 
 const TextStep = ({ step, params, index, length, nextStep, prevStep, form, setForm }) => {
-    const [checked, setCheckedList] = useState([])
     const amIChecked = (answer) => {
-       return checked.includes(answer)
+       return form[step.title].split(", ").includes(answer)
     }
 
     const updateCheck = (answer) => {
-        if (!checked.includes(answer)) {
-            setCheckedList((prevState)=>{
-                let newState = []
-                prevState.forEach((item) => {
-                    if (item != answer) {
-                        newState.push(item)
-                    }
-                })
-                return newState
-            })
-            setAnswer(answer)
-        } else {
-            setCheckedList((prevState) => {
-                //let newState = Array.from(prevState)
-                prevState.push(answer)
-                return prevState
-            })
+        if (amIChecked(answer)) {
             unsetAnswer(answer)
+        } else {
+            setAnswer(answer)
         }
     }
-
-    const getList = () => {
-        if (typeof form[step.title] !== "string") {
-            setCheckedList([])
-        } else { 
-            setCheckedList(form[step.title].split(", "))
-        }
-    }
-
-    useEffect(() => {
-        getList()
-    }, [index, form])
-
 
     const setAnswer = (answerIn) => {
         let answers = form[step.title].split(", ")
@@ -77,15 +46,41 @@ const TextStep = ({ step, params, index, length, nextStep, prevStep, form, setFo
         if (answers.length !== 0) {
             newForm[step.title] = answers.join(", ")
         } else {
-            delete newForm[step.title]
+            newForm[step.title] = ""
         }
+        setForm(newForm)
+    }
+
+    const updateCheckAll = () => {
+        if (!amIChecked("Все")) {
+            setAllRaions()
+        } else {
+            unsetAllRaions()
+        }
+    } 
+
+    const setAllRaions = () => {
+        let newForm = {}
+        for (let i in form) {
+            newForm[i] = form[i]
+        }
+        newForm[step.title] = "Все, "+domainSettings.locations.map((location) => location.NameFull).join(", ")
+        setForm(newForm)
+    }
+
+    const unsetAllRaions = () => {
+        let newForm = {}
+        for (let i in form) {
+            newForm[i] = form[i]
+        }
+        newForm[step.title] = ""
         setForm(newForm)
     }
 
     if (step.type == "raions") {
         return <ColoredScrollbars style={{ backgroundColor:"transparent", width: "100%", height: 300 }}>
                 <ul className="check_list_one check_list" id="kv_list">
-                    <CheckBoxItem key={"Все"} checked={amIChecked("Все")} updateCheck={updateCheck} answer={"Все"} step ={step} params={params} index={index} length={length} nextStep={nextStep} prevStep={prevStep} form={form} setForm = {setForm} /> 
+                    <CheckBoxItem key={"Все"} checked={amIChecked("Все")} updateCheck={updateCheckAll} answer={"Все"} step ={step} params={params} index={index} length={length} nextStep={nextStep} prevStep={prevStep} form={form} setForm = {setForm} /> 
                     {domainSettings.locations.map((location) => {
                         return <CheckBoxItem checked={amIChecked(location.NameFull)} updateCheck={updateCheck} key={location.NameFull} answer={location.NameFull} step ={step} params={params} index={index} length={length} nextStep={nextStep} prevStep={prevStep} form={form} setForm = {setForm} />
                     })}

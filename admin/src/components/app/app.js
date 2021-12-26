@@ -48,8 +48,9 @@ const App = ({ auth, phone, checkAuth}) => {
                 <SideMenu />
                 <Routes>
                     <Route path="/edit/:id" element={<DomainEdit />} />
+                    <Route path="/add" element={<DomainEdit />} />
                     <Route path="/:id" element={<DomainDetail />} />
-                    <Route path="/" element={<DomainsPage />} />
+                    <Route path="/*" element={<DomainsPage />} />
                 </Routes>
             </React.Fragment>
         )        

@@ -117,6 +117,7 @@ const StepsComponent = ({quizSteps, setQuizSteps, city_id}) => {
                                                 <option value="text">Текстовый</option>
                                                 <option value="slider">Слайдер</option>
                                                 <option value="raions">Районы</option>
+                                                <option value="rooms">Количество комнат</option>
                                                 <option value="slider_r">Слайдер (цены из района)</option>
                                             </select>
                                         </div>
@@ -152,6 +153,10 @@ const StepsComponent = ({quizSteps, setQuizSteps, city_id}) => {
                                     </React.Fragment>:step.type == "slider_r"?<React.Fragment>
                                          <div className="mb-3" >
                                             <span>Слайдер подтянет цены по районам, параметры задавать не нужно, только тайтл шага</span>
+                                        </div>
+                                    </React.Fragment>:step.type == "rooms"?<React.Fragment>
+                                         <div className="mb-3" >
+                                            <span>Шаг выбора количества комнат</span>
                                         </div>
                                     </React.Fragment>:<React.Fragment>
                                         <div className="mb-3" >
