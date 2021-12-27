@@ -45,7 +45,7 @@ const DomainsPage = ({domains}) => {
                             <div className="card-body">
                                 <div className="" style={{display:"flex", justifyContent:"end"}}>
                                     <div className="mb-4">
-                                        <button onClick={() =>{navigate('/add', { replace: false })}} type="button" className="btn btn-primary waves-effect waves-light"><i className="feather-plus"></i> Добавить домен</button>
+                                        <button onClick={() =>{navigate('/admin/add', { replace: false })}} type="button" className="btn btn-primary waves-effect waves-light"><i className="feather-plus"></i> Добавить домен</button>
                                     </div>
                                 </div>
                                 <div className="table-responsive">

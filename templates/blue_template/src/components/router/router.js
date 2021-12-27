@@ -51,7 +51,7 @@ const Router = () => {
         setForm(formNew)
         setParams(domainSettings.domain)
     }, [])
-    return <div className="container_main" style={{background: `url("http://localhost:8080/file-store/${params.background}") repeat-y center top`}}> {/* http://localhost:8080/file-store/${params.background} */}
+    return <div className="container_main" style={{background: `url("/file-store/${params.background}") repeat-y center top`}}> {/* http://localhost:8080/file-store/${params.background} */}
             {step==null?<MainScreen params={params} nextStep={nextStep} />:params.Steps.length<=step?<FinishSteps form={form} form={form} setForm={setForm} params={params} />:<Step step={params.Steps[step]} raionsStep={raionsName} roomsStep={roomsName} params={params} index={step} length={params.Steps.length} nextStep={nextStep} prevStep={prevStep} form={form} setForm={setForm} />}
         </div>
 }
