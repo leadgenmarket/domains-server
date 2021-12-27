@@ -4,10 +4,10 @@ import { ThemeProvider } from "@material-ui/styles";
 import { createTheme } from "@mui/material";
 
 const SliderStep = ({ step, params, raionsStep, roomsStep, index, length, nextStep, prevStep, form, setForm }) => {
-    const [sliderValue, setValue] = useState(0)
-    const [min, setMin] = useState(0)
-    const [max, setMax] = useState(100)
-    const [defaultValue, setDefaultValue] = useState(0)
+    const [sliderValue, setValue] = useState(null)
+    const [min, setMin] = useState(null)
+    const [max, setMax] = useState(null)
+    const [defaultValue, setDefaultValue] = useState(null)
 
     const valuetext = (value) => {
         return `${value} руб.`;
@@ -20,15 +20,23 @@ const SliderStep = ({ step, params, raionsStep, roomsStep, index, length, nextSt
         form[step.title] = newValue
         setForm(form)
     };
+
+    const getRaionsID = (raionName) => {
+        for (let i=0; i<domainSettings.locations.length; i++) {
+            if (domainSettings.locations[i].NameFull === raionName) {
+                return domainSettings.locations[i].PortalID
+            }
+        }
+    }
     useEffect(()=> {
-        let min = parseFloat(step.from)
+        /*let min = parseFloat(step.from)
         let max = parseFloat(step.to)
         setMin(min)
         setMax(max)
-        setValue(((max - min)/4)+min)
-        /*if (step.type === "slider_r") {
-            let min
-            let max
+        setValue(((max - min)/4)+min)*/
+        if (step.type === "slider_r") {
+            let minV
+            let maxV
             let raions = form[raionsStep].split(", ")
             let typedRoomsMin = [];
             let typedRoomsMax = [];
@@ -61,20 +69,41 @@ const SliderStep = ({ step, params, raionsStep, roomsStep, index, length, nextSt
             console.log(typedRoomsMin)
             console.log(typedRoomsMax)
             if (raions.length == 1 && raions[0] == "") {
-                //console.log("надо взять значения по умолчанию, для всех районов")
-                domainSettings.locations.forEach((location) => {
-                    try {
-                        let price = JSON.parse(location.Prices)
-                        console.log(price)
-                    } catch (e){}
-                })
+                console.log("надо взять значения по умолчанию, для всех районов")
             } else {
                 console.log("считаем нужные районы и цены")
+                let prices = []
+               
+                raions.forEach((raion) => {
+                    prices.push(domainSettings.prices.prices[getRaionsID(raion)])
+                })
+                console.log(prices)
+                
+                
+                prices.forEach((price) => {
+                    typedRoomsMin.forEach((filed) => {
+                        if (minV === undefined || minV > parseFloat(price[filed])) {
+                            minV = Math.round(parseFloat(price[filed]))
+                        }
+                    })
+                    typedRoomsMax.forEach((filed) => {
+                        if (maxV === undefined || maxV < parseFloat(price[filed])) {
+                            maxV = Math.round(parseFloat(price[filed]))
+                        }
+                    })
+                })
+                console.log(Math.round(min))
+                //вот тут вопрос, наверное если слишком маленький интервал, то умножать на два
+                //maxV = minV*2
+                setMin(minV*1000000)
+                setMax(maxV*1000000)
+                setValue((((maxV - minV)/4)+minV)*1000000)
             }
-            setMin(1500000)
+           
+            /*setMin(1500000)
             setMax(5500000)
-            setDefaultValue(((1500000 - 5500000)/4)+1500000)
-        } else if (form[step.title] === undefined) {
+            setDefaultValue(((1500000 - 5500000)/4)+1500000)*/
+        } /*else if (form[step.title] === undefined) {
           form[step.title] = defaultValue
           setValue(defaultValue)
           setForm(form)
@@ -82,6 +111,8 @@ const SliderStep = ({ step, params, raionsStep, roomsStep, index, length, nextSt
             setValue(form[step.title])
         }*/
     },[index])
+
+   
 
     const sliderTheme = createTheme({
         overrides: {
@@ -115,15 +146,19 @@ const SliderStep = ({ step, params, raionsStep, roomsStep, index, length, nextSt
         }
     });
 
+    if (min==null || max == null || sliderValue == null) {
+        return <div>load</div>
+    }
+
   return <div className="in_slider">
             <div className="prpp" style={{ background: `#${params.secondary_color}` }} id="price_info">{sliderValue===min?"От":"До"} {sliderValue !==undefined ?sliderValue.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " "):"0"} руб.</div>
             <input id="max_price" type="hidden" value={valuetext()} />
             <ThemeProvider theme={sliderTheme}>
                 <Slider 
-                    defaultValue={defaultValue}
+                    //defaultValue={defaultValue}
                     getAriaValueText={valuetext}
                     aria-labelledby="non-linear-slider"
-                    step={stepS}
+                    step={10000}
                     value={sliderValue}
                     onChange={handleChange}
                     min={min}

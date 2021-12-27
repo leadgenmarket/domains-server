@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+import { domainSettingsForTest } from "../../utils"
 import FinishSteps from "../finish-steps"
 import MainScreen from "../main-screen"
 import Step from "../steps"
@@ -28,7 +29,6 @@ const Router = () => {
     }
 
     useEffect(()=> {
-        console.log(domainSettings)
         let toAdd = []
         domainSettings.domain.Steps.forEach((step) => {
             if (step.type == "raions" || step.type == "text" || step.type == "rooms") {
@@ -49,8 +49,10 @@ const Router = () => {
             }
         })
         setForm(formNew)
+        
         setParams(domainSettings.domain)
     }, [])
+    
     return <div className="container_main" style={{background: `url("/file-store/${params.background}") repeat-y center top`}}> {/* http://localhost:8080/file-store/${params.background} */}
             {step==null?<MainScreen params={params} nextStep={nextStep} />:params.Steps.length<=step?<FinishSteps form={form} form={form} setForm={setForm} params={params} />:<Step step={params.Steps[step]} raionsStep={raionsName} roomsStep={roomsName} params={params} index={step} length={params.Steps.length} nextStep={nextStep} prevStep={prevStep} form={form} setForm={setForm} />}
         </div>
