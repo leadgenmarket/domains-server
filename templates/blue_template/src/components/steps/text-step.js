@@ -17,16 +17,22 @@ const TextStep = ({ step, params, index, length, nextStep, prevStep, form, setFo
 
     const setAnswer = (answerIn) => {
         let answers = form[step.title].split(", ")
+       
         if (answers[0] == "") {
             answers.splice(0,1)
         }
         answers.push(answerIn)
-        let newForm = {}
-        for (let i in form) {
-            newForm[i] = form[i]
-        }
-        newForm[step.title] = answers.join(", ")
-        setForm(newForm)
+       
+        
+        
+        setForm((prev) => {
+            let newForm = {}
+            for (let i in prev) {
+                newForm[i] = prev[i]
+            }
+            newForm[step.title] = answers.join(", ")
+            return newForm
+        })
     }
         
     const unsetAnswer = (answerOut) => {
@@ -77,12 +83,13 @@ const TextStep = ({ step, params, index, length, nextStep, prevStep, form, setFo
         setForm(newForm)
     }
 
+
     if (step.type == "raions") {
         return <ColoredScrollbars style={{ backgroundColor:"transparent", width: "100%", height: 300 }}>
                 <ul className="check_list_one check_list" id="kv_list">
-                    <CheckBoxItem key={"Все"} checked={amIChecked("Все")} updateCheck={updateCheckAll} answer={"Все"} step ={step} params={params} index={index} length={length} nextStep={nextStep} prevStep={prevStep} form={form} setForm = {setForm} /> 
+                    <CheckBoxItem key={"Все"}  checked={amIChecked("Все")} updateCheck={updateCheckAll} answer={"Все"} step ={step} params={params} index={index} length={length} nextStep={nextStep} prevStep={prevStep} form={form} setForm = {setForm} /> 
                     {domainSettings.locations.map((location) => {
-                        return <CheckBoxItem checked={amIChecked(location.NameFull)} updateCheck={updateCheck} key={location.NameFull} answer={location.NameFull} step ={step} params={params} index={index} length={length} nextStep={nextStep} prevStep={prevStep} form={form} setForm = {setForm} />
+                        return <CheckBoxItem key={location.NameFull} checked={amIChecked(location.NameFull)} updateCheck={updateCheck} answer={location.NameFull} step ={step} params={params} index={index} length={length} nextStep={nextStep} prevStep={prevStep} form={form} setForm = {setForm} />
                     })}
                 </ul>
             </ColoredScrollbars>
