@@ -8,6 +8,7 @@ import (
 	"domain-server/internal/handlers/leads"
 	"domain-server/internal/handlers/locations"
 	"domain-server/internal/handlers/organizations"
+	"domain-server/internal/handlers/prices"
 	"domain-server/internal/handlers/settings"
 	"domain-server/internal/handlers/steps"
 	"domain-server/internal/handlers/templates"
@@ -44,6 +45,7 @@ type handlers struct {
 	Titles        titles.Handlers
 	Users         users.Handlers
 	Templates     templates.Handlers
+	Prices        prices.Handlers
 	router        *gin.Engine
 	repositories  *repositories.Repositories
 	services      *services.Services
@@ -53,7 +55,7 @@ type handlers struct {
 func New(router *gin.Engine, repositories *repositories.Repositories, services *services.Services, logger logger.Log) Handlers {
 	return &handlers{
 		Auth:          auth.New(repositories.Users, services, logger),
-		Domains:       domains.New(repositories.Domains, repositories.Locations, repositories.Cities, services, logger),
+		Domains:       domains.New(repositories.Domains, repositories.Locations, repositories.Cities, repositories.Prices, services, logger),
 		Cities:        cities.New(repositories.Cities, services, logger),
 		Locations:     locations.New(repositories.Locations, repositories.Cities, services, logger),
 		Settings:      settings.New(repositories.Settings, services, logger),
@@ -64,6 +66,7 @@ func New(router *gin.Engine, repositories *repositories.Repositories, services *
 		Titles:        titles.New(repositories.Titles, services, logger),
 		Users:         users.New(repositories.Users, services, logger),
 		Templates:     templates.New(repositories.Templates, services, logger),
+		Prices:        prices.New(repositories.Prices, repositories.Cities, services, logger),
 		router:        router,
 		repositories:  repositories,
 		services:      services,
@@ -80,6 +83,7 @@ func (h *handlers) Registry() {
 	h.router.POST("/sign-in", h.Auth.SignIn)
 	h.router.PUT("/lead/", h.Leads.AddLead)
 	h.router.POST("/lead/", h.Leads.UpdateLeads)
+	h.router.GET("/prices/update", h.Prices.UpdatePrices)
 
 	api := h.router.Group("/api", middlewares.TokenAuthMiddleware(h.logger, h.services))
 	{
@@ -99,7 +103,7 @@ func (h *handlers) Registry() {
 
 		// locations
 		locationsGroup := api.Group("locations")
-		locationsGroup.GET("/", h.Locations.GetLocationsList)
+
 		locationsGroup.GET("/update", h.Locations.UpdateLocations)
 		locationsGroup.GET("/raions/:id", h.Locations.GetRaionsOfTheCity)
 

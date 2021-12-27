@@ -5,6 +5,7 @@ import (
 	"domain-server/internal/logger"
 	"domain-server/internal/models"
 	"domain-server/internal/repositories"
+	"domain-server/internal/services"
 	"fmt"
 
 	mongo "github.com/globalsign/mgo"
@@ -28,13 +29,17 @@ func main() {
 		logger.GetInstance().Panic("error initializing config: %w", err)
 	}
 	repo := repositories.New(sess.DB("leadgen"), cfg)
+
 	errC := AddRootUserIfNotExists(repo, cfg.InitialRootPassword)
 	if errC != nil {
 		logger.GetInstance().Fatal(err)
 	}
 	logger.GetInstance().Info("admin user exists or created")
 
-	AddFixtures(repo)
+	services := services.Setup(cfg)
+	services.Portal.GetCitiesPrices()
+	//AddFixtures(repo)
+
 }
 
 func AddRootUserIfNotExists(repo *repositories.Repositories, pass string) error {

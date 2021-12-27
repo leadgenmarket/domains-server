@@ -6,6 +6,7 @@ import (
 	"domain-server/internal/repositories/cities"
 	"domain-server/internal/repositories/domains"
 	"domain-server/internal/repositories/locations"
+	"domain-server/internal/repositories/prices"
 	"domain-server/internal/services"
 	"domain-server/internal/utils"
 	"encoding/json"
@@ -33,15 +34,17 @@ type domainsHandlers struct {
 	repository domains.Repository
 	repoLoc    locations.Repository
 	cityRepo   cities.Repository
+	pricesRepo prices.Repository
 	services   *services.Services
 	logger     logger.Log
 }
 
-func New(repository domains.Repository, repoLoc locations.Repository, cityRepo cities.Repository, services *services.Services, logger logger.Log) Handlers {
+func New(repository domains.Repository, repoLoc locations.Repository, cityRepo cities.Repository, pricesRepo prices.Repository, services *services.Services, logger logger.Log) Handlers {
 	return &domainsHandlers{
 		repository: repository,
 		repoLoc:    repoLoc,
 		cityRepo:   cityRepo,
+		pricesRepo: pricesRepo,
 		logger:     logger,
 		services:   services,
 	}
@@ -74,6 +77,13 @@ func (dh *domainsHandlers) GetTemplate(c *gin.Context) {
 		}
 	}
 	result["city"], err = dh.cityRepo.GetCityById(domain.CityID)
+	if err != nil {
+		dh.logger.GetInstance().Errorf("error getting city %s", err)
+		c.JSON(http.StatusBadRequest, err)
+		return
+	}
+
+	result["prices"], err = dh.pricesRepo.GetPricesOfTheCity(domain.CityID)
 	if err != nil {
 		dh.logger.GetInstance().Errorf("error getting city %s", err)
 		c.JSON(http.StatusBadRequest, err)

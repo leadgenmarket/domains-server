@@ -12,6 +12,7 @@ type Repository interface {
 	GetAllCities() (_ []models.City, err error)
 	UpdateCities(cities []models.City) error
 	GetCityById(id bson.ObjectId) (models.City, error)
+	GetCityByPortalId(id string) (models.City, error)
 }
 
 type repositroyDB struct {

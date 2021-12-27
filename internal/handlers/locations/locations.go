@@ -34,7 +34,8 @@ func New(repository locations.Repository, repositoryCities cities.Repository, se
 }
 
 func (ch *locationsHandlers) GetLocationsList(c *gin.Context) {
-
+	price, _ := ch.services.Portal.GetCitiesPrices()
+	c.JSON(http.StatusOK, price)
 }
 
 func (ch *locationsHandlers) UpdateLocations(c *gin.Context) {

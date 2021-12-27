@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import PageTitle from "../../page-title"
 import ApiService from "../../../services/api-service";
 import StepsComponent from "./steps";
@@ -13,6 +13,7 @@ const DomainEdit = () => {
     const [file, setFile] = useState(null)
     const [step, setStep] = useState(1)
     const [quizSteps, setQuizSteps] = useState([])
+    const { id } = useParams()
     const [form, setForm] = useState({
         url: "",
         template_id: "",
@@ -28,6 +29,15 @@ const DomainEdit = () => {
         apiService.organizationsList().then((response) => {
             setOrganzations(response.data)
         })
+        //если задан id, то значит что это страница edit и нужно получить инфу о редактриуемом домене
+        if (id !== undefined) {
+            apiService.domain(id).then((resp) => {
+                setForm(resp.data)
+                setQuizSteps(resp.data.Steps)
+            }).catch((err) => {
+                //тут надо редирект на 404
+            })
+        }
     },[])
     useEffect(()=> {
         if (type != "") {
@@ -73,7 +83,6 @@ const DomainEdit = () => {
         if (file!=null) {
             bodyFormData.append('file', file)
         }
-        console.log(file)
         let apiService = new ApiService
         apiService.domainSave(bodyFormData)
     }

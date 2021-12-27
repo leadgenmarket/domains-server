@@ -11,11 +11,13 @@ import (
 const (
 	citiesGetMethod    = "GetSites"
 	locationsGetMethod = "GetCityLocs"
+	jkListGetMethod    = "GetJkList"
 )
 
 type Portal interface {
 	GetCitiesList() ([]models.City, error)
 	GetAllCitiesLocations() ([]models.Location, error)
+	GetCitiesPrices() ([]map[string]interface{}, error)
 }
 
 type portal struct {
@@ -54,7 +56,7 @@ func (p *portal) GetCitiesList() ([]models.City, error) {
 }
 
 func (p *portal) GetAllCitiesLocations() ([]models.Location, error) {
-	locationCities := []string{"258828", "99793", "161617", "75871", "303819"} //Москва, Питер, Новосиб, Краснодар, Тула
+	locationCities := []string{"258828", "99793", "161617", "75871", "303819", "31477"} //Москва, Питер, Новосиб, Краснодар, Тула
 	locationsRes := []models.Location{}
 	for _, cityId := range locationCities {
 		locations, err := p.GetLocationsOfCity(cityId)
@@ -67,6 +69,7 @@ func (p *portal) GetAllCitiesLocations() ([]models.Location, error) {
 }
 
 func (p *portal) GetLocationsOfCity(portalCityID string) ([]models.Location, error) {
+	//http://api.g-n.ru/v1/?met=GetJkList&s_id=258828&key=8N3783vyK7V3230v
 	resp, err := http.Get(fmt.Sprintf("%s/?key=%s&met=%s&s_id=%s", p.url, p.key, locationsGetMethod, portalCityID))
 	if err != nil {
 		return nil, err
@@ -104,4 +107,26 @@ func (p *portal) GetLocationsOfCity(portalCityID string) ([]models.Location, err
 		}
 	}
 	return locations, nil
+}
+
+func (p *portal) GetCitiesPrices() ([]map[string]interface{}, error) {
+	var citiesList = map[string]string{"msk": "258828", "spb": "99793", "novosibirsk": "161617", "tula": "303819", "krd": "75871", "perm": "31477"} //"99793", "161617", "75871", "303819"} //Москва, Питер, Новосиб, Краснодар, Тула
+	pricesResult := []map[string]interface{}{}
+	for city, portalCityId := range citiesList {
+		resp, err := http.Get(fmt.Sprintf("http://api.g-n.ru/local/api/lp/locIn.php?city=%s", city))
+		if err != nil {
+			return nil, err
+		}
+		body, err := ioutil.ReadAll(resp.Body)
+		if err != nil {
+			return nil, err
+		}
+		var list map[string]interface{}
+		json.Unmarshal(body, &list)
+		list["portal_city_id"] = portalCityId
+		pricesResult = append(pricesResult, list)
+
+	}
+	//http://api.g-n.ru/upload/jk_msk_dat.dat
+	return pricesResult, nil
 }
