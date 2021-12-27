@@ -34,7 +34,7 @@ func (r *repositroyDB) AddPrices(prices []map[string]interface{}) error {
 
 func (r *repositroyDB) GetPricesOfTheCity(CityID bson.ObjectId) (map[string]interface{}, error) {
 	var prices map[string]interface{}
-	err := r.prices.Find(bson.M{"city_id": CityID}).All(&prices)
+	err := r.prices.Find(bson.M{"city_id": CityID}).One(&prices)
 	if err != nil {
 		return prices, err
 	}
