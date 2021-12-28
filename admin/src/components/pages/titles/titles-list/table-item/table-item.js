@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import {CopyToClipboard} from 'react-copy-to-clipboard';
 
-const TableItem = ({title:{ID, Title}}) => {
+const TableItem = ({title:{ID, Title}, deleteTitle, updateTitle}) => {
     const [show, setShow] = useState(false)
     const navigate = useNavigate()
     const convertDate = (inputFormat) => {
@@ -13,12 +14,10 @@ const TableItem = ({title:{ID, Title}}) => {
         setShow(!show)
     }
 
-    const hrefClick = (event) => {
-        event.preventDefault()
-        navigate(event.target.getAttribute('href'), { replace: false })
-    }
+   
     const deleteClick = (event) => {
         event.preventDefault()
+        deleteTitle()
     }
       
     return (<tr key={ID} className="odd">
@@ -28,7 +27,7 @@ const TableItem = ({title:{ID, Title}}) => {
                         <label className="form-check-label"></label>
                     </div>
                 </td>
-                <td><a  onClick={hrefClick} className="text-dark fw-medium">{ID}</a></td>
+                <td>{ID}<CopyToClipboard text={ID} onCopy={() => console.log('copy')}><i style={{cursor:"pointer", marginLeft:5}} className="feather-copy"></i></CopyToClipboard></td>
                 <td><a target="_blank">{Title}</a></td>
                 <td>
                     <div className="dropdown">
@@ -36,7 +35,7 @@ const TableItem = ({title:{ID, Title}}) => {
                             <i className="feather-more-horizontal"></i>
                         </button>
                         <ul className={show?"dropdown-menu dropdown-menu-end show":"dropdown-menu dropdown-menu-end"}>
-                            <li><a className="dropdown-item" onClick={hrefClick} href={"/admin/edit/"+ID}>Редактировать</a></li>
+                            <li><a className="dropdown-item" onClick={updateTitle} href={"/admin/edit/"+ID}>Редактировать</a></li>
                             <li><a className="dropdown-item" onClick={deleteClick} href="#">Удалить</a></li>
                         </ul>
                     </div>

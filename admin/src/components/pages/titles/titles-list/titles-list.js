@@ -1,18 +1,73 @@
 import PageTitle from "../../../page-title"
 import { useNavigate } from "react-router-dom"
 import { Modals, showModal } from "../../../modals"
-import forms from "./forms"
 import { compose } from "../../../../utils";
 import { withApiService } from "../../../hoc";
 import { connect } from "react-redux";
 import { bindActionCreators } from 'redux';
 import { Component, useEffect, useState } from "react";
-import { fetchTitles } from "../../../../actions/titles";
+import { deleteTitle, fetchTitles, updateTitle } from "../../../../actions/titles";
 import { Spinner } from "../../../spinner";
 import TableItem from "./table-item";
 
-const TitlesPage = ({titles}) => {
+const TitlesPage = ({titles, deleteTitle, updateTitle}) => {
     const navigate= useNavigate();
+    const [editTitle, setEditTitle] = useState({})
+    const forms = [
+        {
+            title: 'Добавить тайтл',
+            name: 'addTitle',
+            url:"/api/titles/",
+            type: "put",
+            //action: (action) => {actionAdd(action)},
+            fields: [
+                {
+                    name: 'Title',
+                    json: 'title',
+                    type: 'text',
+                },
+            ],
+        },
+        {
+            title: 'Редактировать тайтл',
+            name: 'updateTitle',
+            url: "/api/titles/",
+            type: "post",
+            action: (action) => {console.log(action); updateTitle(action)},
+            edit: (action) => { setEditTitle(action)},
+            //imageurl:"public/objects/"+activeObject.ID+"/actions/", //id
+            date: editTitle,
+            clear:false,
+            fields: [
+                {
+                    name: 'Title',
+                    json: 'title',
+                    type: 'text',
+                },
+                {
+                    json: 'ID',
+                    type: 'hidden',
+                },
+            ],
+        },
+        {
+            title: 'Удалить тайтл',
+            question: 'Вы действительно хотите удалить тайтл?',
+            name: 'deleteTitle',
+            url:"/api/titles/"+editTitle.ID,
+            type: "delete",
+            action: (action) => { console.log(action); deleteTitle(action)},
+            //edit: () => {},
+            date: editTitle,
+            clear:false,
+            fields: [
+              {
+                json: 'ID',
+                type: 'hidden',
+              },
+            ]
+          },
+    ]
     return <div className="main-content">
         <div className="page-content">
             <div className="container-fluid">
@@ -64,7 +119,7 @@ const TitlesPage = ({titles}) => {
                                                         {
                                                             titles.map((title) => {
                                                                 console.log(title)
-                                                                return <TableItem title={title} />
+                                                                return <TableItem title={title} deleteTitle={(e) => {e.preventDefault(); setEditTitle(title); showModal("deleteTitle")}} updateTitle={(e) =>{ e.preventDefault(); setEditTitle(title); showModal("updateTitle")}}/>
                                                             })
                                                         }
                                                     </tbody>
@@ -113,11 +168,11 @@ class TitleListPageContainer extends Component {
     }
   
     render() {
-      const { titles, loading, error } = this.props;
+      const { titles, loading, error, deleteTitle, updateTitle } = this.props;
       if (loading || titles == null) {
           return <Spinner />
       }
-      return <TitlesPage titles={titles} loading={loading} error={error} />;
+      return <TitlesPage titles={titles} loading={loading} error={error} deleteTitle={deleteTitle} updateTitle={updateTitle} />;
     }
   }
   
@@ -128,6 +183,8 @@ class TitleListPageContainer extends Component {
   const mapDispatchToProps = (dispatch, { apiService}) => {
     return bindActionCreators({
         fetchTitles: fetchTitles(apiService),
+        updateTitle: updateTitle,
+        deleteTitle: deleteTitle,
     }, dispatch);
   };
 

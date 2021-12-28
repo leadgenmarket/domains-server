@@ -115,7 +115,7 @@ func (h *handlers) Registry() {
 		titlesGroup := api.Group("titles")
 		titlesGroup.GET("/", h.Titles.GetTitlesList)
 		titlesGroup.PUT("/", h.Titles.AddTitle)
-		titlesGroup.DELETE("/", h.Titles.DeleteTitle)
+		titlesGroup.DELETE("/:id", h.Titles.DeleteTitle)
 		titlesGroup.POST("/", h.Titles.UpdateTitles)
 
 		//users

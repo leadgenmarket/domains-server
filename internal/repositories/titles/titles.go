@@ -71,7 +71,10 @@ func (r *repositroyDB) GetTitleForDomain(cityID bson.ObjectId, rayon string, k s
 		}
 		return GenerateTitleFromLocation(location), nil
 	}
-	return "", nil
+	title := models.Title{}
+	err := r.titles.Find(bson.M{"_id": bson.ObjectIdHex(k)}).One(&title)
+	fmt.Println(title.Title)
+	return title.Title, err
 }
 
 func GenerateTitleFromLocation(location models.Location) string {

@@ -18,14 +18,14 @@ const titlesError = (data) => {
     }
 }
 
-const deleteTitleAction = (id) => {
+const deleteTitle = (id) => {
     return {
         type: 'TITLE_DELETE_ONE',
         payload: id
     }
 }
 
-const titleUpdateAction = (data) => {
+const updateTitle = (data) => {
     return {
         type: 'TITLE_UPDATE',
         payload: data,
@@ -39,7 +39,7 @@ const fetchTitles = (apiService) => () => (dispatch) => {
         .catch((err) => dispatch(titlesError(err)))
 }
 
-const deleteTitle = (apiService) => (id) => (dispatch) => {
+/*const deleteTitle = (apiService) => (id) => (dispatch) => {
     apiService.deleteTitle(id)
         .then((response) => dispatch(deleteTitleAction(id)))
         .catch((err) => dispatch(titlesError(err)))
@@ -49,10 +49,10 @@ const updateTilte = (apiService) => (data) => (dispatch) => {
     apiService.updateTilte(data)
         .then((response) => dispatch(titleUpdateAction(response.data)))
         .catch((err) => dispatch(titlesError(err)))
-}
+}*/
 
 export {
     fetchTitles,
     deleteTitle,
-    updateTilte
+    updateTitle
 }
