@@ -8,13 +8,13 @@ export default [
         url: "/admin/",
         children: []
     },
-    {
+    /*{
         name: 'Шаблоны',
         icon: <i className="feather-clipboard" />,
         status: false,
         url: "/admin/templates",
         children: []
-    },
+    },*/
     {
         name: 'Лиды',
         icon: <i className="feather-dollar-sign" />,

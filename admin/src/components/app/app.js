@@ -18,6 +18,7 @@ import DomainsPage from "../pages/domains/list";
 import DomainDetail from "../pages/domains/detail";
 import DomainEdit from "../pages/domains/edit";
 import { TitlesList } from "../pages/titles/titles-list";
+import LeadsList from "../pages/leads/leads-list";
 
 const App = ({ auth, phone, checkAuth}) => {
     const location = useLocation().pathname;
@@ -48,6 +49,7 @@ const App = ({ auth, phone, checkAuth}) => {
                 <ToolBar />
                 <SideMenu />
                 <Routes>
+                    <Route path="/admin/leads/" element={<LeadsList />} />
                     <Route path="/admin/titles/" element={<TitlesList />} />
                     <Route path="/admin/edit/:id" element={<DomainEdit />} />
                     <Route path="/admin/add" element={<DomainEdit />} />
