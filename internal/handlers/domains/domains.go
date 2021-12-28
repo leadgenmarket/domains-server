@@ -105,9 +105,26 @@ func (dh *domainsHandlers) GetTemplate(c *gin.Context) {
 		result["rayon"] = rayon
 	}
 
-	c.HTML(http.StatusOK, "blue_template.html", gin.H{
+	settings := gin.H{
 		"scripts": utils.ScriptForTemplate(result),
-	})
+	}
+
+	if domain.Yandex != "" {
+		settings["yandex"] = domain.Yandex
+	}
+	if domain.Google != "" {
+		settings["google"] = domain.Google
+	}
+
+	if domain.Mail != "" {
+		settings["mail"] = domain.Mail
+	}
+
+	if domain.Marquiz != "" {
+		settings["marquiz"] = domain.Marquiz
+	}
+
+	c.HTML(http.StatusOK, "blue_template.html", settings)
 
 	//c.JSON(http.StatusOK, result)
 }
