@@ -114,7 +114,20 @@ footer .wmain{
     list-style: none;
     margin-top: 35px;
 }
-
+.check_list div label{
+    cursor: pointer;
+    display: inline-block;
+    vertical-align: top;
+    text-decoration: underline;
+}
+.check_list div  + div{
+    margin-top: 10px;
+}
+.check_list div{
+}
+.check_list div:hover label{
+    text-decoration: none;
+}
     .check_list li {
         position: relative;
         cursor: pointer;

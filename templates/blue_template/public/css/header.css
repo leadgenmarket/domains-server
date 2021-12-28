@@ -7,6 +7,8 @@ body {
     font-family: 'Ubuntu', 'sans-serif', 'arial', 'helvetica';
     -webkit-font-smoothing: antialiased;
         /*background: url("/local/lp/vv_2/img/bg_body.jpg") center center;*/
+        /* background: url(http://spb-novostroyka.ru/local/lp/vv_2/img/bg_body.jpg) center center; */
+        background: url(../img/bg_body.jpg) center center;
 }
 input, textarea, select, button {
     font-family: 'Ubuntu', 'sans-serif', 'arial', 'helvetica';
@@ -49,7 +51,8 @@ input {
 .container_main {
     height: 100vh;
     width: 100%;
-    background: url("/local/lp/vv_2/img/bg_main.jpg") repeat-y center top;
+    /* background: url("/local/lp/vv_2/img/bg_main.jpg") repeat-y center top; */
+    background: url(../img/bg_main.jpg)no-repeat center top;
     -webkit-background-size: 1600px;
          -o-background-size: 1600px;
             background-size: 1600px;
@@ -115,7 +118,7 @@ footer .wmain{
     line-height: 32px;
     padding-bottom: 4px;
     color: #87F3E0;
-    line-height: 120%;
+    line-height: 140%;
     padding-left: 50px;
     /*background: url("/local/lp/vv_2/img/city_ico.png") no-repeat left top;*/
     position: relative;

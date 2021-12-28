@@ -53,7 +53,9 @@ const Router = () => {
         setParams(domainSettings.domain)
     }, [])
     
-    return <div className="container_main" style={{background: `url("https://cdn.statically.io/img/i.pinimg.com/originals/52/96/7e/52967e9aee1c617cb0668d3ef1704eba.jpg") repeat-y center top`}}> {/* /file-store/${params.background} */}
+    // return <div className="container_main" style={{background: `url("https://cdn.statically.io/img/i.pinimg.com/originals/52/96/7e/52967e9aee1c617cb0668d3ef1704eba.jpg") repeat-y center top`}}> 
+    return <div className="container_main"> 
+    {/* /file-store/${params.background} */}
             {step==null?<MainScreen params={params} nextStep={nextStep} />:params.Steps.length<=step?<FinishSteps form={form} form={form} setForm={setForm} params={params} />:<Step step={params.Steps[step]} raionsStep={raionsName} roomsStep={roomsName} params={params} index={step} length={params.Steps.length} nextStep={nextStep} prevStep={prevStep} form={form} setForm={setForm} />}
         </div>
 }
