@@ -7,7 +7,6 @@ import { bindActionCreators } from 'redux';
 import { Component, useEffect, useState } from "react";
 import { fetchDomains } from "../../../../actions/domains";
 import { Spinner } from "../../../spinner";
-import axios from "axios";
 import { useNavigate } from "react-router-dom"
 import ApiService from "../../../../services/api-service";
 

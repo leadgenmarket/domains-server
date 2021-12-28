@@ -2,8 +2,16 @@ import PageTitle from "../../../page-title"
 import { useNavigate } from "react-router-dom"
 import { Modals, showModal } from "../../../modals"
 import forms from "./forms"
+import { compose } from "../../../../utils";
+import { withApiService } from "../../../hoc";
+import { connect } from "react-redux";
+import { bindActionCreators } from 'redux';
+import { Component, useEffect, useState } from "react";
+import { fetchTitles } from "../../../../actions/titles";
+import { Spinner } from "../../../spinner";
+import TableItem from "./table-item";
 
-const TitlesList = () => {
+const TitlesPage = ({titles}) => {
     const navigate= useNavigate();
     return <div className="main-content">
         <div className="page-content">
@@ -47,16 +55,17 @@ const TitlesList = () => {
                                                                     <label className="form-check-label" htmlFor="checkAll"></label>
                                                                 </div>
                                                             </th>
-                                                            <th style={{ width: "80px" }} className="sorting" >ID</th>
-                                                            <th style={{ width: "80px" }} className="sorting" >Title</th>
+                                                            <th style={{ width: "60px" }} className="sorting" >ID</th>
+                                                            <th style={{  }} className="sorting" >Title</th>
+                                                            <th style={{ width: "200px" }} className="sorting" >Action</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
                                                         {
-                                                            /*domains.map((domain) => {
-                                                                domain.templateName = getTemplateById(domain.template_id)
-                                                                return <TableItem domain={domain} />
-                                                            })*/
+                                                            titles.map((title) => {
+                                                                console.log(title)
+                                                                return <TableItem title={title} />
+                                                            })
                                                         }
                                                     </tbody>
                                                 </table>
@@ -97,6 +106,32 @@ const TitlesList = () => {
     </div>
 }
 
-export {
-    TitlesList
-}
+class TitleListPageContainer extends Component {
+    
+    componentDidMount() {
+      this.props.fetchTitles();
+    }
+  
+    render() {
+      const { titles, loading, error } = this.props;
+      if (loading || titles == null) {
+          return <Spinner />
+      }
+      return <TitlesPage titles={titles} loading={loading} error={error} />;
+    }
+  }
+  
+  const mapStateToProps = ({ titlesList: { titles, loading, error }}) => {
+    return { titles, loading, error };
+  };
+  
+  const mapDispatchToProps = (dispatch, { apiService}) => {
+    return bindActionCreators({
+        fetchTitles: fetchTitles(apiService),
+    }, dispatch);
+  };
+
+  export default compose(
+    withApiService(),
+    connect(mapStateToProps, mapDispatchToProps)
+  )(TitleListPageContainer);

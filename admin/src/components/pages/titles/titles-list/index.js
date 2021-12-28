@@ -1,4 +1,4 @@
-import { TitlesList } from "./titles-list";
+import TitlesList from "./titles-list";
 
 export {
     TitlesList

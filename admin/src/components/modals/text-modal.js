@@ -403,7 +403,7 @@ const TextModal = ({form, sendRequest}) => {
                 <div className="modal-content">
                     <div className="modal-header">
                         <h4 className="modal-title" id="myModalLabel33">{form.title}</h4><br />
-                        <button type="button" class="btn-close" onClick={closeModal} data-bs-dismiss="modal" aria-label="Close"></button>
+                        <button type="button" className="btn-close" onClick={closeModal} data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     {form.subtitle!=null?<span style={{paddingLeft:"1.5rem", paddingTop:"1rem"}} className="modal-title" id="myModalLabel33">{form.subtitle}</span>:<div></div>}
                     

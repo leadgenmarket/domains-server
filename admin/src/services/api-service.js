@@ -75,4 +75,16 @@ export default class ApiService{
             headers: { "Content-Type": "multipart/form-data" },
         })
     }
+
+    titlesList = () => {
+        return axios.get("/api/titles/")
+    }
+
+    deleteTitle = (id) => {
+        return axios.delete("/api/titles/"+id)
+    }
+
+    updateTilte = (data) => {
+        return axios.post("/api/titles", data)
+    }
 }
