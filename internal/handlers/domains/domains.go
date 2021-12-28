@@ -112,6 +112,7 @@ func (dh *domainsHandlers) GetTemplate(c *gin.Context) {
 	if domain.Yandex != "" {
 		settings["yandex"] = domain.Yandex
 	}
+
 	if domain.Google != "" {
 		settings["google"] = domain.Google
 	}
