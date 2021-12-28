@@ -12,6 +12,8 @@ export APP_TOKEN_TTL:= 120m
 export APP_REFRESH_TOKEN_TTL:= 120m
 export APP_TOKEN_SECRET:= secret
 export APP_FILE_STORE_PATH:= ./file-store
+export APP_SSL_SERVING := false
+export APP_SERVER_IP_ADRESS := 5.23.55.120
  
 up:
 	@docker-compose up -d

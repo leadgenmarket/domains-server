@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"domain-server/internal/handlers/answers"
 	"domain-server/internal/handlers/auth"
 	"domain-server/internal/handlers/cities"
 	"domain-server/internal/handlers/domains"
@@ -9,8 +8,6 @@ import (
 	"domain-server/internal/handlers/locations"
 	"domain-server/internal/handlers/organizations"
 	"domain-server/internal/handlers/prices"
-	"domain-server/internal/handlers/settings"
-	"domain-server/internal/handlers/steps"
 	"domain-server/internal/handlers/templates"
 	"domain-server/internal/handlers/titles"
 	"domain-server/internal/handlers/users"
@@ -37,9 +34,6 @@ type handlers struct {
 	Domains       domains.Handlers
 	Cities        cities.Handlers
 	Locations     locations.Handlers
-	Settings      settings.Handlers
-	Steps         steps.Handlers
-	Answers       answers.Handlers
 	Leads         leads.Handlers
 	Organizations organizations.Handlers
 	Titles        titles.Handlers
@@ -58,9 +52,6 @@ func New(router *gin.Engine, repositories *repositories.Repositories, services *
 		Domains:       domains.New(repositories.Domains, repositories.Locations, repositories.Cities, repositories.Prices, services, logger),
 		Cities:        cities.New(repositories.Cities, services, logger),
 		Locations:     locations.New(repositories.Locations, repositories.Cities, services, logger),
-		Settings:      settings.New(repositories.Settings, services, logger),
-		Steps:         steps.New(repositories.Steps, services, logger),
-		Answers:       answers.New(repositories.Answers, services, logger),
 		Leads:         leads.New(repositories.Leads, services, logger),
 		Organizations: organizations.New(repositories.Organizations, services, logger),
 		Titles:        titles.New(repositories.Titles, services, logger),
@@ -80,6 +71,7 @@ func (h *handlers) Registry() {
 	h.router.Static("/file-store", "./file-store")
 	h.router.LoadHTMLFiles("./templates/blue_template/build/blue_template.html")
 	h.router.GET("/", h.Domains.GetTemplate)
+	h.router.GET("/:raion", h.Domains.GetTemplate)
 	h.router.POST("/sign-in", h.Auth.SignIn)
 	h.router.PUT("/lead/", h.Leads.AddLead)
 	h.router.POST("/lead/", h.Leads.UpdateLeads)
@@ -103,30 +95,8 @@ func (h *handlers) Registry() {
 
 		// locations
 		locationsGroup := api.Group("locations")
-
 		locationsGroup.GET("/update", h.Locations.UpdateLocations)
 		locationsGroup.GET("/raions/:id", h.Locations.GetRaionsOfTheCity)
-
-		//settings
-		settingsGroup := api.Group("settings")
-		settingsGroup.PUT("/", h.Settings.AddSettings)
-		settingsGroup.GET("/:id", h.Settings.GetDomainsSettings)
-		settingsGroup.DELETE("/:id", h.Settings.DeleteSettings)
-		settingsGroup.POST("/", h.Settings.UpdateSettings)
-
-		//steps
-		stepsGroup := api.Group("steps")
-		stepsGroup.GET("/:id", h.Steps.GetDomainsStep)
-		stepsGroup.PUT("/", h.Steps.AddStep)
-		stepsGroup.DELETE("/:id", h.Steps.DeleteStep)
-		stepsGroup.POST("/", h.Steps.UpdateSteps)
-
-		//answers
-		answersGroup := api.Group("answers")
-		answersGroup.GET("/:id", h.Answers.GetQuestionAnswers)
-		answersGroup.PUT("/", h.Answers.AddAnswer)
-		answersGroup.DELETE("/:id", h.Answers.DeleteAnswer)
-		answersGroup.POST("/", h.Answers.UpdateAnswer)
 
 		//leads
 		leadsGroup := api.Group("lead")
@@ -149,11 +119,11 @@ func (h *handlers) Registry() {
 		titlesGroup.POST("/", h.Titles.UpdateTitles)
 
 		//users
-		usersGroup := api.Group("users")
+		/*usersGroup := api.Group("users")
 		usersGroup.GET("/", h.Users.GetUsersList)
 		usersGroup.PUT("/", h.Users.AddUser)
 		usersGroup.DELETE("/", h.Users.DeleteUser)
-		usersGroup.POST("/", h.Users.UpdateUser)
+		usersGroup.POST("/", h.Users.UpdateUser)*/
 
 		//templates
 		templatesGroup := api.Group("templates")

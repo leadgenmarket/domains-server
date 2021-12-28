@@ -54,37 +54,6 @@ type Template struct {
 	Path string        `bson:"path"`
 }
 
-type Settings struct {
-	ID             bson.ObjectId `bson:"_id"`
-	CityID         string        `bson:"city_id" json:"city_id" binding:"required"`
-	Background     string        `bson:"background" json:"background"`
-	MainColor      string        `bson:"main_color" json:"main_color"`
-	SecondaryColor string        `bson:"secondary_color" json:"secondary_color"`
-	Yandex         string        `bson:"yandex" json:"yandex"`
-	Google         string        `bson:"google" json:"google"`
-	Mail           string        `bson:"mail" json:"mail"`
-	Roistat        string        `bson:"roistat" json:"roistat"`
-	Marquiz        string        `bson:"marquiz" json:"marquiz"`
-	Steps          []Step        `bson:"steps"`
-	OrganizationID string        `bson:"organization_id" json:"organization_id"`
-}
-
-type Step struct {
-	ID           bson.ObjectId `bson:"_id"`
-	DomainID     string        `bson:"domain_id"`
-	Question     string        `bson:"question"`
-	SendQuestion string        `bson:"send_question"`
-	Type         string        `bson:"type"`
-	Order        int           `bson:"order"`
-	Answers      []Answer      `bson:"answers"`
-}
-
-type Answer struct {
-	ID        bson.ObjectId `bson:"_id"`
-	Title     string        `bson:"title"`
-	SendParam string        `bson:"send_param"`
-}
-
 type City struct {
 	ID       bson.ObjectId `bson:"_id"`
 	Name     string        `bson:"name"`

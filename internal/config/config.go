@@ -21,6 +21,8 @@ type Config struct {
 	RefreshTokenTTL     time.Duration
 	TokenSecret         string
 	FileStorePath       string
+	SSLServing          bool
+	ServerIPAdress      string
 }
 
 func InitConfig(prefix string) (*Config, error) {

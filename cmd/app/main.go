@@ -7,6 +7,7 @@ import (
 	"domain-server/internal/repositories"
 	"domain-server/internal/repositories/domains"
 	"domain-server/internal/services"
+	"fmt"
 
 	"github.com/gin-gonic/autotls"
 	"github.com/gin-gonic/gin"
@@ -28,7 +29,7 @@ func main() {
 		logger.GetInstance().Panic("error initializing config: %w", err)
 	}
 	repo := repositories.New(sess.DB("leadgen"), cfg)
-	domainsList, err := GetAllDomainUrls(repo.Domains)
+	domainsList, err := GetAllDomainUrls(repo.Domains, cfg.ServerIPAdress)
 	if err != nil {
 		logger.GetInstance().Panic("error initializing config: %w", err)
 	}
@@ -42,11 +43,15 @@ func main() {
 	servicesContainer := services.Setup(cfg)
 	handlersService := handlers.New(router, repo, servicesContainer, logger)
 	handlersService.Registry()
-	logger.GetInstance().Panic(autotls.RunWithManager(router, &m))
+	if cfg.SSLServing {
+		logger.GetInstance().Panic(autotls.RunWithManager(router, &m))
+	} else {
+		router.Run(fmt.Sprintf(":%s", cfg.Port))
+	}
 }
 
-func GetAllDomainUrls(repository domains.Repository) ([]string, error) {
-	domains := []string{}
+func GetAllDomainUrls(repository domains.Repository, serversIP string) ([]string, error) {
+	domains := []string{serversIP}
 	listDomain, err := repository.GetAllDomains()
 	if err != nil {
 		return nil, err
