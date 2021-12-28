@@ -61,18 +61,27 @@ const SliderStep = ({ step, params, raionsStep, roomsStep, index, length, nextSt
                     typedRoomsMax.push("max_4")
                 }
             }
-            console.log(typedRoomsMin)
-            console.log(typedRoomsMax)
             if (raions.length == 1 && raions[0] == "") {
                 console.log("надо взять значения по умолчанию, для всех районов")
+                let prices = []
+                Object.keys(domainSettings.prices.prices).map((key) => {
+                    let price = domainSettings.prices.prices[key]
+                    if (parseFloat(price.min)>0 && (minV === undefined || minV > parseFloat(price.min))) {
+                        minV = Math.round(parseFloat(price.min))
+                    }
+                    if (parseFloat(price.max)>0 && (maxV === undefined || maxV < parseFloat(price.max))) {
+                        maxV = Math.round(parseFloat(price.max))
+                    }
+                })
             } else {
                 console.log("считаем нужные районы и цены")
                 let prices = []
                
                 raions.forEach((raion) => {
-                    prices.push(domainSettings.prices.prices[getRaionsID(raion)])
+                    if (raion != "Все") {
+                        prices.push(domainSettings.prices.prices[getRaionsID(raion)])
+                    }
                 })
-                console.log(prices)
                 
                 
                 prices.forEach((price) => {
@@ -87,17 +96,11 @@ const SliderStep = ({ step, params, raionsStep, roomsStep, index, length, nextSt
                         }
                     })
                 })
-                console.log(Math.round(min))
-                //вот тут вопрос, наверное если слишком маленький интервал, то умножать на два
-                //maxV = minV*2
-                setMin(minV*1000000)
-                setMax(maxV*1000000)
-                setValue((((maxV - minV)/4)+minV)*1000000)
+                
             }
-           
-            /*setMin(1500000)
-            setMax(5500000)
-            setDefaultValue(((1500000 - 5500000)/4)+1500000)*/
+            setMin(minV*1000000)
+            setMax(maxV*1000000)
+            setValue((((maxV - minV)/4)+minV)*1000000)
         } else {
             let minV = parseFloat(step.from)
             let maxV = parseFloat(step.to)

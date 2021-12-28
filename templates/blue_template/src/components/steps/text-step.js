@@ -3,6 +3,7 @@ import CheckBoxItem from "./checkbox-item"
 import ColoredScrollbars from "../colored-scrollbars/colored-scrollbars";
 
 const TextStep = ({ step, params, index, length, nextStep, prevStep, form, setForm }) => {
+    const [raionsAvailable, setAvailableRaions] = useState([])
     const amIChecked = (answer) => {
        return form[step.title].split(", ").includes(answer)
     }

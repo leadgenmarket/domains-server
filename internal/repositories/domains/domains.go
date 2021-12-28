@@ -9,6 +9,11 @@ import (
 	"github.com/globalsign/mgo/bson"
 )
 
+const (
+	defaultMainColor      = "5ABBB0"
+	defaultSecondaryColor = "27353E"
+)
+
 type Repository interface {
 	AddDomain(domain models.Domain) (_ models.Domain, err error)
 	FindDomainByUrl(url string) (_ models.Domain, err error)
@@ -39,6 +44,18 @@ func (r *repositroyDB) AddDomain(domain models.Domain) (models.Domain, error) {
 	domain.ID = bson.NewObjectId()
 	domain.CreatedAt = time.Now()
 	domain.UpdatedAt = time.Now()
+
+	if len(domain.Steps) == 0 {
+		domain.Steps = r.GetDefaultSteps()
+	}
+	fmt.Println(len(domain.MainColor) == 0)
+	fmt.Println(len(domain.Steps))
+	if len(domain.MainColor) == 0 {
+		domain.MainColor = defaultMainColor
+	}
+	if len(domain.SecondaryColor) == 0 {
+		domain.SecondaryColor = defaultSecondaryColor
+	}
 	err := r.domains.Insert(&domain)
 	if err != nil {
 		return domain, err
@@ -88,4 +105,53 @@ func (r *repositroyDB) DeleteDomainById(id string) error {
 		return err
 	}
 	return nil
+}
+
+func (r *repositroyDB) GetDefaultDomainSettingsForCity(url string, templateID bson.ObjectId, userID bson.ObjectId, cityID bson.ObjectId, yandex string, google string) *models.Domain {
+	domain := models.Domain{
+		ID:             bson.NewObjectId(),
+		Url:            url,
+		TemplateID:     templateID,
+		CreatedBy:      userID,
+		CityID:         cityID,
+		Background:     "",
+		MainColor:      "5ABBB0",
+		SecondaryColor: "FFF",
+		Yandex:         yandex,
+		Google:         google,
+		Mail:           "",
+		Marquiz:        "",
+		Steps:          r.GetDefaultSteps(),
+		OrganizationID: "",
+		Qoopler:        false,
+	}
+	return &domain
+}
+
+func (r *repositroyDB) GetDefaultSteps() []map[string]interface{} {
+	return []map[string]interface{}{
+		{
+			"title": "Выберите районы",
+			"type":  "raions",
+		},
+		{
+			"title": "Сколько комнат Вам нужно?",
+			"type":  "rooms",
+		},
+		{
+			"title": "Когда жилой комплекс должен быть сдан?",
+			"type":  "sdacha",
+			"answers": []string{
+				"ЖК сдается в 2022 году",
+				"ЖК сдается в 2023 году",
+				"ЖК сдается в 2024 году",
+				"ЖК сдается в 2025 году",
+				"ЖК сдается в 2026 году",
+			},
+		},
+		{
+			"title": "Укажите максимальную стоимость квартиры, выше которой вы не готовы рассматривать предложения",
+			"type":  "slider_r",
+		},
+	}
 }

@@ -82,10 +82,11 @@ const RoomsStep = ({ step, params, raionsStep, index, length, nextStep, prevStep
         if (form[raionsStep]!= "") {
             let raions = form[raionsStep].split(", ")
             let roomTypes=[]
+            console.log(raions)
             domainSettings.locations.map((location) => {
                 if (raions.includes(location.NameFull)){
                     try{
-                        let prices =JSON.parse(location.Prices)
+                        let prices =domainSettings.prices.prices[location.PortalID]
                         if (prices["max_0"]>0 && !roomTypes.includes("Студии")) {
                             roomTypes.push("Студии")
                         }
@@ -101,8 +102,6 @@ const RoomsStep = ({ step, params, raionsStep, index, length, nextStep, prevStep
                         if (prices["max_4"]>0 && !roomTypes.includes("4 - комнатные квартиры")) {
                             roomTypes.push("4 - комнатные квартиры")
                         }
-                        console.log(prices)
-
                     } catch(e){}
                 }
             })
