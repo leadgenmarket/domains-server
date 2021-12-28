@@ -9,7 +9,7 @@ const MainScreen = ({params, nextStep}) => {
                     <div className="page_inner">
                         <div className="wmain">
                             <CityTitle params={params} />
-                            <h1>Недорогие новостройки</h1>
+                            <h1>{params.title}</h1>
                             <div className="sub_title">Здесь собрана полная база квартир, более 30 000 вариантов. <br />За 1 минуту вы получите бесплатный доступ к самым выгодным предложениям!</div>
                             <BtnComponent text={"Начать быстрый поиск"} params={params} clickFunct={nextStep}/>
                         </div>

@@ -2,6 +2,7 @@ package titles
 
 import (
 	"domain-server/internal/models"
+	"fmt"
 
 	mongodb "github.com/globalsign/mgo"
 	"github.com/globalsign/mgo/bson"
@@ -12,15 +13,18 @@ type Repository interface {
 	GetTitlesList() ([]models.Title, error)
 	UpdateTitle(title models.Title) error
 	DeleteTitle(id string) error
+	GetTitleForDomain(cityID bson.ObjectId, rayon string, k string) (string, error)
 }
 
 type repositroyDB struct {
-	titles *mongodb.Collection
+	titles    *mongodb.Collection
+	locations *mongodb.Collection
 }
 
 func New(dbClient *mongodb.Database) Repository {
 	return &repositroyDB{
-		titles: dbClient.C("titles"),
+		titles:    dbClient.C("titles"),
+		locations: dbClient.C("locations"),
 	}
 }
 
@@ -56,4 +60,29 @@ func (r *repositroyDB) GetTitlesList() ([]models.Title, error) {
 		return titles, err
 	}
 	return titles, nil
+}
+
+func (r *repositroyDB) GetTitleForDomain(cityID bson.ObjectId, rayon string, k string) (string, error) {
+	if k == "" {
+		location := models.Location{}
+		err := r.locations.Find(bson.M{"city_id": cityID, "path": rayon}).One(&location)
+		if err != nil {
+			return "", err
+		}
+		return GenerateTitleFromLocation(location), nil
+	}
+	return "", nil
+}
+
+func GenerateTitleFromLocation(location models.Location) string {
+	prefix := "Новостройки в"
+	if location.Type == "streets" {
+		fmt.Println(string([]rune(location.NameSite)[0:2]))
+		if string([]rune(location.NameSite)[0:2]) == "в " {
+			prefix = "Новостройки "
+		} else {
+			prefix = "Новостройки на"
+		}
+	}
+	return fmt.Sprintf(`%s %s`, prefix, location.NameSite)
 }

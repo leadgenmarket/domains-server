@@ -14,9 +14,10 @@ import { checkAuth } from "../../actions"
 import ApiService from "../../services/api-service"
 import { LoginPage } from "../pages";
 import ToolBar from "../tool-bar";
-import DomainsPage from "../pages/domains-page";
-import DomainDetail from "../pages/domain-detail";
-import DomainEdit from "../pages/domain-edit";
+import DomainsPage from "../pages/domains/list";
+import DomainDetail from "../pages/domains/detail";
+import DomainEdit from "../pages/domains/edit";
+import { TitlesList } from "../pages/titles/titles-list";
 
 const App = ({ auth, phone, checkAuth}) => {
     const location = useLocation().pathname;
@@ -47,6 +48,7 @@ const App = ({ auth, phone, checkAuth}) => {
                 <ToolBar />
                 <SideMenu />
                 <Routes>
+                    <Route path="/admin/titles/" element={<TitlesList />} />
                     <Route path="/admin/edit/:id" element={<DomainEdit />} />
                     <Route path="/admin/add" element={<DomainEdit />} />
                     <Route path="/admin/:id" element={<DomainDetail />} />

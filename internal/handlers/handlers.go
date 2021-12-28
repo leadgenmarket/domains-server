@@ -49,7 +49,7 @@ type handlers struct {
 func New(router *gin.Engine, repositories *repositories.Repositories, services *services.Services, logger logger.Log) Handlers {
 	return &handlers{
 		Auth:          auth.New(repositories.Users, services, logger),
-		Domains:       domains.New(repositories.Domains, repositories.Locations, repositories.Cities, repositories.Prices, services, logger),
+		Domains:       domains.New(repositories.Domains, repositories.Locations, repositories.Cities, repositories.Prices, repositories.Titles, services, logger),
 		Cities:        cities.New(repositories.Cities, services, logger),
 		Locations:     locations.New(repositories.Locations, repositories.Cities, services, logger),
 		Leads:         leads.New(repositories.Leads, services, logger),
@@ -71,7 +71,7 @@ func (h *handlers) Registry() {
 	h.router.Static("/file-store", "./file-store")
 	h.router.LoadHTMLFiles("./templates/blue_template/build/blue_template.html")
 	h.router.GET("/", h.Domains.GetTemplate)
-	h.router.GET("/:raion", h.Domains.GetTemplate)
+	h.router.GET("/:rayon", h.Domains.GetTemplate)
 	h.router.POST("/sign-in", h.Auth.SignIn)
 	h.router.PUT("/lead/", h.Leads.AddLead)
 	h.router.POST("/lead/", h.Leads.UpdateLeads)

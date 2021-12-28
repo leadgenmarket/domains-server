@@ -49,7 +49,7 @@ const Router = () => {
             }
         })
         setForm(formNew)
-        
+        domainSettings.domain.title = domainSettings.title
         setParams(domainSettings.domain)
     }, [])
     

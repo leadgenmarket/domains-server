@@ -29,11 +29,6 @@ const SliderStep = ({ step, params, raionsStep, roomsStep, index, length, nextSt
         }
     }
     useEffect(()=> {
-        /*let min = parseFloat(step.from)
-        let max = parseFloat(step.to)
-        setMin(min)
-        setMax(max)
-        setValue(((max - min)/4)+min)*/
         if (step.type === "slider_r") {
             let minV
             let maxV
@@ -103,13 +98,13 @@ const SliderStep = ({ step, params, raionsStep, roomsStep, index, length, nextSt
             /*setMin(1500000)
             setMax(5500000)
             setDefaultValue(((1500000 - 5500000)/4)+1500000)*/
-        } /*else if (form[step.title] === undefined) {
-          form[step.title] = defaultValue
-          setValue(defaultValue)
-          setForm(form)
-        } else if (form[step.title]!== undefined && typeof form[step.title] === "number") {
-            setValue(form[step.title])
-        }*/
+        } else {
+            let minV = parseFloat(step.from)
+            let maxV = parseFloat(step.to)
+            setMin(minV)
+            setMax(maxV)
+            setValue(((maxV - minV)/4)+minV)
+        }
     },[index])
 
    

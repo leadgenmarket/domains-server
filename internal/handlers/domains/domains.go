@@ -7,6 +7,7 @@ import (
 	"domain-server/internal/repositories/domains"
 	"domain-server/internal/repositories/locations"
 	"domain-server/internal/repositories/prices"
+	"domain-server/internal/repositories/titles"
 	"domain-server/internal/services"
 	"domain-server/internal/utils"
 	"encoding/json"
@@ -35,16 +36,18 @@ type domainsHandlers struct {
 	repoLoc    locations.Repository
 	cityRepo   cities.Repository
 	pricesRepo prices.Repository
+	titlesRepo titles.Repository
 	services   *services.Services
 	logger     logger.Log
 }
 
-func New(repository domains.Repository, repoLoc locations.Repository, cityRepo cities.Repository, pricesRepo prices.Repository, services *services.Services, logger logger.Log) Handlers {
+func New(repository domains.Repository, repoLoc locations.Repository, cityRepo cities.Repository, pricesRepo prices.Repository, titlesRepo titles.Repository, services *services.Services, logger logger.Log) Handlers {
 	return &domainsHandlers{
 		repository: repository,
 		repoLoc:    repoLoc,
 		cityRepo:   cityRepo,
 		pricesRepo: pricesRepo,
+		titlesRepo: titlesRepo,
 		logger:     logger,
 		services:   services,
 	}
@@ -88,6 +91,18 @@ func (dh *domainsHandlers) GetTemplate(c *gin.Context) {
 		dh.logger.GetInstance().Errorf("error getting city %s", err)
 		c.JSON(http.StatusBadRequest, err)
 		return
+	}
+
+	rayon := c.Param("rayon")
+	k := c.Request.URL.Query().Get("k")
+	title, err := dh.titlesRepo.GetTitleForDomain(domain.CityID, rayon, k)
+	if err != nil {
+		dh.logger.GetInstance().Errorf("error getting title for domain %s", err)
+	}
+
+	result["title"] = title
+	if rayon != "" {
+		result["rayon"] = rayon
 	}
 
 	c.HTML(http.StatusOK, "blue_template.html", gin.H{
