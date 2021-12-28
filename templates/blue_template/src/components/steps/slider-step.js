@@ -116,7 +116,7 @@ const SliderStep = ({ step, params, raionsStep, roomsStep, index, length, nextSt
                 //color: `#${params.secondary_color} !important`,
                 height: 3,
                 padding: "13px 0",
-                marginTop: "-15px",
+                marginTop: "-21px",
             },
             track: {
                 height: 4,

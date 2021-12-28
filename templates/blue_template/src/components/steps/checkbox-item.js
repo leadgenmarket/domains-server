@@ -53,7 +53,7 @@ function Checkbox(props) {
 const CheckBoxItem = ({step, form, setForm, checked, updateCheck, index, params,nextStep, prevStep,  answer}) => {
     return <div  key={answer+"_wr"} style={{position:"relative", fontSize: "22px", color: "#FFF", lineHeight: "22px"}} className="act">
             <Checkbox params={params} name="tac" checked={checked} onChange={()=>{updateCheck(answer)}} style={{display:"flex"}}>
-                {answer}
+                <span>{answer}</span>
             </Checkbox>
         </div>
 }

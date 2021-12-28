@@ -117,15 +117,17 @@ footer .wmain{
 .check_list div label{
     cursor: pointer;
     display: inline-block;
+}
+.check_list div label span{
+    display: inline-block;
     vertical-align: top;
     text-decoration: underline;
+    line-height: 31px;
 }
 .check_list div  + div{
     margin-top: 10px;
 }
-.check_list div{
-}
-.check_list div:hover label{
+.check_list div label:hover span{
     text-decoration: none;
 }
     .check_list li {
