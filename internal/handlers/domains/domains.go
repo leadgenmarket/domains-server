@@ -93,6 +93,8 @@ func (dh *domainsHandlers) GetTemplate(c *gin.Context) {
 		return
 	}
 
+	result["ip"] = c.ClientIP()
+
 	rayon := c.Param("rayon")
 	k := c.Request.URL.Query().Get("k")
 	title, err := dh.titlesRepo.GetTitleForDomain(domain.CityID, rayon, k)

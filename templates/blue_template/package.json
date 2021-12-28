@@ -37,7 +37,9 @@
       "react-app/jest"
     ],
     "globals": {
-      "domainSettings": true
+      "domainSettings": true,
+      "ym": true,
+      "gtag": true
     }
   },
   "browserslist": {

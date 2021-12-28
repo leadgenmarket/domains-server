@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react"
 import { SendData } from "../../utils"
 import BtnComponent from "../btn-component"
 
-const NameStep = ({params, nextStep, form, setForm}) => {
+const NameStep = ({params, nextStep, form, setForm, raionsStep, roomsStep, sdachaName}) => {
     const [name, setName] = useState("")
     const [error, setError] = useState(false)
     const inputChange = (event) => {
@@ -23,7 +23,7 @@ const NameStep = ({params, nextStep, form, setForm}) => {
         event.preventDefault()
         if (name.length !== 0) {
             setError(false)
-            SendData(form, setForm, () => nextStep(event))
+            SendData(form, setForm, () => nextStep(event), raionsStep, roomsStep, sdachaName)
         } else {
             setError(true)
         }

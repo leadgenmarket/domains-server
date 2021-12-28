@@ -1,140 +1,128 @@
 import axios from "axios"
+import jsCookie from "js-cookie"
 
 const sendLeadUrl = "/lead"
 const updateLeadUrl = "/lead"
-const SendData = (form, setForm, callback) => {
-    let data = {}
-    //console.log(form)
+const getParam = (p) => {
+    var match = RegExp('[?&]' + p + '=([^&]*)').exec(window.location.search);
+    return match && decodeURIComponent(match[1].replace(/\+/g, ' '));
+}
+
+const getRayonCodes = (rayonName) => {
+	let result = []
+	if (rayonName === undefined) {
+		return ""
+	}
+	let rayons = rayonName.split(", ")
+	rayons.map((rayon) => {
+		Object.keys(domainSettings.locations).map((key) => {
+			if (domainSettings.locations[key].NameFull == rayon) {
+				result.push(domainSettings.locations[key].Path)
+			}
+		})
+	})
+	return result
+}
+
+const getSdachaList = (sdacha) => {
+	if (sdacha === undefined) {
+		return ""
+	}
+	let list = sdacha.split(", ")
+	let result = []
+	list.forEach((sdacha) => {
+		sdacha.split(' ').forEach((path) => {
+			if (parseInt(path)>0) {
+				result.push(path)
+			}
+		})
+	})
+	return result
+}
+const SendData = (form, setForm, callback, raionsName, roomsName, sdachaName) => {
+	let leadgen = {
+		"AMO_ID": "false",
+		"loc_type": "",
+		"roistatVisitId": jsCookie.get('roistat_visit'),
+		"act": "tmp",
+		"vtor": "0",
+		"jk_id": "",
+		"TEMA": "Заявка с одноэкранника",
+		"m_codes": "",
+		"f_info[]": [],
+		"yclid": getParam('yclid') == null? "": getParam('yclid'),
+		"gclid": getParam('gclid') == null? "": getParam('gclid'),
+		"send_type": "",
+		"l_t": "la",
+		"set_bd": "1",
+		"s[sid]": "",
+		"s[d]": window.location.host,
+		"s[r]": "",
+		"s[uri]": decodeURIComponent(window.location.search),
+		"fb_id": domainSettings.domain.facebook,
+		"metrika_id": domainSettings.domain.yandex,
+		"ut_type": window.location.host,
+		"s[ua]": window.navigator.userAgent,
+		"a_sda4a[]": getSdachaList(form[sdachaName]),
+		"r_codes": getRayonCodes(form[raionsName]),
+		"clientID": domainSettings.domain.clientID,
+		"_fbp": jsCookie.get("_fbp"),
+		"_fbc": jsCookie.get("_fbc"),
+		"S_ID": domainSettings.city.portal_id,
+		"s_name": domainSettings.city.Name,
+		"s[ip]": domainSettings.ip,
+		"user_ip": domainSettings.ip,
+		"utm_content": "1ekran",
+		"name": "",
+		"phone": "",
+		"celType": "",
+		"s[cel]": "",
+	}
+
+	if (getParam('utm_campaign') != null) {
+		leadgen["utm_campaign"] = getParam('utm_campaign')
+	}
+	if (getParam('utm_medium') != null) {
+		leadgen["utm_medium"] = getParam('utm_medium')
+	}
+	if (getParam('utm_term') != null) {
+		leadgen["utm_term"] = getParam('utm_term')
+	}
+	if (getParam('utm_source') != null) {
+		leadgen["utm_source"] = getParam('utm_source')
+	}
+
+	//console.log(raionsName)
+	let text = []
     Object.keys(form).map((key) => {
         if (key === 'name') {
-            data = {...data, name: form['name']}
+			leadgen.name = form['name']
         } else if (key === 'phone') {
-            data = {...data, phone: form['phone']}
+			leadgen.phone = form['phone']
         } else if (key !== 'lead_id') {
-            let newText = ""
-            if (data.text !== undefined) {
-                newText = data.text+"\n"+key+" "+form[key]
-            } else {
-                newText = key+" "+form[key]
-            }
-            data = {...data, text: newText}
+			text.push(key+" - "+form[key])
         }
     })
+	leadgen = {...leadgen, "f_info[]": text}
     if (form.lead_id === undefined) {
-        axios.put(sendLeadUrl, data).then((resp) => {
+		leadgen["celType"] = "getForm"
+		leadgen["s[cel]"] = "getForm"
+        axios.put(sendLeadUrl+window.location.search, leadgen).then((resp) => {
             setForm({
                 ...form,
                 lead_id: resp.data.ID
             })
         })
     } else {
-        data = {...data, id: form.lead_id}
-        axios.post(updateLeadUrl, data).then((resp) => {
+		leadgen["celType"] = "getName"
+		leadgen["s[cel]"] = "getName"
+        leadgen = {...leadgen, id: form.lead_id}
+        axios.post(updateLeadUrl+window.location.search, leadgen).then((resp) => {
             console.log('updated')
         })
     }
+	console.log(leadgen)
     callback()
 }
 
 export default SendData
-
-
-/*
-
-стандартный шаблон
-
-{
-	"AMO_ID": "false",
-	"loc_type": "",
-	"name": "",
-	"roistatVisitId": "8527232",
-	"user_ip": "178.217.152.251",
-	"act": "tmp",
-	"phone": "+7 ( 925 ) 120 - 20 - 20",
-	"a_sda4a[]": "2024",
-	"vtor": "0",
-	"jk_id": "40892",
-	"S_ID": "99793",
-	"TEMA": "Заявка с одноэкранника",
-	"r_codes": "primorskiy-rayon-piter, centr-spb, ",
-	"m_codes": "",
-	"s_name": "Санкт-Петербург",
-	"f_info[]": [
-		"Район - Приморский район, Центр, ",
-		"Количество комнат - 3, 4, ",
-		"Сдача - ЖК сдается в 2024 году, ",
-		"Бюджет - До 84 567 000 руб."
-	],
-	"utm_content": "1ekran",
-	"ut_type": "piter-kvartiri.ru",
-	"yclid": "null",
-	"gclid": "null",
-	"send_type": "",
-	"l_t": "la",
-	"set_bd": "1",
-	"s[sid]": "sqlvn8n8v1ddicp7r0tuhdfqdm",
-	"s[d]": "piter-kvartiri.ru:443",
-	"s[r]": "",
-	"s[uri]": "/?city",
-	"s[ua]": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:95.0) Gecko/20100101 Firefox/95.0",
-	"s[ip]": "178.217.152.251",
-	"s[cel]": "getForm",
-	"s[a]": "2",
-	"_fbp": "fb.1.1640332757686.1397046802",
-	"_fbc": "",
-	"fb_id": "1019377974900745",
-	"clientID": "1640332757365252884",
-	"metrika_id": "86822304",
-	"celType": "getForm"
-}
-
-
-
-======////* отпрвленно имя
-
-{
-	"AMO_ID": "false",
-	"loc_type": "",
-	"name": "test",
-	"roistatVisitId": "8527232",
-	"user_ip": "178.217.152.251",
-	"act": "tmp",
-	"phone": "+7 ( 925 ) 120 - 20 - 20",
-	"a_sda4a[]": "2024",
-	"vtor": "0",
-	"jk_id": "40892",
-	"S_ID": "99793",
-	"TEMA": "Заявка с одноэкранника",
-	"r_codes": "primorskiy-rayon-piter, centr-spb, ",
-	"m_codes": "",
-	"s_name": "Санкт-Петербург",
-	"f_info[]": [
-		"Район - Приморский район, Центр, ",
-		"Количество комнат - 3, 4, ",
-		"Сдача - ЖК сдается в 2024 году, ",
-		"Бюджет - До 84 567 000 руб."
-	],
-	"utm_content": "1ekran",
-	"ut_type": "piter-kvartiri.ru",
-	"yclid": "null",
-	"gclid": "null",
-	"send_type": "",
-	"l_t": "la",
-	"set_bd": "1",
-	"s[sid]": "sqlvn8n8v1ddicp7r0tuhdfqdm",
-	"s[d]": "piter-kvartiri.ru:443",
-	"s[r]": "",
-	"s[uri]": "/?city",
-	"s[ua]": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:95.0) Gecko/20100101 Firefox/95.0",
-	"s[ip]": "178.217.152.251",
-	"s[cel]": "getName",
-	"s[a]": "2",
-	"_fbp": "fb.1.1640332757686.1397046802",
-	"_fbc": "",
-	"fb_id": "1019377974900745",
-	"clientID": "1640332757365252884",
-	"metrika_id": "86822304",
-	"celType": "getName"
-}
-
-*/

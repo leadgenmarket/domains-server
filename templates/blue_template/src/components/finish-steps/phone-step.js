@@ -3,7 +3,7 @@ import InputMask from 'react-input-mask'
 import { SendData } from "../../utils"
 import BtnComponent from "../btn-component"
 
-const PhoneStep = ({params, nextStep, form, setForm}) => {
+const PhoneStep = ({params, nextStep, form, setForm, raionsStep, roomsStep, sdachaName}) => {
     const [phone, setPhone] = useState("")
     const [error, setError] = useState(false)
     const inputChange = (event) => {
@@ -24,7 +24,7 @@ const PhoneStep = ({params, nextStep, form, setForm}) => {
         event.preventDefault()
         if (phone.length === 18) {
             setError(false)
-            SendData(form, setForm, () => nextStep(event))
+            SendData(form, setForm, () => nextStep(event), raionsStep, roomsStep, sdachaName)
         } else {
             setError(true)
         }

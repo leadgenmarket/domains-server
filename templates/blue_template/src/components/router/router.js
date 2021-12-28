@@ -78,10 +78,17 @@ const Router = () => {
         domainSettings.domain.title = domainSettings.title
         getAvailableRaions()
         setParams(domainSettings.domain)
+        if (domainSettings.domain.yandex!="") {
+            try {
+                ym(parseInt(domainSettings.domain.yandex), 'getClientID', function(clientID) {
+                    domainSettings.domain.clientID = clientID
+                })
+            } catch (e){}
+        }
     }, [])
     
     return <div className="container_main" style={{background: params.background!=""?`url("/file-store/${params.background}") center / cover no-repeat`:``}}> 
-            {step==null?<MainScreen params={params} nextStep={nextStep} />:params.Steps.length<=step?<FinishSteps form={form} form={form} setForm={setForm} params={params} />:<Step step={params.Steps[step]} raionsStep={raionsName} roomsStep={roomsName} params={params} index={step} length={params.Steps.length} nextStep={nextStep} prevStep={prevStep} form={form} setForm={setForm} />}
+            {step==null?<MainScreen params={params} nextStep={nextStep} />:params.Steps.length<=step?<FinishSteps form={form} form={form} setForm={setForm} raionsStep={raionsName} roomsStep={roomsName} sdachaName={sdachaName} params={params} />:<Step step={params.Steps[step]} raionsStep={raionsName} roomsStep={roomsName} params={params} index={step} length={params.Steps.length} nextStep={nextStep} prevStep={prevStep} form={form} setForm={setForm} />}
         </div>
 }
 

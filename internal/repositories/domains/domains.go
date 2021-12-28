@@ -48,8 +48,6 @@ func (r *repositroyDB) AddDomain(domain models.Domain) (models.Domain, error) {
 	if len(domain.Steps) == 0 {
 		domain.Steps = r.GetDefaultSteps()
 	}
-	fmt.Println(len(domain.MainColor) == 0)
-	fmt.Println(len(domain.Steps))
 	if len(domain.MainColor) == 0 {
 		domain.MainColor = defaultMainColor
 	}
@@ -115,8 +113,8 @@ func (r *repositroyDB) GetDefaultDomainSettingsForCity(url string, templateID bs
 		CreatedBy:      userID,
 		CityID:         cityID,
 		Background:     "",
-		MainColor:      "5ABBB0",
-		SecondaryColor: "FFF",
+		MainColor:      defaultMainColor,
+		SecondaryColor: defaultSecondaryColor,
 		Yandex:         yandex,
 		Google:         google,
 		Mail:           "",
