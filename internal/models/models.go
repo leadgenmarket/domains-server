@@ -39,7 +39,7 @@ type Domain struct {
 	Yandex         string                   `bson:"yandex" json:"yandex"`
 	Google         string                   `bson:"google" json:"google"`
 	Mail           string                   `bson:"mail" json:"mail"`
-	Facebook       string                   `bson:"facebook" form:"facebook"`
+	Facebook       string                   `bson:"facebook" form:"facebook" json:"facebook"`
 	Marquiz        string                   `bson:"marquiz" json:"marquiz"`
 	Steps          []map[string]interface{} `bson:"steps"`
 	OrganizationID string                   `bson:"organization_id" json:"organization_id"`
