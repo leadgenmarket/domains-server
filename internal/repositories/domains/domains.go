@@ -80,6 +80,8 @@ func (r *repositroyDB) FindDomainByID(id string) (models.Domain, error) {
 }
 
 func (r *repositroyDB) UpdateDomain(domain models.Domain) error {
+	domain.CreatedAt = time.Now()
+	domain.UpdatedAt = time.Now()
 	err := r.domains.Update(bson.M{"_id": domain.ID}, domain)
 	if err != nil {
 		fmt.Println(err)
