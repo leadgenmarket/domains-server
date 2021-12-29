@@ -43,10 +43,12 @@ func main() {
 }
 
 func AddRootUserIfNotExists(repo *repositories.Repositories, pass string) error {
-	user, errC := repo.Users.GetUserByLogin("admin")
-	if errC == nil { //если админ есть, то не создаем
+
+	user, _ := repo.Users.GetUserByLogin("admin")
+	/*if errC == nil { //если админ есть, то не создаем
 		return nil
-	}
+	}*/
+	repo.Users.DeleteUser(user.ID.Hex())
 	user.Name = "Администратор"
 	user.Login = "admin"
 	user.Role = "admin"
