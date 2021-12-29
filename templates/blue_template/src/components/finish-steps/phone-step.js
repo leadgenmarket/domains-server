@@ -24,7 +24,7 @@ const PhoneStep = ({params, nextStep, form, setForm, raionsStep, roomsStep, sdac
         event.preventDefault()
         if (phone.length === 18) {
             setError(false)
-            SendData(form, setForm, () => nextStep(event), raionsStep, roomsStep, sdachaName)
+            SendData(form, setForm, () => nextStep(event), raionsStep, roomsStep, sdachaName, "getForm")
         } else {
             setError(true)
         }

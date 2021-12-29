@@ -13,6 +13,8 @@ type Repository interface {
 	GetLeadsOfSite(id string) ([]models.Lead, error)
 	UpdateLead(lead models.Lead) error
 	DeleteLead(id string) error
+	MarkLeadAsSended(lead map[string]interface{}) error
+	GetUnsendedLeads() ([]map[string]interface{}, error)
 }
 
 type repositroyDB struct {
@@ -62,6 +64,22 @@ func (r *repositroyDB) GetLeadsOfSite(url string) ([]models.Lead, error) {
 	return leads, nil
 }
 
-func (r *repositroyDB) SendUnsendedLeadsToCrm() {
+func (r *repositroyDB) MarkLeadAsSended(lead map[string]interface{}) error {
+	lead["sended_to_crm"] = true
+	err := r.leads.Update(bson.M{"_id": lead["_id"]}, lead)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (r *repositroyDB) GetUnsendedLeads() ([]map[string]interface{}, error) {
+	leads := []map[string]interface{}{}
 	//надо ставить флаг и время отправки
+	err := r.leads.Find(bson.M{"sended_to_crm": false}).All(&leads)
+	if err != nil {
+		return leads, err
+	}
+
+	return leads, nil
 }

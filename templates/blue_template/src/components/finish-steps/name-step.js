@@ -23,7 +23,7 @@ const NameStep = ({params, nextStep, form, setForm, raionsStep, roomsStep, sdach
         event.preventDefault()
         if (name.length !== 0) {
             setError(false)
-            SendData(form, setForm, () => nextStep(event), raionsStep, roomsStep, sdachaName)
+            SendData(form, setForm, () => nextStep(event), raionsStep, roomsStep, sdachaName, "getName")
         } else {
             setError(true)
         }

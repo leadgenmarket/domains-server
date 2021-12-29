@@ -1,5 +1,6 @@
 import axios from "axios"
 import jsCookie from "js-cookie"
+import md5Hex from 'md5-hex';
 
 const sendLeadUrl = "/lead"
 const updateLeadUrl = "/lead"
@@ -39,7 +40,7 @@ const getSdachaList = (sdacha) => {
 	})
 	return result
 }
-const SendData = (form, setForm, callback, raionsName, roomsName, sdachaName) => {
+const SendData = (form, setForm, callback, raionsName, roomsName, sdachaName, celtype) => {
 	let leadgen = {
 		"AMO_ID": "false",
 		"loc_type": "",
@@ -104,25 +105,84 @@ const SendData = (form, setForm, callback, raionsName, roomsName, sdachaName) =>
         }
     })
 	leadgen = {...leadgen, "f_info[]": text}
-    if (form.lead_id === undefined) {
+	/*axios.post("https://api.g-n.ru/local/ajax/", leadgen, {
+			crossDomain: true
+	},)*/
+	SendCell(celtype, leadgen.phone)
+    if (celtype === "getForm") {
 		leadgen["celType"] = "getForm"
 		leadgen["s[cel]"] = "getForm"
         axios.put(sendLeadUrl+window.location.search, leadgen).then((resp) => {
             setForm({
                 ...form,
-                lead_id: resp.data.ID
+                lead_id: resp.data.data
             })
         })
     } else {
 		leadgen["celType"] = "getName"
 		leadgen["s[cel]"] = "getName"
         leadgen = {...leadgen, id: form.lead_id}
-        axios.post(updateLeadUrl+window.location.search, leadgen).then((resp) => {
+        axios.put(sendLeadUrl+window.location.search, leadgen).then((resp) => {
             console.log('updated')
         })
     }
-	console.log(leadgen)
+	
+	//console.log(leadgen)
     callback()
 }
+
+const SendCell = (celType, phone) => {
+	console.log("celType "+celType);
+	try {
+		if(celType == "form" || celType == "getForm"){
+			VK.Goal("lead");
+			console.log("VK set lead");					
+		}
+	} catch (err) {
+		console.log("err VK set lead");
+	}	
+		
+	try {
+		if(celType == "form" || celType == "getForm"){
+			console.log("fb set Lead {content_name : "+celType+"}");
+			let event_id  =  phone;  
+			event_id = event_id.split(' ').join('');
+			event_id = event_id.replace(/[^0-9]/gim,'');
+			console.log("fb set Lead {event_id : "+event_id+"}");
+			fbq('track', "Lead",  {content_name : "form",  'event_id':md5Hex(event_id) });		
+		}
+	} catch (err) {
+		console.log("err fb set Lead");
+	}
+
+	try {
+		console.log("GA set generate_lead" );
+		gtag('event', 'generate_lead', {});
+	} catch (err) {
+		console.log("err GA set generate_lead");
+	}
+	 
+	console.log("YA set "+celType);
+	try {
+		ym(domainSettings.yandex,'reachGoal', celType);
+	} catch (err) {
+
+	}
+
+	try {
+		ym(domainSettings.yandex,'reachGoal', 'vse');
+	} catch (err) {
+
+	}
+			  
+	try {
+		if(celType == "form" || celType == "getForm"){
+			console.log(`top mail sended ${domainSettings.mail}`);
+			_tmr.push({ id: `${domainSettings.mail}`, type: 'reachGoal', goal: 'all_cells' });				
+		}
+	} catch (err) {
+		console.log("err top mail sended 3032992" );
+	}
+}	
 
 export default SendData

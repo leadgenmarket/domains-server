@@ -1,6 +1,7 @@
 package portal
 
 import (
+	"bytes"
 	"domain-server/internal/models"
 	"encoding/json"
 	"fmt"
@@ -18,6 +19,7 @@ type Portal interface {
 	GetCitiesList() ([]models.City, error)
 	GetAllCitiesLocations() ([]models.Location, error)
 	GetCitiesPrices() ([]map[string]interface{}, error)
+	SendLeadToCrm(lead map[string]interface{}) error
 }
 
 type portal struct {
@@ -56,7 +58,7 @@ func (p *portal) GetCitiesList() ([]models.City, error) {
 }
 
 func (p *portal) GetAllCitiesLocations() ([]models.Location, error) {
-	locationCities := []string{"258828", "99793", "161617", "75871", "303819", "31477"} //Москва, Питер, Новосиб, Краснодар, Тула
+	locationCities := []string{"258828", "99793", "161617", "75871", "303819", "31477", "12309"} //Москва, Питер, Новосиб, Краснодар, Тула
 	locationsRes := []models.Location{}
 	for _, cityId := range locationCities {
 		locations, err := p.GetLocationsOfCity(cityId)
@@ -110,7 +112,7 @@ func (p *portal) GetLocationsOfCity(portalCityID string) ([]models.Location, err
 }
 
 func (p *portal) GetCitiesPrices() ([]map[string]interface{}, error) {
-	var citiesList = map[string]string{"msk": "258828", "spb": "99793", "novosibirsk": "161617", "tula": "303819", "krd": "75871", "perm": "31477"} //"99793", "161617", "75871", "303819"} //Москва, Питер, Новосиб, Краснодар, Тула
+	var citiesList = map[string]string{"msk": "258828", "spb": "99793", "novosibirsk": "161617", "tula": "303819", "krd": "75871", "perm": "31477", "rostov": "12309"} //"99793", "161617", "75871", "303819"} //Москва, Питер, Новосиб, Краснодар, Тула
 	pricesResult := []map[string]interface{}{}
 	for city, portalCityId := range citiesList {
 		resp, err := http.Get(fmt.Sprintf("http://api.g-n.ru/local/api/lp/locIn.php?city=%s", city))
@@ -127,6 +129,34 @@ func (p *portal) GetCitiesPrices() ([]map[string]interface{}, error) {
 		pricesResult = append(pricesResult, list)
 
 	}
-	//http://api.g-n.ru/upload/jk_msk_dat.dat
 	return pricesResult, nil
+}
+
+func (p *portal) SendLeadToCrm(lead map[string]interface{}) error {
+	url := "https://api.g-n.ru/local/ajax/"
+	fmt.Println("URL:>", url)
+
+	jsonStr, err := json.Marshal(lead)
+	if err != nil {
+		return err
+	}
+	req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonStr))
+	if err != nil {
+		return err
+	}
+	req.Header.Set("Access-Control-Allow-Origin", "*")
+	req.Header.Set("Content-Type", "application/json")
+
+	client := &http.Client{}
+	resp, err := client.Do(req)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+
+	fmt.Println("response Status:", resp.Status)
+	fmt.Println("response Headers:", resp.Header)
+	body, _ := ioutil.ReadAll(resp.Body)
+	fmt.Println("response Body:", string(body))
+	return nil
 }
