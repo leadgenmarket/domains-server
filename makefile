@@ -3,7 +3,6 @@ export APP_PORT := 80
 export APP_DSN := $(MONGO_DBSTRING)
 export APP_SERVICE_NAME := domain-server
 export APP_LOG_LEVEL := 5
-export APP_GRAY_LOG_HOST := graylog:12201
 export APP_PORTAL_URL := https://api.g-n.ru/v1
 export APP_PORTAL_KEY := 8N3783vyK7V3230v
 export APP_INITIAL_ROOT_PASSWORD := ledgenRoot4455
@@ -14,6 +13,7 @@ export APP_TOKEN_SECRET:= secret
 export APP_FILE_STORE_PATH:= ./file-store
 export APP_SSL_SERVING := false
 export APP_SERVER_IP_ADRESS := 5.23.55.120
+export APP_REDIS_URL := redis:6379
  
 up:
 	@docker-compose up -d

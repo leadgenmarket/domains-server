@@ -14,7 +14,7 @@ type logger struct {
 	log *logrus.Logger
 }
 
-func NewLogger(serviceName string, logLevel uint32, greyLogHost string) Log {
+func NewLogger(serviceName string, logLevel uint32) Log {
 	log := logrus.New()
 	log.SetLevel(logrus.Level(logLevel))
 	gelFmt := formatter.NewGelf(serviceName)

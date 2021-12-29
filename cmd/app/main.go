@@ -7,6 +7,7 @@ import (
 	"domain-server/internal/repositories"
 	"domain-server/internal/repositories/domains"
 	"domain-server/internal/services"
+	"domain-server/internal/system/database/redis"
 	"fmt"
 
 	"github.com/gin-gonic/autotls"
@@ -21,7 +22,7 @@ func main() {
 	if err != nil {
 		logrus.Panic("error initializing config: %w", err)
 	}
-	logger := logger.NewLogger(cfg.ServiceName, cfg.LogLevel, cfg.GrayLogHost)
+	logger := logger.NewLogger(cfg.ServiceName, cfg.LogLevel)
 	logger.GetInstance().Info("server started")
 	//logger.GetInstance().Info(cfg)
 	sess, err := mongo.Dial(cfg.DSN)
@@ -29,18 +30,23 @@ func main() {
 		logger.GetInstance().Panic("error initializing config: %w", err)
 	}
 	repo := repositories.New(sess.DB("leadgen"), cfg)
-	domainsList, err := GetAllDomainUrls(repo.Domains, cfg.ServerIPAdress)
+	/*domainsList, err := GetAllDomainUrls(repo.Domains, cfg.ServerIPAdress)
 	if err != nil {
 		logger.GetInstance().Panic("error initializing config: %w", err)
-	}
+	}*/
 
 	m := autocert.Manager{
-		Prompt:     autocert.AcceptTOS,
-		HostPolicy: autocert.HostWhitelist(domainsList...),
-		Cache:      autocert.DirCache("./certs"),
+		Prompt: autocert.AcceptTOS,
+		//HostPolicy: autocert.HostWhitelist(domainsList...), -- не очень безопасно, но если включить, то надо перезагружать сервак при добавлении нового домена. лучше сделать в админке кнопку для перезагрузки
+		Cache: autocert.DirCache("./certs"),
 	}
 	router := gin.Default()
-	servicesContainer := services.Setup(cfg)
+	redisClient, err := redis.New(cfg.RedisURL, cfg.RedisPass)
+	if err != nil {
+		logger.GetInstance().Fatalf("failed to init redis client: %s", err)
+	}
+
+	servicesContainer := services.Setup(cfg, redisClient)
 	handlersService := handlers.New(router, repo, servicesContainer, logger)
 	handlersService.Registry()
 	if cfg.SSLServing {

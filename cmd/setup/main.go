@@ -6,6 +6,7 @@ import (
 	"domain-server/internal/models"
 	"domain-server/internal/repositories"
 	"domain-server/internal/services"
+	"domain-server/internal/system/database/redis"
 	"fmt"
 
 	mongo "github.com/globalsign/mgo"
@@ -23,7 +24,7 @@ func main() {
 	if err != nil {
 		logrus.Panic("error initializing config: %w", err)
 	}
-	logger := logger.NewLogger(cfg.ServiceName, cfg.LogLevel, cfg.GrayLogHost)
+	logger := logger.NewLogger(cfg.ServiceName, cfg.LogLevel)
 	sess, err := mongo.Dial(cfg.DSN)
 	if err != nil {
 		logger.GetInstance().Panic("error initializing config: %w", err)
@@ -35,8 +36,11 @@ func main() {
 		logger.GetInstance().Fatal(err)
 	}
 	logger.GetInstance().Info("admin user exists or created")
-
-	services := services.Setup(cfg)
+	redisClient, err := redis.New(cfg.RedisURL, cfg.RedisPass)
+	if err != nil {
+		logger.GetInstance().Fatalf("failed to init redis client: %s", err)
+	}
+	services := services.Setup(cfg, redisClient)
 	services.Portal.GetCitiesPrices()
 	//AddFixtures(repo)
 

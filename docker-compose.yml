@@ -1,55 +1,8 @@
 version: '3'
 networks:
-    graylog-net:
-      driver: bridge
     app-net:
       driver: bridge
 services:
-  mongo:
-    image: mongo:4.2
-    networks:
-      - graylog-net
-  elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch-oss:7.10.2
-    environment:
-      - http.host=0.0.0.0
-      - transport.host=localhost
-      - network.host=0.0.0.0
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
-    deploy:
-      resources:
-        limits:
-          memory: 1g
-    networks:
-      - graylog-net
-  graylog:
-    image: graylog/graylog:4.2
-    environment:
-      - GRAYLOG_PASSWORD_SECRET=somepasswordpepper
-      - GRAYLOG_ROOT_PASSWORD_SHA2=8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918
-      - GRAYLOG_HTTP_EXTERNAL_URI=http://127.0.0.1:9000/
-    entrypoint: /usr/bin/tini -- wait-for-it elasticsearch:9200 --  /docker-entrypoint.sh
-    networks:
-      - graylog-net
-    restart: always
-    depends_on:
-      - mongo
-      - elasticsearch
-    ports:
-      # Graylog web interface and REST API
-      - 9000:9000
-      # Syslog TCP
-      - 1514:1514
-      # Syslog UDP
-      - 1514:1514/udp
-      # GELF TCP
-      - 12201:12201
-      # GELF UDP
-      - 12201:12201/udp
   mongodb:
     image: mongo
     restart: always
@@ -59,16 +12,26 @@ services:
       - "27017:27017"
     volumes:
       - './data:/data/db'
+  redis:
+    container_name: redis
+    image: redis:4.0-alpine
+    command:
+      - 'redis-server'
+      - '--loglevel ${REDIS_LOGLEVEL:-warning}'
+      - '--databases 2'
+      - '--maxmemory ${REDIS_MAXMEM:-50mb}'
+      - '--maxmemory-policy ${REDIS_POLICY:-noeviction}'
+    networks:
+      - app-net
+    ports:
+      - "6379:6379"
   app:
     build:
       context: .
     ports:
       - 8080:8080
-    depends_on:
-      - graylog
     networks:
       - app-net
-      - graylog-net
     volumes:
       - './file-store:/file-store'
     environment:
@@ -76,7 +39,6 @@ services:
       APP_DSN : ${APP_DSN}
       APP_SERVICE_NAME : ${APP_SERVICE_NAME}
       APP_LOG_LEVEL : ${APP_LOG_LEVEL}
-      APP_GRAY_LOG_HOST : ${APP_GRAY_LOG_HOST}
       APP_PORTAL_URL: ${APP_PORTAL_URL}
       APP_PORTAL_KEY: ${APP_PORTAL_KEY}
       APP_INITIAL_ROOT_PASSWORD: ${APP_INITIAL_ROOT_PASSWORD}
@@ -85,3 +47,4 @@ services:
       APP_REFRESH_TOKEN_TTL: ${APP_REFRESH_TOKEN_TTL}
       APP_TOKEN_SECRET: ${APP_TOKEN_SECRET}
       APP_FILE_STORE_PATH: ${APP_FILE_STORE_PATH}
+      APP_REDIS_URL:  ${APP_REDIS_URL}

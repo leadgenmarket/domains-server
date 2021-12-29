@@ -23,6 +23,8 @@ type Config struct {
 	FileStorePath       string
 	SSLServing          bool
 	ServerIPAdress      string
+	RedisURL            string
+	RedisPass           string `envconfig:"optional"`
 }
 
 func InitConfig(prefix string) (*Config, error) {
