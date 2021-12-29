@@ -2,6 +2,7 @@ package titles
 
 import (
 	"domain-server/internal/models"
+	"domain-server/internal/system/database/redis"
 	"fmt"
 
 	mongodb "github.com/globalsign/mgo"
@@ -17,8 +18,9 @@ type Repository interface {
 }
 
 type repositroyDB struct {
-	titles    *mongodb.Collection
-	locations *mongodb.Collection
+	titles        *mongodb.Collection
+	locations     *mongodb.Collection
+	commonStorage redis.Repository
 }
 
 func New(dbClient *mongodb.Database) Repository {

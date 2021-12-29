@@ -13,7 +13,8 @@ export APP_TOKEN_SECRET:= secret
 export APP_FILE_STORE_PATH:= ./file-store
 export APP_SSL_SERVING := false
 export APP_SERVER_IP_ADRESS := 5.23.55.120
-export APP_REDIS_URL := redis:6379
+export APP_REDIS_URL := localhost:6379
+export APP_CACHE_DURATION := 4320m
  
 up:
 	@docker-compose up -d
@@ -34,3 +35,5 @@ runb:
 swaggen:
 	@mkdir -p internal/generated
 	@swagger generate server -f ./api/api.yml -t ./internal/generated
+stress:
+	@gobench -u http://localhost -k=true -c 500 -t 10

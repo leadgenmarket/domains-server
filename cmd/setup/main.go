@@ -29,16 +29,16 @@ func main() {
 	if err != nil {
 		logger.GetInstance().Panic("error initializing config: %w", err)
 	}
-	repo := repositories.New(sess.DB("leadgen"), cfg)
 
-	errC := AddRootUserIfNotExists(repo, cfg.InitialRootPassword)
-	if errC != nil {
-		logger.GetInstance().Fatal(err)
-	}
 	logger.GetInstance().Info("admin user exists or created")
 	redisClient, err := redis.New(cfg.RedisURL, cfg.RedisPass)
 	if err != nil {
 		logger.GetInstance().Fatalf("failed to init redis client: %s", err)
+	}
+	repo := repositories.New(sess.DB("leadgen"), cfg)
+	errC := AddRootUserIfNotExists(repo, cfg.InitialRootPassword)
+	if errC != nil {
+		logger.GetInstance().Fatal(err)
 	}
 	services := services.Setup(cfg, redisClient)
 	services.Portal.GetCitiesPrices()

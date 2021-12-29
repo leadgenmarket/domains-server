@@ -1,6 +1,7 @@
 package domains
 
 import (
+	"domain-server/internal/config"
 	"domain-server/internal/logger"
 	"domain-server/internal/models"
 	"domain-server/internal/repositories/cities"
@@ -39,9 +40,10 @@ type domainsHandlers struct {
 	titlesRepo titles.Repository
 	services   *services.Services
 	logger     logger.Log
+	cfg        *config.Config
 }
 
-func New(repository domains.Repository, repoLoc locations.Repository, cityRepo cities.Repository, pricesRepo prices.Repository, titlesRepo titles.Repository, services *services.Services, logger logger.Log) Handlers {
+func New(repository domains.Repository, repoLoc locations.Repository, cityRepo cities.Repository, pricesRepo prices.Repository, titlesRepo titles.Repository, services *services.Services, logger logger.Log, cfg *config.Config) Handlers {
 	return &domainsHandlers{
 		repository: repository,
 		repoLoc:    repoLoc,
@@ -50,87 +52,115 @@ func New(repository domains.Repository, repoLoc locations.Repository, cityRepo c
 		titlesRepo: titlesRepo,
 		logger:     logger,
 		services:   services,
+		cfg:        cfg,
 	}
 }
 
+type DomainSettings struct {
+	Facebook   string           `json:"facebook"`
+	Yandex     string           `json:"yandex"`
+	Google     string           `json:"google"`
+	Mail       string           `json:"mail"`
+	Marquiz    string           `json:"marquiz"`
+	ScriptTmpl TamplateSettings `json:"scripts"`
+}
+
+type TamplateSettings struct {
+	IP     string                 `json:"ip"`
+	Domain models.Domain          `json:"domain"`
+	City   models.City            `json:"city"`
+	Prices map[string]interface{} `json:"prices"`
+	Title  string                 `json:"title"`
+	Rayon  string                 `json:"rayon"`
+}
+
 func (dh *domainsHandlers) GetTemplate(c *gin.Context) {
+	domainSettings := DomainSettings{}
 	result := map[string]interface{}{}
 	domainName := strings.Split(c.Request.Host, ":")[0]
-	domain, err := dh.repository.FindDomainByUrl(domainName)
-	if err != nil {
-		dh.logger.GetInstance().Errorf("error unmarshaling incoming json %s", err)
-		c.JSON(http.StatusBadRequest, err)
-		return
+	err := dh.services.CommonStorage.Get(c, domainName, &domainSettings)
+	needToCache := true
+	if err == nil {
+		needToCache = false
+	} else {
+		domain, err := dh.repository.FindDomainByUrl(domainName)
+		if err != nil {
+			dh.logger.GetInstance().Errorf("error unmarshaling incoming json %s", err)
+			c.JSON(http.StatusBadRequest, err)
+			return
+		}
+
+		domainSettings.ScriptTmpl.Domain = domain
+		for _, step := range domain.Steps {
+			if step["type"] == "raions" {
+				locations, err := dh.repoLoc.GetRaionsOfTheCity(domain.CityID.Hex())
+				if err != nil {
+					dh.logger.GetInstance().Errorf("error getting locations %s", err)
+					c.JSON(http.StatusBadRequest, err)
+					return
+				}
+				result["locations"] = locations
+				break
+			}
+		}
+		domainSettings.ScriptTmpl.City, err = dh.cityRepo.GetCityById(domain.CityID)
+		if err != nil {
+			dh.logger.GetInstance().Errorf("error getting city %s", err)
+			c.JSON(http.StatusBadRequest, err)
+			return
+		}
+
+		domainSettings.ScriptTmpl.Prices, err = dh.pricesRepo.GetPricesOfTheCity(domain.CityID)
+		if err != nil {
+			dh.logger.GetInstance().Errorf("error getting city %s", err)
+			c.JSON(http.StatusBadRequest, err)
+			return
+		}
+		domainSettings.Yandex = domain.Yandex
+		domainSettings.Google = domain.Google
+		domainSettings.Mail = domain.Mail
+		domainSettings.Marquiz = domain.Marquiz
+		domainSettings.Facebook = domain.Facebook
 	}
 
-	result["domain"] = domain
-	for _, step := range domain.Steps {
-		if step["type"] == "raions" {
-			locations, err := dh.repoLoc.GetRaionsOfTheCity(domain.CityID.Hex())
+	domainSettings.ScriptTmpl.IP = c.ClientIP()
+	domainSettings.ScriptTmpl.Rayon = c.Param("rayon")
+	k := c.Request.URL.Query().Get("k")
+	var title string
+	if k != "" || domainSettings.ScriptTmpl.Rayon != "" {
+		if err := dh.services.CommonStorage.Get(c, fmt.Sprintf("%s_%s_%s", domainSettings.ScriptTmpl.Domain.CityID, domainSettings.ScriptTmpl.Rayon, k), &title); err != nil {
+			title, err = dh.titlesRepo.GetTitleForDomain(domainSettings.ScriptTmpl.Domain.CityID, domainSettings.ScriptTmpl.Rayon, k)
 			if err != nil {
-				dh.logger.GetInstance().Errorf("error getting locations %s", err)
-				c.JSON(http.StatusBadRequest, err)
-				return
+				dh.logger.GetInstance().Errorf("error getting title for domain %s", err)
 			}
-			result["locations"] = locations
-			break
+			dh.services.CommonStorage.Set(c, fmt.Sprintf("%s_%s_%s", domainSettings.ScriptTmpl.Domain.CityID, domainSettings.ScriptTmpl.Rayon, k), title, time.Minute*1440)
 		}
 	}
-	result["city"], err = dh.cityRepo.GetCityById(domain.CityID)
-	if err != nil {
-		dh.logger.GetInstance().Errorf("error getting city %s", err)
-		c.JSON(http.StatusBadRequest, err)
-		return
-	}
+	domainSettings.ScriptTmpl.Title = title
 
-	result["prices"], err = dh.pricesRepo.GetPricesOfTheCity(domain.CityID)
-	if err != nil {
-		dh.logger.GetInstance().Errorf("error getting city %s", err)
-		c.JSON(http.StatusBadRequest, err)
-		return
+	if needToCache {
+		errC := dh.services.CommonStorage.Set(c, domainName, domainSettings, dh.cfg.CacheDuration)
+		if errC != nil {
+			dh.logger.GetInstance().Errorf("error saving cache %s", errC)
+		}
 	}
-
-	result["ip"] = c.ClientIP()
-
-	rayon := c.Param("rayon")
-	k := c.Request.URL.Query().Get("k")
-	title, err := dh.titlesRepo.GetTitleForDomain(domain.CityID, rayon, k)
-	if err != nil {
-		dh.logger.GetInstance().Errorf("error getting title for domain %s", err)
-	}
-
-	result["title"] = title
-	if rayon != "" {
-		result["rayon"] = rayon
-	}
-
-	settings := gin.H{
-		"scripts": utils.ScriptForTemplate(result),
-	}
-
-	if domain.Yandex != "" {
-		settings["yandex"] = domain.Yandex
-	}
-
-	if domain.Google != "" {
-		settings["google"] = domain.Google
-	}
-
-	if domain.Mail != "" {
-		settings["mail"] = domain.Mail
-	}
-
-	if domain.Marquiz != "" {
-		settings["marquiz"] = domain.Marquiz
-	}
-
-	if domain.Facebook != "" {
-		settings["facebook"] = domain.Facebook
-	}
+	settings := convertForTemplate(domainSettings)
 
 	c.HTML(http.StatusOK, "blue_template.html", settings)
 
 	//c.JSON(http.StatusOK, result)
+}
+
+func convertForTemplate(domainSettings DomainSettings) map[string]interface{} {
+	settings := map[string]interface{}{}
+	settings["yandex"] = domainSettings.Yandex
+	settings["facebook"] = domainSettings.Facebook
+	settings["google"] = domainSettings.Google
+	settings["mail"] = domainSettings.Mail
+	settings["marquiz"] = domainSettings.Marquiz
+	settings["scripts"] = utils.ScriptForTemplate(domainSettings.ScriptTmpl)
+
+	return settings
 }
 
 func (dh *domainsHandlers) CreateDomain(c *gin.Context) {
@@ -211,7 +241,6 @@ func (dh *domainsHandlers) DeleteDomain(c *gin.Context) {
 
 func (dh *domainsHandlers) FindDomainByID(c *gin.Context) {
 	id := c.Param("id")
-	fmt.Println(id)
 	domain, err := dh.repository.FindDomainByID(id)
 	if err != nil {
 		dh.logger.GetInstance().Errorf("requesting domain not found %s", err)
@@ -289,7 +318,6 @@ func (dh *domainsHandlers) AddDomainWithSettings(c *gin.Context) {
 			c.JSON(http.StatusBadRequest, err)
 			return
 		}
-		fmt.Println(steps)
 		domain.Steps = steps
 	}
 
@@ -318,5 +346,5 @@ func (dh *domainsHandlers) AddDomainWithSettings(c *gin.Context) {
 		}
 		c.JSON(http.StatusOK, domainRes)
 	}
-
+	dh.services.CommonStorage.DeleteKey(c, domain.Url)
 }

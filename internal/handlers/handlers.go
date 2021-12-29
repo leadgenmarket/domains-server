@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"domain-server/internal/config"
 	"domain-server/internal/handlers/auth"
 	"domain-server/internal/handlers/cities"
 	"domain-server/internal/handlers/domains"
@@ -44,12 +45,13 @@ type handlers struct {
 	repositories  *repositories.Repositories
 	services      *services.Services
 	logger        logger.Log
+	cfg           *config.Config
 }
 
-func New(router *gin.Engine, repositories *repositories.Repositories, services *services.Services, logger logger.Log) Handlers {
+func New(router *gin.Engine, repositories *repositories.Repositories, services *services.Services, logger logger.Log, cfg *config.Config) Handlers {
 	return &handlers{
 		Auth:          auth.New(repositories.Users, services, logger),
-		Domains:       domains.New(repositories.Domains, repositories.Locations, repositories.Cities, repositories.Prices, repositories.Titles, services, logger),
+		Domains:       domains.New(repositories.Domains, repositories.Locations, repositories.Cities, repositories.Prices, repositories.Titles, services, logger, cfg),
 		Cities:        cities.New(repositories.Cities, services, logger),
 		Locations:     locations.New(repositories.Locations, repositories.Cities, services, logger),
 		Leads:         leads.New(repositories.Leads, services, logger),

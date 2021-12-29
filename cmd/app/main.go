@@ -29,7 +29,7 @@ func main() {
 	if err != nil {
 		logger.GetInstance().Panic("error initializing config: %w", err)
 	}
-	repo := repositories.New(sess.DB("leadgen"), cfg)
+
 	/*domainsList, err := GetAllDomainUrls(repo.Domains, cfg.ServerIPAdress)
 	if err != nil {
 		logger.GetInstance().Panic("error initializing config: %w", err)
@@ -45,9 +45,10 @@ func main() {
 	if err != nil {
 		logger.GetInstance().Fatalf("failed to init redis client: %s", err)
 	}
+	repo := repositories.New(sess.DB("leadgen"), cfg)
 
 	servicesContainer := services.Setup(cfg, redisClient)
-	handlersService := handlers.New(router, repo, servicesContainer, logger)
+	handlersService := handlers.New(router, repo, servicesContainer, logger, cfg)
 	handlersService.Registry()
 	if cfg.SSLServing {
 		logger.GetInstance().Panic(autotls.RunWithManager(router, &m))

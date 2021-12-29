@@ -12,13 +12,13 @@ type Config struct {
 	Port                string
 	ServiceName         string
 	LogLevel            uint32
-	GrayLogHost         string
 	PortalKey           string
 	PortalUrl           string
 	InitialRootPassword string
 	Salt                string
 	TokenTTL            time.Duration
 	RefreshTokenTTL     time.Duration
+	CacheDuration       time.Duration
 	TokenSecret         string
 	FileStorePath       string
 	SSLServing          bool

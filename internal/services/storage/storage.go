@@ -4,10 +4,14 @@ import (
 	"context"
 	"domain-server/internal/system/database/redis"
 	"encoding/json"
+	"fmt"
 	"time"
 )
 
 type Common interface {
+	Set(ctx context.Context, key string, value interface{}, expirationTime time.Duration) error
+	Get(ctx context.Context, key string, template interface{}) error
+	DeleteKey(ctx context.Context, key string) error
 }
 type commonStorage struct {
 	redisClient redis.Repository
@@ -33,4 +37,9 @@ func (s commonStorage) Get(ctx context.Context, key string, template interface{}
 		return err
 	}
 	return json.Unmarshal([]byte(data), template)
+}
+
+func (s commonStorage) DeleteKey(ctx context.Context, key string) error {
+	fmt.Println(key)
+	return s.redisClient.GetConnection().Del(ctx, key).Err()
 }
