@@ -124,6 +124,10 @@ func (dh *domainsHandlers) GetTemplate(c *gin.Context) {
 		settings["marquiz"] = domain.Marquiz
 	}
 
+	if domain.Facebook != "" {
+		settings["facebook"] = domain.Facebook
+	}
+
 	c.HTML(http.StatusOK, "blue_template.html", settings)
 
 	//c.JSON(http.StatusOK, result)
@@ -228,7 +232,7 @@ type DomainInput struct {
 	Yandex         string `bson:"yandex" form:"yandex"`
 	Google         string `bson:"google" form:"google"`
 	Mail           string `bson:"mail" form:"mail"`
-	Roistat        string `bson:"roistat" form:"roistat"`
+	Facebook       string `bson:"facebook" form:"facebook"`
 	Marquiz        string `bson:"marquiz" form:"marquiz"`
 	Qoopler        bool   `bson:"qoopler" form:"qoopler"`
 	Steps          string `bson:"steps" form:"steps"`
@@ -268,7 +272,7 @@ func (dh *domainsHandlers) AddDomainWithSettings(c *gin.Context) {
 		Yandex:         domainInput.Yandex,
 		Google:         domainInput.Google,
 		Mail:           domainInput.Mail,
-		Roistat:        domainInput.Roistat,
+		Facebook:       domainInput.Facebook,
 		Marquiz:        domainInput.Marquiz,
 		Qoopler:        domainInput.Qoopler,
 	}

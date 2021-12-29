@@ -260,14 +260,14 @@ const DomainEdit = () => {
                                                             <div className="row">
                                                                 <div className="col-lg-6">
                                                                     <div className="mb-3">
-                                                                        <label htmlFor="basicpill-servicetax-input" className="form-label">Mail</label>
-                                                                        <input type="text" className="form-control" name="mail" onChange={inputChange} id="basicpill-servicetax-input" value={form.mail} />
+                                                                        <label htmlFor="basicpill-servicetax-input" className="form-label">Facebook</label>
+                                                                        <input type="text" className="form-control" name="facebook" onChange={inputChange} id="basicpill-servicetax-input" value={form.facebook} />
                                                                     </div>
                                                                 </div>
                                                                 <div className="col-lg-6">
                                                                     <div className="mb-3">
-                                                                        <label htmlFor="basicpill-servicetax-input" className="form-label">Roistat</label>
-                                                                        <input type="text" className="form-control" name="roistat" onChange={inputChange} id="basicpill-servicetax-input" value={form.roistat} />
+                                                                        <label htmlFor="basicpill-servicetax-input" className="form-label">Mail</label>
+                                                                        <input type="text" className="form-control" name="mail" onChange={inputChange} id="basicpill-servicetax-input" value={form.mail} />
                                                                     </div>
                                                                 </div>
                                                             </div>
