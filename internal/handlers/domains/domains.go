@@ -290,20 +290,29 @@ func (dh *domainsHandlers) AddDomainWithSettings(c *gin.Context) {
 	}
 
 	if domainInput.ID != "" {
-		domain.ID = bson.ObjectId(domainInput.ID)
-		//тут надо оставить CreatedBy старым
+		domain.ID = bson.ObjectIdHex(domainInput.ID)
+		//тут надо оставить CreatedBy старым !!! поменять
+		domain.CreatedBy = bson.ObjectIdHex(c.GetString("user_id"))
+		err := dh.repository.UpdateDomain(domain)
+		dh.logger.GetInstance().Info(domain)
+		if err != nil {
+			dh.logger.GetInstance().Errorf("error adding domain to db %s", err)
+			c.JSON(http.StatusBadRequest, err)
+			return
+		}
+		c.JSON(http.StatusOK, gin.H{"message": "updated successfuly"})
+	} else {
+		domain.ID = bson.NewObjectId()
+		domain.CreatedBy = bson.ObjectIdHex(c.GetString("user_id"))
+		dh.logger.GetInstance().Info(domain)
+		domainRes, err := dh.repository.AddDomain(domain)
+
+		if err != nil {
+			dh.logger.GetInstance().Errorf("error adding domain to db %s", err)
+			c.JSON(http.StatusBadRequest, err)
+			return
+		}
+		c.JSON(http.StatusOK, domainRes)
 	}
 
-	domain.ID = bson.NewObjectId()
-	domain.CreatedBy = bson.ObjectIdHex(c.GetString("user_id"))
-	dh.logger.GetInstance().Info(domain)
-	domainRes, err := dh.repository.AddDomain(domain)
-
-	if err != nil {
-		dh.logger.GetInstance().Errorf("error adding domain to db %s", err)
-		c.JSON(http.StatusBadRequest, err)
-		return
-	}
-
-	c.JSON(http.StatusOK, domainRes)
 }

@@ -14,10 +14,7 @@ const DomainEdit = () => {
     const [step, setStep] = useState(1)
     const [quizSteps, setQuizSteps] = useState([])
     const { id } = useParams()
-    const [form, setForm] = useState({
-        url: "",
-        template_id: "",
-    }) 
+    const [form, setForm] = useState({}) 
     useEffect(()=>{
         let apiService = new ApiService
         apiService.templatesList().then((response) => {
@@ -30,10 +27,11 @@ const DomainEdit = () => {
             setOrganzations(response.data)
         })
         //если задан id, то значит что это страница edit и нужно получить инфу о редактриуемом домене
-        if (id !== undefined) {
+        if (id !== undefined && Object.keys(form) == 0) {
             apiService.domain(id).then((resp) => {
                 setForm(resp.data)
                 setQuizSteps(resp.data.Steps)
+                console.log(resp.data)
             }).catch((err) => {
                 //тут надо редирект на 404
             })
