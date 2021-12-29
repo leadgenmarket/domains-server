@@ -9,7 +9,7 @@ import (
 )
 
 type Repository interface {
-	AddLead(lead models.Lead) (models.Lead, error)
+	AddLead(lead map[string]interface{}) (bson.ObjectId, error)
 	GetLeadsOfSite(id string) ([]models.Lead, error)
 	UpdateLead(lead models.Lead) error
 	DeleteLead(id string) error
@@ -25,14 +25,16 @@ func New(dbClient *mongodb.Database) Repository {
 	}
 }
 
-func (r *repositroyDB) AddLead(lead models.Lead) (models.Lead, error) {
-	lead.ID = bson.NewObjectId()
-	lead.CreatedAt = time.Now()
+func (r *repositroyDB) AddLead(lead map[string]interface{}) (bson.ObjectId, error) {
+	leadID := bson.NewObjectId()
+	lead["_id"] = leadID
+	lead["created_at"] = time.Now()
+	lead["sended_to_crm"] = false
 	err := r.leads.Insert(&lead)
 	if err != nil {
-		return lead, err
+		return leadID, err
 	}
-	return lead, nil
+	return leadID, nil
 }
 
 func (r *repositroyDB) UpdateLead(lead models.Lead) error {

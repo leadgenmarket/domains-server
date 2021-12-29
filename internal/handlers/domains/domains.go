@@ -63,9 +63,6 @@ func (dh *domainsHandlers) GetTemplate(c *gin.Context) {
 		return
 	}
 
-	if len(domain.Steps) == 0 {
-		//надо получить дефолтные шаги для города
-	}
 	result["domain"] = domain
 	for _, step := range domain.Steps {
 		if step["type"] == "raions" {

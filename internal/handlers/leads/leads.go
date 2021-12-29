@@ -49,7 +49,7 @@ type Lead struct {
 */
 
 func (s *leadsHandlers) AddLead(c *gin.Context) {
-	leads := models.Lead{}
+	leads := map[string]interface{}{}
 	err := c.BindJSON(&leads)
 	if err != nil {
 		s.logger.GetInstance().Errorf("error unmarshaling incoming json %s", err)
