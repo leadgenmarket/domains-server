@@ -34,21 +34,6 @@ func New(repository leads.Repository, services *services.Services, logger logger
 	}
 }
 
-/*
-type Lead struct {
-	ID          bson.ObjectId `bson:"_id"`
-	Url         string        `bson:"url"`
-	Name        string        `bson:"name"`
-	Phone       string        `bson:"phone"`
-	Text        string        `bson:"text"`
-	UserAgent   string        `bson:"uagent"`
-	SendCrm     bool          `bson:"sended_crm"`
-	CrmSendTime time.Time     `bson:"crm_send_time"`
-	CreatedAt   time.Time     `bson:"created_at"`
-	//LeadID      int       `bson:"lead_id"`
-}
-*/
-
 func (s *leadsHandlers) AddLead(c *gin.Context) {
 	leads := map[string]interface{}{}
 	err := c.BindJSON(&leads)
