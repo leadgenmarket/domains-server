@@ -78,6 +78,7 @@ func (h *handlers) Registry() {
 	h.router.PUT("/lead/", h.Leads.AddLead)
 	h.router.POST("/lead/", h.Leads.UpdateLeads)
 	h.router.GET("/prices/update", h.Prices.UpdatePrices)
+	h.router.GET("/leads/send", h.Leads.SendUnsendedLeads)
 
 	api := h.router.Group("/api", middlewares.TokenAuthMiddleware(h.logger, h.services))
 	{
@@ -104,7 +105,6 @@ func (h *handlers) Registry() {
 		leadsGroup := api.Group("lead")
 		leadsGroup.GET("/:url", h.Leads.GetLeadsOfSite)
 		leadsGroup.DELETE("/", h.Leads.DeleteLead)
-		leadsGroup.GET("/send", h.Leads.SendUnsendedLeads)
 
 		//organizations
 		organizationsGroup := api.Group("organizations")
