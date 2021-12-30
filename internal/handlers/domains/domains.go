@@ -66,12 +66,13 @@ type DomainSettings struct {
 }
 
 type TamplateSettings struct {
-	IP     string                 `json:"ip"`
-	Domain models.Domain          `json:"domain"`
-	City   models.City            `json:"city"`
-	Prices map[string]interface{} `json:"prices"`
-	Title  string                 `json:"title"`
-	Rayon  string                 `json:"rayon"`
+	IP       string                 `json:"ip"`
+	Domain   models.Domain          `json:"domain"`
+	City     models.City            `json:"city"`
+	Location []models.Location      `json:"locations"`
+	Prices   map[string]interface{} `json:"prices"`
+	Title    string                 `json:"title"`
+	Rayon    string                 `json:"rayon"`
 }
 
 func (dh *domainsHandlers) GetTemplate(c *gin.Context) {
@@ -106,6 +107,13 @@ func (dh *domainsHandlers) GetTemplate(c *gin.Context) {
 		domainSettings.ScriptTmpl.City, err = dh.cityRepo.GetCityById(domain.CityID)
 		if err != nil {
 			dh.logger.GetInstance().Errorf("error getting city %s", err)
+			c.JSON(http.StatusBadRequest, err)
+			return
+		}
+
+		domainSettings.ScriptTmpl.Location, err = dh.repoLoc.GetRaionsOfTheCity(domain.CityID.Hex())
+		if err != nil {
+			dh.logger.GetInstance().Errorf("error getting locations of the city %s", err)
 			c.JSON(http.StatusBadRequest, err)
 			return
 		}
