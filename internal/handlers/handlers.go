@@ -87,7 +87,7 @@ func (h *handlers) Registry() {
 		domainsGroup.PUT("/", h.Domains.CreateDomain)
 		domainsGroup.GET("/", h.Domains.GetDomainsList)
 		domainsGroup.POST("/", h.Domains.UpdateDomain)
-		domainsGroup.DELETE("/", h.Domains.DeleteDomain)
+		domainsGroup.DELETE("/:id", h.Domains.DeleteDomain)
 		domainsGroup.GET("/:id", h.Domains.FindDomainByID)
 		domainsGroup.POST("/add", h.Domains.AddDomainWithSettings)
 

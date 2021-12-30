@@ -46,7 +46,7 @@ func main() {
 		logger.GetInstance().Fatalf("failed to init redis client: %s", err)
 	}
 	repo := repositories.New(sess.DB("leadgen"), cfg)
-
+	fmt.Println(cfg)
 	servicesContainer := services.Setup(cfg, redisClient)
 	handlersService := handlers.New(router, repo, servicesContainer, logger, cfg)
 	handlersService.Registry()
