@@ -1,12 +1,13 @@
 package portal
 
 import (
-	"bytes"
 	"domain-server/internal/models"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net/http"
+
+	"github.com/ajg/form"
 )
 
 const (
@@ -134,29 +135,16 @@ func (p *portal) GetCitiesPrices() ([]map[string]interface{}, error) {
 
 func (p *portal) SendLeadToCrm(lead map[string]interface{}) error {
 	url := "https://api.g-n.ru/local/ajax/"
-	fmt.Println("URL:>", url)
-
-	jsonStr, err := json.Marshal(lead)
-	if err != nil {
-		return err
-	}
-	req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonStr))
-	if err != nil {
-		return err
-	}
-	req.Header.Set("Access-Control-Allow-Origin", "*")
-	req.Header.Set("Content-Type", "application/json")
 
 	client := &http.Client{}
-	resp, err := client.Do(req)
+	data, err := form.EncodeToValues(lead)
+	if err != nil {
+		return err
+	}
+	resp, err := client.PostForm(url, data)
 	if err != nil {
 		return err
 	}
 	defer resp.Body.Close()
-
-	fmt.Println("response Status:", resp.Status)
-	fmt.Println("response Headers:", resp.Header)
-	body, _ := ioutil.ReadAll(resp.Body)
-	fmt.Println("response Body:", string(body))
 	return nil
 }
