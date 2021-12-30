@@ -41,7 +41,8 @@ func main() {
 		logger.GetInstance().Fatal(err)
 	}
 	services := services.Setup(cfg, redisClient)
-	services.Portal.GetCitiesPrices()
+	//services.Portal.GetCitiesPrices()
+	services.Backup.CreateBackup()
 	//AddFixtures(repo)
 
 }

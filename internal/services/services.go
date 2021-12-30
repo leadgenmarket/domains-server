@@ -2,6 +2,7 @@ package services
 
 import (
 	"domain-server/internal/config"
+	"domain-server/internal/services/backup"
 	"domain-server/internal/services/cookies"
 	filestore "domain-server/internal/services/file_store"
 	"domain-server/internal/services/portal"
@@ -16,6 +17,7 @@ type Services struct {
 	TokenManager  token_manager.TokenManager
 	FileStore     filestore.FileStore
 	CommonStorage storage.Common
+	Backup        backup.Backup
 }
 
 func Setup(cfg *config.Config, redis redis.Repository) *Services {
@@ -25,5 +27,6 @@ func Setup(cfg *config.Config, redis redis.Repository) *Services {
 		TokenManager:  token_manager.NewTokenManager(cfg),
 		FileStore:     filestore.NewFileStoreService(cfg.FileStorePath),
 		CommonStorage: storage.NewCommonStorage(redis),
+		Backup:        backup.NewBackupService(cfg),
 	}
 }

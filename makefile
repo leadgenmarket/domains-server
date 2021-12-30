@@ -14,6 +14,8 @@ export APP_SSL_SERVING := false
 export APP_SERVER_IP_ADRESS := 5.23.55.120
 export APP_REDIS_URL := localhost:6379
 export APP_CACHE_DURATION := 4320m
+export APP_CLOUD_STORE_PATH:= leadgen_domains_server
+export APP_YANDEX_API_TOKEN := #
  
 up:
 	@docker-compose up
@@ -24,7 +26,9 @@ client-run:
 run:
 	@cd cmd/app && go run main.go
 setup:
-	@cd cmd/setup && go run main.go
+	@go run cmd/setup/main.go
+backup:
+	@go run cmd/backup/main.go
 build:
 	@cd cmd/app && go build -o ../../main main.go && cd ../..
 build-d:
