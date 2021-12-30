@@ -85,7 +85,29 @@ func updatePortalInfo(services *services.Services, repositories *repositories.Re
 	CitiesUpdate(services, repositories, logger)
 	LocationsUpdate(services, repositories, logger)
 	RayonUpdatePrices(services, repositories, logger)
-	logger.GetInstance().Info(`successfuly updated portal info`)
+	JKsUpdate(services, repositories, logger)
+	//logger.GetInstance().Info(`successfuly updated portal info`)
+}
+
+func JKsUpdate(services *services.Services, repositories *repositories.Repositories, logger logger.Log) {
+	citiesList, err := repositories.Cities.GetAllCities()
+	if err != nil {
+		logger.GetInstance().Errorf("error getting jks from portal %s", err)
+		return
+	}
+	jkList, err := services.Portal.GetJkList(citiesList)
+	if err != nil {
+		logger.GetInstance().Errorf("error getting jks from portal %s", err)
+		return
+	}
+	repositories.JK.DropDB()
+	for _, jk := range jkList {
+		err := repositories.JK.AddJK(jk)
+		if err != nil {
+			logger.GetInstance().Errorf("error adding jks %s", err)
+			return
+		}
+	}
 }
 
 func CitiesUpdate(services *services.Services, repositories *repositories.Repositories, logger logger.Log) {

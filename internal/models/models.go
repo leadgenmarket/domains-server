@@ -83,3 +83,46 @@ type Location struct {
 	CityID       bson.ObjectId `bson:"city_id"`
 	PortalCityID string        `bson:"portal_city_id"`
 }
+
+type JK struct {
+	ID           bson.ObjectId `bson:"_id"`
+	Portal_ID    string        `bson:"portal_id" json:"ID"`
+	Name         string        `bson:"name" json:"NAME"`
+	Code         string        `bson:"code" json:"CODE"`
+	CityID       bson.ObjectId `bson:"city_id"`
+	PortalCityID string        `bson:"portal_city_id" json:"CITY_ID"`
+	Raion        []Raion       `bson:"raion" json:"RAION"`
+	Price_OT     int           `bson:"price_ot" json:"PRICE_OT"`
+	Price_0      int           `bson:"price_0" json:"PRICE_0"`
+	Price_1      int           `bson:"price_1" json:"PRICE_1"`
+	Price_2      int           `bson:"price_2" json:"PRICE_2"`
+	Price_3      int           `bson:"price_3" json:"PRICE_3"`
+	Price_4      int           `bson:"price_4" json:"PRICE_4"`
+	Price_5      int           `bson:"price_5" json:"PRICE_5"`
+	Price_6      int           `bson:"price_6" json:"PRICE_6"`
+	Price_7      int           `bson:"price_7" json:"PRICE_7"`
+	Price_8      int           `bson:"price_8" json:"PRICE_8"`
+	Class        string        `bson:"class" json:"CLASS"`
+	Sdacha       []string      `bson:"sdacha" json:"SDA4A"`
+}
+
+type Raion struct {
+	Name string `bson:"name" json:"NAME"`
+	Code string `bson:"code" json:"CODE"`
+}
+
+/*
+
+"PRICE_OT": "11265621",
+			"PRICE_0": "11265621",
+			"PRICE_1": "",
+			"PRICE_2": "22332730",
+			"PRICE_3": "24781811",
+			"PRICE_4": "",
+			"PRICE_5": "30054849",
+			"PRICE_6": "14036521",
+			"PRICE_7": "18754278",
+			"PRICE_8": "23581888",
+			"CLASS": "Бизнес",
+
+*/

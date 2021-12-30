@@ -4,6 +4,7 @@ import (
 	"domain-server/internal/config"
 	"domain-server/internal/repositories/cities"
 	"domain-server/internal/repositories/domains"
+	"domain-server/internal/repositories/jk"
 	"domain-server/internal/repositories/leads"
 	"domain-server/internal/repositories/locations"
 	organization "domain-server/internal/repositories/organizations"
@@ -25,6 +26,7 @@ type Repositories struct {
 	Users         users.Repository
 	Locations     locations.Repository
 	Prices        prices.Repository
+	JK            jk.Repository
 }
 
 func New(dbClient *mongodb.Database, cfg *config.Config) *Repositories {
@@ -38,5 +40,6 @@ func New(dbClient *mongodb.Database, cfg *config.Config) *Repositories {
 		Users:         users.New(dbClient, cfg),
 		Locations:     locations.New(dbClient),
 		Prices:        prices.New(dbClient),
+		JK:            jk.New(dbClient),
 	}
 }
