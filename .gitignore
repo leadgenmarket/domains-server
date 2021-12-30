@@ -1,0 +1,7 @@
+*.DS_Store
+data
+file-store
+certs
+docker-compose_back.yml
+.env
+.env_test
