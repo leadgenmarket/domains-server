@@ -46,7 +46,8 @@ func addFiles(w *zip.Writer, basePath, baseInZip string) error {
 		return err
 	}
 	for _, file := range files {
-		if file.Name() == ".DS_Store" {
+		ignoreList := []string{".DS_Store", "diagnostic.data", "journal"}
+		if contains(ignoreList, file.Name()) {
 			continue
 		}
 		if !file.IsDir() {
@@ -69,4 +70,13 @@ func addFiles(w *zip.Writer, basePath, baseInZip string) error {
 	}
 
 	return nil
+}
+
+func contains(s []string, e string) bool {
+	for _, a := range s {
+		if a == e {
+			return true
+		}
+	}
+	return false
 }

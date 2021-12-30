@@ -15,7 +15,7 @@ export APP_SERVER_IP_ADRESS := 5.23.55.120
 export APP_REDIS_URL := localhost:6379
 export APP_CACHE_DURATION := 4320m
 export APP_CLOUD_STORE_PATH:= leadgen_domains_server
-export APP_YANDEX_API_TOKEN := #
+export APP_YANDEX_API_TOKEN := api #убрать
  
 up:
 	@docker-compose up
