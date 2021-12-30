@@ -164,24 +164,24 @@ const SendCell = (celType, phone) => {
 	 
 	console.log("YA set "+celType);
 	try {
-		ym(domainSettings.yandex,'reachGoal', celType);
+		ym(parseInt(domainSettings.domain.yandex),'reachGoal', celType);
 	} catch (err) {
-
+		console.log('error send to yandex')
 	}
 
 	try {
-		ym(domainSettings.yandex,'reachGoal', 'vse');
+		ym(domainSettings.domain.yandex,'reachGoal', 'vse');
 	} catch (err) {
 
 	}
 			  
 	try {
 		if(celType == "form" || celType == "getForm"){
-			console.log(`top mail sended ${domainSettings.mail}`);
-			_tmr.push({ id: `${domainSettings.mail}`, type: 'reachGoal', goal: 'all_cells' });				
+			console.log(`top mail sended ${domainSettings.domain.mail}`);
+			_tmr.push({ id: `${domainSettings.domain.mail}`, type: 'reachGoal', goal: 'all_cells' });				
 		}
 	} catch (err) {
-		console.log("err top mail sended 3032992" );
+		console.log(`err top mail sended ${domainSettings.domain.mail}` );
 	}
 }	
 

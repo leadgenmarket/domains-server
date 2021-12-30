@@ -23,6 +23,7 @@ fs.readFile('./build/index.html', 'utf8' , (err, data) => {
   {{end}}</body>')
   
   data = data.replace('</body>', "{{if .facebook}}\
+      <script>\
       !function(f,b,e,v,n,t,s)\
         {if(f.fbq)return;n=f.fbq=function(){n.callMethod?\
         n.callMethod.apply(n,arguments):n.queue.push(arguments)};\
@@ -33,7 +34,8 @@ fs.readFile('./build/index.html', 'utf8' , (err, data) => {
         'https://connect.facebook.net/en_US/fbevents.js');\
         fbq('init', '{{ .facebook}}');\
         fbq('track', 'PageView');\
-      {{end}}}}</body>")
+        </script>\
+      {{end}}</body>")
   /*data = data.replace('</body>', "{{ if .marquiz}} <div data-marquiz-id=\"{{ .marquiz}}\"></div> <script>(function(t, p) {window.Marquiz ? Marquiz.add([t, p]) : document.addEventListener('marquizLoaded', function() {Marquiz.add([t, p])})})('Button', {id: '{{ .marquiz}}', buttonText: 'Пройти тест', bgColor: '#23c8ec', rounded: true, shadow: 'rgba(35, 200, 236, 0.5)', blicked: true})</script><script> \
   (function(w, d, s, o){ \
     var j = d.createElement(s); j.async = true; j.src = '//script.marquiz.ru/v2.js';j.onload = function() {\
