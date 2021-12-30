@@ -2,7 +2,6 @@ package locations
 
 import (
 	"domain-server/internal/logger"
-	"domain-server/internal/models"
 	"domain-server/internal/repositories/cities"
 	"domain-server/internal/repositories/locations"
 	"domain-server/internal/services"
@@ -13,7 +12,6 @@ import (
 
 type Handlers interface {
 	GetLocationsList(c *gin.Context)
-	UpdateLocations(c *gin.Context)
 	GetRaionsOfTheCity(c *gin.Context)
 }
 
@@ -36,36 +34,6 @@ func New(repository locations.Repository, repositoryCities cities.Repository, se
 func (ch *locationsHandlers) GetLocationsList(c *gin.Context) {
 	price, _ := ch.services.Portal.GetCitiesPrices()
 	c.JSON(http.StatusOK, price)
-}
-
-func (ch *locationsHandlers) UpdateLocations(c *gin.Context) {
-	locations, err := ch.services.Portal.GetAllCitiesLocations()
-	if err != nil {
-		ch.logger.GetInstance().Errorf("error getting locations from portal %s", err)
-		c.JSON(http.StatusInternalServerError, gin.H{"payload": "error updating locations"})
-		return
-	}
-	cities, err := ch.repositoryCities.GetAllCities()
-	if err != nil {
-		ch.logger.GetInstance().Errorf("error getting locations from portal %s", err)
-		c.JSON(http.StatusInternalServerError, gin.H{"payload": "error updating locations"})
-		return
-	}
-	locationsInsert := []models.Location{}
-	for _, location := range locations {
-		for _, city := range cities {
-			if city.PortalID == location.PortalCityID {
-				location.CityID = city.ID
-				locationsInsert = append(locationsInsert, location)
-				break
-			}
-		}
-	}
-	if errn := ch.repository.UpdateLocations(locationsInsert); errn != nil {
-		ch.logger.GetInstance().Errorf("error updating locations  %s", errn)
-		c.JSON(http.StatusInternalServerError, gin.H{"payload": "error updating locations"})
-	}
-	c.JSON(http.StatusOK, gin.H{"payload": "locations successfully updated"})
 }
 
 func (ch *locationsHandlers) GetRaionsOfTheCity(c *gin.Context) {

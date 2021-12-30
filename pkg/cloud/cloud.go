@@ -3,6 +3,7 @@ package cloud
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"io/ioutil"
@@ -39,7 +40,6 @@ func (t *yandexCloud) UploadFile(filePath string) error {
 	if err != nil {
 		return err
 	}
-	fmt.Println(url)
 
 	file, _ := os.Open(filePath)
 	defer file.Close()
@@ -80,10 +80,14 @@ func (t *yandexCloud) GetUploadUrl() (string, error) {
 	if err != nil {
 		return "", err
 	}
+
 	response := UploadUrlResonse{}
-	errU := json.Unmarshal(body, &response)
+	err = json.Unmarshal(body, &response)
 	if err != nil {
-		return "", errU
+		return "", err
+	}
+	if response.Href == "" {
+		return "", errors.New("unable to get url, please verify api key")
 	}
 	return response.Href, nil
 }

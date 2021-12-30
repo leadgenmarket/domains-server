@@ -28,9 +28,11 @@ func (b *backup) CreateBackup() error {
 	filePath := "./backup-store.zip"
 	err := b.arch.ZipFolder("./data", filePath)
 	if err != nil {
+		os.Remove("./backup-store.zip")
 		return err
 	}
 	if err := b.cloud.UploadFile(filePath); err != nil {
+		os.Remove("./backup-store.zip")
 		return err
 	}
 	return os.Remove("./backup-store.zip")

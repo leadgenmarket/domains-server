@@ -27,20 +27,15 @@ run:
 	@go run cmd/app/main.go
 setup:
 	@go run cmd/setup/main.go
-backup:
-	@go run cmd/backup/main.go
 build:
 	@cd cmd/app && go build -o ../../main main.go && cd ../..
-build-d:
-	@cd cmd/app && go build -o ../../main main.go && cd ../.. && ./main & disown
 daemon:
 	@make up && make build && ./main & disown
-runb:
-	@./main
-build-prod:
-	@docker-compose --env-file .env up 
-swaggen:
-	@mkdir -p internal/generated
-	@swagger generate server -f ./api/api.yml -t ./internal/generated
 stress:
 	@gobench -u http://localhost -k=true -c 500 -t 10
+backup:
+	@go run cmd/command-tools/main.go -action=backup
+leads:
+	@go run cmd/command-tools/main.go -action=leads
+portal:
+	@go run cmd/command-tools/main.go -action=portal

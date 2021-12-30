@@ -2,7 +2,6 @@ package arch
 
 import (
 	"archive/zip"
-	"fmt"
 	"io/ioutil"
 	"os"
 )
@@ -28,7 +27,6 @@ func (a *archiver) ZipFolder(folderPath string, outputFile string) error {
 	w := zip.NewWriter(outFile)
 
 	err = addFiles(w, folderPath, "./")
-	fmt.Println(err)
 	if err != nil {
 		return err
 	}

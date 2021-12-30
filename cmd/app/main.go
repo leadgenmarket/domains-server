@@ -24,7 +24,7 @@ func main() {
 	if err != nil {
 		logrus.Panic("error initializing config: %w", err)
 	}
-	fileLog, err := os.OpenFile("./vars/logs/log.log", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
+	fileLog, err := os.OpenFile("./vars/logs/main.log", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
 	if err != nil {
 		log.Fatalf("error opening file: %v", err)
 	}
@@ -37,6 +37,12 @@ func main() {
 		logger.GetInstance().Panic("error initializing config: %w", err)
 	}
 
+	router := gin.Default()
+	redisClient, err := redis.New(cfg.RedisURL, cfg.RedisPass)
+	if err != nil {
+		logger.GetInstance().Fatalf("failed to init redis client: %s", err)
+	}
+	repo := repositories.New(sess.DB("leadgen"), cfg)
 	/*domainsList, err := GetAllDomainUrls(repo.Domains, cfg.ServerIPAdress)
 	if err != nil {
 		logger.GetInstance().Panic("error initializing config: %w", err)
@@ -44,16 +50,9 @@ func main() {
 
 	m := autocert.Manager{
 		Prompt: autocert.AcceptTOS,
-		//HostPolicy: autocert.HostWhitelist(domainsList...), -- не очень безопасно, но если включить, то надо перезагружать сервак при добавлении нового домена. лучше сделать в админке кнопку для перезагрузки
+		//HostPolicy: autocert.HostWhitelist(domainsList...), //-- не очень безопасно, но если включить, то надо перезагружать сервак при добавлении нового домена. лучше сделать в админке кнопку для перезагрузки
 		Cache: autocert.DirCache("./certs"),
 	}
-	router := gin.Default()
-	redisClient, err := redis.New(cfg.RedisURL, cfg.RedisPass)
-	if err != nil {
-		logger.GetInstance().Fatalf("failed to init redis client: %s", err)
-	}
-	repo := repositories.New(sess.DB("leadgen"), cfg)
-	fmt.Println(cfg)
 	servicesContainer := services.Setup(cfg, redisClient)
 	handlersService := handlers.New(router, repo, servicesContainer, logger, cfg)
 	handlersService.Registry()

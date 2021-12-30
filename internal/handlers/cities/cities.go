@@ -10,7 +10,6 @@ import (
 )
 
 type Handlers interface {
-	UpdateCities(c *gin.Context)
 	GetCitiesList(c *gin.Context)
 }
 
@@ -35,18 +34,4 @@ func (ch *citiesHandlers) GetCitiesList(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"payload": "error updating cities"})
 	}
 	c.JSON(http.StatusOK, cities)
-}
-
-func (ch *citiesHandlers) UpdateCities(c *gin.Context) {
-	cities, err := ch.services.Portal.GetCitiesList()
-	if err != nil {
-		ch.logger.GetInstance().Errorf("error getting cities from portal %s", err)
-		c.JSON(http.StatusInternalServerError, gin.H{"payload": "error updating cities"})
-	}
-
-	if err := ch.repository.UpdateCities(cities); err != nil {
-		ch.logger.GetInstance().Errorf("error updating cities  %s", err)
-		c.JSON(http.StatusInternalServerError, gin.H{"payload": "error updating cities"})
-	}
-	c.JSON(http.StatusOK, gin.H{"payload": "cities successfully updated"})
 }

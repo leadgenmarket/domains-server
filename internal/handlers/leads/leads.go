@@ -7,7 +7,6 @@ import (
 	"domain-server/internal/services"
 	"fmt"
 	"net/http"
-	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/globalsign/mgo/bson"
@@ -18,7 +17,6 @@ type Handlers interface {
 	UpdateLeads(c *gin.Context)
 	DeleteLead(c *gin.Context)
 	GetLeadsOfSite(c *gin.Context)
-	SendUnsendedLeads(c *gin.Context)
 }
 
 type leadsHandlers struct {
@@ -110,27 +108,4 @@ func (s *leadsHandlers) GetLeadsOfSite(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, leads)
-}
-
-func (s *leadsHandlers) SendUnsendedLeads(c *gin.Context) {
-	leads, err := s.repository.GetUnsendedLeads()
-	if err != nil {
-		s.logger.GetInstance().Errorf("error getting leads %s", err)
-		c.JSON(http.StatusBadRequest, gin.H{"paylod": "error"})
-		return
-	}
-	for _, lead := range leads {
-
-		if err := s.services.Portal.SendLeadToCrm(lead); err != nil {
-			s.logger.GetInstance().Errorf("error sending leads %s", err)
-			c.JSON(http.StatusBadRequest, gin.H{"paylod": "error"})
-			return
-		}
-		if err := s.repository.MarkLeadAsSended(lead); err != nil {
-			s.logger.GetInstance().Errorf("error updating lead %s", err)
-			c.JSON(http.StatusBadRequest, gin.H{"paylod": "error"})
-			return
-		}
-	}
-	c.JSON(http.StatusOK, gin.H{"payload": `sended leads count -` + strconv.Itoa(len(leads))})
 }
