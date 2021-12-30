@@ -8,6 +8,8 @@ import (
 	"domain-server/internal/services"
 	"domain-server/internal/system/database/redis"
 	"fmt"
+	"log"
+	"os"
 
 	mongo "github.com/globalsign/mgo"
 	"github.com/globalsign/mgo/bson"
@@ -24,7 +26,12 @@ func main() {
 	if err != nil {
 		logrus.Panic("error initializing config: %w", err)
 	}
-	logger := logger.NewLogger(cfg.ServiceName, cfg.LogLevel)
+	fileLog, err := os.OpenFile("./vars/logs/log.log", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
+	if err != nil {
+		log.Fatalf("error opening file: %v", err)
+	}
+	defer fileLog.Close()
+	logger := logger.NewLogger(cfg.ServiceName, cfg.LogLevel, fileLog)
 	sess, err := mongo.Dial(cfg.DSN)
 	if err != nil {
 		logger.GetInstance().Panic("error initializing config: %w", err)

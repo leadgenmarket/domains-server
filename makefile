@@ -24,7 +24,7 @@ recreate:
 client-run:
 	@cd admin && npm run start
 run:
-	@cd cmd/app && go run main.go
+	@go run cmd/app/main.go
 setup:
 	@go run cmd/setup/main.go
 backup:

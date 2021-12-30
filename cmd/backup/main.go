@@ -5,6 +5,8 @@ import (
 	"domain-server/internal/logger"
 	"domain-server/internal/services"
 	"domain-server/internal/system/database/redis"
+	"log"
+	"os"
 
 	"github.com/sirupsen/logrus"
 )
@@ -14,7 +16,12 @@ func main() {
 	if err != nil {
 		logrus.Panic("error initializing config: %w", err)
 	}
-	logger := logger.NewLogger(cfg.ServiceName, cfg.LogLevel)
+	fileLog, err := os.OpenFile("./vars/logs/log.log", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
+	if err != nil {
+		log.Fatalf("error opening file: %v", err)
+	}
+	defer fileLog.Close()
+	logger := logger.NewLogger(cfg.ServiceName, cfg.LogLevel, fileLog)
 
 	logger.GetInstance().Info("admin user exists or created")
 	redisClient, err := redis.New(cfg.RedisURL, cfg.RedisPass)
