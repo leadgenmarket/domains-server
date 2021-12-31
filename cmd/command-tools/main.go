@@ -86,7 +86,7 @@ func updatePortalInfo(services *services.Services, repositories *repositories.Re
 	LocationsUpdate(services, repositories, logger)
 	RayonUpdatePrices(services, repositories, logger)
 	JKsUpdate(services, repositories, logger)
-	//logger.GetInstance().Info(`successfuly updated portal info`)
+	logger.GetInstance().Info(`successfuly updated portal info`)
 }
 
 func JKsUpdate(services *services.Services, repositories *repositories.Repositories, logger logger.Log) {
@@ -100,12 +100,23 @@ func JKsUpdate(services *services.Services, repositories *repositories.Repositor
 		logger.GetInstance().Errorf("error getting jks from portal %s", err)
 		return
 	}
-	repositories.JK.DropDB()
 	for _, jk := range jkList {
-		err := repositories.JK.AddJK(jk)
-		if err != nil {
-			logger.GetInstance().Errorf("error adding jks %s", err)
-			return
+		jkS, err := repositories.JK.GetJKByPortalId(jk.Portal_ID)
+		if err == nil {
+			//если жк уже есть в базе, то обновляем его
+			jk.ID = jkS.ID
+			err := repositories.JK.UpdateJK(jk)
+			if err != nil {
+				logger.GetInstance().Errorf("error updating jk jks %s", err)
+				return
+			}
+		} else {
+			//если нету в базу, то добавляем
+			err := repositories.JK.AddJK(jk)
+			if err != nil {
+				logger.GetInstance().Errorf("error adding jks %s", err)
+				return
+			}
 		}
 	}
 }

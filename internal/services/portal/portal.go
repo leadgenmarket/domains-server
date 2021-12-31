@@ -206,35 +206,35 @@ func (p *portal) GetJkList(cityRepo []models.City) ([]models.JK, error) {
 				if city.Name == jkInput.CityName {
 					jk.CityID = city.ID
 					jk.PortalCityID = city.PortalID
-					break
+					//break
 				}
 			}
 			if jkInput.Price_OT != "" {
-				jk.Price_OT, err = strconv.Atoi(jkInput.Price_OT)
+				jk.Price_OT, _ = strconv.Atoi(jkInput.Price_OT)
 			}
 			if jkInput.Price_0 != "" {
-				jk.Price_0, err = strconv.Atoi(jkInput.Price_0)
+				jk.Price_0, _ = strconv.Atoi(jkInput.Price_0)
 			}
 			if jkInput.Price_2 != "" {
-				jk.Price_2, err = strconv.Atoi(jkInput.Price_2)
+				jk.Price_2, _ = strconv.Atoi(jkInput.Price_2)
 			}
 			if jkInput.Price_3 != "" {
-				jk.Price_3, err = strconv.Atoi(jkInput.Price_3)
+				jk.Price_3, _ = strconv.Atoi(jkInput.Price_3)
 			}
 			if jkInput.Price_4 != "" {
-				jk.Price_4, err = strconv.Atoi(jkInput.Price_4)
+				jk.Price_4, _ = strconv.Atoi(jkInput.Price_4)
 			}
 			if jkInput.Price_5 != "" {
-				jk.Price_5, err = strconv.Atoi(jkInput.Price_5)
+				jk.Price_5, _ = strconv.Atoi(jkInput.Price_5)
 			}
 			if jkInput.Price_6 != "" {
-				jk.Price_6, err = strconv.Atoi(jkInput.Price_6)
+				jk.Price_6, _ = strconv.Atoi(jkInput.Price_6)
 			}
 			if jkInput.Price_7 != "" {
-				jk.Price_7, err = strconv.Atoi(jkInput.Price_7)
+				jk.Price_7, _ = strconv.Atoi(jkInput.Price_7)
 			}
 			if jkInput.Price_8 != "" {
-				jk.Price_8, err = strconv.Atoi(jkInput.Price_8)
+				jk.Price_8, _ = strconv.Atoi(jkInput.Price_8)
 			}
 			jkResultList = append(jkResultList, jk)
 		}

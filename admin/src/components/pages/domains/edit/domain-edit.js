@@ -58,7 +58,6 @@ const DomainEdit = () => {
                 [event.target.name]:event.target.value
             })
         }
-        console.log(form)
     }
 
     const nextStepClick = () => {

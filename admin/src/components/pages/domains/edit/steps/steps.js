@@ -54,7 +54,6 @@ const StepsComponent = ({quizSteps, setQuizSteps, city_id}) => {
 
     const changeQuestionType = (event) => {
         let stepindex = parseInt(event.target.getAttribute('stepindex'))
-        console.log(stepindex)
         setQuizSteps((prevState) => {
             let newQuizSteps = Array.from(prevState)
             newQuizSteps[stepindex].type = event.target.value
@@ -80,9 +79,11 @@ const StepsComponent = ({quizSteps, setQuizSteps, city_id}) => {
     }
 
     const getCityRaions = () => {
-        axios.get("/api/locations/raions/"+city_id).then((resp) => {
-            setRaions(resp.data.payload)
-        })
+        if (city_id !== undefined){
+            axios.get("/api/locations/raions/"+city_id).then((resp) => {
+                setRaions(resp.data.payload)
+            })
+        }
     }
 
     useEffect(()=>{
