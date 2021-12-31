@@ -5,6 +5,7 @@ import (
 	"domain-server/internal/handlers/auth"
 	"domain-server/internal/handlers/cities"
 	"domain-server/internal/handlers/domains"
+	"domain-server/internal/handlers/jks"
 	"domain-server/internal/handlers/leads"
 	"domain-server/internal/handlers/locations"
 	"domain-server/internal/handlers/organizations"
@@ -37,6 +38,7 @@ type handlers struct {
 	Leads         leads.Handlers
 	Organizations organizations.Handlers
 	Titles        titles.Handlers
+	JKs           jks.Handlers
 	Users         users.Handlers
 	Templates     templates.Handlers
 	router        *gin.Engine
@@ -56,6 +58,7 @@ func New(router *gin.Engine, repositories *repositories.Repositories, services *
 		Titles:        titles.New(repositories.Titles, services, logger),
 		Users:         users.New(repositories.Users, services, logger),
 		Templates:     templates.New(repositories.Templates, services, logger),
+		JKs:           jks.New(repositories.JK, logger),
 		router:        router,
 		repositories:  repositories,
 		services:      services,
@@ -73,6 +76,7 @@ func (h *handlers) Registry() {
 	h.router.POST("/sign-in", h.Auth.SignIn)
 	h.router.PUT("/lead/", h.Leads.AddLead)
 	h.router.POST("/lead/", h.Leads.UpdateLeads)
+	h.router.POST("/jks/", h.JKs.GetFilteredJKList)
 
 	api := h.router.Group("/api", middlewares.TokenAuthMiddleware(h.logger, h.services))
 	{
@@ -89,7 +93,7 @@ func (h *handlers) Registry() {
 		citiesGroup := api.Group("cities")
 		citiesGroup.GET("/", h.Cities.GetCitiesList)
 
-		// locations
+		//locations
 		locationsGroup := api.Group("locations")
 		locationsGroup.GET("/raions/:id", h.Locations.GetRaionsOfTheCity)
 

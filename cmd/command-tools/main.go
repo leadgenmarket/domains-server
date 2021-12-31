@@ -82,9 +82,9 @@ func sendLeads(services *services.Services, repositories *repositories.Repositor
 }
 
 func updatePortalInfo(services *services.Services, repositories *repositories.Repositories, logger logger.Log) {
-	CitiesUpdate(services, repositories, logger)
+	/*CitiesUpdate(services, repositories, logger)
 	LocationsUpdate(services, repositories, logger)
-	RayonUpdatePrices(services, repositories, logger)
+	RayonUpdatePrices(services, repositories, logger)*/
 	JKsUpdate(services, repositories, logger)
 	logger.GetInstance().Info(`successfuly updated portal info`)
 }
@@ -95,7 +95,7 @@ func JKsUpdate(services *services.Services, repositories *repositories.Repositor
 		logger.GetInstance().Errorf("error getting jks from portal %s", err)
 		return
 	}
-	jkList, err := services.Portal.GetJkList(citiesList)
+	jkList, err := services.Portal.GetJkListAlt(citiesList)
 	if err != nil {
 		logger.GetInstance().Errorf("error getting jks from portal %s", err)
 		return

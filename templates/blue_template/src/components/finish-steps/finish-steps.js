@@ -4,7 +4,7 @@ import NameStep from "./name-step"
 import PhoneStep from "./phone-step"
 import ResultStep from "./result-step"
 
-const FinishSteps = ({params, form, setForm, raionsStep, roomsStep, sdachaName}) => {
+const FinishSteps = ({params, form, setForm, raionsPrice, raionsStep, roomsStep, sdachaName}) => {
     const [stage, setStage] = useState(0)
     const nextStep = (event) => {
         event.preventDefault()
@@ -14,7 +14,7 @@ const FinishSteps = ({params, form, setForm, raionsStep, roomsStep, sdachaName})
                 <div className="page_inner">
                     <div className="wmain">
                         <CityTitle params={params}/>
-                        {stage === 0?<Loading params={params} setStage={setStage} />:stage===1?<PhoneStep params={params} raionsStep={raionsStep} roomsStep={roomsStep} sdachaName={sdachaName} nextStep={nextStep} form={form} setForm={setForm} />:stage===2?<NameStep raionsStep={raionsStep} roomsStep={roomsStep} sdachaName={sdachaName} params={params} nextStep={nextStep} form={form} setForm={setForm} />:<ResultStep params={params} form={form} />}
+                        {stage === 0?<Loading params={params} setStage={setStage} />:stage===1?<PhoneStep params={params} raionsStep={raionsStep} roomsStep={roomsStep} sdachaName={sdachaName} nextStep={nextStep} form={form} setForm={setForm} />:stage===2?<NameStep raionsStep={raionsStep} roomsStep={roomsStep} sdachaName={sdachaName} params={params} nextStep={nextStep} form={form} setForm={setForm} />:<ResultStep params={params} raionsPrice={raionsPrice} raionsStep={raionsStep} roomsStep={roomsStep} sdachaName={sdachaName} form={form} />}
                     </div>
                 </div>
             </div>

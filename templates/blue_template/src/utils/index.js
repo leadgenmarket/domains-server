@@ -1,6 +1,6 @@
-import SendData from "./send-data";
+import {SendData} from "./send-data";
 
 
 export{
-    SendData
+    SendData, 
 }

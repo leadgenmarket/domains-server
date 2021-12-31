@@ -10,6 +10,7 @@ const Router = () => {
     const [raionsName, setRaionsName] = useState("")
     const [roomsName, setRoomsName] = useState("")
     const [sdachaName, setSdachaName] = useState("")
+    const [raionsPrice, setRaionsPrice] = useState("")
 
     const [form,setForm] = useState({})
     const nextStep = (event) => {
@@ -64,7 +65,11 @@ const Router = () => {
                 if (step.type == "sdacha") {
                     setSdachaName(step.title)
                 }
+                
                 toAdd.push(step)
+            }
+            if (step.type == "slider_r") {
+                setRaionsPrice(step.title)
             }
         })
         let formNew = {}
@@ -88,7 +93,7 @@ const Router = () => {
     }, [])
     
     return <div className="container_main" style={{background: params.background!=""?`url("/file-store/${params.background}") center / cover no-repeat`:``}}> 
-            {step==null?<MainScreen params={params} nextStep={nextStep} />:params.Steps.length<=step?<FinishSteps form={form} form={form} setForm={setForm} raionsStep={raionsName} roomsStep={roomsName} sdachaName={sdachaName} params={params} />:<Step step={params.Steps[step]} raionsStep={raionsName} roomsStep={roomsName} params={params} index={step} length={params.Steps.length} nextStep={nextStep} prevStep={prevStep} form={form} setForm={setForm} />}
+            {step==null?<MainScreen params={params} nextStep={nextStep} />:params.Steps.length<=step?<FinishSteps form={form} form={form} setForm={setForm} raionsStep={raionsName} raionsPrice={raionsPrice} roomsStep={roomsName} sdachaName={sdachaName} params={params} />:<Step step={params.Steps[step]} raionsStep={raionsName} raionsPrice={raionsPrice} roomsStep={roomsName} params={params} index={step} length={params.Steps.length} nextStep={nextStep} prevStep={prevStep} form={form} setForm={setForm} />}
         </div>
 }
 

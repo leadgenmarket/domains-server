@@ -100,13 +100,19 @@ const SliderStep = ({ step, params, raionsStep, roomsStep, index, length, nextSt
             }
             setMin(minV*1000000)
             setMax(maxV*1000000)
-            setValue((((maxV - minV)/4)+minV)*1000000)
+            let value = (((maxV - minV)/4)+minV)*1000000
+            setValue(value)
+            form[step.title] = value
+            setForm(form)
         } else {
             let minV = parseFloat(step.from)
             let maxV = parseFloat(step.to)
             setMin(minV)
             setMax(maxV)
-            setValue(((maxV - minV)/4)+minV)
+            let value = (((maxV - minV)/4)+minV)
+            setValue(value)
+            form[step.title] = value
+            setForm(form)
         }
     },[index])
 
@@ -156,7 +162,7 @@ const SliderStep = ({ step, params, raionsStep, roomsStep, index, length, nextSt
                     //defaultValue={defaultValue}
                     getAriaValueText={valuetext}
                     aria-labelledby="non-linear-slider"
-                    step={10000}
+                    step={50000}
                     value={sliderValue}
                     onChange={handleChange}
                     min={min}

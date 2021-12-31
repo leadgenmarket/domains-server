@@ -86,6 +86,7 @@ type Location struct {
 
 type JK struct {
 	ID           bson.ObjectId `bson:"_id"`
+	Domain       string        `bson:"domain" json:"domain"`
 	Portal_ID    string        `bson:"portal_id" json:"ID"`
 	Name         string        `bson:"name" json:"NAME"`
 	Code         string        `bson:"code" json:"CODE"`
@@ -111,18 +112,10 @@ type Raion struct {
 	Code string `bson:"code" json:"CODE"`
 }
 
-/*
-
-"PRICE_OT": "11265621",
-			"PRICE_0": "11265621",
-			"PRICE_1": "",
-			"PRICE_2": "22332730",
-			"PRICE_3": "24781811",
-			"PRICE_4": "",
-			"PRICE_5": "30054849",
-			"PRICE_6": "14036521",
-			"PRICE_7": "18754278",
-			"PRICE_8": "23581888",
-			"CLASS": "Бизнес",
-
-*/
+type JKFilter struct {
+	CityID   string   `bson:"sdacha" json:"city_id"`
+	Sdacha   []string `bson:"sdacha" json:"sdacha"`
+	MaxPrice int      `bson:"maxPrice" json:"maxPrice"`
+	Rooms    []int    `bson:"rooms" json:"rooms"`
+	Raions   []string `bson:"raions" json:"raions"`
+}

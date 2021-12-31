@@ -40,6 +40,25 @@ const getSdachaList = (sdacha) => {
 	})
 	return result
 }
+
+const getRooms = (rooms) => {
+	let result = []
+	let list = rooms.split(", ")
+	list.forEach((room) => {
+		if (room == "Студии") {
+			result.push(0)
+		} else if (room == "1 - комнатные квартиры") {
+			result.push(1)
+		} else if (room == "2 - комнатные квартиры") {
+			result.push(2)
+		} else if (room == "3 - комнатные квартиры") {
+			result.push(3)
+		} else if (room == "4 - комнатные квартиры") {
+			result.push(4)
+		}
+	})
+	return result
+}
 const SendData = (form, setForm, callback, raionsName, roomsName, sdachaName, celtype) => {
 	let leadgen = {
 		"AMO_ID": "false",
@@ -131,6 +150,25 @@ const SendData = (form, setForm, callback, raionsName, roomsName, sdachaName, ce
     callback()
 }
 
+const generateParamsForUrl = (form) => {
+	//?utm_content=1ekran&roistatVisitId=8504168&utm_name=test&utm_phone=+7 ( 999 ) 999 - 99 - 99
+	let query = "?utm_content=1ekran"
+	if (getParam('utm_campaign') != null) {
+		query += "&utm_campaign="+getParam('utm_campaign')
+	}
+	if (getParam('utm_medium') != null) {
+		query += "&utm_medium="+getParam('utm_medium')
+	}
+	if (getParam('utm_term') != null) {
+		query += "&utm_term="+getParam('utm_term')
+	}
+	if (getParam('utm_source') != null) {
+		query += "&utm_source="+getParam('utm_source')
+	}
+	query+= "&roistatVisitId="+jsCookie.get('roistat_visit')+"&utm_phone="+form['phone']
+	return query
+}
+
 const SendCell = (celType, phone) => {
 	console.log("celType "+celType);
 	try {
@@ -183,6 +221,27 @@ const SendCell = (celType, phone) => {
 	} catch (err) {
 		console.log(`err top mail sended ${domainSettings.domain.mail}` );
 	}
-}	
+}
 
-export default SendData
+const GetJKList = async (form, raionsName, roomsName, sdachaName, raionsPrice) => {
+	console.log(raionsPrice)
+	if (raionsName == "" || roomsName == "" || sdachaName == "" || raionsPrice == ""){
+		return false
+	}
+	let data = {
+		city_id: domainSettings.city.portal_id,
+		sdacha:  getSdachaList(form[sdachaName]),
+		maxPrice: form[raionsPrice],
+		rooms: getRooms(form[roomsName]),
+		raions: getRayonCodes(form[raionsName])
+	}
+	let resp = await axios.post("/jks/", data)
+	console.log(resp.data)
+	return resp.data
+}
+
+export {
+	SendData,
+	GetJKList,
+	generateParamsForUrl
+}

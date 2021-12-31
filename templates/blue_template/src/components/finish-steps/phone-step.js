@@ -7,10 +7,15 @@ const PhoneStep = ({params, nextStep, form, setForm, raionsStep, roomsStep, sdac
     const [phone, setPhone] = useState("")
     const [error, setError] = useState(false)
     const inputChange = (event) => {
-        setPhone(event.target.value)
+        let value = event.target.value
+       
+        if (value.length>4 && value.slice(0,5)!="+7 (9") {
+            value = "+7 ("
+        }
+        setPhone(value)
         setForm({
             ...form,
-            phone: event.target.value
+            phone: value
         })
     }
 

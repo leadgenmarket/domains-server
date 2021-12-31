@@ -105,9 +105,29 @@ const RoomsStep = ({ step, params, raionsStep, index, length, nextStep, prevStep
                     } catch(e){}
                 }
             })
-            setRooms(roomTypes)
+            setRooms(sortRooms(roomTypes))
         }
     }, [index])
+
+    const sortRooms = (roomsIn) => {
+        let rooms = []
+        if (roomsIn.includes("Студии")){
+            rooms.push("Студии")
+        }
+        if (roomsIn.includes("1 - комнатные квартиры")){
+            rooms.push("1 - комнатные квартиры")
+        }
+        if (roomsIn.includes("2 - комнатные квартиры")){
+            rooms.push("2 - комнатные квартиры")
+        }
+        if (roomsIn.includes("3 - комнатные квартиры")){
+            rooms.push("3 - комнатные квартиры")
+        }
+        if (roomsIn.includes("4 - комнатные квартиры")){
+            rooms.push("4 - комнатные квартиры")
+        }
+        return rooms
+    }
 
     return <ul className="check_list_one check_list" id="kv_list">
         {rooms.map((answer) => {
