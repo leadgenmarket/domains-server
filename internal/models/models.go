@@ -61,8 +61,9 @@ type City struct {
 }
 
 type Title struct {
-	ID    bson.ObjectId `bson:"_id"`
-	Title string        `bson:"title"`
+	ID        bson.ObjectId `bson:"_id"`
+	Title     string        `bson:"title"`
+	CreatedAt time.Time     `bson:"created_at"`
 }
 
 type Organization struct {

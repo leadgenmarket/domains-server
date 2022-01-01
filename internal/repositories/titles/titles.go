@@ -3,6 +3,7 @@ package titles
 import (
 	"domain-server/internal/models"
 	"fmt"
+	"time"
 
 	mongodb "github.com/globalsign/mgo"
 	"github.com/globalsign/mgo/bson"
@@ -30,6 +31,7 @@ func New(dbClient *mongodb.Database) Repository {
 
 func (r *repositroyDB) AddTitle(title models.Title) (models.Title, error) {
 	title.ID = bson.NewObjectId()
+	title.CreatedAt = time.Now()
 	err := r.titles.Insert(&title)
 	if err != nil {
 		return title, err
@@ -55,7 +57,7 @@ func (r *repositroyDB) DeleteTitle(id string) error {
 
 func (r *repositroyDB) GetTitlesList() ([]models.Title, error) {
 	titles := []models.Title{}
-	err := r.titles.Find(bson.M{}).All(&titles)
+	err := r.titles.Pipe([]bson.M{{"$sort": bson.M{"created_at": -1}}}).All(&titles)
 	if err != nil {
 		return titles, err
 	}
@@ -73,7 +75,6 @@ func (r *repositroyDB) GetTitleForDomain(cityID bson.ObjectId, rayon string, k s
 	}
 	title := models.Title{}
 	err := r.titles.Find(bson.M{"_id": bson.ObjectIdHex(k)}).One(&title)
-	fmt.Println(title.Title)
 	return title.Title, err
 }
 

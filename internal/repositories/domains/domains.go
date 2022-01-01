@@ -92,7 +92,7 @@ func (r *repositroyDB) UpdateDomain(domain models.Domain) error {
 
 func (r *repositroyDB) GetAllDomains() ([]models.Domain, error) {
 	domains := []models.Domain{}
-	err := r.domains.Find(bson.M{}).All(&domains)
+	err := r.domains.Pipe([]bson.M{{"$sort": bson.M{"created_at": -1}}}).All(&domains)
 	if err != nil {
 		return domains, err
 	}
