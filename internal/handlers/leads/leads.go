@@ -17,6 +17,7 @@ type Handlers interface {
 	UpdateLeads(c *gin.Context)
 	DeleteLead(c *gin.Context)
 	GetLeadsOfSite(c *gin.Context)
+	SendUnsendedLeadsToCrm(c *gin.Context)
 }
 
 type leadsHandlers struct {
@@ -108,4 +109,29 @@ func (s *leadsHandlers) GetLeadsOfSite(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, leads)
+}
+
+func (s *leadsHandlers) SendUnsendedLeadsToCrm(c *gin.Context) {
+	sendLeads(s.services, s.repository, s.logger)
+	c.JSON(http.StatusOK, gin.H{"paylod": "ok"})
+}
+
+func sendLeads(services *services.Services, repositories leads.Repository, logger logger.Log) {
+	leads, err := repositories.GetUnsendedLeads()
+	if err != nil {
+		logger.GetInstance().Errorf("error getting leads %s", err)
+		return
+	}
+	for _, lead := range leads {
+
+		if err := services.Portal.SendLeadToCrm(lead); err != nil {
+			logger.GetInstance().Errorf("error sending leads %s", err)
+			return
+		}
+		if err := repositories.MarkLeadAsSended(lead); err != nil {
+			logger.GetInstance().Errorf("error updating lead %s", err)
+			return
+		}
+	}
+
 }

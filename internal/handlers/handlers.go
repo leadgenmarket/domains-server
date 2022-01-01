@@ -76,6 +76,7 @@ func (h *handlers) Registry() {
 	h.router.POST("/sign-in", h.Auth.SignIn)
 	h.router.PUT("/lead/", h.Leads.AddLead)
 	h.router.POST("/lead/", h.Leads.UpdateLeads)
+	h.router.GET("/lead/", h.Leads.SendUnsendedLeadsToCrm)
 	h.router.POST("/jks/", h.JKs.GetFilteredJKList)
 	h.router.GET("/prices", h.Locations.UpdatePrices)
 
