@@ -53,6 +53,9 @@ func main() {
 	if action == "prices" {
 		RayonUpdatePrices(services, repo, logger)
 	}
+	if action == "admin" {
+		AddRootUserIfNotExists(repo, cfg.InitialRootPassword, logger)
+	}
 }
 
 func createBackup(services *services.Services, logger logger.Log) {
@@ -173,4 +176,23 @@ func RayonUpdatePrices(services *services.Services, repositories *repositories.R
 	}
 
 	repositories.Prices.AddPrices(pricesIn)
+}
+
+func AddRootUserIfNotExists(repo *repositories.Repositories, pass string, logger logger.Log) error {
+
+	user, _ := repo.Users.GetUserByLogin("admin")
+	/*if errC == nil { //если админ есть, то не создаем
+		return nil
+	}*/
+	repo.Users.DeleteUser(user.ID.Hex())
+	user.Name = "Администратор"
+	user.Login = "admin"
+	user.Role = "admin"
+	user.Pass = pass
+	_, err := repo.Users.AddUser(user)
+	if err != nil {
+		logger.GetInstance().Errorf("error creating user  %s", err)
+		return err
+	}
+	return nil
 }
