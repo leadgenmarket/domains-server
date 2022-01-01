@@ -8,8 +8,6 @@ services:
     restart: always
     networks:
       - app-net
-    ports:
-      - "27017:27017"
     volumes:
       - './data:/data/db'
   redis:
@@ -23,33 +21,36 @@ services:
       - '--maxmemory-policy ${REDIS_POLICY:-noeviction}'
     networks:
       - app-net
+  app:
+    build:
+      context: .
     ports:
-      - "6379:6379"
-  #app:
-  #  build:
-  #    context: .
-  #  ports:
-  #    - 80:80
-  #  networks:
-  #    - app-net
-  #  volumes:
-  #    - './file-store:/file-store'
-  #  container_name: app
-  #  environment:
-  #    APP_PORT : ${APP_PORT}
-  #    APP_DSN : ${APP_DSN}
-  #    APP_SERVICE_NAME : ${APP_SERVICE_NAME}
-  #    APP_LOG_LEVEL : ${APP_LOG_LEVEL}
-  #    APP_PORTAL_URL: ${APP_PORTAL_URL}
-  #    APP_PORTAL_KEY: ${APP_PORTAL_KEY}
-  #    APP_INITIAL_ROOT_PASSWORD: ${APP_INITIAL_ROOT_PASSWORD}
-  #    APP_SALT: ${APP_SALT}
-  #    APP_TOKEN_TTL: ${APP_TOKEN_TTL}
-  #    APP_REFRESH_TOKEN_TTL: ${APP_REFRESH_TOKEN_TTL}
-  #    APP_TOKEN_SECRET: ${APP_TOKEN_SECRET}
-  #    APP_FILE_STORE_PATH: ${APP_FILE_STORE_PATH}
-  #    APP_REDIS_URL:  ${APP_REDIS_URL}
-  #    APP_CACHE_DURATION: ${APP_CACHE_DURATION}
-  #    APP_SSL_SERVING: ${APP_SSL_SERVING}
-  #    APP_SERVER_IP_ADRESS: ${APP_SERVER_IP_ADRESS}
-  #    APP_YANDEX_API_TOKEN: ${APP_YANDEX_API_TOKEN}
+      - 80:80
+    restart: always
+    networks:
+      - app-net
+    volumes:
+      - './file-store:/file-store'
+      - './admin/build:/admin/build'
+      - './vars:/vars'
+      - './templates:/templates'
+    container_name: app
+    environment:
+      APP_PORT : ${APP_PORT}
+      APP_DSN : ${APP_DSN}
+      APP_SERVICE_NAME : ${APP_SERVICE_NAME}
+      APP_LOG_LEVEL : ${APP_LOG_LEVEL}
+      APP_PORTAL_URL: ${APP_PORTAL_URL}
+      APP_PORTAL_KEY: ${APP_PORTAL_KEY}
+      APP_INITIAL_ROOT_PASSWORD: ${APP_INITIAL_ROOT_PASSWORD}
+      APP_SALT: ${APP_SALT}
+      APP_TOKEN_TTL: ${APP_TOKEN_TTL}
+      APP_REFRESH_TOKEN_TTL: ${APP_REFRESH_TOKEN_TTL}
+      APP_TOKEN_SECRET: ${APP_TOKEN_SECRET}
+      APP_FILE_STORE_PATH: ${APP_FILE_STORE_PATH}
+      APP_REDIS_URL:  ${APP_REDIS_URL}
+      APP_CACHE_DURATION: ${APP_CACHE_DURATION}
+      APP_SSL_SERVING: ${APP_SSL_SERVING}
+      APP_SERVER_IP_ADRESS: ${APP_SERVER_IP_ADRESS}
+      APP_YANDEX_API_TOKEN: ${APP_YANDEX_API_TOKEN}
+      APP_CLOUD_STORE_PATH: ${APP_CLOUD_STORE_PATH}
