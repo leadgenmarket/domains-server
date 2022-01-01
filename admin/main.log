@@ -1,0 +1,18 @@
+{"_function":"main","_level_name":"INFORMATIONAL","host":"domain-server","level":6,"short_message":"server started","timestamp":1641057577.904755,"version":"1.1"}
+{"_function":"GetTemplate","_level_name":"ERROR","host":"domain-server","level":3,"short_message":"error unmarshaling incoming json not found","timestamp":1641057648.5985298,"version":"1.1"}
+{"_function":"GetTemplate","_level_name":"ERROR","host":"domain-server","level":3,"short_message":"error unmarshaling incoming json not found","timestamp":1641057652.418043,"version":"1.1"}
+{"_function":"GetTemplate","_level_name":"ERROR","host":"domain-server","level":3,"short_message":"error unmarshaling incoming json not found","timestamp":1641057678.2543607,"version":"1.1"}
+{"_function":"GetTemplate","_level_name":"ERROR","host":"domain-server","level":3,"short_message":"error unmarshaling incoming json not found","timestamp":1641057702.6661184,"version":"1.1"}
+{"_function":"GetTemplate","_level_name":"ERROR","host":"domain-server","level":3,"short_message":"error unmarshaling incoming json not found","timestamp":1641057712.0528853,"version":"1.1"}
+{"_function":"GetTemplate","_level_name":"ERROR","host":"domain-server","level":3,"short_message":"error unmarshaling incoming json not found","timestamp":1641057712.073185,"version":"1.1"}
+{"_function":"GetTemplate","_level_name":"ERROR","host":"domain-server","level":3,"short_message":"error unmarshaling incoming json not found","timestamp":1641057712.0921857,"version":"1.1"}
+{"_function":"GetTemplate","_level_name":"ERROR","host":"domain-server","level":3,"short_message":"error unmarshaling incoming json not found","timestamp":1641057712.1098073,"version":"1.1"}
+{"_function":"GetTemplate","_level_name":"ERROR","host":"domain-server","level":3,"short_message":"error unmarshaling incoming json not found","timestamp":1641057712.1288643,"version":"1.1"}
+{"_function":"GetTemplate","_level_name":"ERROR","host":"domain-server","level":3,"short_message":"error unmarshaling incoming json not found","timestamp":1641057738.4114883,"version":"1.1"}
+{"_function":"GetTemplate","_level_name":"ERROR","host":"domain-server","level":3,"short_message":"error unmarshaling incoming json not found","timestamp":1641057742.2389677,"version":"1.1"}
+{"_function":"GetTemplate","_level_name":"ERROR","host":"domain-server","level":3,"short_message":"error unmarshaling incoming json not found","timestamp":1641057759.4398513,"version":"1.1"}
+{"_function":"GetTemplate","_level_name":"ERROR","host":"domain-server","level":3,"short_message":"error unmarshaling incoming json not found","timestamp":1641057763.2693596,"version":"1.1"}
+{"_function":"GetTemplate","_level_name":"ERROR","host":"domain-server","level":3,"short_message":"error unmarshaling incoming json not found","timestamp":1641057773.285437,"version":"1.1"}
+{"_function":"GetTemplate","_level_name":"ERROR","host":"domain-server","level":3,"short_message":"error unmarshaling incoming json not found","timestamp":1641057913.431241,"version":"1.1"}
+{"_function":"GetTemplate","_level_name":"ERROR","host":"domain-server","level":3,"short_message":"error unmarshaling incoming json not found","timestamp":1641058097.402467,"version":"1.1"}
+{"_function":"GetTemplate","_level_name":"ERROR","host":"domain-server","level":3,"short_message":"error unmarshaling incoming json not found","timestamp":1641058101.229266,"version":"1.1"}

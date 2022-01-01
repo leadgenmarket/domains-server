@@ -6,5 +6,5 @@ fs.readFile('./build/index.html', 'utf8' , (err, data) => {
   data = data.replace('href="favicon.ico"', 'href="/admin/favicon.ico"')
   //data = data.replace('</body>', '<script> let domainSettings = JSON.parse("{{ .scripts }}")</script></body>')
   fs.writeFileSync("./build/index.html", data)
-  //fs.unlink("./build/index.html", ()=>{})
+  fs.unlink("./build/index.html", ()=>{})
 })
