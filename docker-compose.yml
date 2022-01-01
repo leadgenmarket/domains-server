@@ -34,6 +34,7 @@ services:
       - './admin/build:/admin/build'
       - './vars:/vars'
       - './templates:/templates'
+      - './data:/data/db'
     container_name: app
     environment:
       APP_PORT : ${APP_PORT}
