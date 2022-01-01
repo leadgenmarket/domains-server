@@ -12,6 +12,7 @@ import (
 	"os"
 
 	mongo "github.com/globalsign/mgo"
+	"github.com/globalsign/mgo/bson"
 
 	"github.com/sirupsen/logrus"
 )
@@ -56,6 +57,23 @@ func main() {
 	if action == "admin" {
 		AddRootUserIfNotExists(repo, cfg.InitialRootPassword, logger)
 	}
+	if action == "fixtures" {
+		addTemplates(services, repo, logger)
+	}
+}
+
+func addTemplates(service *services.Services, repositories *repositories.Repositories, logger logger.Log) {
+	template := models.Template{
+		ID:   bson.NewObjectId(),
+		Name: "Фиолетовый квиз",
+		Path: "/templates/blue_template/",
+	}
+	_, err := repositories.Templates.AddTemplate(template)
+	if err != nil {
+		logger.GetInstance().Errorf(`ошибка при добавлении шаблона %s`, err)
+		return
+	}
+	logger.GetInstance().Info(`шаблон успешно добавлен`)
 }
 
 func createBackup(services *services.Services, logger logger.Log) {
