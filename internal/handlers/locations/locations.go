@@ -4,6 +4,7 @@ import (
 	"domain-server/internal/logger"
 	"domain-server/internal/repositories/cities"
 	"domain-server/internal/repositories/locations"
+	"domain-server/internal/repositories/prices"
 	"domain-server/internal/services"
 	"net/http"
 
@@ -13,19 +14,22 @@ import (
 type Handlers interface {
 	GetLocationsList(c *gin.Context)
 	GetRaionsOfTheCity(c *gin.Context)
+	UpdatePrices(c *gin.Context)
 }
 
 type locationsHandlers struct {
 	repository       locations.Repository
 	repositoryCities cities.Repository
+	repositoryPrices prices.Repository
 	services         *services.Services
 	logger           logger.Log
 }
 
-func New(repository locations.Repository, repositoryCities cities.Repository, services *services.Services, logger logger.Log) Handlers {
+func New(repository locations.Repository, repositoryCities cities.Repository, repositoryPrices prices.Repository, services *services.Services, logger logger.Log) Handlers {
 	return &locationsHandlers{
 		repository:       repository,
 		repositoryCities: repositoryCities,
+		repositoryPrices: repositoryPrices,
 		services:         services,
 		logger:           logger,
 	}
@@ -46,4 +50,20 @@ func (ch *locationsHandlers) GetRaionsOfTheCity(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{"payload": raions})
+}
+
+func (ch *locationsHandlers) UpdatePrices(c *gin.Context) {
+	RayonUpdatePrices(ch.services, ch.repositoryPrices, ch.repositoryCities, ch.logger)
+}
+
+func RayonUpdatePrices(services *services.Services, repositories prices.Repository, repositoryCities cities.Repository, logger logger.Log) {
+	prices, _ := services.Portal.GetCitiesPrices()
+	pricesIn := []map[string]interface{}{}
+	for _, price := range prices {
+		city, _ := repositoryCities.GetCityByPortalId(price["portal_city_id"].(string))
+		price["_id"] = city.ID
+		pricesIn = append(pricesIn, price)
+	}
+
+	repositories.AddPrices(pricesIn)
 }

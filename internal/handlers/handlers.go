@@ -52,7 +52,7 @@ func New(router *gin.Engine, repositories *repositories.Repositories, services *
 		Auth:          auth.New(repositories.Users, services, logger),
 		Domains:       domains.New(repositories.Domains, repositories.Locations, repositories.Cities, repositories.Prices, repositories.Titles, services, logger, cfg),
 		Cities:        cities.New(repositories.Cities, services, logger),
-		Locations:     locations.New(repositories.Locations, repositories.Cities, services, logger),
+		Locations:     locations.New(repositories.Locations, repositories.Cities, repositories.Prices, services, logger),
 		Leads:         leads.New(repositories.Leads, services, logger),
 		Organizations: organizations.New(repositories.Organizations, services, logger),
 		Titles:        titles.New(repositories.Titles, services, logger),
@@ -77,6 +77,7 @@ func (h *handlers) Registry() {
 	h.router.PUT("/lead/", h.Leads.AddLead)
 	h.router.POST("/lead/", h.Leads.UpdateLeads)
 	h.router.POST("/jks/", h.JKs.GetFilteredJKList)
+	h.router.GET("/prices", h.Locations.UpdatePrices)
 
 	api := h.router.Group("/api", middlewares.TokenAuthMiddleware(h.logger, h.services))
 	{
