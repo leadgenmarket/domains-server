@@ -10,7 +10,7 @@ import { deleteTitle, fetchTitles, updateTitle } from "../../../../actions/title
 import { Spinner } from "../../../spinner";
 import TableItem from "./table-item";
 
-const TitlesPage = ({titles, deleteTitle, updateTitle}) => {
+const TitlesPage = ({titles, deleteTitle, updateTitle, fetchTitles}) => {
     const navigate= useNavigate();
     const [editTitle, setEditTitle] = useState({})
     const forms = [
@@ -19,7 +19,7 @@ const TitlesPage = ({titles, deleteTitle, updateTitle}) => {
             name: 'addTitle',
             url:"/api/titles/",
             type: "put",
-            //action: (action) => {actionAdd(action)},
+            action: (action) => {console.log('need to close modal'); fetchTitles()},
             fields: [
                 {
                     name: 'Title',
@@ -33,7 +33,7 @@ const TitlesPage = ({titles, deleteTitle, updateTitle}) => {
             name: 'updateTitle',
             url: "/api/titles/",
             type: "post",
-            action: (action) => {console.log(action); updateTitle(action)},
+            action: (action) => {console.log(action); fetchTitles()},
             edit: (action) => { setEditTitle(action)},
             //imageurl:"public/objects/"+activeObject.ID+"/actions/", //id
             date: editTitle,
@@ -56,17 +56,17 @@ const TitlesPage = ({titles, deleteTitle, updateTitle}) => {
             name: 'deleteTitle',
             url:"/api/titles/"+editTitle.ID,
             type: "delete",
-            action: (action) => { console.log(action); deleteTitle(action)},
+            action: (action) => { console.log(action); fetchTitles()},
             //edit: () => {},
             date: editTitle,
             clear:false,
             fields: [
-              {
+                {
                 json: 'ID',
                 type: 'hidden',
-              },
+                },
             ]
-          },
+        },
     ]
     return <div className="main-content">
         <div className="page-content">
@@ -119,7 +119,7 @@ const TitlesPage = ({titles, deleteTitle, updateTitle}) => {
                                                         {
                                                             titles.map((title) => {
                                                                 console.log(title)
-                                                                return <TableItem title={title} deleteTitle={(e) => {e.preventDefault(); setEditTitle(title); showModal("deleteTitle")}} updateTitle={(e) =>{ e.preventDefault(); setEditTitle(title); showModal("updateTitle")}}/>
+                                                                return <TableItem key={title.ID} title={title} deleteTitle={(e) => {e.preventDefault(); setEditTitle(title); showModal("deleteTitle")}} updateTitle={(e) =>{ e.preventDefault(); setEditTitle(title); showModal("updateTitle")}}/>
                                                             })
                                                         }
                                                     </tbody>
@@ -168,11 +168,11 @@ class TitleListPageContainer extends Component {
     }
   
     render() {
-      const { titles, loading, error, deleteTitle, updateTitle } = this.props;
+      const { titles, loading, error, deleteTitle, updateTitle, fetchTitles } = this.props;
       if (loading || titles == null) {
           return <Spinner />
       }
-      return <TitlesPage titles={titles} loading={loading} error={error} deleteTitle={deleteTitle} updateTitle={updateTitle} />;
+      return <TitlesPage titles={titles} loading={loading} error={error} deleteTitle={deleteTitle} updateTitle={updateTitle} fetchTitles={fetchTitles} />;
     }
   }
   

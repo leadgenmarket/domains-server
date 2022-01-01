@@ -2,7 +2,6 @@ package titles
 
 import (
 	"domain-server/internal/models"
-	"domain-server/internal/system/database/redis"
 	"fmt"
 
 	mongodb "github.com/globalsign/mgo"
@@ -18,9 +17,8 @@ type Repository interface {
 }
 
 type repositroyDB struct {
-	titles        *mongodb.Collection
-	locations     *mongodb.Collection
-	commonStorage redis.Repository
+	titles    *mongodb.Collection
+	locations *mongodb.Collection
 }
 
 func New(dbClient *mongodb.Database) Repository {
@@ -40,7 +38,7 @@ func (r *repositroyDB) AddTitle(title models.Title) (models.Title, error) {
 }
 
 func (r *repositroyDB) UpdateTitle(title models.Title) error {
-	err := r.titles.Find(bson.M{"_id": title}).One(&title)
+	err := r.titles.Update(bson.M{"_id": title.ID}, title)
 	if err != nil {
 		return err
 	}

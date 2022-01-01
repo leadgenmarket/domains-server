@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import ApiService from "../../../../../services/api-service";
 
-const TableItem = ({domain:{id, url, templateName, CreatedAt}}) => {
+const TableItem = ({domain:{id, url, templateName, CreatedAt}, fetchDomains}) => {
     const [show, setShow] = useState(false)
     const navigate = useNavigate()
     const convertDate = (inputFormat) => {
@@ -19,6 +20,10 @@ const TableItem = ({domain:{id, url, templateName, CreatedAt}}) => {
     }
     const deleteClick = (event) => {
         event.preventDefault()
+        let apiService = new ApiService
+        apiService.deleteDomain(id).then((response) => {
+            fetchDomains()
+        })
     }
       
     return (<tr key={id} className="odd">

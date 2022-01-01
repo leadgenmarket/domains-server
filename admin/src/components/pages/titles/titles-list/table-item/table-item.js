@@ -36,7 +36,7 @@ const TableItem = ({title:{ID, Title}, deleteTitle, updateTitle}) => {
                         </button>
                         <ul className={show?"dropdown-menu dropdown-menu-end show":"dropdown-menu dropdown-menu-end"}>
                             <li><a className="dropdown-item" onClick={updateTitle} href={"/admin/edit/"+ID}>Редактировать</a></li>
-                            <li><a className="dropdown-item" onClick={deleteClick} href="#">Удалить</a></li>
+                            <li><a className="dropdown-item" onClick={deleteTitle} href="#">Удалить</a></li>
                         </ul>
                     </div>
                 </td>

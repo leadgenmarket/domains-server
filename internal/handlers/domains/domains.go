@@ -227,18 +227,9 @@ func (dh *domainsHandlers) UpdateDomain(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"payload": "success"})
 }
 
-type deleteDomainInput struct {
-	ID string `json:"id"`
-}
-
 func (dh *domainsHandlers) DeleteDomain(c *gin.Context) {
-	domainIn := deleteDomainInput{}
-	err := c.BindJSON(&domainIn)
-	if err != nil {
-		dh.logger.GetInstance().Errorf("error unmarshaling incoming json %s", err)
-		return
-	}
-	errN := dh.repository.DeleteDomainById(domainIn.ID)
+	ID := c.Param("id")
+	errN := dh.repository.DeleteDomainById(ID)
 	if errN != nil {
 		dh.logger.GetInstance().Errorf("error deleting domain %s", errN)
 		c.JSON(http.StatusInternalServerError, gin.H{"paylod": "error"})

@@ -1,10 +1,16 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, Component } from "react";
 import { useNavigate, useParams } from "react-router-dom"
 import PageTitle from "../../../page-title"
 import ApiService from "../../../../services/api-service";
 import StepsComponent from "./steps";
+import { compose } from "../../../../utils";
+import { toast } from "react-toastify";
+import { withApiService } from "../../../hoc";
+import { connect } from "react-redux";
+import { bindActionCreators } from 'redux';
+import { addDomainToList } from "../../../../actions/domains";
 
-const DomainEdit = () => {
+const DomainEdit = ({addDomainToList}) => {
     const navigate= useNavigate();
     const [type, setType] = useState("");
     const [templates, setTemplates] = useState([])
@@ -15,6 +21,7 @@ const DomainEdit = () => {
     const [quizSteps, setQuizSteps] = useState([])
     const { id } = useParams()
     const [form, setForm] = useState({}) 
+    
     useEffect(()=>{
         let apiService = new ApiService
         apiService.templatesList().then((response) => {
@@ -81,7 +88,21 @@ const DomainEdit = () => {
             bodyFormData.append('file', file)
         }
         let apiService = new ApiService
-        apiService.domainSave(bodyFormData)
+
+        let promise = apiService.domainSave(bodyFormData)
+       
+        toast.promise(
+            promise,
+            {
+              pending: 'Сохраняю данные',
+              success: 'Данные успешно сохраненны 👌',
+              error: 'Ошибка при сохранении данных 🤯'
+            }
+        )
+        promise.then((data)=>{
+            //addDomainToList(data)
+            navigate('/admin/', { replace: true })
+        })
     }
 
     const fileInputChange = (event) => {
@@ -305,4 +326,26 @@ const DomainEdit = () => {
             </div>)
 }
 
-export default DomainEdit
+class DomainEditPageContainer extends Component {
+    
+    render() {
+      const {addDomainToList } = this.props;
+
+      return <DomainEdit addDomainToList={addDomainToList} />;
+    }
+  }
+  
+  const mapStateToProps = ({ }) => {
+    return {  };
+  };
+  
+  const mapDispatchToProps = (dispatch, { apiService}) => {
+    return bindActionCreators({
+        addDomainToList: addDomainToList,
+    }, dispatch);
+  };
+
+  export default compose(
+    withApiService(),
+    connect(mapStateToProps, mapDispatchToProps)
+  )(DomainEditPageContainer);

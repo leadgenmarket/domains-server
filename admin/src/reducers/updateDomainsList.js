@@ -28,6 +28,12 @@ const updateDomainsList = (state, action) => {
           loading: false,
           error: true,
         };
+      case 'DOMAINS_ADD_ONE':
+        return{
+          domains: state.domainsList.domains,
+          loading: false,
+          error: true,
+        }
       default:
         return state.domainsList;
     }

@@ -24,7 +24,7 @@ const showModal = (modal) => {
     document.querySelector('body').appendChild(element)
     setTimeout(()=> {
         document.querySelector('#inlineForm').classList.add('show')
-        document.querySelector('.'+modal).style.display = "block"
+        document.querySelector('.'+modal).style.display = "flex"
     },200)
     document.querySelector('.'+modal).style.display = "flex"
 }

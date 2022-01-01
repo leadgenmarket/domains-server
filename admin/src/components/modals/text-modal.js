@@ -69,7 +69,8 @@ const TextModal = ({form, sendRequest}) => {
                     }
                 }
             } else if (element.type == 'hidden') {
-                if (Number.isNaN(parseInt(element.value))) {
+                console.log(element)
+                if (Number.isNaN(parseInt(element.value)) || element.getAttribute('name')=="ID") {
                     json = { ...json, [element.getAttribute('name')]: element.value }
                 } else {
                     json = { ...json, [element.getAttribute('name')]: parseInt(element.value) }

@@ -9,8 +9,9 @@ import { fetchDomains } from "../../../../actions/domains";
 import { Spinner } from "../../../spinner";
 import { useNavigate } from "react-router-dom"
 import ApiService from "../../../../services/api-service";
+import { toast } from "react-toastify";
 
-const DomainsPage = ({domains}) => {
+const DomainsPage = ({domains, fetchDomains}) => {
     const [templates, setTemplates] = useState(null)
     const navigate= useNavigate();
     useEffect(()=>{
@@ -86,7 +87,7 @@ const DomainsPage = ({domains}) => {
                                             {
                                                 domains.map((domain) => {
                                                     domain.templateName = getTemplateById(domain.template_id)
-                                                    return  <TableItem domain = {domain} />
+                                                    return  <TableItem domain = {domain} fetchDomains={fetchDomains} />
                                                 })
                                             }
                                         </tbody>
@@ -104,7 +105,7 @@ const DomainsPage = ({domains}) => {
                                                         <a href="#" aria-controls="DataTables_Table_0" data-dt-idx="0" tabindex="0" className="page-link">Previous</a>
                                                     </li>
                                                     <li className="paginate_button page-item active">
-                                                        <a href="#" aria-controls="DataTables_Table_0" data-dt-idx="1" tabindex="0" className="page-link">1</a>
+                                                        <a href="#"  aria-controls="DataTables_Table_0" data-dt-idx="1" tabindex="0" className="page-link">1</a>
                                                     </li>
                                                     <li className="paginate_button page-item ">
                                                         <a href="#" aria-controls="DataTables_Table_0" data-dt-idx="2" tabindex="0" className="page-link">2</a>
@@ -137,11 +138,11 @@ class DomainListPageContainer extends Component {
     }
   
     render() {
-      const { domains, loading, error } = this.props;
+      const { domains, loading, error, fetchDomains } = this.props;
       if (loading || domains == null) {
           return <Spinner />
       }
-      return <DomainsPage domains={domains} loading={loading} error={error} />;
+      return <DomainsPage domains={domains} loading={loading} error={error} fetchDomains={fetchDomains} />;
     }
   }
   

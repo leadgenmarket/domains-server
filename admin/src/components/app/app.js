@@ -19,6 +19,9 @@ import DomainDetail from "../pages/domains/detail";
 import DomainEdit from "../pages/domains/edit";
 import { TitlesList } from "../pages/titles/titles-list";
 import LeadsList from "../pages/leads/leads-list";
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
+
 
 const App = ({ auth, phone, checkAuth}) => {
     const location = useLocation().pathname;
@@ -56,6 +59,7 @@ const App = ({ auth, phone, checkAuth}) => {
                     <Route path="/admin/:id" element={<DomainDetail />} />
                     <Route path="/admin/*" element={<DomainsPage />} />
                 </Routes>
+                <ToastContainer />
             </React.Fragment>
         )        
     }
@@ -74,20 +78,4 @@ const mapDispatchToProps = (dispatch, { apiService}) => {
 export default compose(
     withApiService(),
     connect(mapStateToProps, mapDispatchToProps)
-  )(App)
-
-  /*<Navbar />
-                <SideMenu />}*/
-                /*<Routes>
-                    <Route path="/off-days" component={ReservePreventPage} exact />
-                    <Route path="/clients/blocked" component={BlackListPage} exact />
-                    <Route path="/objects" component={ObjectsPage} exact/>
-                    <Route path="/objects/:objectID" component={ObjectDetail} exact/>
-                    <Route path="/halls/list" component={Halls} exact/>
-                    <Route path="/halls/panoramas" component={Panoramas} exact/>
-                    <Route path="/halls/schemes" component={Schemes} exact/>
-                    <Route path="/employees" component={ EmployeesPage} exact/>
-                    <Route path="/services" component={Services} exact/>
-                    <Route path="/actions" component={ActionsPage} exact/>
-                    <Route path="/photos" component={PhotosPage}/>
-        <Route path="/" component={Dashboard}/>*/
+)(App)
