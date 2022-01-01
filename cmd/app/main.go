@@ -43,15 +43,15 @@ func main() {
 		logger.GetInstance().Fatalf("failed to init redis client: %s", err)
 	}
 	repo := repositories.New(sess.DB("leadgen"), cfg)
-	/*domainsList, err := GetAllDomainUrls(repo.Domains, cfg.ServerIPAdress)
+	domainsList, err := GetAllDomainUrls(repo.Domains, cfg.ServerIPAdress)
 	if err != nil {
 		logger.GetInstance().Panic("error initializing config: %w", err)
-	}*/
+	}
 
 	m := autocert.Manager{
-		Prompt: autocert.AcceptTOS,
-		//HostPolicy: autocert.HostWhitelist(domainsList...), //-- не очень безопасно, но если включить, то надо перезагружать сервак при добавлении нового домена. лучше сделать в админке кнопку для перезагрузки
-		Cache: autocert.DirCache("./certs"),
+		Prompt:     autocert.AcceptTOS,
+		HostPolicy: autocert.HostWhitelist(domainsList...), //-- не очень безопасно, но если включить, то надо перезагружать сервак при добавлении нового домена. лучше сделать в админке кнопку для перезагрузки
+		Cache:      autocert.DirCache("./certs"),
 	}
 	servicesContainer := services.Setup(cfg, redisClient)
 	handlersService := handlers.New(router, repo, servicesContainer, logger, cfg)
