@@ -50,6 +50,9 @@ func main() {
 	if action == "portal" {
 		updatePortalInfo(services, repo, logger)
 	}
+	if action == "prices" {
+		RayonUpdatePrices(services, repo, logger)
+	}
 }
 
 func createBackup(services *services.Services, logger logger.Log) {
@@ -82,9 +85,8 @@ func sendLeads(services *services.Services, repositories *repositories.Repositor
 }
 
 func updatePortalInfo(services *services.Services, repositories *repositories.Repositories, logger logger.Log) {
-	/*CitiesUpdate(services, repositories, logger)
+	CitiesUpdate(services, repositories, logger)
 	LocationsUpdate(services, repositories, logger)
-	RayonUpdatePrices(services, repositories, logger)*/
 	JKsUpdate(services, repositories, logger)
 	logger.GetInstance().Info(`successfuly updated portal info`)
 }
