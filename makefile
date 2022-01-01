@@ -20,3 +20,5 @@ leads:
 	@go run cmd/command-tools/main.go -action=leads
 portal:
 	@go run cmd/command-tools/main.go -action=portal
+admin-create:
+	@go run cmd/command-tools/main.go -action=portal

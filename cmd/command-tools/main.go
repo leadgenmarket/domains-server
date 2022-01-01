@@ -179,12 +179,7 @@ func RayonUpdatePrices(services *services.Services, repositories *repositories.R
 }
 
 func AddRootUserIfNotExists(repo *repositories.Repositories, pass string, logger logger.Log) error {
-
-	user, _ := repo.Users.GetUserByLogin("admin")
-	/*if errC == nil { //если админ есть, то не создаем
-		return nil
-	}*/
-	repo.Users.DeleteUser(user.ID.Hex())
+	user := models.User{}
 	user.Name = "Администратор"
 	user.Login = "admin"
 	user.Role = "admin"
