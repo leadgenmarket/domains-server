@@ -22,7 +22,7 @@ func NewLogger(serviceName string, logLevel uint32, file *os.File) Log {
 	gelFmt := formatter.NewGelf(serviceName)
 	runtimeFormatter := &runtime.Formatter{ChildFormatter: gelFmt}
 	log.SetFormatter(runtimeFormatter)
-	log.SetOutput(file)
+	//log.SetOutput(file)
 	//hook := graylog.NewGraylogHook(greyLogHost, map[string]interface{}{})
 	//log.AddHook(hook)
 
