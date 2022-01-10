@@ -50,7 +50,7 @@ func main() {
 
 	m := autocert.Manager{
 		Prompt:     autocert.AcceptTOS,
-		HostPolicy: autocert.HostWhitelist(domainsList...), //-- не очень безопасно, но если включить, то надо перезагружать сервак при добавлении нового домена. лучше сделать в админке кнопку для перезагрузки
+		HostPolicy: autocert.HostWhitelist(domainsList...),
 		Cache:      autocert.DirCache("./certs"),
 	}
 	servicesContainer := services.Setup(cfg, redisClient)

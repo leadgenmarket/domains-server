@@ -44,6 +44,7 @@ type Domain struct {
 	Steps          []map[string]interface{} `bson:"steps"`
 	OrganizationID string                   `bson:"organization_id" json:"organization_id"`
 	Qoopler        bool                     `bson:"qoopler" form:"qoopler"`
+	Moderation     bool                     `bson:"moderation" form:"moderation"`
 	CreatedAt      time.Time                `bson:"created_at"`
 	UpdatedAt      time.Time                `bson:"updated_at"`
 }

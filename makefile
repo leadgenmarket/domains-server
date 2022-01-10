@@ -1,5 +1,5 @@
 up:
-	@docker-compose up
+	@docker-compose up -d
 recreate:
 	@docker-compose up --build --force-recreate --renew-anon-volumes
 client-run:

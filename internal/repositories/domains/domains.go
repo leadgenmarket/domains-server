@@ -21,6 +21,7 @@ type Repository interface {
 	UpdateDomain(domain models.Domain) error
 	FindDomainByID(id string) (models.Domain, error)
 	DeleteDomainById(id string) error
+	UpdateDomainsModeration(id string, modearation bool) (string, error)
 }
 
 type repositroyDB struct {
@@ -126,6 +127,20 @@ func (r *repositroyDB) GetDefaultDomainSettingsForCity(url string, templateID bs
 		Qoopler:        false,
 	}
 	return &domain
+}
+
+func (r *repositroyDB) UpdateDomainsModeration(id string, modearation bool) (string, error) {
+	domain, err := r.FindDomainByID(id)
+	if err != nil {
+		return "", err
+	}
+	domain.UpdatedAt = time.Now()
+	domain.Moderation = modearation
+	err = r.domains.Update(bson.M{"_id": domain.ID}, domain)
+	if err != nil {
+		return "", err
+	}
+	return domain.Url, nil
 }
 
 func (r *repositroyDB) GetDefaultSteps() []map[string]interface{} {

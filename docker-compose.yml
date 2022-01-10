@@ -35,6 +35,7 @@ services:
       - './admin/build:/admin/build'
       - './vars:/vars'
       - './templates:/templates'
+      - './moderation:/moderation'
       - './data:/data/db'
       - './certs:/certs'
     container_name: app

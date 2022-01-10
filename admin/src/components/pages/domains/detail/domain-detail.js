@@ -7,6 +7,7 @@ import { useParams } from 'react-router-dom'
 import { Component, useEffect } from "react";
 import { fetchDomain } from "../../../../actions/domain-detail";
 import { Spinner } from "../../../spinner";
+import axios from "axios";
 
 const DomainDetail = ({domain, loading, fetchDomain}) => {
     const { id } = useParams()
@@ -18,6 +19,18 @@ const DomainDetail = ({domain, loading, fetchDomain}) => {
         function pad(s) { return (s < 10) ? '0' + s : s; }
         var d = new Date(inputFormat)
         return [pad(d.getDate()), pad(d.getMonth()+1), d.getFullYear()].join(' / ')
+    }
+
+    const moderationChange = (e) => {
+        e.preventDefault()
+        let data = {
+            id: id,
+            moderation: e.target.checked
+        }
+        domain.Moderation = e.target.checked
+        axios.post("/api/domains/moderation", data).then((response) => {
+            fetchDomain(id)
+        })
     }
 
     if (loading || domain == null) {
@@ -45,83 +58,43 @@ const DomainDetail = ({domain, loading, fetchDomain}) => {
                                                     </div>
                                                 </div>
                                             </div>
+                                            <div className="d-flex align-items-start" style={{marginBottom:"10px"}}>
+                                                <div class="form-check form-switch">
+                                                    <input class="form-check-input" onChange={moderationChange} checked={domain.Moderation} type="checkbox" name="moderation" id="flexSwitchCheckDefault" />
+                                                    <label class="form-check-label" for="flexSwitchCheckDefault">Модерация</label>
+                                                </div>
+                                            </div>
                                             <p className="mb-1"><b>Дата создания:</b> {convertDate(Date.parse(domain.CreatedAt))}</p>
-                                            <p className="mb-1"><i className="mdi mdi-email align-middle me-1"></i> abc@123.com</p>
-                                            <p><i className="mdi mdi-phone align-middle me-1"></i> 012-345-6789</p>
+                                            <p className="mb-1"><b>Yandex:</b> {domain.yandex}</p>
+                                            <p className="mb-1"><b>Google:</b> {domain.google}</p>
+                                            <p className="mb-1"><b>Mail:</b> {domain.mail}</p>
+                                            <p className="mb-1"><b>Facebook:</b> {domain.facebook}</p>
+                                            <p className="mb-1"><b>Marquiz:</b> {domain.marquiz}</p>
                                         </div>
                                         <hr className="my-4" />
-                                        <div className="row">
-                                            <div className="col-sm-6">
-                                                <div>
-                                                    <h5 className="font-size-15 mb-3">Billed To:</h5>
-                                                    <h5 className="font-size-14 mb-2">Richard Saul</h5>
-                                                    <p className="mb-1">1208 Sherwood Circle
-                                                        Lafayette, LA 70506</p>
-                                                    <p className="mb-1">RichardSaul@rhyta.com</p>
-                                                    <p>337-256-9134</p>
-                                                </div>
-                                            </div>
-                                            <div className="col-sm-6">
-                                                <div>
-                                                    <div>
-                                                        <h5 className="font-size-15">Order Date:</h5>
-                                                        <p>February 16, 2020</p>
-                                                    </div>
-                                                    
-                                                    <div className="mt-4">
-                                                        <h5 className="font-size-15">Payment Method:</h5>
-                                                        <p className="mb-1">Visa ending **** 4242</p>
-                                                        <p>richards@email.com</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
                 
                                         <div className="py-2 mt-3">
-                                            <h5 className="font-size-15">Order summary</h5>
+                                            <h5 className="font-size-15">Шаги</h5>
                                         </div>
                                         <div className="p-4 border rounded">
                                             <div className="table-responsive">
                                                 <table className="table table-nowrap align-middle mb-0">
                                                     <thead>
                                                         <tr>
-                                                            <th style={{width: "70px"}}>No.</th>
-                                                            <th>Item</th>
-                                                            <th className="text-end" style={{width: "120px"}}>Price</th>
+                                                            <th style={{width: "70px"}}>Номер</th>
+                                                            <th>Название шага</th>
+                                                            <th className="text-end" style={{width: "120px"}}>Тип</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        <tr>
-                                                            <th scope="row">01</th>
+                                                        {domain.Steps.map((step, index)=><tr>
+                                                            <th scope="row">{index+1}</th>
                                                             <td>
-                                                                <h5 className="font-size-15 mb-1">Minia</h5>
-                                                                <p className="font-size-13 text-muted mb-0">Bootstrap 5 Admin Dashboard </p>
+                                                                <h5 className="font-size-15 mb-1">{step.title}</h5>
+                                                                {step.answers?<p className="font-size-13 text-muted mb-0">{step.answers.join(', ')}</p>:<p></p>}
                                                             </td>
-                                                            <td className="text-end">$499.00</td>
-                                                        </tr>
-                                                        
-                                                        <tr>
-                                                            <th scope="row">02</th>
-                                                            <td>
-                                                                <h5 className="font-size-15 mb-1">Skote</h5>
-                                                                <p className="font-size-13 text-muted mb-0">Bootstrap 5 Admin Dashboard </p>
-                                                            </td>
-                                                            <td className="text-end">$499.00</td>
-                                                        </tr>
-                
-                                                        <tr>
-                                                            <th scope="row" colspan="2" className="text-end">Sub Total</th>
-                                                            <td className="text-end">$998.00</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th scope="row" colspan="2" className="border-0 text-end">
-                                                                Tax</th>
-                                                            <td className="border-0 text-end">$12.00</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th scope="row" colspan="2" className="border-0 text-end">Total</th>
-                                                            <td className="border-0 text-end"><h4 className="m-0">$1010.00</h4></td>
-                                                        </tr>
+                                                            <td className="text-end">{step.type}</td>
+                                                        </tr>)}
                                                     </tbody>
                                                 </table>
                                             </div>

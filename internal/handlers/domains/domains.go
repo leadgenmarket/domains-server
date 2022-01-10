@@ -15,6 +15,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"os"
 	"strings"
 	"time"
 
@@ -30,6 +31,7 @@ type Handlers interface {
 	DeleteDomain(c *gin.Context)
 	FindDomainByID(c *gin.Context)
 	AddDomainWithSettings(c *gin.Context)
+	DomainsModerationChange(c *gin.Context)
 }
 
 type domainsHandlers struct {
@@ -90,6 +92,23 @@ func (dh *domainsHandlers) GetTemplate(c *gin.Context) {
 			c.JSON(http.StatusBadRequest, err)
 			return
 		}
+		domainSettings.ScriptTmpl.City, err = dh.cityRepo.GetCityById(domain.CityID)
+		if err != nil {
+			dh.logger.GetInstance().Errorf("error getting city %s", err)
+			c.JSON(http.StatusBadRequest, err)
+			return
+		}
+
+		if domain.Moderation {
+			domainSettings.Yandex = domain.Yandex
+			settings := convertForTemplate(domainSettings)
+			if domainSettings.ScriptTmpl.City.Name == "Москва" {
+				c.HTML(http.StatusOK, "moderation_1.html", settings)
+			} else {
+				c.HTML(http.StatusOK, "moderation_2.html", settings)
+			}
+			return
+		}
 
 		domainSettings.ScriptTmpl.Domain = domain
 		for _, step := range domain.Steps {
@@ -103,12 +122,6 @@ func (dh *domainsHandlers) GetTemplate(c *gin.Context) {
 				result["locations"] = locations
 				break
 			}
-		}
-		domainSettings.ScriptTmpl.City, err = dh.cityRepo.GetCityById(domain.CityID)
-		if err != nil {
-			dh.logger.GetInstance().Errorf("error getting city %s", err)
-			c.JSON(http.StatusBadRequest, err)
-			return
 		}
 
 		domainSettings.ScriptTmpl.Location, err = dh.repoLoc.GetRaionsOfTheCity(domain.CityID.Hex())
@@ -153,7 +166,6 @@ func (dh *domainsHandlers) GetTemplate(c *gin.Context) {
 		}
 	}
 	settings := convertForTemplate(domainSettings)
-
 	c.HTML(http.StatusOK, "blue_template.html", settings)
 
 	//c.JSON(http.StatusOK, result)
@@ -346,4 +358,27 @@ func (dh *domainsHandlers) AddDomainWithSettings(c *gin.Context) {
 		c.JSON(http.StatusOK, domainRes)
 	}
 	dh.services.CommonStorage.DeleteKey(c, domain.Url)
+	dh.logger.GetInstance().Info("added new domain, restarting server")
+	os.Exit(1) //доккер контейнер перезгарузить и новый домен попадет в whitelist
+}
+
+type moderationInput struct {
+	ID         string `json:"id"`
+	Moderation bool   `json:"moderation"`
+}
+
+func (dh *domainsHandlers) DomainsModerationChange(c *gin.Context) {
+	moderationInput := moderationInput{}
+	if err := c.ShouldBind(&moderationInput); err != nil {
+		dh.logger.GetInstance().Errorf("error binding json %s", err)
+		c.JSON(http.StatusInternalServerError, gin.H{"paylod": "error"})
+		return
+	}
+	url, err := dh.repository.UpdateDomainsModeration(moderationInput.ID, moderationInput.Moderation)
+	if err != nil {
+		dh.logger.GetInstance().Errorf("error updating domains moderation %s", err)
+		c.JSON(http.StatusInternalServerError, gin.H{"paylod": "error"})
+	}
+	c.JSON(http.StatusOK, gin.H{"message": "domains modeartion updated"})
+	dh.services.CommonStorage.DeleteKey(c, url) //удаляем кэш
 }

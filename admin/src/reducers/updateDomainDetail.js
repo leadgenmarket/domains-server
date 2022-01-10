@@ -28,7 +28,6 @@ const updateDomainDetail = (state, action) => {
           error: true,
       };
       case 'DOMAIN_UPDATE_SUCCESS':
-       
         return {
           domain: action.payload,
           loading: false,

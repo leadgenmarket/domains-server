@@ -23,7 +23,8 @@ import (
 )
 
 const (
-	templatesFolder = "./templates"
+	templatesFolder  = "./templates"
+	moderationFolder = "./moderation"
 )
 
 type Handlers interface {
@@ -68,9 +69,10 @@ func New(router *gin.Engine, repositories *repositories.Repositories, services *
 
 func (h *handlers) Registry() {
 	h.router.Static("/templates", templatesFolder)
+	h.router.Static("/moderation", moderationFolder)
 	h.router.Static("/admin", "./admin/build")
 	h.router.Static("/file-store", "./file-store")
-	h.router.LoadHTMLFiles("./templates/blue_template/build/blue_template.html")
+	h.router.LoadHTMLFiles("./templates/blue_template/build/blue_template.html", "./moderation/template/moderation_1.html", "./moderation/template2/moderation_2.html")
 	h.router.GET("/", h.Domains.GetTemplate)
 	h.router.GET("/:rayon", h.Domains.GetTemplate)
 	h.router.POST("/sign-in", h.Auth.SignIn)
@@ -87,6 +89,7 @@ func (h *handlers) Registry() {
 		domainsGroup.PUT("/", h.Domains.CreateDomain)
 		domainsGroup.GET("/", h.Domains.GetDomainsList)
 		domainsGroup.POST("/", h.Domains.UpdateDomain)
+		domainsGroup.POST("/moderation", h.Domains.DomainsModerationChange)
 		domainsGroup.DELETE("/:id", h.Domains.DeleteDomain)
 		domainsGroup.GET("/:id", h.Domains.FindDomainByID)
 		domainsGroup.POST("/add", h.Domains.AddDomainWithSettings)
