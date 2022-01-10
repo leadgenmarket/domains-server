@@ -43,7 +43,7 @@ func main() {
 		logger.GetInstance().Fatalf("failed to init redis client: %s", err)
 	}
 	repo := repositories.New(sess.DB("leadgen"), cfg)
-	domainsList, err := GetAllDomainUrls(repo.Domains, cfg.ServerIPAdress)
+	domainsList, err := GetAllDomainUrls(repo.Domains, cfg.AdminUrl)
 	if err != nil {
 		logger.GetInstance().Panic("error initializing config: %w", err)
 	}
