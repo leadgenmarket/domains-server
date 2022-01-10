@@ -27,6 +27,7 @@ type Config struct {
 	RedisPass           string `envconfig:"optional"`
 	CloudStorePath      string
 	YandexApiToken      string
+	AdminUrl            string
 }
 
 func InitConfig(prefix string) (*Config, error) {

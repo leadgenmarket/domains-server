@@ -43,7 +43,7 @@ const TableItem = ({domain:{id, url, templateName, CreatedAt}, fetchDomains}) =>
                             <i className="feather-more-horizontal"></i>
                         </button>
                         <ul className={show?"dropdown-menu dropdown-menu-end show":"dropdown-menu dropdown-menu-end"}>
-                            <li><a className="dropdown-item" onClick={hrefClick} href={"/admin/edit/"+id}>Редактировать</a></li>
+                            <li><a className="dropdown-item" onClick={hrefClick} href={"/edit/"+id}>Редактировать</a></li>
                             <li><a className="dropdown-item" onClick={deleteClick} href="#">Удалить</a></li>
                         </ul>
                     </div>

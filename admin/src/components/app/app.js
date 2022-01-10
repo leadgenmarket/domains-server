@@ -52,12 +52,12 @@ const App = ({ auth, phone, checkAuth}) => {
                 <ToolBar />
                 <SideMenu />
                 <Routes>
-                    <Route path="/admin/leads/" element={<LeadsList />} />
-                    <Route path="/admin/titles/" element={<TitlesList />} />
-                    <Route path="/admin/edit/:id" element={<DomainEdit />} />
-                    <Route path="/admin/add" element={<DomainEdit />} />
-                    <Route path="/admin/:id" element={<DomainDetail />} />
-                    <Route path="/admin/*" element={<DomainsPage />} />
+                    <Route path="/leads/" element={<LeadsList />} />
+                    <Route path="/titles/" element={<TitlesList />} />
+                    <Route path="/edit/:id" element={<DomainEdit />} />
+                    <Route path="/add" element={<DomainEdit />} />
+                    <Route path="/:id" element={<DomainDetail />} />
+                    <Route path="/*" element={<DomainsPage />} />
                 </Routes>
                 <ToastContainer />
             </React.Fragment>

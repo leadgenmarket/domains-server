@@ -81,6 +81,10 @@ func (dh *domainsHandlers) GetTemplate(c *gin.Context) {
 	domainSettings := DomainSettings{}
 	result := map[string]interface{}{}
 	domainName := strings.Split(c.Request.Host, ":")[0]
+	if domainName == dh.cfg.AdminUrl {
+		handleAdminInterface(c, c.Request.URL.Path)
+		return
+	}
 	err := dh.services.CommonStorage.Get(c, domainName, &domainSettings)
 	needToCache := true
 	if err == nil {
@@ -358,8 +362,13 @@ func (dh *domainsHandlers) AddDomainWithSettings(c *gin.Context) {
 		c.JSON(http.StatusOK, domainRes)
 	}
 	dh.services.CommonStorage.DeleteKey(c, domain.Url)
+	c.JSON(http.StatusOK, gin.H{"message": "added/updated domain, restarting server"})
 	dh.logger.GetInstance().Info("added new domain, restarting server")
-	os.Exit(1) //доккер контейнер перезгарузить и новый домен попадет в whitelist
+	go func() {
+		time.Sleep(2 * time.Second)
+		os.Exit(1) //докер контейнер перезгарузитcя и новый домен попадет в whitelist
+	}()
+
 }
 
 type moderationInput struct {
@@ -381,4 +390,21 @@ func (dh *domainsHandlers) DomainsModerationChange(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, gin.H{"message": "domains modeartion updated"})
 	dh.services.CommonStorage.DeleteKey(c, url) //удаляем кэш
+}
+
+func handleAdminInterface(c *gin.Context, path string) {
+	if fileExists(path) {
+		c.File(path)
+		return
+	}
+	settings := map[string]interface{}{}
+	c.HTML(http.StatusOK, "index.html", settings)
+}
+
+func fileExists(filename string) bool {
+	info, err := os.Stat(filename)
+	if os.IsNotExist(err) {
+		return false
+	}
+	return !info.IsDir()
 }

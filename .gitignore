@@ -5,4 +5,5 @@ certs
 docker-compose_back.yml
 .env
 .env_test
+moderation
 vars
