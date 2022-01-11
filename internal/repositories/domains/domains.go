@@ -124,6 +124,7 @@ func (r *repositroyDB) GetDefaultDomainSettingsForCity(url string, templateID bs
 		Marquiz:        "",
 		Steps:          r.GetDefaultSteps(),
 		OrganizationID: "",
+		SubTitle:       "",
 		Qoopler:        false,
 	}
 	return &domain

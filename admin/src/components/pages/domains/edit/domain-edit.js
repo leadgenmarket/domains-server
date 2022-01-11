@@ -241,6 +241,12 @@ const DomainEdit = ({addDomainToList}) => {
                                                                         <input type="text" className="form-control" name="secondary_color" onChange={inputChange} value={form.secondary_color} id="basicpill-companyuin-input" />
                                                                     </div>
                                                                 </div>
+                                                                <div className="col-lg-6">
+                                                                    <div className="mb-3">
+                                                                        <label htmlFor="basicpill-companyuin-input" className="form-label">Подзаголовок</label>
+                                                                        <input type="text" className="form-control" name="sub_title" onChange={inputChange} value={form.sub_title} id="basicpill-companyuin-input" />
+                                                                    </div>
+                                                                </div>
                                                             </div>
                                                         </form>
                                                         <ul className="pager wizard twitter-bs-wizard-pager-link">

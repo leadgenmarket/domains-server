@@ -74,6 +74,7 @@ type TamplateSettings struct {
 	Location []models.Location      `json:"locations"`
 	Prices   map[string]interface{} `json:"prices"`
 	Title    string                 `json:"title"`
+	SubTitle string                 `json:"sub_title"`
 	Rayon    string                 `json:"rayon"`
 }
 
@@ -146,6 +147,7 @@ func (dh *domainsHandlers) GetTemplate(c *gin.Context) {
 		domainSettings.Mail = domain.Mail
 		domainSettings.Marquiz = domain.Marquiz
 		domainSettings.Facebook = domain.Facebook
+		domainSettings.ScriptTmpl.SubTitle = domain.SubTitle
 	}
 
 	domainSettings.ScriptTmpl.IP = c.ClientIP()
@@ -269,6 +271,7 @@ type DomainInput struct {
 	ID             string `form:"id"`
 	URL            string `form:"url"`
 	TemplateID     string `form:"template_id"`
+	SubTitle       string `form:"sub_title"`
 	CityID         string `form:"city_id"`
 	OrganizationID string `form:"organization_id"`
 	MainColor      string `form:"main_color"`
@@ -319,6 +322,7 @@ func (dh *domainsHandlers) AddDomainWithSettings(c *gin.Context) {
 		Facebook:       domainInput.Facebook,
 		Marquiz:        domainInput.Marquiz,
 		Qoopler:        domainInput.Qoopler,
+		SubTitle:       domainInput.SubTitle,
 	}
 
 	if fileName != "" {

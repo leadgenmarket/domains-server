@@ -35,6 +35,7 @@ type Domain struct {
 	CityID         bson.ObjectId            `bson:"city_id" json:"city_id" binding:"required"`
 	Background     string                   `bson:"background" json:"background"`
 	MainColor      string                   `bson:"main_color" json:"main_color"`
+	SubTitle       string                   `bson:"sub_title" json:"sub_title"`
 	SecondaryColor string                   `bson:"secondary_color" json:"secondary_color"`
 	Yandex         string                   `bson:"yandex" json:"yandex"`
 	Google         string                   `bson:"google" json:"google"`
