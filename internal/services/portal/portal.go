@@ -275,6 +275,10 @@ func (p *portal) GetJkListAlt(cityRepo []models.City) ([]models.JK, error) {
 			}
 			var list InputJsonAlt
 			json.Unmarshal(body, &list)
+			if len(list.List) == 0 {
+				fmt.Println(id)
+				continue
+			}
 			jkInput := list.List[0]
 			jk := models.JK{
 				ID:        bson.NewObjectId(),
