@@ -224,7 +224,6 @@ const SendCell = (celType, phone) => {
 }
 
 const GetJKList = async (form, raionsName, roomsName, sdachaName, raionsPrice) => {
-	console.log(raionsPrice)
 	if (raionsName == "" || roomsName == "" || sdachaName == "" || raionsPrice == ""){
 		return false
 	}
@@ -236,7 +235,6 @@ const GetJKList = async (form, raionsName, roomsName, sdachaName, raionsPrice) =
 		raions: getRayonCodes(form[raionsName])
 	}
 	let resp = await axios.post("/jks/", data)
-	console.log(resp.data)
 	return resp.data
 }
 

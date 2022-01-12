@@ -6,7 +6,9 @@ const ResultStep = ({params, form, raionsStep, roomsStep, sdachaName, raionsPric
     const [jkList, setJkList] = useState([])
     useEffect(async ()=>{
         let jklistPortal = await GetJKList(form, raionsStep, roomsStep, sdachaName, raionsPrice)
-        setJkList(jklistPortal)
+        if (jklistPortal!==false) {
+            setJkList(jklistPortal)
+        }
     },[])
     return (jkList.length==0?<React.Fragment>
                 <div className="title_inner"><span style={{textTransform:"capitalize", display:"inline-block", position:"initial", fontSize: "46px", color:`#${params.main_color}`}}>{form.name}</span>, в ближайшее время с вами свяжется специалист и уточнит детали для расширенной подборки. Это бесплатно!</div>
