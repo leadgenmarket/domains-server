@@ -113,6 +113,7 @@ func updatePortalInfo(services *services.Services, repositories *repositories.Re
 }
 
 func JKsUpdate(services *services.Services, repositories *repositories.Repositories, logger logger.Log) {
+	repositories.JK.DropDB()
 	citiesList, err := repositories.Cities.GetAllCities()
 	if err != nil {
 		logger.GetInstance().Errorf("error getting jks from portal %s", err)
