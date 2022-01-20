@@ -13,28 +13,9 @@ import { toast } from "react-toastify";
 import { BottomScrollListener } from 'react-bottom-scroll-listener';
 
 const LeadsPage = ({ leads, cursor, fetchLeads, fetchMoreLeads }) => {
-    const [templates, setTemplates] = useState(null)
-    const listInnerRef = useRef();
     const navigate = useNavigate();
     useEffect(() => {
-        let apiService = new ApiService
-        apiService.templatesList().then((response) => {
-            setTemplates(response.data)
-        })
     }, [])
-
-    const getTemplateById = (id) => {
-        let name = ""
-        if (templates != null) {
-            templates.map(template => {
-                if (template.ID == id) {
-                    name = template.Name
-                }
-            });
-
-        }
-        return name
-    }
 
     const onBottom = () => {
         console.log('bottom')
@@ -93,9 +74,10 @@ const LeadsPage = ({ leads, cursor, fetchLeads, fetchMoreLeads }) => {
                                                         </thead>
                                                         <tbody>
                                                             {
-                                                                leads.map((domain) => {
-                                                                    domain.templateName = getTemplateById(domain.template_id)
-                                                                    return <TableItem domain={domain} fetchLeads={fetchLeads} />
+                                                                leads.map((lead) => {
+                                                                    console.log(lead)
+                                                                    /*domain.templateName = getTemplateById(domain.template_id)
+                                                                    return <TableItem domain={domain} fetchLeads={fetchLeads} />*/
                                                                 })
                                                             }
                                                         </tbody>

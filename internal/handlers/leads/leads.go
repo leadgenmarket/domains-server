@@ -121,14 +121,14 @@ func (dh *leadsHandlers) GetLeadsList(c *gin.Context) {
 		return
 	}
 
-	domains, cursor, err := dh.repository.GetLeadsListWithPaginationAndFiltered(input.Search, input.Cursor, input.ItemsCnt)
+	leads, cursor, err := dh.repository.GetLeadsListWithPaginationAndFiltered(input.Search, input.Cursor, input.ItemsCnt)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, err)
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{
-		"domains": domains,
-		"cursor":  cursor,
+		"leads":  leads,
+		"cursor": cursor,
 	})
 }
 

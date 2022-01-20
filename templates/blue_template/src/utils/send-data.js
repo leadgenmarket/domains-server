@@ -5,8 +5,8 @@ import md5Hex from 'md5-hex';
 const sendLeadUrl = "/lead"
 const updateLeadUrl = "/lead"
 const getParam = (p) => {
-    var match = RegExp('[?&]' + p + '=([^&]*)').exec(window.location.search);
-    return match && decodeURIComponent(match[1].replace(/\+/g, ' '));
+	var match = RegExp('[?&]' + p + '=([^&]*)').exec(window.location.search);
+	return match && decodeURIComponent(match[1].replace(/\+/g, ' '));
 }
 
 const getRayonCodes = (rayonName) => {
@@ -33,7 +33,7 @@ const getSdachaList = (sdacha) => {
 	let result = []
 	list.forEach((sdacha) => {
 		sdacha.split(' ').forEach((path) => {
-			if (parseInt(path)>0) {
+			if (parseInt(path) > 0) {
 				result.push(path)
 			}
 		})
@@ -70,8 +70,8 @@ const SendData = (form, setForm, callback, raionsName, roomsName, sdachaName, ce
 		"TEMA": "Заявка с одноэкранника",
 		"m_codes": "",
 		"f_info[]": [],
-		"yclid": getParam('yclid') == null? "": getParam('yclid'),
-		"gclid": getParam('gclid') == null? "": getParam('gclid'),
+		"yclid": getParam('yclid') == null ? "" : getParam('yclid'),
+		"gclid": getParam('gclid') == null ? "" : getParam('gclid'),
 		"send_type": "",
 		"l_t": "la",
 		"set_bd": "1",
@@ -112,130 +112,137 @@ const SendData = (form, setForm, callback, raionsName, roomsName, sdachaName, ce
 		leadgen["utm_source"] = getParam('utm_source')
 	}
 	if (getParam('send') != null) {
-		leadgen["send"] = getParam('send')
+		leadgen["utm_send"] = getParam('send')
+	}
+
+	if (getParam('utm_send') != null) {
+		leadgen["utm_send"] = getParam('utm_send')
 	}
 
 	//console.log(raionsName)
 	let text = []
-    Object.keys(form).map((key) => {
-        if (key === 'name') {
+	Object.keys(form).map((key) => {
+		if (key === 'name') {
 			leadgen.name = form['name']
-        } else if (key === 'phone') {
+		} else if (key === 'phone') {
 			leadgen.phone = form['phone']
-        } else if (key !== 'lead_id') {
-			text.push(key+" - "+form[key])
-        }
-    })
-	leadgen = {...leadgen, "f_info[]": text}
+		} else if (key !== 'lead_id') {
+			text.push(key + " - " + form[key])
+		}
+	})
+	leadgen = { ...leadgen, "f_info[]": text }
 	/*axios.post("https://api.g-n.ru/local/ajax/", leadgen, {
 			crossDomain: true
 	},)*/
 	SendCell(celtype, leadgen.phone)
-    if (celtype === "getForm") {
+	if (celtype === "getForm") {
 		leadgen["celType"] = "getForm"
 		leadgen["s[cel]"] = "getForm"
-        axios.put(sendLeadUrl+window.location.search, leadgen).then((resp) => {
-            setForm({
-                ...form,
-                lead_id: resp.data.data
-            })
-        })
-    } else {
+		axios.put(sendLeadUrl + window.location.search, leadgen).then((resp) => {
+			setForm({
+				...form,
+				lead_id: resp.data.data
+			})
+		})
+	} else {
 		leadgen["celType"] = "getName"
 		leadgen["s[cel]"] = "getName"
-        leadgen = {...leadgen, id: form.lead_id}
-        axios.put(sendLeadUrl+window.location.search, leadgen).then((resp) => {
-            console.log('updated')
-        })
-    }
-	
+		leadgen = { ...leadgen, id: form.lead_id }
+		axios.put(sendLeadUrl + window.location.search, leadgen).then((resp) => {
+			console.log('updated')
+		})
+	}
+
 	//console.log(leadgen)
-    callback()
+	callback()
 }
 
 const generateParamsForUrl = (form) => {
 	//?utm_content=1ekran&roistatVisitId=8504168&utm_name=test&utm_phone=+7 ( 999 ) 999 - 99 - 99
 	let query = "?utm_content=1ekran"
 	if (getParam('utm_campaign') != null) {
-		query += "&utm_campaign="+getParam('utm_campaign')
+		query += "&utm_campaign=" + getParam('utm_campaign')
 	}
 	if (getParam('utm_medium') != null) {
-		query += "&utm_medium="+getParam('utm_medium')
+		query += "&utm_medium=" + getParam('utm_medium')
 	}
 	if (getParam('utm_term') != null) {
-		query += "&utm_term="+getParam('utm_term')
+		query += "&utm_term=" + getParam('utm_term')
 	}
 	if (getParam('utm_source') != null) {
-		query += "&utm_source="+getParam('utm_source')
+		query += "&utm_source=" + getParam('utm_source')
 	}
 	if (getParam('send') != null) {
-		query += "&send="+getParam('send')
+		query += "&utm_send=" + getParam('send')
 	}
-	query+= "&roistatVisitId="+jsCookie.get('roistat_visit')+"&utm_phone="+form['phone']
+	if (getParam('utm_send') != null) {
+		query += "&utm_send=" + getParam('utm_send')
+	}
+	query += "&roistatVisitId=" + jsCookie.get('roistat_visit') + "&utm_phone=" + form['phone']
 	return query
 }
 
 const SendCell = (celType, phone) => {
-	console.log("celType "+celType);
+	console.log("celType " + celType);
 	try {
-		if(celType == "form" || celType == "getForm"){
+		if (celType == "form" || celType == "getForm") {
 			VK.Goal("lead");
-			console.log("VK set lead");					
+			console.log("VK set lead");
 		}
 	} catch (err) {
 		console.log("err VK set lead");
-	}	
-		
+	}
+
 	try {
-		if(celType == "form" || celType == "getForm"){
-			console.log("fb set Lead {content_name : "+celType+"}");
-			let event_id  =  phone;  
+		if (celType == "form" || celType == "getForm") {
+			console.log("fb set Lead {content_name : " + celType + "}");
+			let event_id = phone;
 			event_id = event_id.split(' ').join('');
-			event_id = event_id.replace(/[^0-9]/gim,'');
-			console.log("fb set Lead {event_id : "+event_id+"}");
-			fbq('track', "Lead",  {content_name : "form",  'event_id':md5Hex(event_id) });		
+			event_id = event_id.replace(/[^0-9]/gim, '');
+			console.log("fb set Lead {event_id : " + event_id + "}");
+			fbq('track', "Lead", { content_name: "form", 'event_id': md5Hex(event_id) });
 		}
 	} catch (err) {
 		console.log("err fb set Lead");
 	}
 
 	try {
-		console.log("GA set generate_lead" );
+		console.log("GA set generate_lead");
 		gtag('event', 'generate_lead', {});
 	} catch (err) {
 		console.log("err GA set generate_lead");
 	}
-	 
-	console.log("YA set "+celType);
+
+	console.log("YA set " + celType);
 	try {
-		ym(parseInt(domainSettings.domain.yandex),'reachGoal', celType);
+		ym(parseInt(domainSettings.domain.yandex), 'reachGoal', celType);
 	} catch (err) {
 		console.log('error send to yandex')
 	}
 
 	try {
-		ym(domainSettings.domain.yandex,'reachGoal', 'vse');
+		ym(domainSettings.domain.yandex, 'reachGoal', 'vse');
 	} catch (err) {
 
 	}
-			  
+
 	try {
-		if(celType == "form" || celType == "getForm"){
+		if (celType == "form" || celType == "getForm") {
 			console.log(`top mail sended ${domainSettings.domain.mail}`);
-			_tmr.push({ id: `${domainSettings.domain.mail}`, type: 'reachGoal', goal: 'all_cells' });				
+			_tmr.push({ id: `${domainSettings.domain.mail}`, type: 'reachGoal', goal: 'all_cells' });
 		}
 	} catch (err) {
-		console.log(`err top mail sended ${domainSettings.domain.mail}` );
+		console.log(`err top mail sended ${domainSettings.domain.mail}`);
 	}
 }
 
 const GetJKList = async (form, raionsName, roomsName, sdachaName, raionsPrice) => {
-	if (raionsName == "" || roomsName == "" || sdachaName == "" || raionsPrice == ""){
+	if (raionsName == "" || roomsName == "" || sdachaName == "" || raionsPrice == "") {
 		return false
 	}
 	let data = {
 		city_id: domainSettings.city.portal_id,
-		sdacha:  getSdachaList(form[sdachaName]),
+		sdacha: getSdachaList(form[sdachaName]),
 		maxPrice: form[raionsPrice],
 		rooms: getRooms(form[roomsName]),
 		raions: getRayonCodes(form[raionsName])
