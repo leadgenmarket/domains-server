@@ -19,6 +19,7 @@ type Handlers interface {
 	GetLeadsOfSite(c *gin.Context)
 	SendUnsendedLeadsToCrm(c *gin.Context)
 	GetLeadsList(c *gin.Context)
+	FindLeadByID(c *gin.Context)
 }
 
 type leadsHandlers struct {

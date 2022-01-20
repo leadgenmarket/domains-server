@@ -104,7 +104,7 @@ func (h *handlers) Registry() {
 
 		//leads
 		leadsGroup := api.Group("lead")
-		leadsGroup.GET("/:url", h.Leads.GetLeadsOfSite)
+		leadsGroup.GET("/:id", h.Leads.FindLeadByID)
 		leadsGroup.POST("/list", h.Leads.GetLeadsList)
 		leadsGroup.DELETE("/", h.Leads.DeleteLead)
 
