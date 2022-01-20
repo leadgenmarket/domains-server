@@ -3,6 +3,7 @@ data
 file-store
 certs
 docker-compose_back.yml
+./docker-compose.yml
 .env
 .env_test
 moderation

@@ -5,6 +5,7 @@ const updateDomainsList = (state, action) => {
         domains: null,
         loading: false,
         error: false,
+        cursor:"",
       };
     }
   
@@ -16,9 +17,16 @@ const updateDomainsList = (state, action) => {
           error: false,
       };
       case 'DOMIANS_FETCH_SUCCESS':
-        
         return {
-          domains: action.payload,
+          domains: action.payload.domains,
+          cursor: action.payload.cursor,
+          loading: false,
+          error: false,
+      };
+      case 'DOMAINS_GET_MORE':
+        return {
+          domains: [...state.domainsList.domains, ...action.payload.domains],
+          cursor: action.payload.cursor,
           loading: false,
           error: false,
       };

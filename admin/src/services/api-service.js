@@ -3,32 +3,32 @@ import axios from "axios"
 const sendFormWithAttach = (url, form, type) => {
     const config = {
         headers: { 'content-type': 'multipart/form-data' }
-      }
-      const send = new FormData()
-      Object.keys(form).forEach((key) => {
-        if (key == "files"){
-            if (form[key].length>1) {
-                form[key].forEach((el) =>{
+    }
+    const send = new FormData()
+    Object.keys(form).forEach((key) => {
+        if (key == "files") {
+            if (form[key].length > 1) {
+                form[key].forEach((el) => {
                     send.append("files", form[key]);
                 })
             } else {
-                send.append('file',  form[key][0])
+                send.append('file', form[key][0])
             }
         }
         send.append(key, form[key])
-      })
-      if(type=='post'){
-        return axios.post(url, send,  {headers: { 'content-type': 'multipart/form-data' }})
-      } else if(type == 'put'){
-        return axios.put(url, send,  {headers: { 'content-type': 'multipart/form-data' }})
-      }
+    })
+    if (type == 'post') {
+        return axios.post(url, send, { headers: { 'content-type': 'multipart/form-data' } })
+    } else if (type == 'put') {
+        return axios.put(url, send, { headers: { 'content-type': 'multipart/form-data' } })
+    }
 }
 
-export default class ApiService{
-    login = (login, pass) => { 
+export default class ApiService {
+    login = (login, pass) => {
         console.log(login)
         console.log(pass)
-        return axios.post("/sign-in", {login,pass})
+        return axios.post("/sign-in", { login, pass })
     }
 
     ping = () => {
@@ -39,12 +39,24 @@ export default class ApiService{
         return axios.get("/api/logout")
     }
 
-    domainsList = () => {
-        return axios.get("/api/domains")
+    domainsList = (searchUrl, cursor, itemscnt) => {
+        return axios.post("/api/domains/list", {
+            search_url: searchUrl,
+            cursor: cursor,
+            items_cnt: itemscnt,
+        })
+    }
+
+    leadsList = (searchUrl, cursor, itemscnt) => {
+        return axios.post("/api/lead/list", {
+            search_url: searchUrl,
+            cursor: cursor,
+            items_cnt: itemscnt,
+        })
     }
 
     domain = (id) => {
-        return axios.get("/api/domains/"+id)
+        return axios.get("/api/domains/" + id)
     }
 
     addDomain = () => {
@@ -52,7 +64,7 @@ export default class ApiService{
     }
 
     deleteDomain = (id) => {
-        return axios.delete("/api/domains/"+id)
+        return axios.delete("/api/domains/" + id)
     }
 
     templatesList = () => {
@@ -81,7 +93,7 @@ export default class ApiService{
     }
 
     deleteTitle = (id) => {
-        return axios.delete("/api/titles/"+id)
+        return axios.delete("/api/titles/" + id)
     }
 
     updateTilte = (data) => {

@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"time"
 
+	"domain-server/pkg/minquery"
+
 	mongodb "github.com/globalsign/mgo"
 	"github.com/globalsign/mgo/bson"
 )
@@ -22,6 +24,7 @@ type Repository interface {
 	FindDomainByID(id string) (models.Domain, error)
 	DeleteDomainById(id string) error
 	UpdateDomainsModeration(id string, modearation bool) (string, error)
+	GetDomainsListWithPaginationAndFiltered(searchUrl string, cursor string, itemsCnt int) (domains []models.Domain, newCursor string, err error)
 }
 
 type repositroyDB struct {
@@ -34,8 +37,14 @@ func New(dbClient *mongodb.Database) Repository {
 		Unique: true,
 		Name:   "url",
 	}
+	index := mongodb.Index{
+		Key: []string{"-created_at", "url", "_id"},
+	}
 	domains := dbClient.C("domains")
+	domains.DropAllIndexes()
 	domains.EnsureIndex(urlIndex)
+	domains.EnsureIndex(index)
+
 	return &repositroyDB{
 		domains: domains,
 	}
@@ -89,6 +98,16 @@ func (r *repositroyDB) UpdateDomain(domain models.Domain) error {
 		return err
 	}
 	return nil
+}
+
+func (r *repositroyDB) GetDomainsListWithPaginationAndFiltered(searchUrl string, cursor string, itemsCnt int) (domains []models.Domain, newCursor string, err error) {
+	hint := map[string]int{"created_at": -1, "url": 1, "_id": 1}
+	query := minquery.NewWithHint(r.domains.Database, "domains", bson.M{"url": bson.M{"$regex": searchUrl}}, hint).Sort("-created_at", "_id", "url").Limit(itemsCnt)
+	if cursor != "" {
+		query = query.Cursor(cursor)
+	}
+	newCursor, err = query.All(&domains, "created_at", "url", "_id")
+	return
 }
 
 func (r *repositroyDB) GetAllDomains() ([]models.Domain, error) {

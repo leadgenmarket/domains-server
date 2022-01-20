@@ -207,12 +207,23 @@ func (dh *domainsHandlers) CreateDomain(c *gin.Context) {
 }
 
 func (dh *domainsHandlers) GetDomainsList(c *gin.Context) {
-	domains, err := dh.repository.GetAllDomains()
+	input := models.PaginationListInput{}
+	err := c.BindJSON(&input)
+	fmt.Println(input)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, err)
+		return
+	}
+
+	domains, cursor, err := dh.repository.GetDomainsListWithPaginationAndFiltered(input.Search, input.Cursor, input.ItemsCnt)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, err)
 		return
 	}
-	c.JSON(http.StatusOK, domains)
+	c.JSON(http.StatusOK, gin.H{
+		"domains": domains,
+		"cursor":  cursor,
+	})
 }
 
 type updateDomainInput struct {

@@ -1,5 +1,9 @@
+include .env
+
 up:
 	@docker-compose up -d & disown
+down:
+	@docker-compose down
 recreate:
 	@docker-compose up --build --force-recreate --renew-anon-volumes
 client-run:

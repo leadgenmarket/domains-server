@@ -1,7 +1,172 @@
-const LeadsList = () => {
-    return  <div className="main-content">
-             <div className="page-content">В разработке</div>
+import PageTitle from "../../../page-title"
+import TableItem from "./table-item"
+import { compose } from "../../../../utils";
+import { withApiService } from "../../../hoc";
+import { connect } from "react-redux";
+import { bindActionCreators } from 'redux';
+import { Component, useEffect, useRef, useState } from "react";
+import { fetchLeads, fetchMoreLeads } from "../../../../actions/leads";
+import { Spinner } from "../../../spinner";
+import { useNavigate } from "react-router-dom"
+import ApiService from "../../../../services/api-service";
+import { toast } from "react-toastify";
+import { BottomScrollListener } from 'react-bottom-scroll-listener';
+
+const LeadsPage = ({ leads, cursor, fetchLeads, fetchMoreLeads }) => {
+    const [templates, setTemplates] = useState(null)
+    const listInnerRef = useRef();
+    const navigate = useNavigate();
+    useEffect(() => {
+        let apiService = new ApiService
+        apiService.templatesList().then((response) => {
+            setTemplates(response.data)
+        })
+    }, [])
+
+    const getTemplateById = (id) => {
+        let name = ""
+        if (templates != null) {
+            templates.map(template => {
+                if (template.ID == id) {
+                    name = template.Name
+                }
+            });
+
+        }
+        return name
+    }
+
+    const onBottom = () => {
+        console.log('bottom')
+        fetchMoreLeads("", cursor, 15)
+    };
+    return (<div className="main-content">
+        <div className="page-content">
+            <div className="container-fluid">
+                <PageTitle title={"Список лидов"} />
+                <div className="row">
+                    <div className="col-lg-12">
+                        <div className="card">
+                            <div className="card-body">
+                                <div className="" style={{ display: "flex", justifyContent: "end" }}>
+                                    <div className="mb-4">
+                                        <button onClick={() => { navigate('/add', { replace: false }) }} type="button" className="btn btn-primary waves-effect waves-light"><i className="feather-plus"></i> Добавить домен</button>
+                                    </div>
+                                </div>
+                                <div className="table-responsive">
+                                    <div id="DataTables_Table_0_wrapper" className="dataTables_wrapper dt-bootstrap4 no-footer"><div className="row"><div className="col-sm-12 col-md-6"><div className="dataTables_length" id="DataTables_Table_0_length">
+                                        <label style={{ display: "flex" }}>
+                                            Show <select style={{ width: "60px", marginLeft: "10px", marginRight: "10px" }} className="custom-select custom-select-sm form-control form-control-sm form-select form-select-sm">
+                                                <option value="10">10</option>
+                                                <option value="25">25</option>
+                                                <option value="50">50</option>
+                                                <option value="100">100</option>
+                                            </select> entries
+                                        </label>
+                                    </div>
+                                    </div>
+                                        <div className="col-sm-12 col-md-6">
+                                            <div id="DataTables_Table_0_filter" className="dataTables_filter">
+                                                <label>Поиск:<input type="search" className="form-control form-control-sm" placeholder="" aria-controls="DataTables_Table_0" /></label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                        <div className="row">
+                                            <BottomScrollListener offset={50} onBottom={onBottom} >
+                                                <div className="col-sm-12">
+                                                    <table className="table align-middle datatable dt-responsive table-check nowrap dataTable no-footer table-striped" style={{ borderCollapse: "collapse", borderSpacing: "0px 8px", width: "100%" }} >
+                                                        <thead>
+                                                            <tr className="bg-transparent" role="row">
+                                                                <th style={{ width: "30px" }} className="sorting sorting_asc">
+                                                                    <div className="form-check
+                                                        font-size-16">
+                                                                        <input type="checkbox" name="check" className="form-check-input" id="checkAll" />
+                                                                        <label className="form-check-label" htmlFor="checkAll"></label>
+                                                                    </div>
+                                                                </th>
+                                                                <th style={{ width: "80px" }} className="sorting" >ID</th>
+                                                                <th style={{ width: "80px" }} className="sorting" >URL</th>
+                                                                <th style={{ width: "80px" }} className="sorting" >Шаблон</th>
+                                                                <th style={{ width: "80px" }} className="sorting" >Дата создания</th>
+                                                                <th style={{ width: "80px" }} className="sorting" >Действия</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {
+                                                                leads.map((domain) => {
+                                                                    domain.templateName = getTemplateById(domain.template_id)
+                                                                    return <TableItem domain={domain} fetchLeads={fetchLeads} />
+                                                                })
+                                                            }
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </ BottomScrollListener>
+                                        </div>
+                                        <div className="row">
+                                            <div className="col-sm-12 col-md-5">
+                                                <div className="dataTables_info" id="DataTables_Table_0_info" role="status" aria-live="polite">Showing 1 to 10 of 12 entries</div>
+                                            </div>
+                                            <div className="col-sm-12 col-md-7">
+                                                <div className="dataTables_paginate paging_simple_numbers" id="DataTables_Table_0_paginate">
+                                                    <ul className="pagination">
+                                                        <li className="paginate_button page-item previous disabled" id="DataTables_Table_0_previous">
+                                                            <a href="#" aria-controls="DataTables_Table_0" data-dt-idx="0" tabindex="0" className="page-link">Previous</a>
+                                                        </li>
+                                                        <li className="paginate_button page-item active">
+                                                            <a href="#" aria-controls="DataTables_Table_0" data-dt-idx="1" tabindex="0" className="page-link">1</a>
+                                                        </li>
+                                                        <li className="paginate_button page-item ">
+                                                            <a href="#" aria-controls="DataTables_Table_0" data-dt-idx="2" tabindex="0" className="page-link">2</a>
+                                                        </li>
+                                                        <li className="paginate_button page-item next" id="DataTables_Table_0_next">
+                                                            <a href="#" aria-controls="DataTables_Table_0" data-dt-idx="3" tabindex="0" className="page-link">Next</a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
+        </div>
+
+    </div>
+    )
 }
 
-export default LeadsList
+
+class DomainListPageContainer extends Component {
+
+    componentDidMount() {
+        this.props.fetchLeads("", "", 15);
+    }
+
+    render() {
+        const { leads, cursor, loading, error, fetchLeads, fetchMore } = this.props;
+        if (loading || leads == null) {
+            return <Spinner />
+        }
+        return <LeadsPage leads={leads} cursor={cursor} loading={loading} error={error} fetchLeads={fetchLeads} fetchMore={fetchMore} />;
+    }
+}
+
+const mapStateToProps = ({ leadsList: { leads, cursor, loading, error } }) => {
+    return { leads, cursor, loading, error };
+};
+
+const mapDispatchToProps = (dispatch, { apiService }) => {
+    return bindActionCreators({
+        fetchLeads: fetchLeads(apiService),
+        fetchMoreLeads: fetchMoreLeads(apiService)
+    }, dispatch);
+};
+
+export default compose(
+    withApiService(),
+    connect(mapStateToProps, mapDispatchToProps)
+)(DomainListPageContainer);
