@@ -102,7 +102,7 @@ func (r *repositroyDB) UpdateDomain(domain models.Domain) error {
 
 func (r *repositroyDB) GetDomainsListWithPaginationAndFiltered(searchUrl string, cursor string, itemsCnt int) (domains []models.Domain, newCursor string, err error) {
 	hint := map[string]int{"created_at": -1, "url": 1, "_id": 1}
-	query := minquery.NewWithHint(r.domains.Database, "domains", bson.M{"url": bson.M{"$regex": searchUrl}}, hint).Sort("-created_at", "_id", "url").Limit(itemsCnt)
+	query := minquery.NewWithHint(r.domains.Database, "domains", bson.M{"url": bson.M{"$regex": searchUrl}}, hint).Sort("-created_at", "url", "_id").Limit(itemsCnt)
 	if cursor != "" {
 		query = query.Cursor(cursor)
 	}
