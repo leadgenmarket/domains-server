@@ -137,6 +137,17 @@ func (s *leadsHandlers) SendUnsendedLeadsToCrm(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"paylod": "ok"})
 }
 
+func (s *leadsHandlers) FindLeadByID(c *gin.Context) {
+	id := c.Param("id")
+	lead, err := s.repository.FindLeadByID(id)
+	if err != nil {
+		s.logger.GetInstance().Errorf("requesting lead not found %s", err)
+		c.JSON(http.StatusInternalServerError, gin.H{"paylod": "error"})
+		return
+	}
+	c.JSON(http.StatusOK, lead)
+}
+
 func sendLeads(services *services.Services, repositories leads.Repository, logger logger.Log) {
 	leads, err := repositories.GetUnsendedLeads()
 	if err != nil {

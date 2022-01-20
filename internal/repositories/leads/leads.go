@@ -17,6 +17,7 @@ type Repository interface {
 	MarkLeadAsSended(lead map[string]interface{}) error
 	GetUnsendedLeads() ([]map[string]interface{}, error)
 	GetLeadsListWithPaginationAndFiltered(searchPhone string, cursor string, itemsCnt int) (leads []map[string]interface{}, newCursor string, err error)
+	FindLeadByID(id string) (map[string]interface{}, error)
 }
 
 type repositroyDB struct {
@@ -27,6 +28,15 @@ func New(dbClient *mongodb.Database) Repository {
 	return &repositroyDB{
 		leads: dbClient.C("leads"),
 	}
+}
+
+func (r *repositroyDB) FindLeadByID(id string) (map[string]interface{}, error) {
+	var lead map[string]interface{}
+	err := r.leads.Find(bson.M{"_id": bson.ObjectIdHex(id)}).One(&lead)
+	if err != nil {
+		return lead, err
+	}
+	return lead, nil
 }
 
 func (r *repositroyDB) AddLead(lead map[string]interface{}) (bson.ObjectId, error) {

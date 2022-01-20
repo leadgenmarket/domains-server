@@ -29,29 +29,18 @@ const LeadsPage = ({ leads, cursor, fetchLeads, fetchMoreLeads }) => {
                     <div className="col-lg-12">
                         <div className="card">
                             <div className="card-body">
-                                <div className="" style={{ display: "flex", justifyContent: "end" }}>
-                                    <div className="mb-4">
-                                        <button onClick={() => { navigate('/add', { replace: false }) }} type="button" className="btn btn-primary waves-effect waves-light"><i className="feather-plus"></i> Добавить домен</button>
-                                    </div>
-                                </div>
                                 <div className="table-responsive">
-                                    <div id="DataTables_Table_0_wrapper" className="dataTables_wrapper dt-bootstrap4 no-footer"><div className="row"><div className="col-sm-12 col-md-6"><div className="dataTables_length" id="DataTables_Table_0_length">
-                                        <label style={{ display: "flex" }}>
-                                            Show <select style={{ width: "60px", marginLeft: "10px", marginRight: "10px" }} className="custom-select custom-select-sm form-control form-control-sm form-select form-select-sm">
-                                                <option value="10">10</option>
-                                                <option value="25">25</option>
-                                                <option value="50">50</option>
-                                                <option value="100">100</option>
-                                            </select> entries
-                                        </label>
-                                    </div>
-                                    </div>
-                                        <div className="col-sm-12 col-md-6">
-                                            <div id="DataTables_Table_0_filter" className="dataTables_filter">
-                                                <label>Поиск:<input type="search" className="form-control form-control-sm" placeholder="" aria-controls="DataTables_Table_0" /></label>
+                                    <div id="DataTables_Table_0_wrapper" className="dataTables_wrapper dt-bootstrap4 no-footer">
+                                        <div className="row">
+                                            <div className="col-sm-12 col-md-6">
+
+                                            </div>
+                                            <div className="col-sm-12 col-md-6">
+                                                <div id="DataTables_Table_0_filter" className="dataTables_filter">
+                                                    <label>Поиск:<input type="search" className="form-control form-control-sm" placeholder="" aria-controls="DataTables_Table_0" /></label>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
                                         <div className="row">
                                             <BottomScrollListener offset={50} onBottom={onBottom} >
                                                 <div className="col-sm-12">
@@ -65,48 +54,24 @@ const LeadsPage = ({ leads, cursor, fetchLeads, fetchMoreLeads }) => {
                                                                         <label className="form-check-label" htmlFor="checkAll"></label>
                                                                     </div>
                                                                 </th>
-                                                                <th style={{ width: "80px" }} className="sorting" >ID</th>
-                                                                <th style={{ width: "80px" }} className="sorting" >URL</th>
-                                                                <th style={{ width: "80px" }} className="sorting" >Шаблон</th>
-                                                                <th style={{ width: "80px" }} className="sorting" >Дата создания</th>
+                                                                <th style={{ width: "80px" }} className="sorting" >Номер телефона</th>
+                                                                <th style={{ width: "80px" }} className="sorting" >Имя</th>
+                                                                <th style={{ width: "80px" }} className="sorting" >Город</th>
+                                                                <th style={{ width: "80px" }} className="sorting" >Сайт</th>
+                                                                <th style={{ width: "80px" }} className="sorting" >Дата</th>
                                                                 <th style={{ width: "80px" }} className="sorting" >Действия</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
                                                             {
                                                                 leads.map((lead) => {
-                                                                    console.log(lead)
-                                                                    /*domain.templateName = getTemplateById(domain.template_id)
-                                                                    return <TableItem domain={domain} fetchLeads={fetchLeads} />*/
+                                                                    return <TableItem lead={lead} fetchLeads={fetchLeads} />
                                                                 })
                                                             }
                                                         </tbody>
                                                     </table>
                                                 </div>
                                             </ BottomScrollListener>
-                                        </div>
-                                        <div className="row">
-                                            <div className="col-sm-12 col-md-5">
-                                                <div className="dataTables_info" id="DataTables_Table_0_info" role="status" aria-live="polite">Showing 1 to 10 of 12 entries</div>
-                                            </div>
-                                            <div className="col-sm-12 col-md-7">
-                                                <div className="dataTables_paginate paging_simple_numbers" id="DataTables_Table_0_paginate">
-                                                    <ul className="pagination">
-                                                        <li className="paginate_button page-item previous disabled" id="DataTables_Table_0_previous">
-                                                            <a href="#" aria-controls="DataTables_Table_0" data-dt-idx="0" tabindex="0" className="page-link">Previous</a>
-                                                        </li>
-                                                        <li className="paginate_button page-item active">
-                                                            <a href="#" aria-controls="DataTables_Table_0" data-dt-idx="1" tabindex="0" className="page-link">1</a>
-                                                        </li>
-                                                        <li className="paginate_button page-item ">
-                                                            <a href="#" aria-controls="DataTables_Table_0" data-dt-idx="2" tabindex="0" className="page-link">2</a>
-                                                        </li>
-                                                        <li className="paginate_button page-item next" id="DataTables_Table_0_next">
-                                                            <a href="#" aria-controls="DataTables_Table_0" data-dt-idx="3" tabindex="0" className="page-link">Next</a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -129,11 +94,11 @@ class DomainListPageContainer extends Component {
     }
 
     render() {
-        const { leads, cursor, loading, error, fetchLeads, fetchMore } = this.props;
+        const { leads, cursor, loading, error, fetchLeads, fetchMoreLeads } = this.props;
         if (loading || leads == null) {
             return <Spinner />
         }
-        return <LeadsPage leads={leads} cursor={cursor} loading={loading} error={error} fetchLeads={fetchLeads} fetchMore={fetchMore} />;
+        return <LeadsPage leads={leads} cursor={cursor} loading={loading} error={error} fetchLeads={fetchLeads} fetchMoreLeads={fetchMoreLeads} />;
     }
 }
 

@@ -1,9 +1,9 @@
-import React, {useEffect} from "react"
-import {Route, Routes} from "react-router-dom"
-import {withApiService} from "../hoc"
+import React, { useEffect } from "react"
+import { Route, Routes } from "react-router-dom"
+import { withApiService } from "../hoc"
 import SideMenu from "../../components/side-menu"
 import { connect } from 'react-redux';
-import {useLocation, useNavigate} from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 import jwt_decode from "jwt-decode";
 import Cookies from 'js-cookie';
 import "./app.css"
@@ -21,9 +21,10 @@ import { TitlesList } from "../pages/titles/titles-list";
 import LeadsList from "../pages/leads/leads-list";
 import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import LeadDetail from "../pages/leads/detail/lead-detail";
 
 
-const App = ({ auth, phone, checkAuth}) => {
+const App = ({ auth, phone, checkAuth }) => {
     const location = useLocation().pathname;
     const history = useNavigate()
     if (location == "/logout") {
@@ -32,15 +33,15 @@ const App = ({ auth, phone, checkAuth}) => {
         history.replace("/")
     }
     console.log(auth)
-    useEffect(()=>{
+    useEffect(() => {
         checkAuth()
-    },[])
+    }, [])
 
-    
+
 
     if (auth == null) {
         return <Spinner />
-    } else if(auth==false){
+    } else if (auth == false) {
         return (
             <Routes>
                 <Route path="*" element={<LoginPage />} ></Route>
@@ -52,6 +53,7 @@ const App = ({ auth, phone, checkAuth}) => {
                 <ToolBar />
                 <SideMenu />
                 <Routes>
+                    <Route path="/leads/:id" element={<LeadDetail />} />
                     <Route path="/leads/" element={<LeadsList />} />
                     <Route path="/titles/" element={<TitlesList />} />
                     <Route path="/edit/:id" element={<DomainEdit />} />
@@ -61,15 +63,15 @@ const App = ({ auth, phone, checkAuth}) => {
                 </Routes>
                 <ToastContainer />
             </React.Fragment>
-        )        
+        )
     }
 }
 
-const mapStateToProps = ({ authStatus: { auth, phone, loading, error }}) => {
+const mapStateToProps = ({ authStatus: { auth, phone, loading, error } }) => {
     return { auth, phone }; //
 };
 
-const mapDispatchToProps = (dispatch, { apiService}) => {
+const mapDispatchToProps = (dispatch, { apiService }) => {
     return bindActionCreators({
         checkAuth: checkAuth(apiService)
     }, dispatch);
