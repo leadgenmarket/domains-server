@@ -111,6 +111,9 @@ const SendData = (form, setForm, callback, raionsName, roomsName, sdachaName, ce
 	if (getParam('utm_source') != null) {
 		leadgen["utm_source"] = getParam('utm_source')
 	}
+	if (getParam('send') != null) {
+		leadgen["send"] = getParam('send')
+	}
 
 	//console.log(raionsName)
 	let text = []
@@ -164,6 +167,9 @@ const generateParamsForUrl = (form) => {
 	}
 	if (getParam('utm_source') != null) {
 		query += "&utm_source="+getParam('utm_source')
+	}
+	if (getParam('send') != null) {
+		query += "&send="+getParam('send')
 	}
 	query+= "&roistatVisitId="+jsCookie.get('roistat_visit')+"&utm_phone="+form['phone']
 	return query

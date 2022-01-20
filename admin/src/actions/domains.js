@@ -11,6 +11,13 @@ const domainsRequestSuccess = (domains) => {
     }
 }
 
+const domainsRequestMoreSuccess = (domains) => {
+    return {
+        type: 'DOMAINS_GET_MORE',
+        payload: domains
+    }
+}
+
 const domainsRequestError = () => {
     return {
         type: 'DOMIANS_FETCH_ERROR',
@@ -38,10 +45,17 @@ const removeDomainFromList = (id) => {
     }
 }
 
-const fetchDomains = (apiService) => () => (dispatch) => {
+const fetchDomains = (apiService) => (searchUrl, cursor, itemscnt) => (dispatch) => {
     dispatch(domainsRequested)
-    apiService.domainsList()
+    apiService.domainsList(searchUrl, cursor, itemscnt)
         .then((response) => dispatch(domainsRequestSuccess(response.data)))
+        .catch((err) => dispatch(domainsRequestError(err)))
+}
+
+const fetchMore = (apiService) => (searchUrl, cursor, itemscnt) => (dispatch) => {
+    dispatch(domainsRequested)
+    apiService.domainsList(searchUrl, cursor, itemscnt)
+        .then((response) => dispatch(domainsRequestMoreSuccess(response.data)))
         .catch((err) => dispatch(domainsRequestError(err)))
 }
 
@@ -58,5 +72,6 @@ export {
     fetchDomains,
     addDomainToList,
     deleteDomain,
-    removeDomainFromList
+    removeDomainFromList,
+    fetchMore
 }

@@ -122,3 +122,9 @@ type JKFilter struct {
 	Rooms    []int    `bson:"rooms" json:"rooms"`
 	Raions   []string `bson:"raions" json:"raions"`
 }
+
+type PaginationListInput struct {
+	Cursor   string `json:"cursor"`
+	ItemsCnt int    `json:"items_cnt" binding:"required"`
+	Search   string `json:"search"`
+}

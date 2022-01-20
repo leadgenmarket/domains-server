@@ -87,7 +87,7 @@ func (h *handlers) Registry() {
 		//domains
 		domainsGroup := api.Group("domains")
 		domainsGroup.PUT("/", h.Domains.CreateDomain)
-		domainsGroup.GET("/", h.Domains.GetDomainsList)
+		domainsGroup.POST("/list", h.Domains.GetDomainsList)
 		domainsGroup.POST("/", h.Domains.UpdateDomain)
 		domainsGroup.POST("/moderation", h.Domains.DomainsModerationChange)
 		domainsGroup.DELETE("/:id", h.Domains.DeleteDomain)
@@ -105,6 +105,7 @@ func (h *handlers) Registry() {
 		//leads
 		leadsGroup := api.Group("lead")
 		leadsGroup.GET("/:url", h.Leads.GetLeadsOfSite)
+		leadsGroup.POST("/list", h.Leads.GetLeadsList)
 		leadsGroup.DELETE("/", h.Leads.DeleteLead)
 
 		//organizations

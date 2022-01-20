@@ -2,6 +2,7 @@ package leads
 
 import (
 	"domain-server/internal/models"
+	"domain-server/pkg/minquery"
 	"time"
 
 	mongodb "github.com/globalsign/mgo"
@@ -15,6 +16,7 @@ type Repository interface {
 	DeleteLead(id string) error
 	MarkLeadAsSended(lead map[string]interface{}) error
 	GetUnsendedLeads() ([]map[string]interface{}, error)
+	GetLeadsListWithPaginationAndFiltered(searchPhone string, cursor string, itemsCnt int) (leads []map[string]interface{}, newCursor string, err error)
 }
 
 type repositroyDB struct {
@@ -62,6 +64,16 @@ func (r *repositroyDB) GetLeadsOfSite(url string) ([]models.Lead, error) {
 		return leads, err
 	}
 	return leads, nil
+}
+
+func (r *repositroyDB) GetLeadsListWithPaginationAndFiltered(searchPhone string, cursor string, itemsCnt int) (leads []map[string]interface{}, newCursor string, err error) {
+	hint := map[string]int{"_id": 1}
+	query := minquery.NewWithHint(r.leads.Database, "leads", bson.M{"phone": bson.M{"$regex": searchPhone}}, hint).Sort("-_id").Limit(itemsCnt)
+	if cursor != "" {
+		query = query.Cursor(cursor)
+	}
+	newCursor, err = query.All(&leads, "_id")
+	return
 }
 
 func (r *repositroyDB) MarkLeadAsSended(lead map[string]interface{}) error {

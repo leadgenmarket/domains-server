@@ -18,6 +18,7 @@ type Handlers interface {
 	DeleteLead(c *gin.Context)
 	GetLeadsOfSite(c *gin.Context)
 	SendUnsendedLeadsToCrm(c *gin.Context)
+	GetLeadsList(c *gin.Context)
 }
 
 type leadsHandlers struct {
@@ -109,6 +110,26 @@ func (s *leadsHandlers) GetLeadsOfSite(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, leads)
+}
+
+func (dh *leadsHandlers) GetLeadsList(c *gin.Context) {
+	input := models.PaginationListInput{}
+	err := c.BindJSON(&input)
+	fmt.Println(input)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, err)
+		return
+	}
+
+	domains, cursor, err := dh.repository.GetLeadsListWithPaginationAndFiltered(input.Search, input.Cursor, input.ItemsCnt)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, err)
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"domains": domains,
+		"cursor":  cursor,
+	})
 }
 
 func (s *leadsHandlers) SendUnsendedLeadsToCrm(c *gin.Context) {
