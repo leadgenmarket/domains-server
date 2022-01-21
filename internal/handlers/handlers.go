@@ -81,6 +81,7 @@ func (h *handlers) Registry() {
 	h.router.GET("/lead/", h.Leads.SendUnsendedLeadsToCrm)
 	h.router.POST("/jks/", h.JKs.GetFilteredJKList)
 	h.router.GET("/portal-info", h.Locations.UpdatePortalInfo)
+	h.router.GET("/domain-city/:url", h.Domains.DomainsGetCityByUrl)
 
 	api := h.router.Group("/api", middlewares.TokenAuthMiddleware(h.logger, h.services))
 	{

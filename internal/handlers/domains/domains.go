@@ -32,6 +32,7 @@ type Handlers interface {
 	FindDomainByID(c *gin.Context)
 	AddDomainWithSettings(c *gin.Context)
 	DomainsModerationChange(c *gin.Context)
+	DomainsGetCityByUrl(c *gin.Context)
 }
 
 type domainsHandlers struct {
@@ -405,6 +406,16 @@ func (dh *domainsHandlers) DomainsModerationChange(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, gin.H{"message": "domains modeartion updated"})
 	dh.services.CommonStorage.DeleteKey(c, url) //удаляем кэш
+}
+
+func (dh *domainsHandlers) DomainsGetCityByUrl(c *gin.Context) {
+	//для wantresult нужно
+	url := c.Param("url")
+	domain, err := dh.repository.FindDomainByUrl(url)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"paylod": "error"})
+	}
+	c.JSON(http.StatusOK, gin.H{"city": domain.CityID})
 }
 
 func handleAdminInterface(c *gin.Context, path string) {
