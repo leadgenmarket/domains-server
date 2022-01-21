@@ -25,8 +25,13 @@ type repositroyDB struct {
 }
 
 func New(dbClient *mongodb.Database) Repository {
+	index := mongodb.Index{
+		Key: []string{"-created_at", "_id"},
+	}
+	leads := dbClient.C("leads")
+	leads.EnsureIndex(index)
 	return &repositroyDB{
-		leads: dbClient.C("leads"),
+		leads: leads,
 	}
 }
 
@@ -77,12 +82,12 @@ func (r *repositroyDB) GetLeadsOfSite(url string) ([]models.Lead, error) {
 }
 
 func (r *repositroyDB) GetLeadsListWithPaginationAndFiltered(searchPhone string, cursor string, itemsCnt int) (leads []map[string]interface{}, newCursor string, err error) {
-	hint := map[string]int{"_id": 1}
+	hint := map[string]int{"created_at": -1, "_id": 1}
 	query := minquery.NewWithHint(r.leads.Database, "leads", bson.M{"phone": bson.M{"$regex": searchPhone}}, hint).Sort("-_id").Limit(itemsCnt)
 	if cursor != "" {
 		query = query.Cursor(cursor)
 	}
-	newCursor, err = query.All(&leads, "_id")
+	newCursor, err = query.All(&leads, "created_at", "_id")
 	return
 }
 

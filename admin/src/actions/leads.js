@@ -24,6 +24,12 @@ const leadsRequestError = () => {
     }
 }
 
+const leadsFetchMoreError = () => {
+    return {
+        type: 'LEADS_FETCH_MORE_ERROR',
+    }
+}
+
 const deleteLeadAction = (id) => {
     return {
         type: 'LEADS_DELETE_ONE',
@@ -56,7 +62,7 @@ const fetchMoreLeads = (apiService) => (searchUrl, cursor, itemscnt) => (dispatc
     dispatch(leadsRequested)
     apiService.leadsList(searchUrl, cursor, itemscnt)
         .then((response) => dispatch(leadsRequestMoreSuccess(response.data)))
-        .catch((err) => dispatch(leadsRequestError(err)))
+        .catch((err) => dispatch(leadsFetchMoreError(err)))
 }
 
 const deleteLead = (apiService) => (id) => (dispatch) => {

@@ -15,6 +15,7 @@ import { BottomScrollListener } from 'react-bottom-scroll-listener';
 const DomainsPage = ({ domains, cursor, fetchDomains, fetchMore }) => {
     const [templates, setTemplates] = useState(null)
     const listInnerRef = useRef();
+    const [load, setLoad] = useState(false)
     const navigate = useNavigate();
     useEffect(() => {
         let apiService = new ApiService
@@ -37,8 +38,13 @@ const DomainsPage = ({ domains, cursor, fetchDomains, fetchMore }) => {
     }
 
     const onBottom = () => {
-        console.log('bottom')
-        fetchMore("", cursor, 15)
+        if (!load) {
+            setLoad(true)
+            fetchMore("", cursor, 15)
+            setTimeout(() => {
+                setLoad(false)
+            }, 500)
+        }
     };
     return (<div className="main-content">
         <div className="page-content">
@@ -65,7 +71,7 @@ const DomainsPage = ({ domains, cursor, fetchDomains, fetchMore }) => {
                                             </div>
                                         </div>
                                         <div className="row">
-                                            <BottomScrollListener offset={50} onBottom={onBottom} >
+                                            <BottomScrollListener offset={20} onBottom={onBottom} >
                                                 <div className="col-sm-12">
                                                     <table className="table align-middle datatable dt-responsive table-check nowrap dataTable no-footer table-striped" style={{ borderCollapse: "collapse", borderSpacing: "0px 8px", width: "100%" }} >
                                                         <thead>

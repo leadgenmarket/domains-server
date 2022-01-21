@@ -36,6 +36,10 @@ const updateLeadsList = (state, action) => {
         loading: false,
         error: true,
       };
+    case 'LEADS_FETCH_MORE_ERROR':
+      return {
+        ...state.leadsList
+      };
     case 'DOMAINS_ADD_ONE':
       return {
         leads: state.leadsList.leads,

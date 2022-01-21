@@ -12,14 +12,21 @@ import ApiService from "../../../../services/api-service";
 import { toast } from "react-toastify";
 import { BottomScrollListener } from 'react-bottom-scroll-listener';
 
-const LeadsPage = ({ leads, cursor, fetchLeads, fetchMoreLeads }) => {
+const LeadsPage = ({ leads, loading, cursor, fetchLeads, fetchMoreLeads }) => {
     const navigate = useNavigate();
+    const [load, setLoad] = useState(false)
     useEffect(() => {
     }, [])
 
     const onBottom = () => {
-        console.log('bottom')
-        fetchMoreLeads("", cursor, 15)
+        if (load !== true && loading !== true) {
+            setLoad(true)
+            fetchMoreLeads("", cursor, 15)
+            setTimeout(() => {
+                setLoad(false)
+            }, 1000)
+        }
+
     };
     return (<div className="main-content">
         <div className="page-content">
@@ -42,7 +49,7 @@ const LeadsPage = ({ leads, cursor, fetchLeads, fetchMoreLeads }) => {
                                             </div>
                                         </div>
                                         <div className="row">
-                                            <BottomScrollListener offset={50} onBottom={onBottom} >
+                                            <BottomScrollListener offset={100} onBottom={onBottom} >
                                                 <div className="col-sm-12">
                                                     <table className="table align-middle datatable dt-responsive table-check nowrap dataTable no-footer table-striped" style={{ borderCollapse: "collapse", borderSpacing: "0px 8px", width: "100%" }} >
                                                         <thead>
