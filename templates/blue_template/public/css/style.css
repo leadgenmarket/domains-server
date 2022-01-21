@@ -701,7 +701,10 @@ footer .wmain{
 
 @media screen and (max-width: 440px) {
     .check_list div label span {
-        font-size: 13px;
+        font-size: 16px;
+    }
+    .box{
+        padding-left: 0!important;
     }
     .progres_num {
         font-size: 16px;
