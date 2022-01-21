@@ -114,15 +114,27 @@ footer .wmain{
     list-style: none;
     margin-top: 35px;
 }
-.check_list div label{
+.check_list div label {
     cursor: pointer;
-    display: inline-block;
+    display: flex!important;
+    align-content: center;
+    justify-content: flex-start;
 }
-.check_list div label span{
-    display: inline-block;
-    vertical-align: top;
+.check_list div  svg{
+    width: 30px;
+}
+.check_list div label span {
+    display: block;
     text-decoration: underline;
-    line-height: 31px;
+    line-height: 1;
+    width: calc(100% - 40px);
+    white-space: nowrap;
+}
+.check_list div {
+    /* display: flex; */
+    align-items: center;
+    align-content: center;
+    justify-content: flex-start;
 }
 .check_list div  + div{
     margin-top: 10px;
@@ -566,7 +578,14 @@ footer .wmain{
         margin-top: 6px;
     }
 }
-
+@media screen and (max-width: 680px) {
+    
+.check_list div label span {
+    white-space: normal;
+    font-size: 16px;
+}
+    
+}
 @media screen and (max-width: 580px) {
     .in_slider input {
         font-size: 20px;
@@ -681,6 +700,9 @@ footer .wmain{
 }
 
 @media screen and (max-width: 440px) {
+    .check_list div label span {
+        font-size: 13px;
+    }
     .progres_num {
         font-size: 16px;
     }
