@@ -286,10 +286,10 @@ footer .wmain{
         padding: 8px 0px;
     }
     .container_main {
-        background: url("/local/lp/vv_2/img/mobile_bg.jpg") repeat-y center top;
+        /* background: url("/local/lp/vv_2/img/mobile_bg.jpg") repeat-y center top;
         -webkit-background-size: 100%;
              -o-background-size: 100%;
-                background-size: 100%;
+                background-size: 100%; */
     }
 }
 
