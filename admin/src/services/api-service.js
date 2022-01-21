@@ -41,7 +41,7 @@ export default class ApiService {
 
     domainsList = (searchUrl, cursor, itemscnt) => {
         return axios.post("/api/domains/list", {
-            search_url: searchUrl,
+            search: searchUrl,
             cursor: cursor,
             items_cnt: itemscnt,
         })
@@ -49,7 +49,7 @@ export default class ApiService {
 
     leadsList = (searchUrl, cursor, itemscnt) => {
         return axios.post("/api/lead/list", {
-            search_url: searchUrl,
+            search: searchUrl,
             cursor: cursor,
             items_cnt: itemscnt,
         })

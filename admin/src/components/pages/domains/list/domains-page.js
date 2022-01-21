@@ -12,10 +12,10 @@ import ApiService from "../../../../services/api-service";
 import { toast } from "react-toastify";
 import { BottomScrollListener } from 'react-bottom-scroll-listener';
 
-const DomainsPage = ({ domains, cursor, fetchDomains, fetchMore }) => {
+const DomainsPage = ({ domains, cursor, loading, fetchDomains, fetchMore }) => {
     const [templates, setTemplates] = useState(null)
-    const listInnerRef = useRef();
     const [load, setLoad] = useState(false)
+    const [search, setSearch] = useState("")
     const navigate = useNavigate();
     useEffect(() => {
         let apiService = new ApiService
@@ -32,20 +32,24 @@ const DomainsPage = ({ domains, cursor, fetchDomains, fetchMore }) => {
                     name = template.Name
                 }
             });
-
         }
         return name
     }
 
     const onBottom = () => {
-        if (!load) {
+        if (load === false && loading === false) {
             setLoad(true)
-            fetchMore("", cursor, 15)
+            fetchMore(search, cursor, 15)
             setTimeout(() => {
                 setLoad(false)
-            }, 500)
+            }, 1000)
         }
     };
+
+    const searchDomains = (event) => {
+        setSearch(event.target.value)
+        fetchDomains(event.target.value, "", 15)
+    }
     return (<div className="main-content">
         <div className="page-content">
             <div className="container-fluid">
@@ -66,7 +70,7 @@ const DomainsPage = ({ domains, cursor, fetchDomains, fetchMore }) => {
                                             </div>
                                             <div className="col-sm-12 col-md-6">
                                                 <div id="DataTables_Table_0_filter" className="dataTables_filter">
-                                                    <label>Поиск:<input type="search" className="form-control form-control-sm" placeholder="" aria-controls="DataTables_Table_0" /></label>
+                                                    <label>Поиск:<input onChange={searchDomains} type="search" className="form-control form-control-sm" placeholder="" aria-controls="DataTables_Table_0" /></label>
                                                 </div>
                                             </div>
                                         </div>
@@ -90,14 +94,14 @@ const DomainsPage = ({ domains, cursor, fetchDomains, fetchMore }) => {
                                                                 <th style={{ width: "80px" }} className="sorting" >Действия</th>
                                                             </tr>
                                                         </thead>
-                                                        <tbody>
+                                                        {domains == null ? <tbody></tbody> : <tbody>
                                                             {
                                                                 domains.map((domain) => {
                                                                     domain.templateName = getTemplateById(domain.template_id)
                                                                     return <TableItem domain={domain} fetchDomains={fetchDomains} />
                                                                 })
                                                             }
-                                                        </tbody>
+                                                        </tbody>}
                                                     </table>
                                                 </div>
                                             </ BottomScrollListener>
@@ -124,7 +128,7 @@ class DomainListPageContainer extends Component {
 
     render() {
         const { domains, cursor, loading, error, fetchDomains, fetchMore } = this.props;
-        if (loading || domains == null) {
+        if (loading) {
             return <Spinner />
         }
         return <DomainsPage domains={domains} cursor={cursor} loading={loading} error={error} fetchDomains={fetchDomains} fetchMore={fetchMore} />;

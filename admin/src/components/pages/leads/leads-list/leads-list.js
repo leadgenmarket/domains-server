@@ -19,7 +19,7 @@ const LeadsPage = ({ leads, loading, cursor, fetchLeads, fetchMoreLeads }) => {
     }, [])
 
     const onBottom = () => {
-        if (load !== true && loading !== true) {
+        if (load === false && loading === false) {
             setLoad(true)
             fetchMoreLeads("", cursor, 15)
             setTimeout(() => {
@@ -28,28 +28,34 @@ const LeadsPage = ({ leads, loading, cursor, fetchLeads, fetchMoreLeads }) => {
         }
 
     };
+
+    const searchLeads = (event) => {
+        //console.log(event.target.value)
+        fetchLeads(event.target.value, "", 15)
+    }
     return (<div className="main-content">
         <div className="page-content">
             <div className="container-fluid">
                 <PageTitle title={"Список лидов"} />
-                <div className="row">
-                    <div className="col-lg-12">
-                        <div className="card">
-                            <div className="card-body">
-                                <div className="table-responsive">
-                                    <div id="DataTables_Table_0_wrapper" className="dataTables_wrapper dt-bootstrap4 no-footer">
-                                        <div className="row">
-                                            <div className="col-sm-12 col-md-6">
+                <BottomScrollListener offset={20} onBottom={onBottom} >
+                    <div className="row">
+                        <div className="col-lg-12">
+                            <div className="card">
+                                <div className="card-body">
+                                    <div className="table-responsive">
+                                        <div id="DataTables_Table_0_wrapper" className="dataTables_wrapper dt-bootstrap4 no-footer">
+                                            <div className="row">
+                                                <div className="col-sm-12 col-md-6">
 
-                                            </div>
-                                            <div className="col-sm-12 col-md-6">
-                                                <div id="DataTables_Table_0_filter" className="dataTables_filter">
-                                                    <label>Поиск:<input type="search" className="form-control form-control-sm" placeholder="" aria-controls="DataTables_Table_0" /></label>
+                                                </div>
+                                                <div className="col-sm-12 col-md-6">
+                                                    <div id="DataTables_Table_0_filter" className="dataTables_filter">
+                                                        <label>Поиск:<input onChange={searchLeads} type="search" className="form-control form-control-sm" placeholder="" aria-controls="DataTables_Table_0" /></label>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div className="row">
-                                            <BottomScrollListener offset={100} onBottom={onBottom} >
+                                            <div className="row">
+
                                                 <div className="col-sm-12">
                                                     <table className="table align-middle datatable dt-responsive table-check nowrap dataTable no-footer table-striped" style={{ borderCollapse: "collapse", borderSpacing: "0px 8px", width: "100%" }} >
                                                         <thead>
@@ -69,23 +75,24 @@ const LeadsPage = ({ leads, loading, cursor, fetchLeads, fetchMoreLeads }) => {
                                                                 <th style={{ width: "80px" }} className="sorting" >Действия</th>
                                                             </tr>
                                                         </thead>
-                                                        <tbody>
+                                                        {leads == null ? <tbody></tbody> : <tbody>
                                                             {
                                                                 leads.map((lead) => {
                                                                     return <TableItem lead={lead} fetchLeads={fetchLeads} />
                                                                 })
                                                             }
-                                                        </tbody>
+                                                        </tbody>}
                                                     </table>
                                                 </div>
-                                            </ BottomScrollListener>
+
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                </ BottomScrollListener>
             </div>
         </div>
 
@@ -102,7 +109,7 @@ class DomainListPageContainer extends Component {
 
     render() {
         const { leads, cursor, loading, error, fetchLeads, fetchMoreLeads } = this.props;
-        if (loading || leads == null) {
+        if (loading) {
             return <Spinner />
         }
         return <LeadsPage leads={leads} cursor={cursor} loading={loading} error={error} fetchLeads={fetchLeads} fetchMoreLeads={fetchMoreLeads} />;
