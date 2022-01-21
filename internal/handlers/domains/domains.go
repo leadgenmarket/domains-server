@@ -415,7 +415,11 @@ func (dh *domainsHandlers) DomainsGetCityByUrl(c *gin.Context) {
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"paylod": "error"})
 	}
-	c.JSON(http.StatusOK, gin.H{"city": domain.CityID})
+	city, err := dh.cityRepo.GetCityById(domain.CityID)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"paylod": "error"})
+	}
+	c.JSON(http.StatusOK, gin.H{"city": city.PortalID})
 }
 
 func handleAdminInterface(c *gin.Context, path string) {
