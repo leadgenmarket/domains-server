@@ -1,7 +1,9 @@
 const fs = require('fs')
+const util = require('util');
 
 fs.readFile('./build/index.html', 'utf8', (err, data) => {
-  data = data.replaceAll('"/css', '"/templates/blue_template/build/css')
+  data = replaceScripts(data)
+  //data = data.replaceAll('"/css', '"/templates/blue_template/build/css')
   data = data.replaceAll('"/static', '"/templates/blue_template/build/static')
   data = data.replace('href="favicon.ico"', 'href="/templates/blue_template/build/favicon.ico"')
   data = data.replace('</body>', '<script> let domainSettings = JSON.parse("{{ .scripts }}")</script></body>')
@@ -36,18 +38,28 @@ fs.readFile('./build/index.html', 'utf8', (err, data) => {
       }, 2700)\
     </script>\
     </body>")
-
-
   fs.writeFileSync("./build/blue_template.html", data)
   fs.unlink("./build/index.html", () => { })
 })
 
 
-
-/*
-
-<!-- Marquiz script start -->
-
-<!-- Marquiz script end -->
-
-*/
+const  replaceScripts = (data) =>  {
+  let script=""
+  let i=data.indexOf('script defer="defer" src="/')+ 'script defer="defer" src="/'.length;
+  while (data[i]!='"') {
+    script +=data[i]  
+    i++
+  }
+  let scriptContent = fs.readFileSync("build/"+script, 'utf8')
+  data = data.replace('<script defer="defer" src="/'+script+'"></script>', `<script type="text/javascript">${scriptContent}</script>`)
+  
+  let style = "css/style.css"
+  let styleContent = fs.readFileSync("build/"+style, 'utf8')
+  data = data.replace(`<link rel="stylesheet" href="/css/style.css"/>`, `<style type="text/css">${styleContent}</style>`)
+  
+  style = "/css/header.css"
+  styleContent = fs.readFileSync("build/"+style, 'utf8')
+  data = data.replace(`<link rel="stylesheet" href="/css/header.css"/>`, `<style type="text/css">${styleContent}</style>`)
+  
+  return data
+}
