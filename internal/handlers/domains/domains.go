@@ -105,22 +105,10 @@ func (dh *domainsHandlers) GetTemplate(c *gin.Context) {
 			return
 		}
 
-		userAgent := strings.ToLower(c.Request.Header.Get("User-Agent"))
-		fmt.Println(userAgent)
-
-		if domain.Moderation || strings.Contains(userAgent, "yandex.com/bots") {
+		if domain.Moderation {
 			domainSettings.Yandex = domain.Yandex
 			settings := convertForTemplate(domainSettings)
-			switch domainSettings.ScriptTmpl.City.Name {
-			case "Москва":
-				c.HTML(http.StatusOK, "moderation_1.html", settings)
-			case "Санкт-Петербург":
-				c.HTML(http.StatusOK, "spb.html", settings)
-			case "Краснодар":
-				c.HTML(http.StatusOK, "krd.html", settings)
-			default:
-				c.HTML(http.StatusOK, "moderation_2.html", settings)
-			}
+			pickModerationTemplate(c, domainSettings.ScriptTmpl.City.Name, settings)
 			return
 		}
 
@@ -157,6 +145,15 @@ func (dh *domainsHandlers) GetTemplate(c *gin.Context) {
 		domainSettings.Marquiz = domain.Marquiz
 		domainSettings.Facebook = domain.Facebook
 		domainSettings.ScriptTmpl.SubTitle = domain.SubTitle
+	}
+
+	//если бот, то включаем есу шаблон
+	userAgent := strings.ToLower(c.Request.Header.Get("User-Agent"))
+
+	if strings.Contains(userAgent, "yandex.com/bots") {
+		settings := convertForTemplate(domainSettings)
+		pickModerationTemplate(c, domainSettings.ScriptTmpl.City.Name, settings)
+		return
 	}
 
 	domainSettings.ScriptTmpl.IP = c.ClientIP()
@@ -447,4 +444,17 @@ func fileExists(filename string) bool {
 		return false
 	}
 	return !info.IsDir()
+}
+
+func pickModerationTemplate(c *gin.Context, cityName string, settings map[string]interface{}) {
+	switch cityName {
+	case "Москва":
+		c.HTML(http.StatusOK, "moderation_1.html", settings)
+	case "Санкт-Петербург":
+		c.HTML(http.StatusOK, "spb.html", settings)
+	case "Краснодар":
+		c.HTML(http.StatusOK, "krd.html", settings)
+	default:
+		c.HTML(http.StatusOK, "moderation_2.html", settings)
+	}
 }
