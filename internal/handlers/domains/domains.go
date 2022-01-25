@@ -194,6 +194,7 @@ func convertForTemplate(domainSettings DomainSettings) map[string]interface{} {
 	settings["google"] = domainSettings.Google
 	settings["mail"] = domainSettings.Mail
 	settings["marquiz"] = domainSettings.Marquiz
+	settings["qoopler"] = domainSettings.Qoopler
 	settings["scripts"] = utils.ScriptForTemplate(domainSettings.ScriptTmpl)
 
 	return settings
