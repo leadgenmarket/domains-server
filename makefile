@@ -2,6 +2,8 @@ include .env
 
 up:
 	@docker-compose up -d & disown
+up-log:
+	@docker-compose up
 down:
 	@docker-compose down
 recreate:

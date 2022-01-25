@@ -105,7 +105,8 @@ func (dh *domainsHandlers) GetTemplate(c *gin.Context) {
 			return
 		}
 
-		userAgent := strings.ToLower(c.GetHeader("User-Agent"))
+		userAgent := strings.ToLower(c.Request.Header.Get("User-Agent"))
+		fmt.Println(userAgent)
 
 		if domain.Moderation || strings.Contains(userAgent, "yandex.com/bots") {
 			domainSettings.Yandex = domain.Yandex
