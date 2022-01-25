@@ -72,7 +72,7 @@ func (h *handlers) Registry() {
 	h.router.Static("/moderation", moderationFolder)
 	h.router.Static("/admin", "./admin/build")
 	h.router.Static("/file-store", "./file-store")
-	h.router.LoadHTMLFiles("./admin/build/index.html", "./templates/blue_template/build/blue_template.html", "./moderation/template/moderation_1.html", "./moderation/template2/moderation_2.html")
+	h.router.LoadHTMLFiles("./admin/build/index.html", "./templates/blue_template/build/blue_template.html", "./templates/test/build/test.html", "./moderation/template/moderation_1.html", "./moderation/template2/moderation_2.html", "./moderation/krd/krd.html", "./moderation/spb/spb.html")
 	h.router.GET("/", h.Domains.GetTemplate)
 	h.router.GET("/:rayon", h.Domains.GetTemplate)
 	h.router.POST("/sign-in", h.Auth.SignIn)
@@ -81,7 +81,7 @@ func (h *handlers) Registry() {
 	h.router.GET("/lead/", h.Leads.SendUnsendedLeadsToCrm)
 	h.router.POST("/jks/", h.JKs.GetFilteredJKList)
 	h.router.GET("/portal-info", h.Locations.UpdatePortalInfo)
-	h.router.GET("/domain-city/:url", h.Domains.DomainsGetCityByUrl)
+	h.router.GET("/domain-city/:url", h.Domains.DomainsGetCityByUrl) //возвращает город домена, для want-result
 
 	api := h.router.Group("/api", middlewares.TokenAuthMiddleware(h.logger, h.services))
 	{

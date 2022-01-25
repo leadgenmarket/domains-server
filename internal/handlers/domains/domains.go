@@ -105,12 +105,19 @@ func (dh *domainsHandlers) GetTemplate(c *gin.Context) {
 			return
 		}
 
-		if domain.Moderation {
+		userAgent := strings.ToLower(c.GetHeader("User-Agent"))
+
+		if domain.Moderation || strings.Contains(userAgent, "yandex.com/bots") {
 			domainSettings.Yandex = domain.Yandex
 			settings := convertForTemplate(domainSettings)
-			if domainSettings.ScriptTmpl.City.Name == "Москва" {
+			switch domainSettings.ScriptTmpl.City.Name {
+			case "Москва":
 				c.HTML(http.StatusOK, "moderation_1.html", settings)
-			} else {
+			case "Санкт-Петербург":
+				c.HTML(http.StatusOK, "spb.html", settings)
+			case "Краснодар":
+				c.HTML(http.StatusOK, "krd.html", settings)
+			default:
 				c.HTML(http.StatusOK, "moderation_2.html", settings)
 			}
 			return
@@ -173,9 +180,11 @@ func (dh *domainsHandlers) GetTemplate(c *gin.Context) {
 		}
 	}
 	settings := convertForTemplate(domainSettings)
+	if domainName == "dominator-test.leadactiv.ru" {
+		//тестовая площадка
+		c.HTML(http.StatusOK, "test.html", settings)
+	}
 	c.HTML(http.StatusOK, "blue_template.html", settings)
-
-	//c.JSON(http.StatusOK, result)
 }
 
 func convertForTemplate(domainSettings DomainSettings) map[string]interface{} {
