@@ -5,6 +5,7 @@ fs.readFile('./build/index.html', 'utf8', (err, data) => {
   data = replaceScripts(data)
   //data = data.replaceAll('"/css', '"/templates/blue_template/build/css')
   data = data.replaceAll('"/static', '"/templates/blue_template/build/static')
+  data = data.replaceAll('"static/js/', '"/templates/blue_template/build/static/js/')
   data = data.replace('href="favicon.ico"', 'href="/templates/blue_template/build/favicon.ico"')
   data = data.replace('</body>', '<script> let domainSettings = JSON.parse("{{ .scripts }}")</script></body>')
   data = data.replace('</body>', "{{if .google}}<script async src=\"https://www.googletagmanager.com/gtag/js?id={{.google}}\"></script>{{end}}</body>")
@@ -43,23 +44,24 @@ fs.readFile('./build/index.html', 'utf8', (err, data) => {
 })
 
 
-const  replaceScripts = (data) =>  {
-  let script=""
-  let i=data.indexOf('script defer="defer" src="/')+ 'script defer="defer" src="/'.length;
-  while (data[i]!='"') {
-    script +=data[i]  
+const replaceScripts = (data) => {
+  //надо разобраться со скриптами
+  /*let script = ""
+  let i = data.indexOf('script defer="defer" src="/') + 'script defer="defer" src="/'.length;
+  while (data[i] != '"') {
+    script += data[i]
     i++
   }
-  let scriptContent = fs.readFileSync("build/"+script, 'utf8')
-  data = data.replace('<script defer="defer" src="/'+script+'"></script>', `<script type="text/javascript">${scriptContent}</script>`)
-  
+  let scriptContent = fs.readFileSync("build/" + script, 'utf8')
+  data = data.replace('<script defer="defer" src="/' + script + '"></script>', `<script type="text/javascript">${scriptContent}</script>`)*/
+
   let style = "css/style.css"
-  let styleContent = fs.readFileSync("build/"+style, 'utf8')
+  let styleContent = fs.readFileSync("build/" + style, 'utf8')
   data = data.replace(`<link rel="stylesheet" href="/css/style.css"/>`, `<style type="text/css">${styleContent}</style>`)
-  
+
   style = "/css/header.css"
-  styleContent = fs.readFileSync("build/"+style, 'utf8')
+  styleContent = fs.readFileSync("build/" + style, 'utf8')
   data = data.replace(`<link rel="stylesheet" href="/css/header.css"/>`, `<style type="text/css">${styleContent}</style>`)
-  
+
   return data
 }

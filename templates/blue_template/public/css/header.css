@@ -8,7 +8,7 @@ body {
     -webkit-font-smoothing: antialiased;
         /*background: url("/local/lp/vv_2/img/bg_body.jpg") center center;*/
         /* background: url(http://spb-novostroyka.ru/local/lp/vv_2/img/bg_body.jpg) center center; */
-        background: url(../img/bg_body.jpg) center center;
+        background: url(/templates/blue_template/build/img/bg_body.jpg) center center;
 }
 input, textarea, select, button {
     font-family: 'Ubuntu', 'sans-serif', 'arial', 'helvetica';
@@ -52,7 +52,7 @@ input {
     height: 100vh;
     width: 100%;
     /* background: url("/local/lp/vv_2/img/bg_main.jpg") repeat-y center top; */
-    background: url(../img/bg_main.jpg)no-repeat center top;
+    background: url(/templates/blue_template/build/img/bg_main.jpg)no-repeat center top;
     -webkit-background-size: 1600px;
          -o-background-size: 1600px;
             background-size: 1600px;
