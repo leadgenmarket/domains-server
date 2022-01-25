@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"domain-server/internal/config"
 	"domain-server/internal/logger"
 	"domain-server/internal/models"
@@ -79,6 +80,7 @@ func groupChanges(service *services.Services, repositories *repositories.Reposit
 			logger.GetInstance().Errorf(`ошибка при обновлении домена %s`, err)
 			//return
 		}
+		service.CommonStorage.DeleteKey(context.Background(), domain.Url)
 	}
 	logger.GetInstance().Errorf(`задача по обновлению домено выполненна`)
 }

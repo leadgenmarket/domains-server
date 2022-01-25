@@ -65,6 +65,7 @@ type DomainSettings struct {
 	Google     string           `json:"google"`
 	Mail       string           `json:"mail"`
 	Marquiz    string           `json:"marquiz"`
+	Qoopler    bool             `json:"qoopler"`
 	ScriptTmpl TamplateSettings `json:"scripts"`
 }
 
@@ -144,6 +145,7 @@ func (dh *domainsHandlers) GetTemplate(c *gin.Context) {
 		domainSettings.Mail = domain.Mail
 		domainSettings.Marquiz = domain.Marquiz
 		domainSettings.Facebook = domain.Facebook
+		domainSettings.Qoopler = domain.Qoopler
 		domainSettings.ScriptTmpl.SubTitle = domain.SubTitle
 	}
 
