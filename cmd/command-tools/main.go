@@ -60,6 +60,27 @@ func main() {
 	if action == "fixtures" {
 		addTemplates(services, repo, logger)
 	}
+	if action == "group-changes" {
+		groupChanges(services, repo, logger)
+	}
+}
+
+func groupChanges(service *services.Services, repositories *repositories.Repositories, logger logger.Log) {
+	domains, err := repositories.Domains.GetAllDomains()
+	if err != nil {
+		logger.GetInstance().Errorf(`ошибка при получении всех доменов %s`, err)
+		return
+	}
+
+	for _, domain := range domains {
+		domain.Qoopler = true
+		err = repositories.Domains.UpdateDomain(domain)
+		if err != nil {
+			logger.GetInstance().Errorf(`ошибка при обновлении домена %s`, err)
+			//return
+		}
+	}
+	logger.GetInstance().Errorf(`задача по обновлению домено выполненна`)
 }
 
 func addTemplates(service *services.Services, repositories *repositories.Repositories, logger logger.Log) {

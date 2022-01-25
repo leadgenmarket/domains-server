@@ -32,3 +32,5 @@ prices:
 	@docker-compose run --rm app /go/bin/command -action=prices
 admin:
 	@docker-compose run --rm app /go/bin/command -action=admin
+group:
+	@docker-compose run --rm app /go/bin/command -action=group-changes
