@@ -65,11 +65,13 @@ const DomainDetail = ({domain, loading, fetchDomain}) => {
                                                 </div>
                                             </div>
                                             <p className="mb-1"><b>Дата создания:</b> {convertDate(Date.parse(domain.CreatedAt))}</p>
+                                            <p className="mb-1"><b>Roistat:</b> {domain.Roistat?"Да":"Нет"}</p>
                                             <p className="mb-1"><b>Yandex:</b> {domain.yandex}</p>
                                             <p className="mb-1"><b>Google:</b> {domain.google}</p>
                                             <p className="mb-1"><b>Mail:</b> {domain.mail}</p>
                                             <p className="mb-1"><b>Facebook:</b> {domain.facebook}</p>
                                             <p className="mb-1"><b>Marquiz:</b> {domain.marquiz}</p>
+                                            <p className="mb-1"><b>Qoopler:</b> {domain.Qoopler?"Да":"Нет"}</p>
                                         </div>
                                         <hr className="my-4" />
                 

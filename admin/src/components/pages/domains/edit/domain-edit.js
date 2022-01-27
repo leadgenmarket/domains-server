@@ -37,7 +37,9 @@ const DomainEdit = ({ addDomainToList }) => {
         if (id !== undefined && Object.keys(form) == 0) {
             apiService.domain(id).then((resp) => {
                 resp.data.qoopler = resp.data.Qoopler
+                resp.data.roistat = resp.data.Roistat
                 delete resp.data.Qoopler
+                delete resp.data.Roistat
                 setForm(resp.data)
                 setQuizSteps(resp.data.Steps)
             }).catch((err) => {
