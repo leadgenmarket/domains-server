@@ -66,6 +66,7 @@ type DomainSettings struct {
 	Mail       string           `json:"mail"`
 	Marquiz    string           `json:"marquiz"`
 	Qoopler    bool             `json:"qoopler"`
+	Roistat    bool             `json:"roistat" form:"roistat"`
 	ScriptTmpl TamplateSettings `json:"scripts"`
 }
 
@@ -146,6 +147,7 @@ func (dh *domainsHandlers) GetTemplate(c *gin.Context) {
 		domainSettings.Marquiz = domain.Marquiz
 		domainSettings.Facebook = domain.Facebook
 		domainSettings.Qoopler = domain.Qoopler
+		domainSettings.Roistat = domain.Roistat
 		domainSettings.ScriptTmpl.SubTitle = domain.SubTitle
 	}
 
@@ -195,6 +197,7 @@ func convertForTemplate(domainSettings DomainSettings) map[string]interface{} {
 	settings["mail"] = domainSettings.Mail
 	settings["marquiz"] = domainSettings.Marquiz
 	settings["qoopler"] = domainSettings.Qoopler
+	settings["roistat"] = domainSettings.Roistat
 	settings["scripts"] = utils.ScriptForTemplate(domainSettings.ScriptTmpl)
 
 	return settings
@@ -304,6 +307,7 @@ type DomainInput struct {
 	Facebook       string `bson:"facebook" form:"facebook"`
 	Marquiz        string `bson:"marquiz" form:"marquiz"`
 	Qoopler        bool   `bson:"qoopler" form:"qoopler"`
+	Roistat        bool   `bson:"roistat" form:"roistat"`
 	Steps          string `bson:"steps" form:"steps"`
 }
 
