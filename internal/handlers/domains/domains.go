@@ -348,6 +348,7 @@ func (dh *domainsHandlers) AddDomainWithSettings(c *gin.Context) {
 		Facebook:       domainInput.Facebook,
 		Marquiz:        domainInput.Marquiz,
 		Qoopler:        domainInput.Qoopler,
+		Roistat:        domainInput.Roistat,
 		SubTitle:       domainInput.SubTitle,
 	}
 
