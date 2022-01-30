@@ -3,7 +3,7 @@ import jsCookie from "js-cookie"
 import md5Hex from 'md5-hex';
 
 const sendLeadUrl = "/lead"
-const updateLeadUrl = "/lead"
+
 const getParam = (p) => {
 	var match = RegExp('[?&]' + p + '=([^&]*)').exec(window.location.search);
 	return match && decodeURIComponent(match[1].replace(/\+/g, ' '));
@@ -17,7 +17,7 @@ const getRayonCodes = (rayonName) => {
 	let rayons = rayonName.split(", ")
 	rayons.map((rayon) => {
 		Object.keys(domainSettings.locations).map((key) => {
-			if (domainSettings.locations[key].NameFull == rayon) {
+			if (domainSettings.locations[key].NameFull === rayon) {
 				result.push(domainSettings.locations[key].Path)
 			}
 		})
@@ -45,15 +45,15 @@ const getRooms = (rooms) => {
 	let result = []
 	let list = rooms.split(", ")
 	list.forEach((room) => {
-		if (room == "Студии") {
+		if (room === "Студии") {
 			result.push(0)
-		} else if (room == "1 - комнатные квартиры") {
+		} else if (room === "1 - комнатные квартиры") {
 			result.push(1)
-		} else if (room == "2 - комнатные квартиры") {
+		} else if (room === "2 - комнатные квартиры") {
 			result.push(2)
-		} else if (room == "3 - комнатные квартиры") {
+		} else if (room === "3 - комнатные квартиры") {
 			result.push(3)
-		} else if (room == "4 - комнатные квартиры") {
+		} else if (room === "4 - комнатные квартиры") {
 			result.push(4)
 		}
 	})
@@ -70,8 +70,8 @@ const SendData = (form, setForm, callback, raionsName, roomsName, sdachaName, ce
 		"TEMA": "Заявка с одноэкранника",
 		"m_codes": "",
 		"f_info[]": [],
-		"yclid": getParam('yclid') == null ? "" : getParam('yclid'),
-		"gclid": getParam('gclid') == null ? "" : getParam('gclid'),
+		"yclid": getParam('yclid') === null ? "" : getParam('yclid'),
+		"gclid": getParam('gclid') === null ? "" : getParam('gclid'),
 		"send_type": "",
 		"l_t": "la",
 		"set_bd": "1",
@@ -99,23 +99,23 @@ const SendData = (form, setForm, callback, raionsName, roomsName, sdachaName, ce
 		"s[cel]": "",
 	}
 
-	if (getParam('utm_campaign') != null) {
+	if (getParam('utm_campaign') !== null) {
 		leadgen["utm_campaign"] = getParam('utm_campaign')
 	}
-	if (getParam('utm_medium') != null) {
+	if (getParam('utm_medium') !== null) {
 		leadgen["utm_medium"] = getParam('utm_medium')
 	}
-	if (getParam('utm_term') != null) {
+	if (getParam('utm_term') !== null) {
 		leadgen["utm_term"] = getParam('utm_term')
 	}
-	if (getParam('utm_source') != null) {
+	if (getParam('utm_source') !== null) {
 		leadgen["utm_source"] = getParam('utm_source')
 	}
-	if (getParam('send') != null) {
+	if (getParam('send') !== null) {
 		leadgen["utm_send"] = getParam('send')
 	}
 
-	if (getParam('utm_send') != null) {
+	if (getParam('utm_send') !== null) {
 		leadgen["utm_send"] = getParam('utm_send')
 	}
 
@@ -160,22 +160,22 @@ const SendData = (form, setForm, callback, raionsName, roomsName, sdachaName, ce
 const generateParamsForUrl = (form) => {
 	//?utm_content=1ekran&roistatVisitId=8504168&utm_name=test&utm_phone=+7 ( 999 ) 999 - 99 - 99
 	let query = "?utm_content=1ekran"
-	if (getParam('utm_campaign') != null) {
+	if (getParam('utm_campaign') !== null) {
 		query += "&utm_campaign=" + getParam('utm_campaign')
 	}
-	if (getParam('utm_medium') != null) {
+	if (getParam('utm_medium') !== null) {
 		query += "&utm_medium=" + getParam('utm_medium')
 	}
-	if (getParam('utm_term') != null) {
+	if (getParam('utm_term') !== null) {
 		query += "&utm_term=" + getParam('utm_term')
 	}
-	if (getParam('utm_source') != null) {
+	if (getParam('utm_source') !== null) {
 		query += "&utm_source=" + getParam('utm_source')
 	}
-	if (getParam('send') != null) {
+	if (getParam('send') !== null) {
 		query += "&utm_send=" + getParam('send')
 	}
-	if (getParam('utm_send') != null) {
+	if (getParam('utm_send') !== null) {
 		query += "&utm_send=" + getParam('utm_send')
 	}
 	query += "&roistatVisitId=" + jsCookie.get('roistat_visit') + "&utm_phone=" + form['phone']
@@ -185,7 +185,7 @@ const generateParamsForUrl = (form) => {
 const SendCell = (celType, phone) => {
 	console.log("celType " + celType);
 	try {
-		if (celType == "form" || celType == "getForm") {
+		if (celType === "form" || celType === "getForm") {
 			VK.Goal("lead");
 			console.log("VK set lead");
 		}
@@ -194,7 +194,7 @@ const SendCell = (celType, phone) => {
 	}
 
 	try {
-		if (celType == "form" || celType == "getForm") {
+		if (celType === "form" || celType === "getForm") {
 			console.log("fb set Lead {content_name : " + celType + "}");
 			let event_id = phone;
 			event_id = event_id.split(' ').join('');
@@ -227,7 +227,7 @@ const SendCell = (celType, phone) => {
 	}
 
 	try {
-		if (celType == "form" || celType == "getForm") {
+		if (celType === "form" || celType === "getForm") {
 			console.log(`top mail sended ${domainSettings.domain.mail}`);
 			_tmr.push({ id: `${domainSettings.domain.mail}`, type: 'reachGoal', goal: 'all_cells' });
 		}
@@ -237,7 +237,7 @@ const SendCell = (celType, phone) => {
 }
 
 const GetJKList = async (form, raionsName, roomsName, sdachaName, raionsPrice) => {
-	if (raionsName == "" || roomsName == "" || sdachaName == "" || raionsPrice == "") {
+	if (raionsName === "" || roomsName === "" || sdachaName === "" || raionsPrice === "") {
 		return false
 	}
 	let data = {
@@ -251,8 +251,143 @@ const GetJKList = async (form, raionsName, roomsName, sdachaName, raionsPrice) =
 	return resp.data
 }
 
+const SendFilter = (sroks, rooms, number) => {
+	let text = ""
+	sroks.forEach((srok) => {
+		if (text!==""){
+			text+=", "
+		}
+		text += "Сдача - "+srok
+	})
+	if (text !== "" && rooms.length >0) {
+		text+="\n"
+	}
+	let roomsText = "Количество комнат -"
+	rooms.forEach((room) => {
+		if (roomsText !== "Количество комнат -"){
+			roomsText+=", "
+		}
+		if (room === "0") {
+			roomsText+="Студии"
+		} else {
+			roomsText += room+"-к"
+		}
+	})
+	text+=roomsText
+	let data = {
+		"remont": "false",
+		"is_loc": "0",
+		"s_id": "",
+		"l_type": "",
+		"text": text,
+		"_fbp": jsCookie.get("_fbp"),
+		"_fbc": jsCookie.get("_fbc"),
+		"fb_id": domainSettings.domain.facebook,
+		"user_a": window.navigator.userAgent,
+		"metrika_id": domainSettings.domain.yandex,
+		"ut_type": domainSettings.domain.url,
+		"celType": "form",
+		"clientID": domainSettings.domain.clientID,
+		"utm_content": "1ekran",
+		"user_ip": domainSettings.ip,
+		"roistatVisitId": jsCookie.get('roistat_visit'),
+		"rooms_new[]": [...rooms],
+		"srok[]": [...sroks],
+		"yclid": getParam('yclid') === null ? "" : getParam('yclid'),
+		"gclid": getParam('gclid') === null ? "" : getParam('gclid'),
+		"phone": number,
+	}
+
+	if (getParam('utm_campaign') !== null) {
+		data["utm_campaign"] = getParam('utm_campaign')
+	}
+	if (getParam('utm_medium') !== null) {
+		data["utm_medium"] = getParam('utm_medium')
+	}
+	if (getParam('utm_term') !== null) {
+		data["utm_term"] = getParam('utm_term')
+	}
+	if (getParam('utm_source') !== null) {
+		data["utm_source"] = getParam('utm_source')
+	}
+	if (getParam('send') !== null) {
+		data["utm_send"] = getParam('send')
+	}
+
+	if (getParam('utm_send') !== null) {
+		data["utm_send"] = getParam('utm_send')
+	}
+
+	if (getParam('utm_type') !== null) {
+		data["utm_type"] = getParam('utm_type')
+	}
+
+	if (getParam('utm_roistat') !== null) {
+		data["utm_roistat"] = getParam('utm_roistat')
+	}
+
+	let sendData = ""
+	Object.keys(data).map((key) => {
+		if (sendData!="") {
+			sendData+="&"
+		}
+		sendData+=key+"="+data[key]
+	})
+
+	//надо отправлять не как json, а form data
+	axios({
+		method: "post",
+		url:  "http://t.g-n.ru/local/ajax/filters.php",
+		data:   sendData,
+		headers: { "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8" },
+	}).then((resp) => {
+		console.log(resp.data)
+	})
+}
+
+const SetUniqID = () => {
+	let now = new Date();
+	let data = {
+			"city": domainSettings.city.Name,
+			"send": getParam('utm_send'),
+			"uniqId": '1117'+now.getMonth()+''+now.getDate()+''+ now.getHours() +''+ now.getMinutes() +''+ now.getSeconds() + ''+now.getMilliseconds(),
+			"_fbp": jsCookie.get("_fbp"),
+			"_fbc": jsCookie.get("_fbc"),
+			"fb_id": domainSettings.domain.facebook,
+			"s_id": domainSettings.city.portal_id,
+			"user_a": window.navigator.userAgent,
+			"user_ip": domainSettings.ip,
+			"celType": "form",
+			"roistatVisitId": jsCookie.get('roistat_visit'),
+			"domen": domainSettings.domain.url,
+			"price_ot": null,
+			"price_do": null,
+			"price": null,
+			//"k": domainSettings.title,
+	}
+
+	let sendData = ""
+	Object.keys(data).map((key) => {
+		if (sendData!="") {
+			sendData+="&"
+		}
+		sendData+=key+"="+data[key]
+	})
+
+	axios({
+		method: "post",
+		url:  "//chats.g-n.ru/local/api/uniqIdBd/",
+		data:   sendData,
+		headers: { "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8" },
+	}).then((resp) => {
+		console.log(resp.data)
+	})
+}
+
 export {
 	SendData,
 	GetJKList,
-	generateParamsForUrl
+	generateParamsForUrl,
+	SendFilter,
+	SetUniqID
 }

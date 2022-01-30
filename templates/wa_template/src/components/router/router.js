@@ -1,14 +1,15 @@
 import { useEffect, useState } from "react"
-import { domainSettingsForTest } from "../../utils"
+import { SendFilter, SetUniqID } from "../../utils/send-data"
 import MainScreen from "../main-screen"
-import Cookies from 'js-cookie'
-import NameScreeen from "../name-screen"
+import PhoneScreen from "../phone-screen"
 
 const Router = () => {
     const [step, setStep] = useState(0)
     const [params, setParams] = useState({})
-
-    const [form, setForm] = useState({})
+    const [rooms, setRooms] = useState(["1"])
+    const [sroks, setSroks] = useState([])
+    const [phone, setPhone] = useState("")
+    const [number, setNumber] = useState()
     const nextStep = (event) => {
         try {
             event.preventDefault()
@@ -19,52 +20,22 @@ const Router = () => {
             setStep(step + 1)
         }
     }
-    const prevStep = (event) => {
-        try {
-            event.preventDefault()
-        } catch (e) { }
-        setStep(step - 1)
-    }
 
-    const getAvailableRaions = () => {
-        let resultRaions = []
-        domainSettings.locations.map((location) => {
-            if (domainSettings.prices.prices[location.PortalID] === undefined) {
-                return false
-            }
-            let flag = false
-            let prices = domainSettings.prices.prices[location.PortalID]
-            for (let i = 0; i < 5; i++) {
-                if (parseFloat(prices["min_" + i]) > 0 && parseFloat(prices["max_" + i]) > 0 && parseFloat(prices["min_" + i]) < parseFloat(prices["max_" + i])) {
-                    flag = true
-                    break
-                }
-            }
-
-            if (flag) {
-                resultRaions.push(location)
-            }
-        })
-        domainSettings.locations = resultRaions
+    const generateNumber = () =>{
+        var now = new Date();
+        let number = now.getMonth() + '' + now.getDate() + '' + now.getHours() + '' + now.getMinutes() + '' + now.getSeconds() + '' + now.getMilliseconds()
+	    setNumber(number)
+        return number
     }
 
     useEffect(() => {
-        try {
-            Cookies.set('city_id', domainSettings.city.portal_id)
-        } catch (e) { }
-        let toAdd = []
-        let formNew = {}
-        toAdd.forEach((add) => {
-            formNew = {
-                ...formNew,
-                [add.title]: ""
-            }
-        })
-        setForm(formNew)
+        let number = generateNumber()
+        SendFilter(sroks, rooms, number)
+        SetUniqID()
         domainSettings.domain.title = domainSettings.title
-        getAvailableRaions()
         setParams(domainSettings.domain)
-        if (domainSettings.domain.yandex != "") {
+        
+        if (domainSettings.domain.yandex !== "") {
             try {
                 ym(parseInt(domainSettings.domain.yandex), 'getClientID', function (clientID) {
                     domainSettings.domain.clientID = clientID
@@ -74,7 +45,7 @@ const Router = () => {
     }, [])
 
     return <div className="container_main ">
-        {step == 0 ? <MainScreen params={params} form={form} nextStep={nextStep} /> : <NameScreeen params={params} form={form} />}
+        {step === 0 ? <MainScreen params={params} rooms={rooms} setRooms={setRooms} sroks={sroks} setSroks={setSroks} nextStep={nextStep} generateNumber={generateNumber} number={number} /> : <PhoneScreen params={params} phone={phone} setPhone={setPhone} number={number} />}
     </div>
 }
 
