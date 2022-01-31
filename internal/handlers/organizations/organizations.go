@@ -53,7 +53,7 @@ func (s *organizationHandlers) AddOrganization(c *gin.Context) {
 }
 
 type updateOrganizationsInput struct {
-	ID     string `json:"id"`
+	ID     string `json:"ID"`
 	Name   string `bson:"name"`
 	Adress string `bson:"adress"`
 	Phone  string `bson:"phone"`

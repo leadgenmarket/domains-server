@@ -8,10 +8,10 @@ import (
 )
 
 type Repository interface {
-	AddOrganization(step models.Organization) (models.Organization, error)
+	AddOrganization(organization models.Organization) (models.Organization, error)
 	GetOrganizationById(id string) (models.Organization, error)
 	GetOrganizations() ([]models.Organization, error)
-	UpdateOrganization(step models.Organization) error
+	UpdateOrganization(organization models.Organization) error
 	DeleteOrganization(id string) error
 }
 
@@ -25,17 +25,17 @@ func New(dbClient *mongodb.Database) Repository {
 	}
 }
 
-func (r *repositroyDB) AddOrganization(step models.Organization) (models.Organization, error) {
-	step.ID = bson.NewObjectId()
-	err := r.organiozations.Insert(&step)
+func (r *repositroyDB) AddOrganization(organization models.Organization) (models.Organization, error) {
+	organization.ID = bson.NewObjectId()
+	err := r.organiozations.Insert(&organization)
 	if err != nil {
-		return step, err
+		return organization, err
 	}
-	return step, nil
+	return organization, nil
 }
 
-func (r *repositroyDB) UpdateOrganization(step models.Organization) error {
-	err := r.organiozations.Find(bson.M{"_id": step}).One(&step)
+func (r *repositroyDB) UpdateOrganization(organization models.Organization) error {
+	err := r.organiozations.Update(bson.M{"_id": organization.ID}, organization)
 	if err != nil {
 		return err
 	}

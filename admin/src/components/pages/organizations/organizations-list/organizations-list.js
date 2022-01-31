@@ -65,16 +65,16 @@ const OrganizationsPage = ({ organizations, deleteOrganization, updateOrganizati
                     type: 'text',
                 },
                 {
-                    json: 'id',
+                    json: 'ID',
                     type: 'hidden',
                 },
             ],
         },
         {
             title: 'Удалить организацию',
-            question: 'Вы действительно хотите удалить тайтл?',
+            question: 'Вы действительно хотите удалить организацию?',
             name: 'deleteOrganization',
-            url: "/api/organizations/" + editOrganization.ID,
+            url: "/api/organizations/" + editOrganization.id,
             type: "delete",
             action: (action) => { console.log(action); fetchOrganizations() },
             //edit: () => {},
@@ -82,7 +82,7 @@ const OrganizationsPage = ({ organizations, deleteOrganization, updateOrganizati
             clear: false,
             fields: [
                 {
-                    json: 'id',
+                    json: 'ID',
                     type: 'hidden',
                 },
             ]
