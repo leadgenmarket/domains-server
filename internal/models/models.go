@@ -43,7 +43,7 @@ type Domain struct {
 	Facebook       string                   `bson:"facebook" form:"facebook" json:"facebook"`
 	Marquiz        string                   `bson:"marquiz" json:"marquiz"`
 	Steps          []map[string]interface{} `bson:"steps"`
-	OrganizationID string                   `bson:"organization_id" json:"organization_id"`
+	OrganizationID bson.ObjectId            `bson:"organization_id" json:"organization_id"`
 	Qoopler        bool                     `bson:"qoopler" form:"qoopler"`
 	Roistat        bool                     `bson:"roistat" form:"roistat"`
 	Moderation     bool                     `bson:"moderation" form:"moderation"`
@@ -70,9 +70,10 @@ type Title struct {
 }
 
 type Organization struct {
-	ID      bson.ObjectId `bson:"_id" json:"id"`
-	Name    string        `bson:"name"`
-	Address string        `bson:"address"`
+	ID     bson.ObjectId `bson:"_id" json:"id"`
+	Name   string        `bson:"name" json:"name"`
+	Adress string        `bson:"adress" json:"adress"`
+	Phone  string        `bson:"phone" json:"phone"`
 }
 
 type Location struct {

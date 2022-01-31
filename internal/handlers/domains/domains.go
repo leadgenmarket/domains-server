@@ -7,6 +7,7 @@ import (
 	"domain-server/internal/repositories/cities"
 	"domain-server/internal/repositories/domains"
 	"domain-server/internal/repositories/locations"
+	organization "domain-server/internal/repositories/organizations"
 	"domain-server/internal/repositories/prices"
 	templates "domain-server/internal/repositories/template"
 	"domain-server/internal/repositories/titles"
@@ -37,28 +38,30 @@ type Handlers interface {
 }
 
 type domainsHandlers struct {
-	repository    domains.Repository
-	repoLoc       locations.Repository
-	cityRepo      cities.Repository
-	pricesRepo    prices.Repository
-	titlesRepo    titles.Repository
-	templatesRepo templates.Repository
-	services      *services.Services
-	logger        logger.Log
-	cfg           *config.Config
+	repository        domains.Repository
+	repoLoc           locations.Repository
+	cityRepo          cities.Repository
+	pricesRepo        prices.Repository
+	titlesRepo        titles.Repository
+	templatesRepo     templates.Repository
+	organizationsRepo organization.Repository
+	services          *services.Services
+	logger            logger.Log
+	cfg               *config.Config
 }
 
-func New(repository domains.Repository, repoLoc locations.Repository, cityRepo cities.Repository, pricesRepo prices.Repository, titlesRepo titles.Repository, templatesRepo templates.Repository, services *services.Services, logger logger.Log, cfg *config.Config) Handlers {
+func New(repository domains.Repository, repoLoc locations.Repository, cityRepo cities.Repository, pricesRepo prices.Repository, titlesRepo titles.Repository, templatesRepo templates.Repository, organizationsRepo organization.Repository, services *services.Services, logger logger.Log, cfg *config.Config) Handlers {
 	return &domainsHandlers{
-		repository:    repository,
-		repoLoc:       repoLoc,
-		cityRepo:      cityRepo,
-		pricesRepo:    pricesRepo,
-		titlesRepo:    titlesRepo,
-		templatesRepo: templatesRepo,
-		logger:        logger,
-		services:      services,
-		cfg:           cfg,
+		repository:        repository,
+		repoLoc:           repoLoc,
+		cityRepo:          cityRepo,
+		pricesRepo:        pricesRepo,
+		titlesRepo:        titlesRepo,
+		templatesRepo:     templatesRepo,
+		organizationsRepo: organizationsRepo,
+		logger:            logger,
+		services:          services,
+		cfg:               cfg,
 	}
 }
 
@@ -75,14 +78,15 @@ type DomainSettings struct {
 }
 
 type TamplateSettings struct {
-	IP       string                 `json:"ip"`
-	Domain   models.Domain          `json:"domain"`
-	City     models.City            `json:"city"`
-	Location []models.Location      `json:"locations"`
-	Prices   map[string]interface{} `json:"prices"`
-	Title    string                 `json:"title"`
-	SubTitle string                 `json:"sub_title"`
-	Rayon    string                 `json:"rayon"`
+	IP           string                 `json:"ip"`
+	Domain       models.Domain          `json:"domain"`
+	City         models.City            `json:"city"`
+	Location     []models.Location      `json:"locations"`
+	Prices       map[string]interface{} `json:"prices"`
+	Title        string                 `json:"title"`
+	SubTitle     string                 `json:"sub_title"`
+	Rayon        string                 `json:"rayon"`
+	Organization models.Organization    `json:"organization"`
 }
 
 func (dh *domainsHandlers) GetTemplate(c *gin.Context) {
@@ -153,6 +157,12 @@ func (dh *domainsHandlers) GetTemplate(c *gin.Context) {
 		domainSettings.Qoopler = domain.Qoopler
 		domainSettings.Roistat = domain.Roistat
 		domainSettings.ScriptTmpl.SubTitle = domain.SubTitle
+		if domain.OrganizationID != "" {
+			organization, err := dh.organizationsRepo.GetOrganizationById(domain.OrganizationID.Hex())
+			if err == nil {
+				domainSettings.ScriptTmpl.Organization = organization
+			}
+		}
 		template, _ := dh.templatesRepo.FindTemplateByID(domain.TemplateID.Hex())
 		domainSettings.TemplateHTML = template.Path
 	}
@@ -346,7 +356,7 @@ func (dh *domainsHandlers) AddDomainWithSettings(c *gin.Context) {
 		Url:            domainInput.URL,
 		TemplateID:     bson.ObjectIdHex(domainInput.TemplateID),
 		CityID:         bson.ObjectIdHex(domainInput.CityID),
-		OrganizationID: domainInput.OrganizationID,
+		OrganizationID: bson.ObjectIdHex(domainInput.OrganizationID),
 		MainColor:      domainInput.MainColor,
 		SecondaryColor: domainInput.SecondaryColor,
 		Yandex:         domainInput.Yandex,

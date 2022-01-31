@@ -210,7 +210,7 @@ const DomainEdit = ({ addDomainToList }) => {
                                                                 <select onChange={inputChange} className="form-select custom-select" id="template" name="organization_id" value={form.organization_id}>
                                                                     <option></option>
                                                                     {organizations.map((organization) => {
-                                                                        return <option value={organization.id}>{organization.Name}</option>
+                                                                        return <option value={organization.id}>{organization.name}</option>
                                                                     })}
                                                                 </select>
                                                             </div>

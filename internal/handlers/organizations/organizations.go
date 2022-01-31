@@ -53,9 +53,10 @@ func (s *organizationHandlers) AddOrganization(c *gin.Context) {
 }
 
 type updateOrganizationsInput struct {
-	ID      string `json:"id"`
-	Name    string `bson:"name"`
-	Address string `bson:"address"`
+	ID     string `json:"id"`
+	Name   string `bson:"name"`
+	Adress string `bson:"adress"`
+	Phone  string `bson:"phone"`
 }
 
 func (s *organizationHandlers) UpdateOrganizations(c *gin.Context) {
@@ -68,9 +69,10 @@ func (s *organizationHandlers) UpdateOrganizations(c *gin.Context) {
 	}
 
 	errN := s.repository.UpdateOrganization(models.Organization{
-		ID:      bson.ObjectIdHex(input.ID),
-		Name:    input.Name,
-		Address: input.Address,
+		ID:     bson.ObjectIdHex(input.ID),
+		Name:   input.Name,
+		Adress: input.Adress,
+		Phone:  input.Phone,
 	})
 	if errN != nil {
 		s.logger.GetInstance().Errorf("error updating organization %s", errN)
