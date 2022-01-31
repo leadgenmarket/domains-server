@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"domain-server/internal/config"
 	"domain-server/internal/logger"
 	"domain-server/internal/models"
@@ -38,7 +39,7 @@ func main() {
 	}
 
 	//очищаем редис
-	//redisClient.GetConnection().FlushAll(context.Background())
+	redisClient.GetConnection().FlushAll(context.Background())
 
 	services := services.Setup(cfg, redisClient)
 	sess, err := mongo.Dial(cfg.DSN)
