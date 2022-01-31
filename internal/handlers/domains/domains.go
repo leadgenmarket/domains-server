@@ -8,6 +8,7 @@ import (
 	"domain-server/internal/repositories/domains"
 	"domain-server/internal/repositories/locations"
 	"domain-server/internal/repositories/prices"
+	templates "domain-server/internal/repositories/template"
 	"domain-server/internal/repositories/titles"
 	"domain-server/internal/services"
 	"domain-server/internal/utils"
@@ -36,38 +37,41 @@ type Handlers interface {
 }
 
 type domainsHandlers struct {
-	repository domains.Repository
-	repoLoc    locations.Repository
-	cityRepo   cities.Repository
-	pricesRepo prices.Repository
-	titlesRepo titles.Repository
-	services   *services.Services
-	logger     logger.Log
-	cfg        *config.Config
+	repository    domains.Repository
+	repoLoc       locations.Repository
+	cityRepo      cities.Repository
+	pricesRepo    prices.Repository
+	titlesRepo    titles.Repository
+	templatesRepo templates.Repository
+	services      *services.Services
+	logger        logger.Log
+	cfg           *config.Config
 }
 
-func New(repository domains.Repository, repoLoc locations.Repository, cityRepo cities.Repository, pricesRepo prices.Repository, titlesRepo titles.Repository, services *services.Services, logger logger.Log, cfg *config.Config) Handlers {
+func New(repository domains.Repository, repoLoc locations.Repository, cityRepo cities.Repository, pricesRepo prices.Repository, titlesRepo titles.Repository, templatesRepo templates.Repository, services *services.Services, logger logger.Log, cfg *config.Config) Handlers {
 	return &domainsHandlers{
-		repository: repository,
-		repoLoc:    repoLoc,
-		cityRepo:   cityRepo,
-		pricesRepo: pricesRepo,
-		titlesRepo: titlesRepo,
-		logger:     logger,
-		services:   services,
-		cfg:        cfg,
+		repository:    repository,
+		repoLoc:       repoLoc,
+		cityRepo:      cityRepo,
+		pricesRepo:    pricesRepo,
+		titlesRepo:    titlesRepo,
+		templatesRepo: templatesRepo,
+		logger:        logger,
+		services:      services,
+		cfg:           cfg,
 	}
 }
 
 type DomainSettings struct {
-	Facebook   string           `json:"facebook"`
-	Yandex     string           `json:"yandex"`
-	Google     string           `json:"google"`
-	Mail       string           `json:"mail"`
-	Marquiz    string           `json:"marquiz"`
-	Qoopler    bool             `json:"qoopler"`
-	Roistat    bool             `json:"roistat" form:"roistat"`
-	ScriptTmpl TamplateSettings `json:"scripts"`
+	Facebook     string           `json:"facebook"`
+	Yandex       string           `json:"yandex"`
+	Google       string           `json:"google"`
+	Mail         string           `json:"mail"`
+	Marquiz      string           `json:"marquiz"`
+	Qoopler      bool             `json:"qoopler"`
+	Roistat      bool             `json:"roistat" form:"roistat"`
+	TemplateHTML string           `json:"template_html" form:"template_html"`
+	ScriptTmpl   TamplateSettings `json:"scripts"`
 }
 
 type TamplateSettings struct {
@@ -149,9 +153,11 @@ func (dh *domainsHandlers) GetTemplate(c *gin.Context) {
 		domainSettings.Qoopler = domain.Qoopler
 		domainSettings.Roistat = domain.Roistat
 		domainSettings.ScriptTmpl.SubTitle = domain.SubTitle
+		template, _ := dh.templatesRepo.FindTemplateByID(domain.TemplateID.Hex())
+		domainSettings.TemplateHTML = template.Path
 	}
 
-	//если бот, то включаем есу шаблон
+	//если бот, то включаем ему шаблон
 	userAgent := strings.ToLower(c.Request.Header.Get("User-Agent"))
 
 	if strings.Contains(userAgent, "yandex.com/bots") {
@@ -186,7 +192,8 @@ func (dh *domainsHandlers) GetTemplate(c *gin.Context) {
 		//тестовая площадка
 		c.HTML(http.StatusOK, "test.html", settings)
 	}
-	c.HTML(http.StatusOK, "blue_template.html", settings)
+
+	c.HTML(http.StatusOK, domainSettings.TemplateHTML, settings)
 }
 
 func convertForTemplate(domainSettings DomainSettings) map[string]interface{} {

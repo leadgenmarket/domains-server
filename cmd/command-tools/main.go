@@ -1,7 +1,6 @@
 package main
 
 import (
-	"context"
 	"domain-server/internal/config"
 	"domain-server/internal/logger"
 	"domain-server/internal/models"
@@ -37,6 +36,10 @@ func main() {
 	if err != nil {
 		logger.GetInstance().Fatalf("failed to init redis client: %s", err)
 	}
+
+	//очищаем редис
+	//redisClient.GetConnection().FlushAll(context.Background())
+
 	services := services.Setup(cfg, redisClient)
 	sess, err := mongo.Dial(cfg.DSN)
 	if err != nil {
@@ -67,22 +70,16 @@ func main() {
 }
 
 func groupChanges(service *services.Services, repositories *repositories.Repositories, logger logger.Log) {
-	domains, err := repositories.Domains.GetAllDomains()
-	if err != nil {
-		logger.GetInstance().Errorf(`ошибка при получении всех доменов %s`, err)
-		return
-	}
+	templates, _ := repositories.Templates.GetTemplatesList()
+	templates[0].Name = "Синий квиз"
+	templates[0].Path = "blue_template.html"
+	repositories.Templates.UpdateTemplate(templates[0])
 
-	for _, domain := range domains {
-		domain.Qoopler = true
-		err = repositories.Domains.UpdateDomain(domain)
-		if err != nil {
-			logger.GetInstance().Errorf(`ошибка при обновлении домена %s`, err)
-			//return
-		}
-		service.CommonStorage.DeleteKey(context.Background(), domain.Url)
+	newTemplate := models.Template{
+		Name: "WA шаблон",
+		Path: "wa_template.html",
 	}
-	logger.GetInstance().Errorf(`задача по обновлению домено выполненна`)
+	repositories.Templates.AddTemplate(newTemplate)
 }
 
 func addTemplates(service *services.Services, repositories *repositories.Repositories, logger logger.Log) {

@@ -12,6 +12,7 @@ type Repository interface {
 	GetTemplatesList() ([]models.Template, error)
 	UpdateTemplate(template models.Template) error
 	DeleteTemplate(id string) error
+	FindTemplateByID(id string) (models.Template, error)
 }
 
 type repositroyDB struct {
@@ -34,7 +35,7 @@ func (r *repositroyDB) AddTemplate(template models.Template) (models.Template, e
 }
 
 func (r *repositroyDB) UpdateTemplate(template models.Template) error {
-	err := r.templates.Find(bson.M{"_id": template}).One(&template)
+	err := r.templates.Update(bson.M{"_id": template.ID}, template)
 	if err != nil {
 		return err
 	}
@@ -56,4 +57,13 @@ func (r *repositroyDB) GetTemplatesList() ([]models.Template, error) {
 		return templates, err
 	}
 	return templates, nil
+}
+
+func (r *repositroyDB) FindTemplateByID(id string) (models.Template, error) {
+	var template models.Template
+	err := r.templates.Find(bson.M{"_id": bson.ObjectIdHex(id)}).One(&template)
+	if err != nil {
+		return template, err
+	}
+	return template, nil
 }

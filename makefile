@@ -4,6 +4,8 @@ up:
 	@docker-compose up -d & disown
 up-log:
 	@docker-compose up
+up-develop:
+	@docker-compose -f docker-compose_develop.yml up
 down:
 	@docker-compose down
 recreate:
@@ -22,6 +24,8 @@ stress:
 	@gobench -u http://localhost -k=true -c 500 -t 10
 backup:
 	@go run cmd/command-tools/main.go -action=backup
+group-loc:
+	@go run cmd/command-tools/main.go -action=group-changes
 backup-cont:
 	@docker-compose run --rm app /go/bin/command -action=backup
 leads:
