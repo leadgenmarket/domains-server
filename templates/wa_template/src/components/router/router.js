@@ -21,10 +21,10 @@ const Router = () => {
         }
     }
 
-    const generateNumber = () =>{
+    const generateNumber = () => {
         var now = new Date();
         let number = now.getMonth() + '' + now.getDate() + '' + now.getHours() + '' + now.getMinutes() + '' + now.getSeconds() + '' + now.getMilliseconds()
-	    setNumber(number)
+        setNumber(number)
         return number
     }
 
@@ -34,7 +34,7 @@ const Router = () => {
         SetUniqID()
         domainSettings.domain.title = domainSettings.title
         setParams(domainSettings.domain)
-        
+
         if (domainSettings.domain.yandex !== "") {
             try {
                 ym(parseInt(domainSettings.domain.yandex), 'getClientID', function (clientID) {
@@ -45,7 +45,7 @@ const Router = () => {
     }, [])
 
     return <div className="container_main ">
-        {step === 0 ? <MainScreen params={params} rooms={rooms} setRooms={setRooms} sroks={sroks} setSroks={setSroks} nextStep={nextStep} generateNumber={generateNumber} number={number} /> : <PhoneScreen params={params} phone={phone} setPhone={setPhone} number={number} />}
+        {step === 0 ? <MainScreen params={params} rooms={rooms} setRooms={setRooms} sroks={sroks} setSroks={setSroks} nextStep={nextStep} generateNumber={generateNumber} number={number} /> : <PhoneScreen params={params} phone={phone} sroks={sroks} rooms={rooms} setPhone={setPhone} number={number} />}
     </div>
 }
 

@@ -186,7 +186,7 @@ footer .wmain {
   font-family: 'Nunito';
   line-height: 100%;
   padding-left: 44px;
-  background: url('/img/time_ico.png') no-repeat 4px center;
+  background: url('/templates/wa_template/build/img/time_ico.png') no-repeat 4px center;
   margin-top: 24px;
 }
 

@@ -59,7 +59,7 @@ const getRooms = (rooms) => {
 	})
 	return result
 }
-const SendData = (form, setForm, callback, raionsName, roomsName, sdachaName, celtype) => {
+const SendData = (phone, sdacha, rooms, celtype) => {
 	let leadgen = {
 		"AMO_ID": "false",
 		"loc_type": "",
@@ -83,8 +83,8 @@ const SendData = (form, setForm, callback, raionsName, roomsName, sdachaName, ce
 		"metrika_id": domainSettings.domain.yandex,
 		"ut_type": window.location.host,
 		"s[ua]": window.navigator.userAgent,
-		"a_sda4a[]": getSdachaList(form[sdachaName]),
-		"r_codes": getRayonCodes(form[raionsName]),
+		"a_sda4a[]": [...sdacha],
+		"rooms_new[]": [...rooms],
 		"clientID": domainSettings.domain.clientID,
 		"_fbp": jsCookie.get("_fbp"),
 		"_fbc": jsCookie.get("_fbc"),
@@ -121,40 +121,18 @@ const SendData = (form, setForm, callback, raionsName, roomsName, sdachaName, ce
 
 	//console.log(raionsName)
 	let text = []
-	Object.keys(form).map((key) => {
-		if (key === 'name') {
-			leadgen.name = form['name']
-		} else if (key === 'phone') {
-			leadgen.phone = form['phone']
-		} else if (key !== 'lead_id') {
-			text.push(key + " - " + form[key])
-		}
-	})
+	leadgen.phone = phone
+
 	leadgen = { ...leadgen, "f_info[]": text }
 	/*axios.post("https://api.g-n.ru/local/ajax/", leadgen, {
 			crossDomain: true
 	},)*/
 	SendCell(celtype, leadgen.phone)
-	if (celtype === "getForm") {
-		leadgen["celType"] = "getForm"
-		leadgen["s[cel]"] = "getForm"
-		axios.put(sendLeadUrl + window.location.search, leadgen).then((resp) => {
-			setForm({
-				...form,
-				lead_id: resp.data.data
-			})
-		})
-	} else {
-		leadgen["celType"] = "getName"
-		leadgen["s[cel]"] = "getName"
-		leadgen = { ...leadgen, id: form.lead_id }
-		axios.put(sendLeadUrl + window.location.search, leadgen).then((resp) => {
-			console.log('updated')
-		})
-	}
-
-	//console.log(leadgen)
-	callback()
+	leadgen["celType"] = "getForm"
+	leadgen["s[cel]"] = "getForm"
+	axios.put(sendLeadUrl + window.location.search, leadgen).then((resp) => {
+		console.log(resp.data)
+	})
 }
 
 const generateParamsForUrl = (form) => {
@@ -254,26 +232,26 @@ const GetJKList = async (form, raionsName, roomsName, sdachaName, raionsPrice) =
 const SendFilter = (sroks, rooms, number) => {
 	let text = ""
 	sroks.forEach((srok) => {
-		if (text!==""){
-			text+=", "
+		if (text !== "") {
+			text += ", "
 		}
-		text += "Сдача - "+srok
+		text += "Сдача - " + srok
 	})
-	if (text !== "" && rooms.length >0) {
-		text+="\n"
+	if (text !== "" && rooms.length > 0) {
+		text += "\n"
 	}
 	let roomsText = "Количество комнат -"
 	rooms.forEach((room) => {
-		if (roomsText !== "Количество комнат -"){
-			roomsText+=", "
+		if (roomsText !== "Количество комнат -") {
+			roomsText += ", "
 		}
 		if (room === "0") {
-			roomsText+="Студии"
+			roomsText += "Студии"
 		} else {
-			roomsText += room+"-к"
+			roomsText += room + "-к"
 		}
 	})
-	text+=roomsText
+	text += roomsText
 	let data = {
 		"remont": "false",
 		"is_loc": "0",
@@ -328,17 +306,17 @@ const SendFilter = (sroks, rooms, number) => {
 
 	let sendData = ""
 	Object.keys(data).map((key) => {
-		if (sendData!="") {
-			sendData+="&"
+		if (sendData != "") {
+			sendData += "&"
 		}
-		sendData+=key+"="+data[key]
+		sendData += key + "=" + data[key]
 	})
 
 	//надо отправлять не как json, а form data
 	axios({
 		method: "post",
-		url:  "http://t.g-n.ru/local/ajax/filters.php",
-		data:   sendData,
+		url: "https://novostroi-v-spb.ru//local/ajax/filters.php",
+		data: sendData,
 		headers: { "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8" },
 	}).then((resp) => {
 		console.log(resp.data)
@@ -347,37 +325,41 @@ const SendFilter = (sroks, rooms, number) => {
 
 const SetUniqID = () => {
 	let now = new Date();
+	let price = null
+	if (domainSettings.title.indexOf("|") != -1) {
+		price = parseFloat(domainSettings.title.split("|")[1])
+	}
 	let data = {
-			"city": domainSettings.city.Name,
-			"send": getParam('utm_send'),
-			"uniqId": '1117'+now.getMonth()+''+now.getDate()+''+ now.getHours() +''+ now.getMinutes() +''+ now.getSeconds() + ''+now.getMilliseconds(),
-			"_fbp": jsCookie.get("_fbp"),
-			"_fbc": jsCookie.get("_fbc"),
-			"fb_id": domainSettings.domain.facebook,
-			"s_id": domainSettings.city.portal_id,
-			"user_a": window.navigator.userAgent,
-			"user_ip": domainSettings.ip,
-			"celType": "form",
-			"roistatVisitId": jsCookie.get('roistat_visit'),
-			"domen": domainSettings.domain.url,
-			"price_ot": null,
-			"price_do": null,
-			"price": null,
-			//"k": domainSettings.title,
+		"city": domainSettings.city.Name,
+		"send": getParam('utm_send'),
+		"uniqId": '1117' + now.getMonth() + '' + now.getDate() + '' + now.getHours() + '' + now.getMinutes() + '' + now.getSeconds() + '' + now.getMilliseconds(),
+		"_fbp": jsCookie.get("_fbp"),
+		"_fbc": jsCookie.get("_fbc"),
+		"fb_id": domainSettings.domain.facebook,
+		"s_id": domainSettings.city.portal_id,
+		"user_a": window.navigator.userAgent,
+		"user_ip": domainSettings.ip,
+		"celType": "form",
+		"roistatVisitId": jsCookie.get('roistat_visit'),
+		"domen": domainSettings.domain.url,
+		"price_ot": price,
+		"price_do": null,
+		"price": price,
+		//"k": domainSettings.title,
 	}
 
 	let sendData = ""
 	Object.keys(data).map((key) => {
-		if (sendData!="") {
-			sendData+="&"
+		if (sendData != "") {
+			sendData += "&"
 		}
-		sendData+=key+"="+data[key]
+		sendData += key + "=" + data[key]
 	})
 
 	axios({
 		method: "post",
-		url:  "//chats.g-n.ru/local/api/uniqIdBd/",
-		data:   sendData,
+		url: "//chats.g-n.ru/local/api/uniqIdBd/",
+		data: sendData,
 		headers: { "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8" },
 	}).then((resp) => {
 		console.log(resp.data)
