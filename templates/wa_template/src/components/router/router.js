@@ -46,6 +46,12 @@ const Router = () => {
 
     return <div className="container_main ">
         {step === 0 ? <MainScreen params={params} rooms={rooms} setRooms={setRooms} sroks={sroks} setSroks={setSroks} nextStep={nextStep} generateNumber={generateNumber} number={number} /> : <PhoneScreen params={params} phone={phone} sroks={sroks} rooms={rooms} setPhone={setPhone} number={number} />}
+        {domainSettings.organization.name.length > 0 ? <footer>
+            <div class="wmain">
+                <div class="fl">{domainSettings.organization.name}, <br />{domainSettings.organization.adress}</div>
+                <div class="fr"><a href={`tel:${domainSettings.organization.phone.replace('-', '')}`}>{domainSettings.organization.phone}</a></div>
+            </div>
+        </footer> : ""}
     </div>
 }
 

@@ -428,13 +428,14 @@ func (dh *domainsHandlers) DomainsModerationChange(c *gin.Context) {
 	moderationInput := moderationInput{}
 	if err := c.ShouldBind(&moderationInput); err != nil {
 		dh.logger.GetInstance().Errorf("error binding json %s", err)
-		c.JSON(http.StatusInternalServerError, gin.H{"paylod": "error"})
+		c.JSON(http.StatusInternalServerError, gin.H{"paylod": err})
 		return
 	}
 	url, err := dh.repository.UpdateDomainsModeration(moderationInput.ID, moderationInput.Moderation)
 	if err != nil {
 		dh.logger.GetInstance().Errorf("error updating domains moderation %s", err)
-		c.JSON(http.StatusInternalServerError, gin.H{"paylod": "error"})
+		c.JSON(http.StatusInternalServerError, gin.H{"paylod": err})
+		return
 	}
 	c.JSON(http.StatusOK, gin.H{"message": "domains modeartion updated"})
 	dh.services.CommonStorage.DeleteKey(c, url) //удаляем кэш
