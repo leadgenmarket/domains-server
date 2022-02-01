@@ -253,9 +253,10 @@ const SendFilter = (sroks, rooms, number) => {
 	})
 	text += roomsText
 	let data = {
+		"city": getCityByPortalID(domainSettings.city.portal_id),
+		"s_id": domainSettings.city.portal_id,
 		"remont": "false",
 		"is_loc": "0",
-		"s_id": "",
 		"l_type": "",
 		"text": text,
 		"_fbp": jsCookie.get("_fbp"),
@@ -323,6 +324,11 @@ const SendFilter = (sroks, rooms, number) => {
 	})
 }
 
+const getCityByPortalID = (city_id) => {
+	let cities = { "258828": "msk", "99793": "spb", "161617": "novosibirsk", "303819": "tula", "75871": "krd", "31477": "perm", "12309": "rostov", "156373": "ekb", "154285": "voronezh" }
+	return cities[city_id]
+}
+
 const SetUniqID = () => {
 	let now = new Date();
 	let price = null
@@ -330,7 +336,7 @@ const SetUniqID = () => {
 		price = parseFloat(domainSettings.title.split("|")[1])
 	}
 	let data = {
-		"city": domainSettings.city.Name,
+		"city": getCityByPortalID(domainSettings.city.portal_id),
 		"send": getParam('utm_send'),
 		"uniqId": '1117' + now.getMonth() + '' + now.getDate() + '' + now.getHours() + '' + now.getMinutes() + '' + now.getSeconds() + '' + now.getMilliseconds(),
 		"_fbp": jsCookie.get("_fbp"),
@@ -358,7 +364,7 @@ const SetUniqID = () => {
 
 	axios({
 		method: "post",
-		url: "//chats.g-n.ru/local/api/uniqIdBd/",
+		url: "https://mess.g-n.ru/ajax/uniqId.php",//"//chats.g-n.ru/local/api/uniqIdBd/",
 		data: sendData,
 		headers: { "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8" },
 	}).then((resp) => {

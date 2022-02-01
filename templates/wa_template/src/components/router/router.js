@@ -10,6 +10,7 @@ const Router = () => {
     const [sroks, setSroks] = useState([])
     const [phone, setPhone] = useState("")
     const [number, setNumber] = useState()
+    const [price, setPrice] = useState()
     const nextStep = (event) => {
         try {
             event.preventDefault()
@@ -42,10 +43,17 @@ const Router = () => {
                 })
             } catch (e) { }
         }
+
+        if (domainSettings.title.indexOf("|") != -1) {
+            setPrice(parseFloat(domainSettings.title.split("|")[1]))
+            return
+        }
+        let prices = domainSettings.prices.prices[0]
+        setPrice(Math.round(prices["min"] * 10) / 10)
     }, [])
 
     return <div className="container_main ">
-        {step === 0 ? <MainScreen params={params} rooms={rooms} setRooms={setRooms} sroks={sroks} setSroks={setSroks} nextStep={nextStep} generateNumber={generateNumber} number={number} /> : <PhoneScreen params={params} phone={phone} sroks={sroks} rooms={rooms} setPhone={setPhone} number={number} />}
+        {step === 0 ? <MainScreen params={params} price={price} setPrice={setPrice} rooms={rooms} setRooms={setRooms} sroks={sroks} setSroks={setSroks} nextStep={nextStep} generateNumber={generateNumber} number={number} /> : <PhoneScreen params={params} phone={phone} sroks={sroks} rooms={rooms} setPhone={setPhone} number={number} />}
         {domainSettings.organization.name.length > 0 ? <footer>
             <div class="wmain">
                 <div class="fl">{domainSettings.organization.name}, <br />{domainSettings.organization.adress}</div>

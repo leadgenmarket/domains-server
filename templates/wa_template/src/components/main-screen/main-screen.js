@@ -1,8 +1,8 @@
-import React from "react"
+import React, { useEffect } from "react"
 import parse from 'html-react-parser'
 import { SendFilter, SetUniqID } from "../../utils/send-data"
 
-const MainScreen = ({ params, nextStep, rooms, setRooms, sroks, setSroks, number }) => {
+const MainScreen = ({ params, nextStep, rooms, setRooms, sroks, setSroks, number, price, setPrice }) => {
 
     const updateList = (item, slice, callback, type) => {
         let newSlice = []
@@ -17,6 +17,7 @@ const MainScreen = ({ params, nextStep, rooms, setRooms, sroks, setSroks, number
         }
         callback(newSlice)
         if (type) {
+            updateTitlePrice(newSlice)
             SendFilter(sroks, newSlice, number)
         } else {
             SendFilter(newSlice, rooms, number)
@@ -32,16 +33,37 @@ const MainScreen = ({ params, nextStep, rooms, setRooms, sroks, setSroks, number
         }
     }
 
-    const getMinimalPriceOfCity = () => {
-        if (domainSettings.title.indexOf("|") != -1) {
-            return parseFloat(domainSettings.title.split("|")[1])
-        }
+    const getMinimalPrice = () => {
+        let min = 9999999999999
         let prices = domainSettings.prices.prices[0]
         for (let i = 0; i < 6; i++) {
-            if (prices["min_" + i] != 0) {
-                return Math.round(prices["min_" + i] * 10) / 10
+            if (prices["min_" + i] < min && prices["min_" + i] != 0) {
+                min = prices["min_" + i]
             }
         }
+        return min
+    }
+
+    const getPriceOfType = (type) => {
+        let prices = domainSettings.prices.prices[0]
+        if (prices["min_" + type] != 0) {
+            if (prices["min_" + type] >= getMinimalPrice()) {
+                return prices["min_" + type]
+            } else {
+                return getMinimalPrice()
+            }
+        }
+        else {
+            return getMinimalPrice()
+        }
+    }
+
+    const checkIfExists = (type) => {
+        let prices = domainSettings.prices.prices[0]
+        if (prices["min_" + type] > 0) {
+            return true
+        }
+        return false
     }
 
     const getCity = () => {
@@ -50,14 +72,37 @@ const MainScreen = ({ params, nextStep, rooms, setRooms, sroks, setSroks, number
                 return "в Краснодаре"
         }*/
         let city = "в " + domainSettings.city.Name + "e"
+        if (domainSettings.city.Name[domainSettings.city.Name.length - 1] == "а") {
+            city = "в " + domainSettings.city.Name.slice(0, [domainSettings.city.Name.length - 1]) + "е"
+        }
+
         return city
+    }
+
+    const updateTitlePrice = (roomsList) => {
+        let price = 999999999999999
+        if (roomsList.length > 0) {
+            for (let i = 0; i < 6; i++) {
+                if (roomsList.includes(i.toString())) {
+                    let newPrice = Math.round(getPriceOfType(i.toString()) * 10) / 10
+                    console.log(newPrice)
+                    if (price > newPrice) {
+                        price = newPrice
+                    }
+                }
+            }
+        } else {
+            let prices = domainSettings.prices.prices[0]
+            price = Math.round(getMinimalPrice() * 10) / 10
+        }
+        setPrice(price)
     }
 
     return <React.Fragment>
         <div className="content">
             <div className="page_one">
                 <div className="content_title">
-                    {getTitle()} <br /><img src="/templates/wa_template/build/img/title_street_ico.png" /><span>{getCity()}</span><div className="head_price">от {getMinimalPriceOfCity()} млн  ₽</div>
+                    {getTitle()} <br /><img src="/templates/wa_template/build/img/title_street_ico.png" /><span>{getCity()}</span><div className="head_price">от {price} млн  ₽</div>
                 </div>
                 <div className="get">
                     Получите самые выгодные <br />предложения уже <span>через 7 секунд</span>
@@ -66,10 +111,10 @@ const MainScreen = ({ params, nextStep, rooms, setRooms, sroks, setSroks, number
                 <ul className="filtr_list">
                     <li> <div className="fl_title">Выберите количество комнат</div>
                         <ul className="fl_inner_list fl_room " id="kv_list">
-                            <li><a className={rooms.includes("0") ? "act" : ""} onClick={(e) => { e.preventDefault(); updateList("0", rooms, setRooms, true) }} data-price="2,5" href="#">Студия</a></li>
-                            <li><a className={rooms.includes("1") ? "act" : ""} onClick={(e) => { e.preventDefault(); updateList("1", rooms, setRooms, true) }} data-price="3" href="#">1к</a></li>
-                            <li><a className={rooms.includes("2") ? "act" : ""} onClick={(e) => { e.preventDefault(); updateList("2", rooms, setRooms, true) }} data-price="4,1" href="#">2к</a></li>
-                            <li><a className={rooms.includes("3") ? "act" : ""} onClick={(e) => { e.preventDefault(); updateList("3", rooms, setRooms, true) }} data-price="5,9" href="#">3к</a></li>
+                            {checkIfExists("0") ? <li><a className={rooms.includes("0") ? "act" : ""} onClick={(e) => { e.preventDefault(); updateList("0", rooms, setRooms, true) }} href="#">Студия</a></li> : ""}
+                            {checkIfExists("1") ? <li><a className={rooms.includes("1") ? "act" : ""} onClick={(e) => { e.preventDefault(); updateList("1", rooms, setRooms, true) }} href="#">1к</a></li> : ""}
+                            {checkIfExists("2") ? <li><a className={rooms.includes("2") ? "act" : ""} onClick={(e) => { e.preventDefault(); updateList("2", rooms, setRooms, true) }} href="#">2к</a></li> : ""}
+                            {checkIfExists("3") ? <li><a className={rooms.includes("3") ? "act" : ""} onClick={(e) => { e.preventDefault(); updateList("3", rooms, setRooms, true) }} href="#">3к</a></li> : ""}
                         </ul>
                     </li>
                     <li>
@@ -78,7 +123,7 @@ const MainScreen = ({ params, nextStep, rooms, setRooms, sroks, setSroks, number
                             <li><a className={sroks.includes("2022") ? "act" : ""} onClick={(e) => { e.preventDefault(); updateList("2022", sroks, setSroks, false) }} href="#">2022</a></li>
                             <li><a className={sroks.includes("2023") ? "act" : ""} onClick={(e) => { e.preventDefault(); updateList("2023", sroks, setSroks, false) }} href="#">2023</a></li>
                             <li><a className={sroks.includes("2024") ? "act" : ""} onClick={(e) => { e.preventDefault(); updateList("2024", sroks, setSroks, false) }} href="#">2024</a></li>
-                            <li><a className={sroks.includes("2026") ? "act" : ""} onClick={(e) => { e.preventDefault(); updateList("2026", sroks, setSroks, false) }} href="#">2026</a></li>
+                            <li><a className={sroks.includes("2025") ? "act" : ""} onClick={(e) => { e.preventDefault(); updateList("2025", sroks, setSroks, false) }} href="#">2025</a></li>
                         </ul>
                     </li>
                 </ul>
