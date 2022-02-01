@@ -420,7 +420,7 @@ func (dh *domainsHandlers) AddDomainWithSettings(c *gin.Context) {
 }
 
 type moderationInput struct {
-	ID         string `json:"id"`
+	ID         string `json:"id" form:"id"`
 	Moderation bool   `json:"moderation"`
 }
 

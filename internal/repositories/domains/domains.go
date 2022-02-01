@@ -156,7 +156,7 @@ func (r *repositroyDB) UpdateDomainsModeration(id string, modearation bool) (str
 	}
 	domain.UpdatedAt = time.Now()
 	domain.Moderation = modearation
-	err = r.domains.Update(bson.M{"_id": domain.ID}, domain)
+	err = r.domains.Update(bson.M{"_id": domain.ID.Hex()}, domain)
 	if err != nil {
 		return "", err
 	}
