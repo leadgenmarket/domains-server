@@ -127,14 +127,20 @@ footer .wmain {
   padding: 0 10px;
 }
 
-.content {
+/* .content {
+  position: relative;
+  z-index: 50;
+  padding-left: 13px;
+  padding-right: 13px;
+  padding-top: 55px;
+} */
+.page_one, .page_two{
   position: relative;
   z-index: 50;
   padding-left: 13px;
   padding-right: 13px;
   padding-top: 55px;
 }
-
 .content_title {
   display: inline-block;
   vertical-align: top;
@@ -162,7 +168,8 @@ footer .wmain {
   padding: 0;
   list-style: none;
   margin-top: 29px;
-  font-family: Nunito;
+  /* font-family: Nunito; */
+  font-family: 'Montserrat';
 }
 
 .cont_list > li {
@@ -183,7 +190,8 @@ footer .wmain {
 .get {
   font-size: 14px;
   color: #afbadf;
-  font-family: 'Nunito';
+  /* font-family: 'Nunito'; */
+  font-family: 'Montserrat';
   line-height: 100%;
   padding-left: 44px;
   background: url('/templates/wa_template/build/img/time_ico.png') no-repeat 4px center;
@@ -269,8 +277,9 @@ footer .wmain {
   background: #1d3887;
   font-weight: 600;
   font-family: 'Montserrat';
-  padding: 0px 36px;
+  padding: 0px 30px;
   line-height: 36px;
+  margin-left: 10px;
   border-radius: 50px;
 }
 
@@ -331,7 +340,8 @@ footer .wmain {
   text-align: center;
   font-size: 17px;
   color: #fff;
-  font-family: 'Nunito';
+  /* font-family: 'Nunito'; */
+  font-family: 'Montserrat';
   font-weight: 600;
   height: 50px;
   line-height: 100%;
@@ -350,11 +360,11 @@ footer .wmain {
 }
 
 .fl_room > li {
-  width: 30%;
+  width: 33%;
 }
 
 .fl_room > li + li {
-  width: 23.333333333333%;
+  /* width: 23.333333333333%; */
 }
 
 .color_white {
@@ -634,10 +644,13 @@ footer .wmain {
 }
 
 @media screen and (max-height: 440px) {
-  .content {
+  /* .content {
+    padding-top: 32px;
+  } */
+
+  .page_one, .page_two{
     padding-top: 32px;
   }
-
   .content_title,
   .head_price {
     font-size: 20px;
@@ -694,10 +707,13 @@ footer .wmain {
     max-height: 17px;
   }
 
-  .content {
+  /* .content {
+    padding-top: 22px;
+  } */
+
+  .page_one, .page_two{
     padding-top: 22px;
   }
-
   .filtr_list {
     margin-top: 13px;
   }
