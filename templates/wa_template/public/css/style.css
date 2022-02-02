@@ -1,4 +1,22 @@
 /*reset light*/
+@font-face {
+  font-family: 'Montserrat';
+  src: url('fonts/Montserrat-Regular.eot');
+  src: url('fonts/Montserrat-Regular.eot?#iefix') format('embedded-opentype'),
+       url('fonts/Montserrat-Regular.woff') format('woff'),
+       url('fonts/Montserrat-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Montserrat';
+  src: url('fonts/Montserrat-Bold.eot');
+  src: url('fonts/Montserrat-Bold.eot?#iefix') format('embedded-opentype'),
+       url('fonts/Montserrat-Bold.woff') format('woff'),
+       url('fonts/Montserrat-Bold.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+}
 html,
 body {
   margin: 0;
@@ -15,7 +33,7 @@ a {
   -webkit-tap-highlight-color: transparent;
 }
 body {
-  font-family: 'Nunito', 'sans-serif', 'arial', 'helvetica';
+  font-family: 'Montserrat';
   font-weight: 600;
 
   -webkit-font-smoothing: antialiased;
@@ -37,7 +55,7 @@ input,
 textarea,
 select,
 button {
-  font-family: 'Nunito', 'sans-serif', 'arial', 'helvetica';
+  font-family: 'Montserrat';
 }
 input:not([type='checkbox']):not([type='radio']),
 textarea,
@@ -243,11 +261,11 @@ footer .wmain {
   color: #57bb63;
   line-height: 120%;
   font-family: 'Montserrat';
-  font-weight: 600;
+  font-weight: normal;
 }
 
 .ws_text span {
-  font-weight: 800;
+  font-weight: bold;
 }
 
 .ws_str {
