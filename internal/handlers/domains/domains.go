@@ -444,13 +444,16 @@ func (dh *domainsHandlers) DomainsModerationChange(c *gin.Context) {
 func (dh *domainsHandlers) DomainsGetCityByUrl(c *gin.Context) {
 	//для wantresult нужно
 	url := c.Param("url")
+
 	domain, err := dh.repository.FindDomainByUrl(url)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"paylod": "error"})
+		return
 	}
 	city, err := dh.cityRepo.GetCityById(domain.CityID)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"paylod": "error"})
+		return
 	}
 	c.JSON(http.StatusOK, gin.H{"city": city.PortalID})
 }

@@ -73,6 +73,7 @@ func (r *repositroyDB) AddDomain(domain models.Domain) (models.Domain, error) {
 
 func (r *repositroyDB) FindDomainByUrl(url string) (models.Domain, error) {
 	var domain models.Domain
+	fmt.Println(url)
 	err := r.domains.Find(bson.M{"url": url}).One(&domain)
 	if err != nil {
 		return domain, err
