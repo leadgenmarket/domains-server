@@ -1,3 +1,4 @@
+
 /* Dashboard */
 .ct-area {
     fill-opacity: .33 !important;
@@ -180,8 +181,8 @@ tr:first-child>td>.fc-day-grid-event {
 /* Form File Upload */
 .dropzone {
 	min-height: 230px !important;
-	border: 2px dashed #ced4da !important;
-	background: #fff !important;
+	border: 2px dashed #3b403d !important;
+	background: #313533 !important;
 	border-radius: 6px !important;
 }
 .dropzone .dz-message {

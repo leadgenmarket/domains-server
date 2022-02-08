@@ -9,6 +9,7 @@ import { withApiService } from "../../../hoc";
 import { connect } from "react-redux";
 import { bindActionCreators } from 'redux';
 import { addDomainToList } from "../../../../actions/domains";
+import Dropzone from "react-dropzone";
 
 const DomainEdit = ({ addDomainToList }) => {
     const navigate = useNavigate();
@@ -17,7 +18,34 @@ const DomainEdit = ({ addDomainToList }) => {
     const [cities, setCities] = useState([])
     const [organizations, setOrganzations] = useState([])
     const [file, setFile] = useState(null)
-    const [step, setStep] = useState(1)
+    const [photos, setPhotos] = useState([])
+    const [advantages, setAdvantages] = useState([
+        {
+            name: "",
+            image: "",
+        },
+        {
+            name: "",
+            image: "",
+        },
+        {
+            name: "",
+            image: "",
+        },
+        {
+            name: "",
+            image: "",
+        },
+        {
+            name: "",
+            image: "",
+        },
+        {
+            name: "",
+            image: "",
+        }
+    ])
+    const [step, setStep] = useState(4)
     const [quizSteps, setQuizSteps] = useState([])
     const { id } = useParams()
     const [form, setForm] = useState({})
@@ -113,6 +141,20 @@ const DomainEdit = ({ addDomainToList }) => {
             setFile(event.target.files[0])
         }
     }
+    const photosDropZoneChange = (acceptedFiles) => {
+        setPhotos([...photos, ...acceptedFiles])
+        console.log([...photos, ...acceptedFiles])
+    }
+    const advantagesInputChange = (event) => {
+        let id = parseInt(event.currentTarget.getAttribute('data'))
+        console.log(id)
+    }
+
+    const advantagesInputTextChange = (event) => {
+        console.log(event.currentTarget)
+        let id = parseInt(event.currentTarget.getAttribute('data'))
+        console.log(id)
+    }
 
     return (<div className="main-content">
         <div className="page-content">
@@ -147,6 +189,13 @@ const DomainEdit = ({ addDomainToList }) => {
                                         </li>
                                         <li className="nav-item">
                                             <a href="#company-document" className={step == 4 ? "nav-link active" : "nav-link"} data-toggle="tab">
+                                                <div className="step-icon" data-bs-toggle="tooltip" data-bs-placement="top" title="Company Document">
+                                                    <i className="feather-git-branch"></i>
+                                                </div>
+                                            </a>
+                                        </li>
+                                        <li className="nav-item">
+                                            <a href="#company-document" className={step == 5 ? "nav-link active" : "nav-link"} data-toggle="tab">
                                                 <div className="step-icon" data-bs-toggle="tooltip" data-bs-placement="top" title="Company Document">
                                                     <i className="feather-target"></i>
                                                 </div>
@@ -268,6 +317,174 @@ const DomainEdit = ({ addDomainToList }) => {
                                         <div className={step == 4 ? "tab-pane active" : "tab-pane"} id="company-document">
                                             <div>
                                                 <div className="text-center mb-4">
+                                                    <h5>Доп параметры шаблона</h5>
+                                                    <p className="card-title-desc">Заполните запрашиваемую информацию</p>
+                                                </div>
+                                                <div className="text-center mb-4">
+                                                    <h6>Преимущества</h6>
+                                                </div>
+                                                <form>
+                                                    <div className="row">
+                                                        <div className="col-lg-6">
+                                                            <div className="mb-3">
+                                                                <label htmlFor="upload-advantage1-input" id="upload-advantage1" className="form-label">
+                                                                    Преимущество 1 - Картинка
+                                                                </label>
+                                                                <input data="1" type="file" onChange={advantagesInputChange} className="form-control" name="advantage1" id="upload-advantage1-input" />
+                                                                <div className="col-lg-12 d-flex">
+                                                                    <input data="1" onClick={(event) => { document.querySelector("#upload-advantage1").click() }} value={file != null ? file.name : ""} type="text" disabled className="form-control" id="basicpill-cstno-input" />
+                                                                    <button className="btn btn-primary" onClick={(event) => { event.preventDefault(); document.querySelector("#upload-advantage1").click() }}>Загрузить</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div className="col-lg-6">
+                                                            <div className="mb-3">
+                                                                <label htmlFor="upload-background-input" id="upload-background" className="form-label">
+                                                                    Название
+                                                                </label>
+                                                                <input data="1" type="text" className="form-control" onChange={advantagesInputTextChange} name="advantage1" value={advantages[0].name} id="basicpill-companyuin-input" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div className="row">
+                                                        <div className="col-lg-6">
+                                                            <div className="mb-3">
+                                                                <label htmlFor="upload-advantage2-input" id="upload-advantage2" className="form-label">
+                                                                    Преимущество 2 - Картинка
+                                                                </label>
+                                                                <input data="2" type="file" onChange={advantagesInputChange} className="form-control" name="advantage2" id="upload-advantage2-input" />
+                                                                <div className="col-lg-12 d-flex">
+                                                                    <input onClick={(event) => { document.querySelector("#upload-advantage2").click() }} value={file != null ? file.name : ""} type="text" disabled className="form-control" id="basicpill-cstno-input" />
+                                                                    <button className="btn btn-primary" onClick={(event) => { event.preventDefault(); document.querySelector("#upload-advantage2").click() }}>Загрузить</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div className="col-lg-6">
+                                                            <div className="mb-3">
+                                                                <label htmlFor="upload-background-input" id="upload-background" className="form-label">
+                                                                    Название
+                                                                </label>
+                                                                <input data="2" type="text" className="form-control" onChange={advantagesInputTextChange} name="advantage2" value={advantages[1].name} id="basicpill-companyuin-input" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div className="row">
+                                                        <div className="col-lg-6">
+                                                            <div className="mb-3">
+                                                                <label htmlFor="upload-advantage3-input" id="upload-advantage3" className="form-label">
+                                                                    Преимущество 3 - Картинка
+                                                                </label>
+                                                                <input data="3" type="file" onChange={advantagesInputChange} className="form-control" name="advantage3" id="upload-advantage3-input" />
+                                                                <div className="col-lg-12 d-flex">
+                                                                    <input onClick={(event) => { document.querySelector("#upload-advantage3").click() }} value={file != null ? file.name : ""} type="text" disabled className="form-control" id="basicpill-cstno-input" />
+                                                                    <button className="btn btn-primary" onClick={(event) => { event.preventDefault(); document.querySelector("#upload-advantage3").click() }}>Загрузить</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div className="col-lg-6">
+                                                            <div className="mb-3">
+                                                                <label htmlFor="upload-background-input" id="upload-background" className="form-label">
+                                                                    Название
+                                                                </label>
+                                                                <input data="3" type="text" className="form-control" onChange={advantagesInputTextChange} name="advantage3" value={advantages[2].name} id="basicpill-companyuin-input" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div className="row">
+                                                        <div className="col-lg-6">
+                                                            <div className="mb-3">
+                                                                <label htmlFor="upload-advantage4-input" id="upload-advantage4" className="form-label">
+                                                                    Преимущество 4 - Картинка
+                                                                </label>
+                                                                <input data="4" type="file" onChange={advantagesInputChange} className="form-control" name="advantage4" id="upload-advantage4-input" />
+                                                                <div className="col-lg-12 d-flex">
+                                                                    <input onClick={(event) => { document.querySelector("#upload-advantage4").click() }} value={file != null ? file.name : ""} type="text" disabled className="form-control" id="basicpill-cstno-input" />
+                                                                    <button className="btn btn-primary" onClick={(event) => { event.preventDefault(); document.querySelector("#upload-advantage4").click() }}>Загрузить</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div className="col-lg-6">
+                                                            <div className="mb-3">
+                                                                <label htmlFor="upload-background-input" id="upload-background" className="form-label">
+                                                                    Название
+                                                                </label>
+                                                                <input data="4" type="text" className="form-control" onChange={advantagesInputTextChange} name="advantage4" value={advantages[3].name} id="basicpill-companyuin-input" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div className="row">
+                                                        <div className="col-lg-6">
+                                                            <div className="mb-3">
+                                                                <label htmlFor="upload-advantage5-input" id="upload-advantage5" className="form-label">
+                                                                    Преимущество 5 - Картинка
+                                                                </label>
+                                                                <input data="5" type="file" onChange={advantagesInputChange} className="form-control" name="advantage5" id="upload-advantage5-input" />
+                                                                <div className="col-lg-12 d-flex">
+                                                                    <input onClick={(event) => { document.querySelector("#upload-advantage5").click() }} value={file != null ? file.name : ""} type="text" disabled className="form-control" id="basicpill-cstno-input" />
+                                                                    <button className="btn btn-primary" onClick={(event) => { event.preventDefault(); document.querySelector("#upload-advantage5").click() }}>Загрузить</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div className="col-lg-6">
+                                                            <div className="mb-3">
+                                                                <label htmlFor="upload-background-input" id="upload-background" className="form-label">
+                                                                    Название
+                                                                </label>
+                                                                <input data="5" type="text" className="form-control" onChange={advantagesInputTextChange} name="advantage5" value={advantages[4].name} id="basicpill-companyuin-input" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div className="row">
+                                                        <div className="col-lg-6">
+                                                            <div className="mb-3">
+                                                                <label htmlFor="upload-advantage6-input" id="upload-advantage6" className="form-label">
+                                                                    Преимущество 6 - Картинка
+                                                                </label>
+                                                                <input data="6" type="file" onChange={advantagesInputChange} className="form-control" name="advantage6" id="upload-advantage6-input" />
+                                                                <div className="col-lg-12 d-flex">
+                                                                    <input onClick={(event) => { document.querySelector("#upload-advantage6").click() }} value={file != null ? file.name : ""} type="text" disabled className="form-control" id="basicpill-cstno-input" />
+                                                                    <button className="btn btn-primary" onClick={(event) => { event.preventDefault(); document.querySelector("#upload-advantage6").click() }}>Загрузить</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div className="col-lg-6">
+                                                            <div className="mb-3">
+                                                                <label htmlFor="upload-background-input" id="upload-background" className="form-label">
+                                                                    Название
+                                                                </label>
+                                                                <input data="6" type="text" className="form-control" onChange={advantagesInputTextChange} name="advantage6" value={advantages[5].name} id="basicpill-companyuin-input" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </form>
+                                                <div className="text-center mb-4" style={{ marginTop: "20px" }}>
+                                                    <h6>Картинки ЖК (Ход строительства)</h6>
+                                                    <p className="card-title-desc">Перетащите картинки в контейнер</p>
+                                                </div>
+                                                <Dropzone onDrop={photosDropZoneChange}>
+                                                    {({ getRootProps, getInputProps }) => (
+                                                        <div className="dropzone dz-clickable dz-started" {...getRootProps()}>
+                                                            <div class="dz-message needsclick" style={{ display: "flex", paddingTop: "60px", height: "100%", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
+                                                                <div class="mb-3">
+                                                                    <i className="feather-upload-cloud"></i>
+                                                                </div>
+                                                                <input {...getInputProps()} />
+                                                                {photos.length > 0 ? <span style={{ fontSize: "20px", textAlign: "center" }}>{photos.length + " файлa(-ов) на загрузку"}</span> : ""}
+                                                                <span style={{ fontSize: "20px", textAlign: "center" }}>Перетащите картинки в контейнер или нажмите чтобы загрузить.</span>
+                                                            </div>
+                                                        </div>
+                                                    )}
+                                                </ Dropzone>
+                                                <ul className="pager wizard twitter-bs-wizard-pager-link">
+                                                    <li className="prev"><a onClick={prevStepClick} className="btn btn-primary"><i className="feather-arrow-left"></i> Назад </a></li>
+                                                    <li className="next"><a onClick={nextStepClick} className="btn btn-primary">Далее <i className="feather-arrow-right"></i></a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div className={step == 5 ? "tab-pane active" : "tab-pane"} id="company-document">
+                                            <div>
+                                                <div className="text-center mb-4">
                                                     <h5>Метрики</h5>
                                                     <p className="card-title-desc">Заполните информацию по метрикам <br /><b style={{ color: "white" }}>!! только идентификаторы счетчиков !!</ b></p>
                                                 </div>
@@ -341,7 +558,7 @@ const DomainEdit = ({ addDomainToList }) => {
                 </div>
             </div>
         </div>
-    </div>)
+    </div >)
 }
 
 class DomainEditPageContainer extends Component {
