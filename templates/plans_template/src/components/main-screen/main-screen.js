@@ -44,16 +44,18 @@ const MainScreen = ({ params, nextStep }) => {
                   <br />
                   <ul className="header_list">
                     {params.title_items === undefined ||
-                    params.title_items == ''
+                      params.title_items == ''
                       ? parse(
-                          '<li>Все районы города</li><li>Подберем на ваш вкус</li>'
-                        )
+                        '<li>Все районы города</li><li>Подберем на ваш вкус</li>'
+                      )
                       : parse(params.title_items)}
                   </ul>
                 </div>
-                <a href="#" onClick={nextStep} className="btn_main">
-                  Начать поиск
-                </a>
+                <BtnComponent
+                  text={'Начать поиск'}
+                  params={params}
+                  clickFunct={nextStep}
+                />
               </div>
             </div>
           </div>

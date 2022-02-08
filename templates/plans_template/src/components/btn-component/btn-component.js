@@ -16,7 +16,7 @@ const BtnComponent = ({ params, clickFunct, text, analog }) => {
   if (analog) {
     return (
       <button
-        className="btn_main"
+        className="btn_main back_btn"
         onMouseLeave={() => setStyle(defaultStyle)}
         onMouseEnter={() => setStyle(hoveredStyle)}
         onClick={clickFunct}
@@ -28,7 +28,7 @@ const BtnComponent = ({ params, clickFunct, text, analog }) => {
   }
   return (
     <button
-      className="btn_main back_btn"
+      className="btn_main"
       href="#"
       onMouseLeave={() => setStyle(defaultStyle)}
       onMouseEnter={() => setStyle(hoveredStyle)}

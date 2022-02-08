@@ -31,8 +31,8 @@ const Step = ({
             <p class="step_ident">Шаг 1/4</p>
             <div class="title_inner">{step.title}</div>
             {step.type == 'text' ||
-            step.type == 'raions' ||
-            step.type == 'sdacha' ? (
+              step.type == 'raions' ||
+              step.type == 'sdacha' ? (
               <TextStep
                 step={step}
                 params={params}
@@ -75,6 +75,7 @@ const Step = ({
                   text={'Назад'}
                   params={params}
                   clickFunct={prevStep}
+                  analog={true}
                 />
               ) : (
                 ''
@@ -83,6 +84,7 @@ const Step = ({
                 text={'Дальше'}
                 params={params}
                 clickFunct={nextStep}
+                analog={true}
               />
             </div>
           </div>
