@@ -1426,7 +1426,9 @@ li:hover .jk_btn{
 
 .adv_list li img{
     display: block;
-    max-width: 100%;
+    width: 115px;
+    height: 115px;
+    border-radius: 50%;
     margin: 0 auto;
 }
 .adv_list li span{
@@ -1666,6 +1668,9 @@ footer span{
 .hd_slid .slick-prev:hover{
     background: #ffffff url(/img/ar_prev_act.png)no-repeat center center;
 }
+.slick-next:before, .slick-prev:before{
+    display: none;
+}
 .hd_slid .slick-next{
     background: #ae9674 url(/img/ar_next.png)no-repeat center center;
     box-sizing: border-box;
@@ -1678,9 +1683,14 @@ footer span{
 .hd_slid .slick-next:hover{
     background: #ffffff url(/img/ar_next_act.png)no-repeat center center;
 }
+.hd_slid .slick-dots li{
+    height: auto;
+    width: auto;
+}
 .hd_slid .slick-dots li button {
     width: 45px;
     height: 3px;
+    padding: 0;
     background: white;
 }
 .hd_slid .slick-dots {
@@ -2519,6 +2529,11 @@ h1{
 }
 
 @media screen and (max-width: 1150px) {
+    .hd_slid{
+        max-width: 320px;
+        margin: 0 auto;
+        margin-top: 30px;
+    }
    }
 
 @media screen and (max-width: 1060px) {
@@ -2793,6 +2808,9 @@ h1{
 }
 
 @media screen and (max-width: 680px) {
+    .hod_str{
+        padding-bottom: 40px;
+    }
     .pdt_info {
     padding-top: 0px;
 }
