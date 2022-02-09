@@ -71,14 +71,9 @@ func main() {
 }
 
 func groupChanges(service *services.Services, repositories *repositories.Repositories, logger logger.Log) {
-	templates, _ := repositories.Templates.GetTemplatesList()
-	templates[0].Name = "Синий квиз"
-	templates[0].Path = "blue_template.html"
-	repositories.Templates.UpdateTemplate(templates[0])
-
 	newTemplate := models.Template{
-		Name: "WA шаблон",
-		Path: "wa_template.html",
+		Name: "Кастомный шаблон",
+		Path: "plans_template.html",
 	}
 	repositories.Templates.AddTemplate(newTemplate)
 }

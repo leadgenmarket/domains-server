@@ -59,7 +59,7 @@ const DomainEdit = ({ addDomainToList }) => {
         document.querySelector('.modal-backdrop').remove()
     }
 
-    const [step, setStep] = useState(4)
+    const [step, setStep] = useState(1)
     const [quizSteps, setQuizSteps] = useState([])
     const { id } = useParams()
     const [form, setForm] = useState({})
@@ -132,21 +132,27 @@ const DomainEdit = ({ addDomainToList }) => {
         if (file != null) {
             bodyFormData.append('file', file)
         }
-        bodyFormData.append("advantages", JSON.stringify(advantages))
+
+        let jsonAdv = []
         advantages.forEach((advantage) => {
             if (advantage.image != null && advantage.image != undefined) {
                 bodyFormData.append('advantages_photos[]', advantage.image)
+                jsonAdv.push({ ...advantage, image: advantage.image.name })
             }
         })
+        bodyFormData.append("advantages", JSON.stringify(jsonAdv))
         photos.forEach((photo) => {
             bodyFormData.append('photos[]', photo)
         })
-        bodyFormData.append('plans', JSON.stringify(plans))
+
+        let jsonPlans = []
         plans.forEach((plan) => {
             if (plan.image != null && plan.image != undefined) {
                 bodyFormData.append('plan_photos[]', plan.image)
+                jsonPlans.push({ ...plan, image: plan.image.name })
             }
         })
+        bodyFormData.append('plans', JSON.stringify(jsonPlans))
         let apiService = new ApiService
 
         let promise = apiService.domainSave(bodyFormData)

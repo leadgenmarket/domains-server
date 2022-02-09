@@ -15,7 +15,6 @@ import (
 	"domain-server/internal/utils"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"net/http"
 	"os"
 	"strings"
@@ -326,6 +325,16 @@ type DomainInput struct {
 	Qoopler        bool   `bson:"qoopler" form:"qoopler"`
 	Roistat        bool   `bson:"roistat" form:"roistat"`
 	Steps          string `bson:"steps" form:"steps"`
+
+	//
+	SubTitleItems   string `bson:"sub_title_items" json:"sub_title_items"`
+	Phone           string `bson:"phone" json:"phone"`
+	AdvantagesTitle string `bson:"advantages_title" form:"advantages_title"`
+	Advantages      string `bson:"advantages" form:"advantages"`
+	PhotosTitle     string `bson:"photos_title" form:"photos_title"`
+	Photos          string `bson:"photos" form:"photos"`
+	PlansTitle      string `bson:"plans_title" form:"plans_title"`
+	Plans           string `bson:"plans" form:"plans"`
 }
 
 func (dh *domainsHandlers) AddDomainWithSettings(c *gin.Context) {
@@ -338,35 +347,118 @@ func (dh *domainsHandlers) AddDomainWithSettings(c *gin.Context) {
 	form, err := c.MultipartForm()
 	if err != nil {
 		dh.logger.GetInstance().Errorf("error getting background image %s", err)
+		return
 	}
 	files := form.File["file"]
 	fileName := ""
-	for _, file := range files {
-		fileInstance, _ := file.Open()
-		fileBytes, _ := ioutil.ReadAll(fileInstance)
-		filename, _ := dh.services.FileStore.SaveFileToStore(fileBytes, file.Filename)
+	if len(files) > 0 {
+		fileName, err = dh.services.MultipartImages.ResizeAndSaveMultipartImage(files[0], 1280, 0)
 		if err != nil {
 			dh.logger.GetInstance().Errorf("error saving background image %s", err)
-			c.JSON(http.StatusInternalServerError, gin.H{"paylod": "error"})
 			return
 		}
-		fileName = filename
 	}
 	domain := models.Domain{
-		Url:            domainInput.URL,
-		TemplateID:     bson.ObjectIdHex(domainInput.TemplateID),
-		CityID:         bson.ObjectIdHex(domainInput.CityID),
-		OrganizationID: bson.ObjectIdHex(domainInput.OrganizationID),
-		MainColor:      domainInput.MainColor,
-		SecondaryColor: domainInput.SecondaryColor,
-		Yandex:         domainInput.Yandex,
-		Google:         domainInput.Google,
-		Mail:           domainInput.Mail,
-		Facebook:       domainInput.Facebook,
-		Marquiz:        domainInput.Marquiz,
-		Qoopler:        domainInput.Qoopler,
-		Roistat:        domainInput.Roistat,
-		SubTitle:       domainInput.SubTitle,
+		Url:             domainInput.URL,
+		TemplateID:      bson.ObjectIdHex(domainInput.TemplateID),
+		CityID:          bson.ObjectIdHex(domainInput.CityID),
+		OrganizationID:  bson.ObjectIdHex(domainInput.OrganizationID),
+		MainColor:       domainInput.MainColor,
+		SecondaryColor:  domainInput.SecondaryColor,
+		Yandex:          domainInput.Yandex,
+		Google:          domainInput.Google,
+		Mail:            domainInput.Mail,
+		Facebook:        domainInput.Facebook,
+		Marquiz:         domainInput.Marquiz,
+		Qoopler:         domainInput.Qoopler,
+		Roistat:         domainInput.Roistat,
+		SubTitle:        domainInput.SubTitle,
+		SubTitleItems:   domainInput.SubTitleItems,
+		Phone:           domainInput.Phone,
+		AdvantagesTitle: domainInput.AdvantagesTitle,
+		PhotosTitle:     domainInput.PhotosTitle,
+		PlansTitle:      domainInput.PlansTitle,
+	}
+
+	//Advantages - надо сопоставить json и конвертированные файлы
+	//photos - просто сохранить список файлов []string
+	//plans - надо сопоставить
+
+	//advantages_photos[]
+	//plan_photos[]
+	//photos[]
+
+	if domainInput.Advantages != "" {
+		advantages := []map[string]interface{}{}
+		err := json.Unmarshal([]byte(domainInput.Advantages), &advantages)
+		if err != nil {
+			dh.logger.GetInstance().Errorf("error unmarshaling steps json %s", err)
+			c.JSON(http.StatusBadRequest, err)
+			return
+		}
+		advantagesFiles, err := dh.services.MultipartImages.ResizeAndSaveMultipartImagesList(form.File["advantages_photos[]"], 115, 115)
+		if err != nil {
+			dh.logger.GetInstance().Errorf("error saving advantages image %s", err)
+			return
+		}
+		for _, advantage := range advantages {
+			for oldName, newName := range advantagesFiles {
+				if advantage["image"] == oldName {
+					advantage["image"] = newName
+					break
+				}
+			}
+
+		}
+		domain.Advantages = advantages
+	}
+
+	if domainInput.Plans != "" {
+		plans := []map[string]interface{}{}
+		err := json.Unmarshal([]byte(domainInput.Plans), &plans)
+		if err != nil {
+			dh.logger.GetInstance().Errorf("error unmarshaling steps json %s", err)
+			c.JSON(http.StatusBadRequest, err)
+			return
+		}
+		plansFiles, err := dh.services.MultipartImages.ResizeAndSaveMultipartImagesList(form.File["plan_photos[]"], 500, 0)
+		if err != nil {
+			dh.logger.GetInstance().Errorf("error saving plans images %s", err)
+			return
+		}
+		for _, plan := range plans {
+			for oldName, newName := range plansFiles {
+				if plan["image"] == oldName {
+					plan["image"] = newName
+					break
+				}
+			}
+
+		}
+		domain.Plans = plans
+	}
+
+	if photosInput := form.File["photos[]"]; len(photosInput) > 0 {
+		photosMinFiles, err := dh.services.MultipartImages.ResizeAndSaveMultipartImagesList(form.File["photos[]"], 441, 294)
+		if err != nil {
+			dh.logger.GetInstance().Errorf("error creating thumbinals for images %s", err)
+			return
+		}
+		photosMaxFiles, err := dh.services.MultipartImages.ResizeAndSaveMultipartImagesList(form.File["photos[]"], 1280, 0)
+		if err != nil {
+			dh.logger.GetInstance().Errorf("error creating big images %s", err)
+			return
+		}
+		resultPhotos := map[string]string{}
+		for oldThumbName, newThumbName := range photosMinFiles {
+			for oldBigName, newBigName := range photosMaxFiles {
+				if oldThumbName == oldBigName {
+					resultPhotos[newThumbName] = newBigName
+					break
+				}
+			}
+		}
+		domain.Photos = resultPhotos
 	}
 
 	if fileName != "" {
