@@ -57,7 +57,7 @@ fs.readFile('./build/index.html', 'utf8', (err, data) => {
       }, 2700)\
     </script>\
     </body>")
-  fs.writeFileSync("./build/blue_template.html", data)
+  fs.writeFileSync("./build/plans_template.html", data)
   fs.unlink("./build/index.html", () => { })
 })
 
