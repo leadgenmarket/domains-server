@@ -65,15 +65,24 @@ func New(repository domains.Repository, repoLoc locations.Repository, cityRepo c
 }
 
 type DomainSettings struct {
-	Facebook     string           `json:"facebook"`
-	Yandex       string           `json:"yandex"`
-	Google       string           `json:"google"`
-	Mail         string           `json:"mail"`
-	Marquiz      string           `json:"marquiz"`
-	Qoopler      bool             `json:"qoopler"`
-	Roistat      bool             `json:"roistat" form:"roistat"`
-	TemplateHTML string           `json:"template_html" form:"template_html"`
-	ScriptTmpl   TamplateSettings `json:"scripts"`
+	Facebook     string `json:"facebook"`
+	Yandex       string `json:"yandex"`
+	Google       string `json:"google"`
+	Mail         string `json:"mail"`
+	Marquiz      string `json:"marquiz"`
+	Qoopler      bool   `json:"qoopler"`
+	Roistat      bool   `json:"roistat" form:"roistat"`
+	TemplateHTML string `json:"template_html" form:"template_html"`
+	//
+	SubTitleItems   string                   `bson:"sub_title_items" json:"sub_title_items"`
+	Phone           string                   `bson:"phone" json:"phone"`
+	AdvantagesTitle string                   `bson:"advantages_title" form:"advantages_title"`
+	Advantages      []map[string]interface{} `bson:"advantages" form:"advantages"`
+	PhotosTitle     string                   `bson:"photos_title" form:"photos_title"`
+	Photos          map[string]string        `bson:"photos" form:"photos"`
+	PlansTitle      string                   `bson:"plans_title" form:"plans_title"`
+	Plans           []map[string]interface{} `bson:"plans" form:"plans"`
+	ScriptTmpl      TamplateSettings         `json:"scripts"`
 }
 
 type TamplateSettings struct {
@@ -156,6 +165,15 @@ func (dh *domainsHandlers) GetTemplate(c *gin.Context) {
 		domainSettings.Qoopler = domain.Qoopler
 		domainSettings.Roistat = domain.Roistat
 		domainSettings.ScriptTmpl.SubTitle = domain.SubTitle
+		domainSettings.SubTitleItems = domain.SubTitleItems
+		domainSettings.Phone = domain.Phone
+		domainSettings.AdvantagesTitle = domain.AdvantagesTitle
+		domainSettings.Advantages = domain.Advantages
+		domainSettings.PhotosTitle = domain.PhotosTitle
+		domainSettings.Photos = domain.Photos
+		domainSettings.PlansTitle = domain.PlansTitle
+		domainSettings.Plans = domain.Plans
+
 		if domain.OrganizationID != "" {
 			organization, err := dh.organizationsRepo.GetOrganizationById(domain.OrganizationID.Hex())
 			if err == nil {
