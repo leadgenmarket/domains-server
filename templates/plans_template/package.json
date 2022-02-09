@@ -23,6 +23,7 @@
     "react-custom-scrollbars": "^4.2.1",
     "react-dom": "^17.0.2",
     "react-input-mask": "^2.0.4",
+    "react-lightgallery": "^0.9.0",
     "react-scripts": "5.0.0",
     "react-slick": "^0.28.1",
     "react-svg": "^14.1.5",

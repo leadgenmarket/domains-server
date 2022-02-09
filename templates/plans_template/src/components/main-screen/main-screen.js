@@ -4,6 +4,8 @@ import CityTitle from '../city-title';
 import parse from 'html-react-parser';
 import Advantages from '../advantages';
 import Gallery from '../gallery';
+import PlansComponent from '../plans-component';
+import Popups from '../popups';
 
 const MainScreen = ({ params, nextStep }) => {
   return (
@@ -12,7 +14,7 @@ const MainScreen = ({ params, nextStep }) => {
         <section className="hl_top">
           <div className="wmain">
             <div className="logo">
-              <img style={{ height: 'auto' }} src="/img/logo.png" />
+              <img style={{ height: 'auto', opacity: "0" }} src="/img/logo.png" />
             </div>
             <div className="hl_phone">
               <a
@@ -38,17 +40,17 @@ const MainScreen = ({ params, nextStep }) => {
                 </h1>
                 <sub></sub>
                 <div className="color_text">
-                  {params.sub_title === undefined || params.sub_title == ''
+                  {domainSettings.domain.sub_title === undefined || domainSettings.domain.sub_title == ''
                     ? parse('Бесплатный сервис по подбору недвижимости:')
-                    : parse(params.sub_title)}
+                    : parse(domainSettings.domain.sub_title)}
                   <br />
                   <ul className="header_list">
-                    {params.title_items === undefined ||
-                      params.title_items == ''
+                    {domainSettings.domain.sub_title_items === undefined ||
+                      domainSettings.domain.sub_title_items == ''
                       ? parse(
                         '<li>Все районы города</li><li>Подберем на ваш вкус</li>'
                       )
-                      : parse(params.title_items)}
+                      : parse(domainSettings.domain.sub_title_items)}
                   </ul>
                 </div>
                 <BtnComponent
@@ -71,8 +73,9 @@ const MainScreen = ({ params, nextStep }) => {
             </a>
             . Изменить ваши настройки cookie можно будет в любой момент.
           </span>{' '}
-          <a className="cookie_btn">Я принимаю</a>
+          <a className="cookie_btn" onClick={(e) => { e.preventDefault(); document.querySelector('.cookie').style.display = "none" }}>Я принимаю</a>
         </div>
+        <PlansComponent />
         <section className="advantages">
           <Advantages />
           <Gallery />
@@ -86,6 +89,7 @@ const MainScreen = ({ params, nextStep }) => {
             clickFunct={nextStep}
           />
         </section>
+
         <footer>
           <div className="wmain">
             <div className="f_left" style={{ float: 'right' }}>

@@ -1,10 +1,13 @@
-import { useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Slider from 'react-slick';
 import "./css/slick.min.css"
 import "./css/slick-theme.min.css"
+import { LightgalleryProvider, LightgalleryItem, useLightgallery } from "react-lightgallery";
+import "lightgallery.js/dist/css/lightgallery.css";
 
 const Gallery = () => {
   const slider = useRef(null);
+  const [images, setImages] = useState([])
   const settings = {
     dots: true,
     infinite: true,
@@ -22,48 +25,28 @@ const Gallery = () => {
     ],
   };
 
-  const images = [
-    '/photo/1m.jpg',
-    '/photo/2m.jpg',
-    '/photo/3m.jpg',
-    '/photo/4m.jpg',
-    '/photo/5m.jpg',
-    '/photo/6m.jpg',
-    '/photo/7m.jpg',
-    '/photo/8m.jpg',
-  ];
+
+  useEffect(() => {
+    setImages(domainSettings.domain.Photos);
+  }, [domainSettings.domain.Advantages]);
   return (
     <section className="hod_str">
-      <div className="tm">Фотогалерея</div>
-      {/* <div className="hd_slid slick-initialized slick-slider slick-dotted"> */}
-        {/* <button
-          className="slick-prev slick-arrow"
-          aria-label="Previous"
-          type="button"
-          style={{ display: 'inline-block' }}
-        >
-          Previous
-        </button> */}
+      <div className="tm">{domainSettings.domain.PhotosTitle}</div>
+      <LightgalleryProvider style={{ display: "none" }} >
         <Slider ref={slider} className="hd_slid" {...settings}>
-          {images.map((image) => {
+          {Object.keys(images).map((key) => {
             return (
-              <div key={image} className="hod_in">
+              <div key={key} className="hod_in">
                 <div className="hod_gal">
-                  <img src={image} />
+                  <LightgalleryItem group={"photo"} src={"https://admin.leadactiv.ru/file-store/" + images[key]} thumb={"https://admin.leadactiv.ru/file-store/" + key}>
+                    <img src={"https://admin.leadactiv.ru/file-store/" + key} />
+                  </LightgalleryItem>
                 </div>
               </div>
             );
           })}
         </Slider>
-        {/* <button
-          className="slick-next slick-arrow"
-          aria-label="Next"
-          type="button"
-          style={{ display: 'inline-block' }}
-        >
-          Next
-        </button> */}
-      {/* </div> */}
+      </LightgalleryProvider>
     </section>
   );
 };

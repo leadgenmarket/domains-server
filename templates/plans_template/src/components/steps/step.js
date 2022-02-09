@@ -28,7 +28,7 @@ const Step = ({
       >
         <div style={{ display: 'block' }} className="hd_inn">
           <div className="page_view">
-            <p class="step_ident">Шаг 1/4</p>
+            <p class="step_ident">Шаг {index + 1}/{length}</p>
             <div class="title_inner">{step.title}</div>
             {step.type == 'text' ||
               step.type == 'raions' ||
