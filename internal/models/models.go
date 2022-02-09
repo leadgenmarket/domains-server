@@ -28,27 +28,35 @@ type Lead struct {
 }
 
 type Domain struct {
-	ID             bson.ObjectId            `bson:"_id" json:"id"`
-	Url            string                   `bson:"url" json:"url" binding:"required"`
-	TemplateID     bson.ObjectId            `bson:"template_id" json:"template_id"`
-	CreatedBy      bson.ObjectId            `bson:"created_by"`
-	CityID         bson.ObjectId            `bson:"city_id" json:"city_id" binding:"required"`
-	Background     string                   `bson:"background" json:"background"`
-	MainColor      string                   `bson:"main_color" json:"main_color"`
-	SubTitle       string                   `bson:"sub_title" json:"sub_title"`
-	SecondaryColor string                   `bson:"secondary_color" json:"secondary_color"`
-	Yandex         string                   `bson:"yandex" json:"yandex"`
-	Google         string                   `bson:"google" json:"google"`
-	Mail           string                   `bson:"mail" json:"mail"`
-	Facebook       string                   `bson:"facebook" form:"facebook" json:"facebook"`
-	Marquiz        string                   `bson:"marquiz" json:"marquiz"`
-	Steps          []map[string]interface{} `bson:"steps"`
-	OrganizationID bson.ObjectId            `bson:"organization_id" json:"organization_id"`
-	Qoopler        bool                     `bson:"qoopler" form:"qoopler"`
-	Roistat        bool                     `bson:"roistat" form:"roistat"`
-	Moderation     bool                     `bson:"moderation" form:"moderation"`
-	CreatedAt      time.Time                `bson:"created_at"`
-	UpdatedAt      time.Time                `bson:"updated_at"`
+	ID              bson.ObjectId            `bson:"_id" json:"id"`
+	Url             string                   `bson:"url" json:"url" binding:"required"`
+	TemplateID      bson.ObjectId            `bson:"template_id" json:"template_id"`
+	CreatedBy       bson.ObjectId            `bson:"created_by"`
+	CityID          bson.ObjectId            `bson:"city_id" json:"city_id" binding:"required"`
+	Background      string                   `bson:"background" json:"background"`
+	MainColor       string                   `bson:"main_color" json:"main_color"`
+	SubTitle        string                   `bson:"sub_title" json:"sub_title"`
+	SubTitleItems   string                   `bson:"sub_title_items" json:"sub_title_items"`
+	Phone           string                   `bson:"phone" json:"phone"`
+	SecondaryColor  string                   `bson:"secondary_color" json:"secondary_color"`
+	Yandex          string                   `bson:"yandex" json:"yandex"`
+	Google          string                   `bson:"google" json:"google"`
+	Mail            string                   `bson:"mail" json:"mail"`
+	Facebook        string                   `bson:"facebook" form:"facebook" json:"facebook"`
+	Marquiz         string                   `bson:"marquiz" json:"marquiz"`
+	Steps           []map[string]interface{} `bson:"steps"`
+	OrganizationID  bson.ObjectId            `bson:"organization_id" json:"organization_id"`
+	Qoopler         bool                     `bson:"qoopler" form:"qoopler"`
+	Roistat         bool                     `bson:"roistat" form:"roistat"`
+	Moderation      bool                     `bson:"moderation" form:"moderation"`
+	AdvantagesTitle string                   `bson:"advantages_title" form:"advantages_title"`
+	Advantages      []map[string]interface{} `bson:"advantages" form:"advantages"`
+	PhotosTitle     string                   `bson:"photos_title" form:"photos_title"`
+	Photos          map[string]string        `bson:"photos" form:"photos"`
+	PlansTitle      string                   `bson:"plans_title" form:"plans_title"`
+	Plans           []map[string]interface{} `bson:"plans" form:"plans"`
+	CreatedAt       time.Time                `bson:"created_at"`
+	UpdatedAt       time.Time                `bson:"updated_at"`
 }
 
 type Template struct {
