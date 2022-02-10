@@ -11,11 +11,13 @@ import { useNavigate } from "react-router-dom"
 import ApiService from "../../../../services/api-service";
 import { toast } from "react-toastify";
 import { BottomScrollListener } from 'react-bottom-scroll-listener';
+import { Modals } from "../../../modals";
 
 const DomainsPage = ({ domains, cursor, loading, fetchDomains, fetchMore }) => {
     const [templates, setTemplates] = useState(null)
     const [load, setLoad] = useState(false)
     const [search, setSearch] = useState("")
+    const [copyID, setCopyID] = useState()
     const navigate = useNavigate();
     useEffect(() => {
         let apiService = new ApiService
@@ -50,6 +52,28 @@ const DomainsPage = ({ domains, cursor, loading, fetchDomains, fetchMore }) => {
         setSearch(event.target.value)
         fetchDomains(event.target.value, "", 15)
     }
+
+    const forms = [
+        {
+            title: 'Копировать домен',
+            name: 'copyDomain',
+            url: "/api/domains/copy",
+            type: "post",
+            action: (action) => { fetchDomains("", "", 15) },
+            fields: [
+                {
+                    name: 'URL',
+                    json: 'url',
+                    type: 'text',
+                },
+                {
+                    json: 'ID',
+                    type: 'hidden',
+                    value: copyID,
+                },
+            ],
+        },
+    ]
     return (<div className="main-content">
         <div className="page-content">
             <div className="container-fluid">
@@ -98,7 +122,7 @@ const DomainsPage = ({ domains, cursor, loading, fetchDomains, fetchMore }) => {
                                                             {
                                                                 domains.map((domain) => {
                                                                     domain.templateName = getTemplateById(domain.template_id)
-                                                                    return <TableItem domain={domain} fetchDomains={fetchDomains} />
+                                                                    return <TableItem domain={domain} fetchDomains={fetchDomains} setCopyID={setCopyID} />
                                                                 })
                                                             }
                                                         </tbody>}
@@ -114,7 +138,7 @@ const DomainsPage = ({ domains, cursor, loading, fetchDomains, fetchMore }) => {
                 </div>
             </div>
         </div>
-
+        <Modals forms={forms} />
     </div>
     )
 }

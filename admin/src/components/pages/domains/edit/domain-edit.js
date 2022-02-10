@@ -289,7 +289,6 @@ const DomainEdit = ({ addDomainToList }) => {
                                                 </div>
                                             </a>
                                         </li>
-
                                     </ul>
                                     <div className="tab-content twitter-bs-wizard-tab-content">
                                         <div className={step == 1 ? "tab-pane active" : "tab-pane"} id="seller-details">
