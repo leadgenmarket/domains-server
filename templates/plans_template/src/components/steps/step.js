@@ -18,7 +18,7 @@ const Step = ({
   setForm,
 }) => {
   return (
-    <section className="header">
+    <section className="header" style={{ background: params.background != "" ? `url("/file-store/${params.background}") center / cover no-repeat` : `` }}>
       <div
         style={{
           backgroundColor: 'rgba(0,0,0, .56)',
@@ -29,6 +29,7 @@ const Step = ({
         <div style={{ display: 'block' }} className="hd_inn">
           <div className="page_view">
             <p class="step_ident">Шаг {index + 1}/{length}</p>
+            <CityTitle params={params} />
             <div class="title_inner">{step.title}</div>
             {step.type == 'text' ||
               step.type == 'raions' ||

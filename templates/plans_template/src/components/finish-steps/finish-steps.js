@@ -10,7 +10,7 @@ const FinishSteps = ({ params, form, setForm, raionsPrice, raionsStep, roomsStep
         event.preventDefault()
         setStage(stage + 1)
     }
-    return <section className={stage == 2 ? "header name-header" : "header"}>
+    return <section className={stage == 2 ? "header name-header" : "header"} style={{ background: params.background != "" ? `url("/file-store/${params.background}") center / cover no-repeat` : `` }}>
         <div className={stage == 2 ? "page name_step" : "page"}>
             <div className="page_inner">
                 <div className="wmain">

@@ -1,28 +1,28 @@
 @font-face {
     font-family: 'Roboto';
-    src: url('/css/fonts/RobotoRegular.eot');
-    src: url('/css/fonts/RobotoRegular.eot?#iefix') format('embedded-opentype'),
-         url('/css/fonts/RobotoRegular.woff') format('woff'),
-         url('/css/fonts/RobotoRegular.ttf') format('truetype');
+    src: url('/templates/plans_template/build/css/fonts/RobotoRegular.eot');
+    src: url('/templates/plans_template/build/css/fonts/RobotoRegular.eot?#iefix') format('embedded-opentype'),
+         url('/templates/plans_template/build/css/fonts/RobotoRegular.woff') format('woff'),
+         url('/templates/plans_template/build/css/fonts/RobotoRegular.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
 }
 
 @font-face {
     font-family: 'Roboto';
-    src: url('/css/fonts/RobotoMedium.eot');
-    src: url('/css/fonts/RobotoMedium.eot?#iefix') format('embedded-opentype'),
-         url('/css/fonts/RobotoMedium.woff') format('woff'),
-         url('/css/fonts/RobotoMedium.ttf') format('truetype');
+    src: url('/templates/plans_template/build/css/fonts/RobotoMedium.eot');
+    src: url('/templates/plans_template/build/css/fonts/RobotoMedium.eot?#iefix') format('embedded-opentype'),
+         url('/templates/plans_template/build/css/fonts/RobotoMedium.woff') format('woff'),
+         url('/templates/plans_template/build/css/fonts/RobotoMedium.ttf') format('truetype');
     font-weight: bold;
     font-style: normal;
 }
 @font-face {
     font-family: 'Roboto';
-    src: url('/css/fonts/RobotoLight.eot');
-    src: url('/css/fonts/RobotoLight.eot?#iefix') format('embedded-opentype'),
-         url('/css/fonts/RobotoLight.woff') format('woff'),
-         url('/css/fonts/RobotoLight.ttf') format('truetype');
+    src: url('/templates/plans_template/build/css/fonts/RobotoLight.eot');
+    src: url('/templates/plans_template/build/css/fonts/RobotoLight.eot?#iefix') format('embedded-opentype'),
+         url('/templates/plans_template/build/css/fonts/RobotoLight.woff') format('woff'),
+         url('/templates/plans_template/build/css/fonts/RobotoLight.ttf') format('truetype');
     font-weight: 100;
     font-style: normal;
 }
@@ -258,7 +258,7 @@ button {
     display: block;
     position: absolute;
     content: '';
-    background: url(/img/hl_phone.png)no-repeat center top;
+    background: url(/templates/plans_template/build/img/hl_phone.png)no-repeat center top;
     width: 25px;
     height: 26px;
     top: 0px;
@@ -298,7 +298,7 @@ button {
     min-height: 100vh;
     padding: 24px 0px;
     box-sizing: border-box;
-    background: url(/img/hd_bg_0810.jpg)no-repeat center top;
+    background: url(/templates/plans_template/build/img/hd_bg_0810.jpg)no-repeat center top;
     -webkit-background-size: cover;
     background-size: cover;
     /*padding-top: 274px;*/
@@ -496,7 +496,7 @@ sub{
     left: 0;
     top: 0;
     opacity: 0;
-    background: url(/img/step_ok.png) no-repeat center center;
+    background: url(/templates/plans_template/build/img/step_ok.png) no-repeat center center;
     -webkit-background-size: 12px;
     -o-background-size: 12px;
     background-size: 12px;
@@ -610,7 +610,7 @@ sub{
     height: 23px;
     box-sizing: border-box;
     border: 1px solid #fff;
-    background: url(/img/step_ok.png)no-repeat center center;
+    background: url(/templates/plans_template/build/img/step_ok.png)no-repeat center center;
     -webkit-background-size: 0px 0px ;
     background-size: 0px 0px ;
     border-radius: 1px;
@@ -620,17 +620,17 @@ sub{
     transition: .2s;
 }
 .form_main label input:checked ~ .checkbox{
-    background: #fff url(/img/step_ok.png)no-repeat center center;
+    background: #fff url(/templates/plans_template/build/img/step_ok.png)no-repeat center center;
     -webkit-background-size: 15px 11px ;
     background-size: 15px 11px ;
 }
 /*.form_main label:hover input ~ .checkbox{
-    background:  url(/img/step_ok.png)no-repeat center center;
+    background:  url(/templates/plans_template/build/img/step_ok.png)no-repeat center center;
     -webkit-background-size: 15px 11px ;
     background-size: 15px 11px ;
 }
 .form_main label:hover input:checked ~ .checkbox{
-    background: #fff url(/img/step_ok.png)no-repeat center center;
+    background: #fff url(/templates/plans_template/build/img/step_ok.png)no-repeat center center;
     -webkit-background-size: 15px 11px ;
     background-size: 15px 11px ;
 }*/
@@ -804,7 +804,7 @@ sub{
     width: 320px;
     height: 24px;
     position: relative;
-    background: url(/img/progress.png) no-repeat left top;
+    background: url(/templates/plans_template/build/img/progress.png) no-repeat left top;
     -webkit-background-size: 320px;
     -o-background-size: 320px;
     background-size: 320px;
@@ -815,7 +815,7 @@ sub{
     height: 100%;
     left: 0;
     top: 0;
-    background: url(/img/progress.png) no-repeat left bottom;
+    background: url(/templates/plans_template/build/img/progress.png) no-repeat left bottom;
     -webkit-background-size: 320px;
     -o-background-size: 320px;
     background-size: 320px;
@@ -1333,31 +1333,31 @@ li:hover .jk_btn{
     line-height: 120%;
 }
 .sw_properties{
-    background: #fff url(/img/sw_properties.png)no-repeat center center;
+    background: #fff url(/templates/plans_template/build/img/sw_properties.png)no-repeat center center;
 }
 .sw_list li:hover .sw_properties{
-    background: #ae9674 url(/img/sw_properties_hov.png)no-repeat center center;
+    background: #ae9674 url(/templates/plans_template/build/img/sw_properties_hov.png)no-repeat center center;
 }
 
 .sw_variants{
-    background: #fff url(/img/sw_variants.png)no-repeat center center;
+    background: #fff url(/templates/plans_template/build/img/sw_variants.png)no-repeat center center;
 }
 .sw_list li:hover .sw_variants{
-    background: #ae9674 url(/img/sw_variants_hov.png)no-repeat center center;
+    background: #ae9674 url(/templates/plans_template/build/img/sw_variants_hov.png)no-repeat center center;
 }
 
 .sw_sms{
-    background: #fff url(/img/sw_sms.png)no-repeat center center;
+    background: #fff url(/templates/plans_template/build/img/sw_sms.png)no-repeat center center;
 }
 .sw_list li:hover .sw_sms{
-    background: #ae9674 url(/img/sw_sms_hov.png)no-repeat center center;
+    background: #ae9674 url(/templates/plans_template/build/img/sw_sms_hov.png)no-repeat center center;
 }
 
 .sw_operator{
-    background: #fff url(/img/sw_operator.png)no-repeat center center;
+    background: #fff url(/templates/plans_template/build/img/sw_operator.png)no-repeat center center;
 }
 .sw_list li:hover .sw_operator{
-    background: #ae9674 url(/img/sw_operator_hov.png)no-repeat center center;
+    background: #ae9674 url(/templates/plans_template/build/img/sw_operator_hov.png)no-repeat center center;
 }
 
 .dotted_dec{
@@ -1365,7 +1365,7 @@ li:hover .jk_btn{
     position: absolute;
     width: 1px;
     height: 80px;
-    background: url(/img/dotted_dec.png)no-repeat center top;
+    background: url(/templates/plans_template/build/img/dotted_dec.png)no-repeat center top;
     left: 34px;
     top: 60px;
 }
@@ -1520,7 +1520,7 @@ footer span{
     .closeform {
     display: block;
     position: absolute;
-    background: url(/img/closeform.png) no-repeat center center;
+    background: url(/templates/plans_template/build/img/closeform.png) no-repeat center center;
     height: 14px;
     width: 14px;
     right: 10px;
@@ -1657,7 +1657,7 @@ footer span{
     z-index: 10;
 }
 .hd_slid .slick-prev{
-    background: #ae9674 url(/img/ar_prev.png)no-repeat center center;
+    background: #ae9674 url(/templates/plans_template/build/img/ar_prev.png)no-repeat center center;
     box-sizing: border-box;
     border: 1px solid #ae9674;
     left: 18%;
@@ -1666,13 +1666,13 @@ footer span{
     transition: .3s;
 }
 .hd_slid .slick-prev:hover{
-    background: #ffffff url(/img/ar_prev_act.png)no-repeat center center;
+    background: #ffffff url(/templates/plans_template/build/img/ar_prev_act.png)no-repeat center center;
 }
 .slick-next:before, .slick-prev:before{
     display: none;
 }
 .hd_slid .slick-next{
-    background: #ae9674 url(/img/ar_next.png)no-repeat center center;
+    background: #ae9674 url(/templates/plans_template/build/img/ar_next.png)no-repeat center center;
     box-sizing: border-box;
     border: 1px solid #ae9674;
     right: 18%;
@@ -1681,7 +1681,7 @@ footer span{
     transition: .3s;
 }
 .hd_slid .slick-next:hover{
-    background: #ffffff url(/img/ar_next_act.png)no-repeat center center;
+    background: #ffffff url(/templates/plans_template/build/img/ar_next_act.png)no-repeat center center;
 }
 .hd_slid .slick-dots li{
     height: auto;
@@ -1736,7 +1736,7 @@ footer span{
     z-index: 10;
 }
 .fancybox-prev{
-    background: #ae9674 url(/img/ar_prev.png)no-repeat center center;
+    background: #ae9674 url(/templates/plans_template/build/img/ar_prev.png)no-repeat center center;
     box-sizing: border-box;
     border: 1px solid #ae9674;
     left: -25px;
@@ -1745,10 +1745,10 @@ footer span{
     transition: .3s;
 }
 .fancybox-prev:hover{
-    background: #ffffff url(/img/ar_prev_act.png)no-repeat center center;
+    background: #ffffff url(/templates/plans_template/build/img/ar_prev_act.png)no-repeat center center;
 }
 .fancybox-next{
-    background: #ae9674 url(/img/ar_next.png)no-repeat center center;
+    background: #ae9674 url(/templates/plans_template/build/img/ar_next.png)no-repeat center center;
     box-sizing: border-box;
     border: 1px solid #ae9674;
     right: -25px;
@@ -1757,7 +1757,7 @@ footer span{
     transition: .3s;
 }
 .fancybox-next:hover{
-    background: #ffffff url(/img/ar_next_act.png)no-repeat center center;
+    background: #ffffff url(/templates/plans_template/build/img/ar_next_act.png)no-repeat center center;
 }
 
 .fancybox-close {
@@ -1769,7 +1769,7 @@ footer span{
     cursor: pointer;
     border-radius: 50%;
     z-index: 8040;
-    background: url(/img/f_close.png) no-repeat center !important;
+    background: url(/templates/plans_template/build/img/f_close.png) no-repeat center !important;
     background-size: 100%!important;
 }
 /*hod_str*/
@@ -1877,7 +1877,7 @@ footer span{
     position: fixed;
     width: 55px;
     height: 242px;
-    background: url(/img/dt_dec.jpg)no-repeat center top;
+    background: url(/templates/plans_template/build/img/dt_dec.jpg)no-repeat center top;
     -webkit-background-size: 100%;
     background-size: 100%;
     top: 50%;
@@ -1898,7 +1898,7 @@ footer span{
     content: '';
     width: 55px;
     height: 242px;
-    background: url(/img/dt_dec.jpg)no-repeat center top;
+    background: url(/templates/plans_template/build/img/dt_dec.jpg)no-repeat center top;
     -webkit-background-size: 100%;
     background-size: 100%;
    top: 0;
@@ -1949,7 +1949,7 @@ footer span{
     height: 152px;
     top: 0px;
     left: -80px;
-    background: url(/img/pdt_dec.png)no-repeat center top;
+    background: url(/templates/plans_template/build/img/pdt_dec.png)no-repeat center top;
     -webkit-background-size: 100%;
     background-size: 100%;
 }
@@ -2205,7 +2205,7 @@ footer span{
     top: 50%;
     transform: translateY(-50%);
     opacity: 0;
-    background: url(/img/step_ok.png) no-repeat center center;
+    background: url(/templates/plans_template/build/img/step_ok.png) no-repeat center center;
     -webkit-background-size: 12px;
     -o-background-size: 12px;
     background-size: 12px;
@@ -2787,7 +2787,7 @@ h1{
 .pdt_btn {
     width: 30px;
     height: 146px;
-    background: url(/img/dt_dec.jpg)no-repeat center center;
+    background: url(/templates/plans_template/build/img/dt_dec.jpg)no-repeat center center;
     -webkit-background-size: 100%;
     background-size: 100%;
 }
@@ -3250,7 +3250,7 @@ footer{
     width: 300px;
     height: 22px;
     position: relative;
-    background: url(/img/progress.png) no-repeat left top;
+    background: url(/templates/plans_template/build/img/progress.png) no-repeat left top;
     -webkit-background-size: 300px;
     -o-background-size: 300px;
     background-size: 300px;
