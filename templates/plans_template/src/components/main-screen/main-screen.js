@@ -30,7 +30,7 @@ const MainScreen = ({ params, nextStep }) => {
             </div>
           </div>
         </section>
-        <section className="header">
+        <section className="header" style={{ background: params.background != "" ? `url("/file-store/${params.background}") center / cover no-repeat` : `` }}>
           <div style={{ width: '100%', padding: '100px 0px' }}>
             <div className="hd_inn">
               <CityTitle params={params} />
