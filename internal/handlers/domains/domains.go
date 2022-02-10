@@ -34,6 +34,7 @@ type Handlers interface {
 	AddDomainWithSettings(c *gin.Context)
 	DomainsModerationChange(c *gin.Context)
 	DomainsGetCityByUrl(c *gin.Context)
+	CopyDomain(c *gin.Context)
 }
 
 type domainsHandlers struct {
@@ -566,6 +567,26 @@ func (dh *domainsHandlers) DomainsGetCityByUrl(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{"city": city.PortalID})
+}
+
+type CpDomainInput struct {
+	ID  string `json:"id" form:"id"`
+	URL string `json:"url"`
+}
+
+func (dh *domainsHandlers) CopyDomain(c *gin.Context) {
+	domainInput := CpDomainInput{}
+	if err := c.ShouldBind(&domainInput); err != nil {
+		dh.logger.GetInstance().Errorf("error binding json %s", err)
+		c.JSON(http.StatusInternalServerError, gin.H{"paylod": "error binding json"})
+		return
+	}
+	domain, err := dh.repository.CopyDomain(domainInput.ID, domainInput.URL)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"paylod": "error copying domain"})
+		return
+	}
+	c.JSON(http.StatusOK, domain)
 }
 
 func handleAdminInterface(c *gin.Context, path string) {

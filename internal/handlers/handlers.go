@@ -89,6 +89,7 @@ func (h *handlers) Registry() {
 		domainsGroup := api.Group("domains")
 		domainsGroup.PUT("/", h.Domains.CreateDomain)
 		domainsGroup.POST("/list", h.Domains.GetDomainsList)
+		domainsGroup.POST("/copy", h.Domains.CopyDomain)
 		domainsGroup.POST("/", h.Domains.UpdateDomain)
 		domainsGroup.POST("/moderation", h.Domains.DomainsModerationChange)
 		domainsGroup.DELETE("/:id", h.Domains.DeleteDomain)

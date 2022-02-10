@@ -24,6 +24,7 @@ type Repository interface {
 	FindDomainByID(id string) (models.Domain, error)
 	DeleteDomainById(id string) error
 	UpdateDomainsModeration(id string, modearation bool) (string, error)
+	CopyDomain(id string, newDomainName string) (models.Domain, error)
 	GetDomainsListWithPaginationAndFiltered(searchUrl string, cursor string, itemsCnt int) (domains []models.Domain, newCursor string, err error)
 }
 
@@ -73,7 +74,6 @@ func (r *repositroyDB) AddDomain(domain models.Domain) (models.Domain, error) {
 
 func (r *repositroyDB) FindDomainByUrl(url string) (models.Domain, error) {
 	var domain models.Domain
-	fmt.Println(url)
 	err := r.domains.Find(bson.M{"url": url}).One(&domain)
 	if err != nil {
 		return domain, err
@@ -128,28 +128,6 @@ func (r *repositroyDB) DeleteDomainById(id string) error {
 	return nil
 }
 
-func (r *repositroyDB) GetDefaultDomainSettingsForCity(url string, templateID bson.ObjectId, userID bson.ObjectId, cityID bson.ObjectId, yandex string, google string) *models.Domain {
-	domain := models.Domain{
-		ID:             bson.NewObjectId(),
-		Url:            url,
-		TemplateID:     templateID,
-		CreatedBy:      userID,
-		CityID:         cityID,
-		Background:     "",
-		MainColor:      defaultMainColor,
-		SecondaryColor: defaultSecondaryColor,
-		Yandex:         yandex,
-		Google:         google,
-		Mail:           "",
-		Marquiz:        "",
-		Steps:          r.GetDefaultSteps(),
-		OrganizationID: "",
-		SubTitle:       "",
-		Qoopler:        false,
-	}
-	return &domain
-}
-
 func (r *repositroyDB) UpdateDomainsModeration(id string, modearation bool) (string, error) {
 	domain, err := r.FindDomainByID(id)
 	if err != nil {
@@ -157,11 +135,27 @@ func (r *repositroyDB) UpdateDomainsModeration(id string, modearation bool) (str
 	}
 	domain.UpdatedAt = time.Now()
 	domain.Moderation = modearation
-	err = r.domains.Update(bson.M{"_id": domain.ID.Hex()}, domain)
+	err = r.domains.Update(bson.M{"_id": domain.ID}, domain)
 	if err != nil {
 		return "", err
 	}
 	return domain.Url, nil
+}
+
+func (r *repositroyDB) CopyDomain(id string, newDomainName string) (models.Domain, error) {
+	domain, err := r.FindDomainByID(id)
+	if err != nil {
+		return domain, err
+	}
+	domain.CreatedAt = time.Now()
+	domain.UpdatedAt = time.Now()
+	domain.Url = newDomainName
+	domain.ID = bson.NewObjectId()
+	err = r.domains.Insert(&domain)
+	if err != nil {
+		return domain, err
+	}
+	return domain, nil
 }
 
 func (r *repositroyDB) GetDefaultSteps() []map[string]interface{} {
