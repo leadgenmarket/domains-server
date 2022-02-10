@@ -587,6 +587,10 @@ func (dh *domainsHandlers) CopyDomain(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, domain)
+	go func() {
+		time.Sleep(2 * time.Second)
+		os.Exit(1) //докер контейнер перезгарузитcя и новый домен попадет в whitelist
+	}()
 }
 
 func handleAdminInterface(c *gin.Context, path string) {
