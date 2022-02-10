@@ -1,0 +1,22 @@
+.popup_main .form_style input[type='text'],
+.popup_main .form_style input[type='tel'] {
+  display: block;
+  width: 100%;
+  font-size: 22px;
+  font-weight: 300;
+  color: #7f8489;
+  border: none;
+  height: 65px;
+  background: #fbf0f3;
+  padding-left: 35px;
+  padding-right: 35px;
+  margin-bottom: 22px;
+  -webkit-border-radius: 50px;
+  border-radius: 50px;
+  font-family: 'Roboto';
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  -webkit-transition: 0.3s;
+  -moz-transition: 0.3s;
+}

@@ -1,7 +1,8 @@
-import React,{  useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import Slider from "@material-ui/core/Slider";
 import { ThemeProvider } from "@material-ui/styles";
 import { createTheme } from "@mui/material";
+import "./slider.css"
 
 const SliderStep = ({ step, params, raionsStep, roomsStep, index, length, nextStep, prevStep, form, setForm }) => {
     const [sliderValue, setValue] = useState(null)
@@ -22,13 +23,13 @@ const SliderStep = ({ step, params, raionsStep, roomsStep, index, length, nextSt
     };
 
     const getRaionsID = (raionName) => {
-        for (let i=0; i<domainSettings.locations.length; i++) {
+        for (let i = 0; i < domainSettings.locations.length; i++) {
             if (domainSettings.locations[i].NameFull === raionName) {
                 return domainSettings.locations[i].PortalID
             }
         }
     }
-    useEffect(()=> {
+    useEffect(() => {
         if (step.type === "slider_r") {
             let minV
             let maxV
@@ -66,24 +67,24 @@ const SliderStep = ({ step, params, raionsStep, roomsStep, index, length, nextSt
                 let prices = []
                 Object.keys(domainSettings.prices.prices).map((key) => {
                     let price = domainSettings.prices.prices[key]
-                    if (parseFloat(price.min)>0 && (minV === undefined || minV > parseFloat(price.min))) {
+                    if (parseFloat(price.min) > 0 && (minV === undefined || minV > parseFloat(price.min))) {
                         minV = Math.round(parseFloat(price.min))
                     }
-                    if (parseFloat(price.max)>0 && (maxV === undefined || maxV < parseFloat(price.max))) {
+                    if (parseFloat(price.max) > 0 && (maxV === undefined || maxV < parseFloat(price.max))) {
                         maxV = Math.round(parseFloat(price.max))
                     }
                 })
             } else {
                 console.log("считаем нужные районы и цены")
                 let prices = []
-               
+
                 raions.forEach((raion) => {
                     if (raion != "Все") {
                         prices.push(domainSettings.prices.prices[getRaionsID(raion)])
                     }
                 })
-                
-                
+
+
                 prices.forEach((price) => {
                     typedRoomsMin.forEach((filed) => {
                         if (minV === undefined || minV > parseFloat(price[filed])) {
@@ -96,11 +97,11 @@ const SliderStep = ({ step, params, raionsStep, roomsStep, index, length, nextSt
                         }
                     })
                 })
-                
+
             }
-            setMin(minV*1000000)
-            setMax(maxV*1000000)
-            let value = (((maxV - minV)/4)+minV)*1000000
+            setMin(minV * 1000000)
+            setMax(maxV * 1000000)
+            let value = (((maxV - minV) / 4) + minV) * 1000000
             setValue(value)
             form[step.title] = value
             setForm(form)
@@ -109,67 +110,67 @@ const SliderStep = ({ step, params, raionsStep, roomsStep, index, length, nextSt
             let maxV = parseFloat(step.to)
             setMin(minV)
             setMax(maxV)
-            let value = (((maxV - minV)/4)+minV)
+            let value = (((maxV - minV) / 4) + minV)
             setValue(value)
             form[step.title] = value
             setForm(form)
         }
-    },[index])
+    }, [index])
 
-   
+
 
     const sliderTheme = createTheme({
         overrides: {
-          MuiSlider: {
-            root: {
-                //color: `#${params.secondary_color} !important`,
-                height: 3,
-                padding: "13px 0",
-                marginTop: "-21px",
-            },
-            track: {
-                height: 4,
-                borderRadius: 2,
-                color:`#${params.main_color}`
-            },
-            thumb: {
-                marginTop: "-20px",
-                width: "46px !important",
-                height: "46px !important",
-                background: `#${params.secondary_color} !important`,
-                cursor: "pointer",
-                outlineStyle: "none",
-                border: `2px solid #${params.main_color}`,
-                webkitBoxSizing: "border-box",
-                mozBoxSizing: "border-box",
-                boxSizing: "border-box",
-                webkitBorderRadius: "50%",
-                borderRadius: "50%",
+            MuiSlider: {
+                root: {
+                    //color: `#${params.secondary_color} !important`,
+                    height: 3,
+                    padding: "13px 0",
+                    marginTop: "-21px",
+                },
+                track: {
+                    height: 4,
+                    borderRadius: 2,
+                    color: `#${params.main_color}`
+                },
+                thumb: {
+                    marginTop: "-20px",
+                    width: "46px !important",
+                    height: "46px !important",
+                    background: `#${params.secondary_color} !important`,
+                    cursor: "pointer",
+                    outlineStyle: "none",
+                    border: `2px solid #${params.main_color}`,
+                    webkitBoxSizing: "border-box",
+                    mozBoxSizing: "border-box",
+                    boxSizing: "border-box",
+                    webkitBorderRadius: "50%",
+                    borderRadius: "50%",
+                }
             }
-          }
         }
     });
 
-    if (min==null || max == null || sliderValue == null) {
+    if (min == null || max == null || sliderValue == null) {
         return <div>load</div>
     }
 
-  return <div className="in_slider">
-            <div className="prpp" style={{ background: `#${params.secondary_color}` }} id="price_info">{sliderValue===min?"От":"До"} {sliderValue !==undefined ?sliderValue.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " "):"0"} руб.</div>
-            <input id="max_price" type="hidden" value={valuetext()} />
-            <ThemeProvider theme={sliderTheme}>
-                <Slider 
-                    //defaultValue={defaultValue}
-                    getAriaValueText={valuetext}
-                    aria-labelledby="non-linear-slider"
-                    step={50000}
-                    value={sliderValue}
-                    onChange={handleChange}
-                    min={min}
-                    max={max}
-                />
-            </ThemeProvider>
-        </div>
+    return <div className="in_slider">
+        <div className="prpp" style={{ background: `#${params.secondary_color}` }} id="price_info">{sliderValue === min ? "От" : "До"} {sliderValue !== undefined ? sliderValue.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") : "0"} руб.</div>
+        <input id="max_price" type="hidden" value={valuetext()} />
+        <ThemeProvider theme={sliderTheme}>
+            <Slider
+                //defaultValue={defaultValue}
+                getAriaValueText={valuetext}
+                aria-labelledby="non-linear-slider"
+                step={50000}
+                value={sliderValue}
+                onChange={handleChange}
+                min={min}
+                max={max}
+            />
+        </ThemeProvider>
+    </div>
 }
 
 export default SliderStep

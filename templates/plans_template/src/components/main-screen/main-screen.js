@@ -14,7 +14,7 @@ const MainScreen = ({ params, nextStep }) => {
         <section className="hl_top">
           <div className="wmain">
             <div className="logo">
-              <img style={{ height: 'auto', opacity: "0" }} src="/img/logo.png" />
+              <img style={{ height: 'auto', opacity: "0" }} src="/templates/plans_template/build/img/logo.png" />
             </div>
             <div className="hl_phone">
               <a
@@ -80,7 +80,7 @@ const MainScreen = ({ params, nextStep }) => {
           <Advantages />
           <Gallery />
           <div className="adv_in">
-            <img src="/img/adv_in.png" />
+            <img src="/templates/plans_template/build/img/adv_in.png" />
             <span>Получите подходящие варианты в течение нескольких минут</span>
           </div>
           <BtnComponent

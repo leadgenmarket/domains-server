@@ -10,8 +10,8 @@ const FinishSteps = ({ params, form, setForm, raionsPrice, raionsStep, roomsStep
         event.preventDefault()
         setStage(stage + 1)
     }
-    return <section className="header">
-        <div className="page">
+    return <section className={stage == 2 ? "header name-header" : "header"}>
+        <div className={stage == 2 ? "page name_step" : "page"}>
             <div className="page_inner">
                 <div className="wmain">
                     <CityTitle params={params} />

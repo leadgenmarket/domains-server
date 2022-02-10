@@ -1,4 +1,12 @@
+import "./popups.css"
+import InputMask from 'react-input-mask'
+import { useState } from "react"
+import { SendData } from "../../utils/send-data"
+
 const Popups = () => {
+  const [form, setForm] = useState({})
+  const [error, setError] = useState(false)
+  const [phone, setPhone] = useState("")
   const closePopup = (e) => {
     e.preventDefault()
     document.querySelector('body').classList.remove('overflow')
@@ -7,6 +15,21 @@ const Popups = () => {
     })
     document.querySelector('.popup_rgba').style.display = "none"
   }
+
+  const inputChange = (event) => {
+    setForm({
+      ...form,
+      [event.target.name]: event.target.value
+    })
+  }
+
+  const sendForm = (e) => {
+    e.preventDefault()
+    let celtype = "getFlatCoast"
+    console.log(form)
+    SendData(form, () => { }, () => { }, "", "", "", celtype)
+  }
+
   return (<div class="popup_rgba popups" id="popup_rgba" style={{ display: "none" }}>
     <div class="popup_table">
       <div class="popup_cell">
@@ -23,10 +46,11 @@ const Popups = () => {
             <div class="pu_pl_info">
               <form class="form_style">
                 <div class="form_tit">Узнайте прямо сейчас<br />стоимость квартир </div>
-                <input type="tel" class="in_name ym-record-keys" placeholder="Введите имя" />
-                <input type="tel" class="in_phone ym-record-keys" req="Y" placeholder="Введите номер телефона" />
-                <input type="hidden" class="text" value="Узнать стоимость квартир в ЖК Горки Парк" />
-                <button class="btn_form lead-btn" celtype="getFlatCoast" template="1">Узнать стоимость</button>
+                <input type="tel" class="in_name ym-record-keys" name="name" onChange={inputChange} value={form.name} placeholder="Введите имя" />
+                <InputMask mask="+7\ (999) 999-99-99" onChange={inputChange} name="phone" value={form.phone} onChange={inputChange} maskChar={null} >
+                  {(inputProps) => <input type="tel" className={error ? "in_phone ym-record-keys err" : "in_phone ym-record-keys"}  {...inputProps} placeholder="+7 ( ___ ) ___ - __ - __" />}
+                </InputMask>
+                <button class="btn_form lead-btn" celtype="getFlatCoast" onClick={sendForm} template="1">Узнать стоимость</button>
               </form>
             </div>
           </div>

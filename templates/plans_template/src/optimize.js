@@ -3,10 +3,10 @@ const util = require('util');
 
 fs.readFile('./build/index.html', 'utf8', (err, data) => {
   data = replaceScripts(data)
-  //data = data.replaceAll('"/css', '"/templates/blue_template/build/css')
-  data = data.replaceAll('"/static', '"/templates/blue_template/build/static')
-  data = data.replaceAll('"static/js/', '"/templates/blue_template/build/static/js/')
-  data = data.replace('href="favicon.ico"', 'href="/templates/blue_template/build/favicon.ico"')
+  //data = data.replaceAll('"/css', '"/templates/plans_template/build/css')
+  data = data.replaceAll('"/static', '"/templates/plans_template/build/static')
+  data = data.replaceAll('"static/js/', '"/templates/plans_template/build/static/js/')
+  data = data.replace('href="favicon.ico"', 'href="/templates/plans_template/build/favicon.ico"')
   data = data.replace('</body>', '<script> let domainSettings = JSON.parse("{{ .scripts }}")</script></body>')
   data = data.replace('</body>', "{{if .google}}<script async src=\"https://www.googletagmanager.com/gtag/js?id={{.google}}\"></script>{{end}}</body>")
   data = data.replace('</body>', " <script type=\"text/javascript\" > \
@@ -73,13 +73,9 @@ const replaceScripts = (data) => {
   let scriptContent = fs.readFileSync("build/" + script, 'utf8')
   data = data.replace('<script defer="defer" src="/' + script + '"></script>', `<script type="text/javascript">${scriptContent}</script>`)*/
 
-  let style = "css/style.css"
+  let style = "css/style_mask.css"
   let styleContent = fs.readFileSync("build/" + style, 'utf8')
-  data = data.replace(`<link rel="stylesheet" href="/css/style.css"/>`, `<style type="text/css">${styleContent}</style>`)
-
-  style = "/css/header.css"
-  styleContent = fs.readFileSync("build/" + style, 'utf8')
-  data = data.replace(`<link rel="stylesheet" href="/css/header.css"/>`, `<style type="text/css">${styleContent}</style>`)
+  data = data.replace(`<link rel="stylesheet" href="/css/style_mask.css"/>`, `<style type="text/css">${styleContent}</style>`)
 
   return data
 }

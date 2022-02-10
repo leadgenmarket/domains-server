@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react"
 import { SendData } from "../../utils"
 import BtnComponent from "../btn-component"
+import "./name-step.css"
 
-const NameStep = ({params, nextStep, form, setForm, raionsStep, roomsStep, sdachaName}) => {
+const NameStep = ({ params, nextStep, form, setForm, raionsStep, roomsStep, sdachaName }) => {
     const [name, setName] = useState("")
     const [error, setError] = useState(false)
     const inputChange = (event) => {
@@ -13,13 +14,13 @@ const NameStep = ({params, nextStep, form, setForm, raionsStep, roomsStep, sdach
         })
     }
 
-    useEffect(()=>{
-        if (form.name!=="" && form.name!==undefined) {
+    useEffect(() => {
+        if (form.name !== "" && form.name !== undefined) {
             setName(form.name)
         }
-    },[])
+    }, [])
 
-    const continueClick = (event) =>{
+    const continueClick = (event) => {
         event.preventDefault()
         if (name.length !== 0) {
             setError(false)
@@ -29,17 +30,15 @@ const NameStep = ({params, nextStep, form, setForm, raionsStep, roomsStep, sdach
         }
     }
 
-    return(<React.Fragment>
-            <div className="title_inner">Как вас зовут?</div>
-            <div className="block_phone">
-                <div className="bp_title">Ваше имя</div>
-                <div className="bp_inner">
-                    <form>
-                        <input className={error?"err":""} onChange={inputChange} type="text" value={name} />
-                        <BtnComponent text={"Получить подборку"} params={params} clickFunct={continueClick} analog={true}/>
-                    </form>
-                </div>
-            </div>
+    return (<React.Fragment>
+        <div className="title_inner">Как вас зовут?</div>
+        <form class="form_main" onsubmit="return false;" action="/local/ajax/">
+            <div class="form_sub">Ваше Имя</div>
+            <input className={error ? "err" : ""} onChange={inputChange} type="text" value={name} />
+
+            <BtnComponent text={"Получить подборку"} params={params} clickFunct={continueClick} analog={true} />
+        </form>
+
     </React.Fragment>)
 }
 

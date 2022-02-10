@@ -20,7 +20,7 @@ const BtnComponent = ({ params, clickFunct, text, analog }) => {
         onMouseLeave={() => setStyle(defaultStyle)}
         onMouseEnter={() => setStyle(hoveredStyle)}
         onClick={clickFunct}
-        style={styleC}
+      //style={styleC}
       >
         {text}
       </button>
@@ -33,7 +33,7 @@ const BtnComponent = ({ params, clickFunct, text, analog }) => {
       onMouseLeave={() => setStyle(defaultStyle)}
       onMouseEnter={() => setStyle(hoveredStyle)}
       onClick={clickFunct}
-      style={styleC}
+    //style={styleC}
     >
       {text}
     </button>
