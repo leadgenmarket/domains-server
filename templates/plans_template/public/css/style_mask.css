@@ -2307,6 +2307,45 @@ footer span{
     cursor: pointer;
 }
 
+.bp_title {
+    font-size: 20px;
+    color: #FFF;
+    line-height: 120%;
+}
+
+.bp_inner .btn_main{
+    display: block;
+    width: 304px;
+    height: 64px;
+    border-radius: 40px;
+    background: #ae9674;
+    text-align: center;
+    font-size: 20px;
+    line-height: 60px;
+    border: 2px solid #ae9674;
+    box-sizing: border-box;
+    text-decoration: none;
+    color: #fff;
+    margin-top: 18px;
+    -webkit-transition: .3s;
+    -o-transition: .3s;
+    transition: .3s;
+}
+.bp_inner .btn_main:hover{
+    background: none;
+}
+.bp_inner .in_phone{
+    display: block;
+    padding: 0;
+    width: 304px;
+    height: 64px;
+    box-sizing: border-box;
+    border-radius: 40px;
+    border: none;
+    padding-left: 30px;
+    font-size: 16px;
+    margin-top: 32px;
+}
 
 iframe[name='google_conversion_frame'] { 
     height: 0 !important;
@@ -2417,6 +2456,11 @@ h1{
     }
     .step_ident {
         top: 0px;
+    }
+}
+@media screen and (max-height: 420px){
+    .bp_title {
+        font-size: 18px;
     }
 }
 @media screen and (max-width: 1920px){
@@ -2907,6 +2951,13 @@ h1{
     }
     .jkd_nav li span {
     min-width: 43px;
+}
+
+    
+.bp_title {
+    display: block;
+    font-size: 14px;
+    margin-top: 8px;
 }
 }
 

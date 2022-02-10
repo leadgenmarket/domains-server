@@ -354,12 +354,6 @@ footer .wmain{
     margin-top: 50px;
 }
 
-.bp_title {
-    font-size: 20px;
-    color: #FFF;
-    line-height: 120%;
-}
-
 .bp_inner {
     overflow: hidden;
     margin-top: 25px;
@@ -824,9 +818,6 @@ footer .wmain{
         margin-top: 10px;
     }
 
-    .bp_title {
-        font-size: 18px;
-    }
 
     .block_phone {
         margin-top: 16px;
@@ -923,10 +914,6 @@ footer .wmain{
 
     .title_inner:before {
         height: 2px;
-    }
-
-    .bp_title {
-        font-size: 18px;
     }
 
     .block_phone {
