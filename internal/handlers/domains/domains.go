@@ -238,7 +238,7 @@ func convertForTemplate(domainSettings DomainSettings) map[string]interface{} {
 	settings["qoopler"] = domainSettings.Qoopler
 	settings["roistat"] = domainSettings.Roistat
 	settings["main_color"] = domainSettings.ScriptTmpl.MainColor
-	settings["secondary_color"] = domainSettings.ScriptTmpl.MainColor
+	settings["secondary_color"] = domainSettings.ScriptTmpl.SecondaryColor
 	settings["scripts"] = utils.ScriptForTemplate(domainSettings.ScriptTmpl)
 
 	return settings
