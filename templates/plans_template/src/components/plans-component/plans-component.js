@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
+import BtnComponent from "../btn-component"
 
-const PlansComponent = () => {
+const PlansComponent = ({ params }) => {
   const [show, setShow] = useState(3)
   const [plans, setPlans] = useState([])
   useEffect(() => { setPlans(domainSettings.domain.Plans) }, [domainSettings])
@@ -32,13 +33,19 @@ const PlansComponent = () => {
               <p>{plan.title}</p>
               <div class="jk_pl_img show_popup" data-popup="popup_plan" data-id="1"><img src={"https://admin.leadactiv.ru/file-store/" + plan.image} /></div>
               <div class="jk_inn">
-                <a href="#" onClick={showPopup} class="jk_btn show_popup" data-popup="popup_plan" data-id={key}>Узнать стоимость</a>
+                <BtnComponent
+                  text={'Узнать стоимость'}
+                  params={params}
+                  clickFunct={showPopup}
+                  type="square"
+                />
               </div>
             </li>
           }
         })}
       </ul>
-      {show < plans.length ? <a href="#" onClick={(e) => { e.preventDefault(); setShow(show + 3) }} class="btn_more jkd_list_btn" id="loadflats" page="1">Показать ещё</a> : ""}
+
+      {show < plans.length ? <BtnComponent text={'Показать ещё'} params={params} clickFunct={(e) => { e.preventDefault(); setShow(show + 3) }} type="square" /> : ""}
     </div>
   </section>
   )
