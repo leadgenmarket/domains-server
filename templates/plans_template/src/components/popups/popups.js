@@ -2,8 +2,9 @@ import "./popups.css"
 import InputMask from 'react-input-mask'
 import { useState } from "react"
 import { SendData } from "../../utils/send-data"
+import BtnComponent from "../btn-component"
 
-const Popups = () => {
+const Popups = ({ params }) => {
   const [form, setForm] = useState({})
   const [error, setError] = useState(false)
   const [phone, setPhone] = useState("")
@@ -45,12 +46,17 @@ const Popups = () => {
             </div>
             <div class="pu_pl_info">
               <form class="form_style">
-                <div class="form_tit">Узнайте прямо сейчас<br />стоимость квартир </div>
+                <div class="form_tit" style={{ color: `#${params.main_color}` }}>Узнайте прямо сейчас<br />стоимость квартир </div>
                 <input type="tel" class="in_name ym-record-keys" name="name" onChange={inputChange} value={form.name} placeholder="Введите имя" />
                 <InputMask mask="+7\ (999) 999-99-99" onChange={inputChange} name="phone" value={form.phone} onChange={inputChange} maskChar={null} >
                   {(inputProps) => <input type="tel" className={error ? "in_phone ym-record-keys err" : "in_phone ym-record-keys"}  {...inputProps} placeholder="+7 ( ___ ) ___ - __ - __" />}
                 </InputMask>
-                <button class="btn_form lead-btn" celtype="getFlatCoast" onClick={sendForm} template="1">Узнать стоимость</button>
+                <BtnComponent
+                  text={'Узнать стоимость'}
+                  params={params}
+                  clickFunct={sendForm}
+                  celtype="getFlatCoast"
+                />
               </form>
             </div>
           </div>

@@ -57,7 +57,7 @@ const Loading = ({ setStage, params }) => {
     return <React.Fragment>
         <div class="page_view loading_step step_5">
             <div className="title_inner title_inner2">
-                Подбираются варианты.<i>Система подбирает подходящие варианты</i>
+                Подбираются варианты.<i style={{ color: `#${params.main_color}` }}>Система подбирает подходящие варианты</i>
             </div>
             <div style={{ color: params.main_color }} className="progress">
                 <div style={{ color: `#${params.main_color}` }} className="progres_num" id="res_pers">{percent} %</div>
