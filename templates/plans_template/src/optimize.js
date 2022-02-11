@@ -77,8 +77,8 @@ const replaceScripts = (data) => {
   let styleContent = fs.readFileSync("build/" + style, 'utf8')
   data.replace
   data = data.replace(`<link rel="stylesheet" href="/css/style_mask.css"/>`, '<style>*{\
-    --main-bg-color: `#{{ .main_color}}`;\
-    --secondary-bg-color:: `#{{ .secondary_color}}`;\
+    --main-bg-color: #{{ .main_color}};\
+    --secondary-bg-color: #{{ .secondary_color}};\
 }</style>'+ `<style type="text/css">${styleContent}</style>`)
 
   return data
