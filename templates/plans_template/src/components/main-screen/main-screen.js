@@ -75,7 +75,7 @@ const MainScreen = ({ params, nextStep }) => {
           </span>{' '}
           <a className="cookie_btn" onClick={(e) => { e.preventDefault(); document.querySelector('.cookie').style.display = "none" }}>Я принимаю</a>
         </div>
-        <PlansComponent params={params} />
+        {domainSettings.domain.Plans.length > 0 ? <PlansComponent params={params} /> : ""}
         <section className="advantages">
           <Advantages />
           <Gallery params={params} />
