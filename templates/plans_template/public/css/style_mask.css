@@ -47,9 +47,7 @@ table, caption, tbody, tfoot, thead, tr, th, td {
     background: transparent;
 }
 
-*{
---main-bg-color:#5ABBB0 ;
-}
+
 .container_main {
     min-width: 320px;
     overflow: hidden;
