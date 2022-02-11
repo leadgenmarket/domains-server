@@ -4,6 +4,10 @@ const util = require('util');
 fs.readFile('./build/index.html', 'utf8', (err, data) => {
   data = replaceScripts(data)
   //data = data.replaceAll('"/css', '"/templates/plans_template/build/css')
+  data = data.replace('<body>', '<body><style>*{\
+    --main-bg-color: `#${ {{ .main_color}} }`;\
+    --saecondary-bg-color: `#${ {{ .secondary_color}} }`;\
+}</style>')
   data = data.replaceAll('"/static', '"/templates/plans_template/build/static')
   data = data.replaceAll('"static/js/', '"/templates/plans_template/build/static/js/')
   data = data.replace('href="favicon.ico"', 'href="/templates/plans_template/build/favicon.ico"')

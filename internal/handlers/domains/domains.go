@@ -87,15 +87,17 @@ type DomainSettings struct {
 }
 
 type TamplateSettings struct {
-	IP           string                 `json:"ip"`
-	Domain       models.Domain          `json:"domain"`
-	City         models.City            `json:"city"`
-	Location     []models.Location      `json:"locations"`
-	Prices       map[string]interface{} `json:"prices"`
-	Title        string                 `json:"title"`
-	SubTitle     string                 `json:"sub_title"`
-	Rayon        string                 `json:"rayon"`
-	Organization models.Organization    `json:"organization"`
+	IP             string                 `json:"ip"`
+	Domain         models.Domain          `json:"domain"`
+	City           models.City            `json:"city"`
+	Location       []models.Location      `json:"locations"`
+	Prices         map[string]interface{} `json:"prices"`
+	Title          string                 `json:"title"`
+	SubTitle       string                 `json:"sub_title"`
+	Rayon          string                 `json:"rayon"`
+	MainColor      string                 `json:"main_color"`
+	SecondaryColor string                 `json:"secondary_color"`
+	Organization   models.Organization    `json:"organization"`
 }
 
 func (dh *domainsHandlers) GetTemplate(c *gin.Context) {
@@ -158,6 +160,8 @@ func (dh *domainsHandlers) GetTemplate(c *gin.Context) {
 			c.JSON(http.StatusBadRequest, err)
 			return
 		}
+		domainSettings.ScriptTmpl.MainColor = domain.MainColor
+		domainSettings.ScriptTmpl.SecondaryColor = domain.SecondaryColor
 		domainSettings.Yandex = domain.Yandex
 		domainSettings.Google = domain.Google
 		domainSettings.Mail = domain.Mail
