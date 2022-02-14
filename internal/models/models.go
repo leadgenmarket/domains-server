@@ -49,12 +49,12 @@ type Domain struct {
 	Qoopler         bool                     `bson:"qoopler" form:"qoopler"`
 	Roistat         bool                     `bson:"roistat" form:"roistat"`
 	Moderation      bool                     `bson:"moderation" form:"moderation"`
-	AdvantagesTitle string                   `bson:"advantages_title" form:"advantages_title"`
-	Advantages      []map[string]interface{} `bson:"advantages" form:"advantages"`
-	PhotosTitle     string                   `bson:"photos_title" form:"photos_title"`
-	Photos          map[string]string        `bson:"photos" form:"photos"`
-	PlansTitle      string                   `bson:"plans_title" form:"plans_title"`
-	Plans           []map[string]interface{} `bson:"plans" form:"plans"`
+	AdvantagesTitle string                   `bson:"AdvantagesTitle" form:"advantages_title"`
+	Advantages      []map[string]interface{} `bson:"Advantages" form:"advantages"`
+	PhotosTitle     string                   `bson:"PhotosTitle" form:"photos_title"`
+	Photos          map[string]string        `bson:"Photos" form:"photos"`
+	PlansTitle      string                   `bson:"PlansTitle" form:"plans_title"`
+	Plans           []map[string]interface{} `bson:"Plans" form:"plans"`
 	CreatedAt       time.Time                `bson:"created_at"`
 	UpdatedAt       time.Time                `bson:"updated_at"`
 }
