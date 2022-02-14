@@ -24,7 +24,7 @@ type Repository interface {
 	FindDomainByID(id string) (models.Domain, error)
 	DeleteDomainById(id string) error
 	UpdateDomainsModeration(id string, modearation bool) (string, error)
-	CopyDomain(id string, newDomainName string) (models.Domain, error)
+	CopyDomain(id string, newDomainName string, yandex string) (models.Domain, error)
 	GetDomainsListWithPaginationAndFiltered(searchUrl string, cursor string, itemsCnt int) (domains []models.Domain, newCursor string, err error)
 }
 
@@ -142,7 +142,7 @@ func (r *repositroyDB) UpdateDomainsModeration(id string, modearation bool) (str
 	return domain.Url, nil
 }
 
-func (r *repositroyDB) CopyDomain(id string, newDomainName string) (models.Domain, error) {
+func (r *repositroyDB) CopyDomain(id string, newDomainName string, yandex string) (models.Domain, error) {
 	domain, err := r.FindDomainByID(id)
 	if err != nil {
 		return domain, err
@@ -150,6 +150,7 @@ func (r *repositroyDB) CopyDomain(id string, newDomainName string) (models.Domai
 	domain.CreatedAt = time.Now()
 	domain.UpdatedAt = time.Now()
 	domain.Url = newDomainName
+	domain.Yandex = yandex
 	domain.ID = bson.NewObjectId()
 	err = r.domains.Insert(&domain)
 	if err != nil {

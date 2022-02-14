@@ -576,8 +576,9 @@ func (dh *domainsHandlers) DomainsGetCityByUrl(c *gin.Context) {
 }
 
 type CpDomainInput struct {
-	ID  string `json:"id" form:"id"`
-	URL string `json:"url"`
+	ID     string `json:"id" form:"id"`
+	URL    string `json:"url"`
+	Yandex string `json:"yandex"`
 }
 
 func (dh *domainsHandlers) CopyDomain(c *gin.Context) {
@@ -587,7 +588,7 @@ func (dh *domainsHandlers) CopyDomain(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"paylod": "error binding json"})
 		return
 	}
-	domain, err := dh.repository.CopyDomain(domainInput.ID, domainInput.URL)
+	domain, err := dh.repository.CopyDomain(domainInput.ID, domainInput.URL, domainInput.Yandex)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"paylod": "error copying domain"})
 		return
