@@ -67,6 +67,11 @@ const DomainsPage = ({ domains, cursor, loading, fetchDomains, fetchMore }) => {
                     type: 'text',
                 },
                 {
+                    name: 'Yandex',
+                    json: 'yandex',
+                    type: 'text',
+                },
+                {
                     json: 'ID',
                     type: 'hidden',
                     value: copyID,

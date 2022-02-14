@@ -147,6 +147,7 @@ func (r *repositroyDB) CopyDomain(id string, newDomainName string, yandex string
 	if err != nil {
 		return domain, err
 	}
+	fmt.Println(domain)
 	domain.CreatedAt = time.Now()
 	domain.UpdatedAt = time.Now()
 	domain.Url = newDomainName
