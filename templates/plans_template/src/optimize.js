@@ -28,9 +28,9 @@ fs.readFile('./build/index.html', 'utf8', (err, data) => {
             n.parentNode.insertBefore(s, n);\
         })(document, window);\
       {{end}}\
+      {{if .google}} window.dataLayer = window.dataLayer || []; function gtag(){window.dataLayer.push(arguments);} gtag(\'js\', new Date()); gtag(\'config\', \'{{.google}}\');{{end}}\
       setTimeout(() => {\
         {{if .yandex}} (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)}; m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)}) (window, document, \"script\", \"https://mc.yandex.ru/metrika/tag.js\", \"ym\"); ym({{ .yandex }}, \"init\", { clickmap:true, trackLinks:true, accurateTrackBounce:true, webvisor:true });{{end}}\
-        {{if .google}} window.dataLayer = window.dataLayer || []; function gtag(){window.dataLayer.push(arguments);} gtag(\'js\', new Date()); gtag(\'config\', \'{{.google}}\');{{end}}\
         {{if .mail}}\
           var _tmr = window._tmr || (window._tmr = []); \
           _tmr.push({id: \"{{ .mail}}\", type: \"pageView\", start: (new Date()).getTime()}); \
