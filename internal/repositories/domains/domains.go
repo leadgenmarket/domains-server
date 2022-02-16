@@ -91,9 +91,33 @@ func (r *repositroyDB) FindDomainByID(id string) (models.Domain, error) {
 }
 
 func (r *repositroyDB) UpdateDomain(domain models.Domain) error {
-	domain.CreatedAt = time.Now()
+	domainOld, err := r.FindDomainByID(domain.ID.Hex())
+	if err != nil {
+		return err
+	}
+	domain.CreatedAt = domainOld.CreatedAt
 	domain.UpdatedAt = time.Now()
-	err := r.domains.Update(bson.M{"_id": domain.ID}, domain)
+
+	if domain.AdvantagesTitle == "" {
+		domain.AdvantagesTitle = domainOld.AdvantagesTitle
+	}
+	if len(domain.Advantages) == 0 {
+		domain.Advantages = domainOld.Advantages
+	}
+	if domain.PlansTitle == "" {
+		domain.PlansTitle = domainOld.PlansTitle
+	}
+	if len(domain.Plans) == 0 {
+		domain.Plans = domainOld.Plans
+	}
+	if domain.PhotosTitle == "" {
+		domain.PhotosTitle = domainOld.PhotosTitle
+	}
+	if len(domain.Photos) == 0 {
+		domain.Photos = domainOld.Photos
+	}
+
+	err = r.domains.Update(bson.M{"_id": domain.ID}, domain)
 	if err != nil {
 		fmt.Println(err)
 		return err
