@@ -98,6 +98,10 @@ func (r *repositroyDB) UpdateDomain(domain models.Domain) error {
 	domain.CreatedAt = domainOld.CreatedAt
 	domain.UpdatedAt = time.Now()
 
+	if domain.Background == "" {
+		domain.Background = domainOld.Background
+	}
+
 	if domain.AdvantagesTitle == "" {
 		domain.AdvantagesTitle = domainOld.AdvantagesTitle
 	}

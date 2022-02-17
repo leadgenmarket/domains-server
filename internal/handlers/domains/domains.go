@@ -76,6 +76,8 @@ type DomainSettings struct {
 	TemplateHTML string `json:"template_html" form:"template_html"`
 	//
 	SubTitleItems   string                   `bson:"sub_title_items" json:"sub_title_items"`
+	PhoneStepTitle  string                   `bson:"phone_step_title" json:"phone_step_title"`
+	FooterTitle     string                   `bson:"footer_title" json:"footer_title"`
 	Phone           string                   `bson:"phone" json:"phone"`
 	AdvantagesTitle string                   `bson:"advantages_title" form:"advantages_title"`
 	Advantages      []map[string]interface{} `bson:"advantages" form:"advantages"`
@@ -171,6 +173,8 @@ func (dh *domainsHandlers) GetTemplate(c *gin.Context) {
 		domainSettings.Roistat = domain.Roistat
 		domainSettings.ScriptTmpl.SubTitle = domain.SubTitle
 		domainSettings.SubTitleItems = domain.SubTitleItems
+		domainSettings.PhoneStepTitle = domain.PhoneStepTitle
+		domainSettings.FooterTitle = domain.FooterTitle
 		domainSettings.Phone = domain.Phone
 		domainSettings.AdvantagesTitle = domain.AdvantagesTitle
 		domainSettings.Advantages = domain.Advantages
@@ -352,8 +356,10 @@ type DomainInput struct {
 	Steps          string `bson:"steps" form:"steps"`
 
 	//
-	SubTitleItems   string `bson:"sub_title_items" json:"sub_title_items"`
-	Phone           string `bson:"phone" json:"phone"`
+	SubTitleItems   string `bson:"sub_title_items" form:"sub_title_items"`
+	Phone           string `bson:"phone" form:"phone"`
+	PhoneStepTitle  string `bson:"phone_step_title" form:"phone_step_title"`
+	FooterTitle     string `bson:"footer_title" form:"footer_title"`
 	AdvantagesTitle string `bson:"advantages_title" form:"advantages_title"`
 	Advantages      string `bson:"advantages" form:"advantages"`
 	PhotosTitle     string `bson:"photos_title" form:"photos_title"`
@@ -369,6 +375,7 @@ func (dh *domainsHandlers) AddDomainWithSettings(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"paylod": "error"})
 		return
 	}
+	fmt.Println(domainInput)
 	form, err := c.MultipartForm()
 	if err != nil {
 		dh.logger.GetInstance().Errorf("error getting background image %s", err)
@@ -399,6 +406,8 @@ func (dh *domainsHandlers) AddDomainWithSettings(c *gin.Context) {
 		Roistat:         domainInput.Roistat,
 		SubTitle:        domainInput.SubTitle,
 		SubTitleItems:   domainInput.SubTitleItems,
+		PhoneStepTitle:  domainInput.PhoneStepTitle,
+		FooterTitle:     domainInput.FooterTitle,
 		Phone:           domainInput.Phone,
 		AdvantagesTitle: domainInput.AdvantagesTitle,
 		PhotosTitle:     domainInput.PhotosTitle,

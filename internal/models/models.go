@@ -37,6 +37,8 @@ type Domain struct {
 	MainColor       string                   `bson:"main_color" json:"main_color"`
 	SubTitle        string                   `bson:"sub_title" json:"sub_title"`
 	SubTitleItems   string                   `bson:"sub_title_items" json:"sub_title_items"`
+	PhoneStepTitle  string                   `bson:"phone_step_title" json:"phone_step_title"`
+	FooterTitle     string                   `bson:"footer_title" json:"footer_title"`
 	Phone           string                   `bson:"phone" json:"phone"`
 	SecondaryColor  string                   `bson:"secondary_color" json:"secondary_color"`
 	Yandex          string                   `bson:"yandex" json:"yandex"`

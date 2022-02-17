@@ -401,6 +401,20 @@ const DomainEdit = ({ addDomainToList }) => {
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    <div className="row">
+                                                        <div className="col-lg-6">
+                                                            <div className="mb-3">
+                                                                <label htmlFor="basicpill-companyuin-input" className="form-label">Тайтл шага с вводом номера телефона</label>
+                                                                <input type="text" className="form-control" name="phone_step_title" onChange={inputChange} value={form.phone_step_title} id="basicpill-companyuin-input" />
+                                                            </div>
+                                                        </div>
+                                                        <div className="col-lg-6">
+                                                            <div className="mb-3">
+                                                                <label htmlFor="basicpill-companyuin-input" className="form-label">Заголовок блока быстрого поиска перед футером</label>
+                                                                <input type="text" className="form-control" name="footer_title" onChange={inputChange} value={form.footer_title} id="basicpill-companyuin-input" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </form>
                                                 <ul className="pager wizard twitter-bs-wizard-pager-link">
                                                     <li className="prev"><a onClick={prevStepClick} className="btn btn-primary"><i className="feather-arrow-left"></i> Назад </a></li>
