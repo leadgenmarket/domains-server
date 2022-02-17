@@ -81,7 +81,9 @@ const MainScreen = ({ params, nextStep }) => {
           <Gallery params={params} />
           <div className="adv_in">
             <img src="/templates/plans_template/build/img/adv_in.png" />
-            <span>Получите подходящие варианты в течение нескольких минут</span>
+            <span> {domainSettings.domain.footer_title === undefined || domainSettings.domain.footer_title == ''
+              ? parse('Получите подходящие варианты в течение нескольких минут')
+              : parse(domainSettings.domain.footer_title)}</span>
           </div>
           <BtnComponent
             text={'Начать быстрый поиск'}
