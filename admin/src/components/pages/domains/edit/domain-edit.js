@@ -672,16 +672,16 @@ const DomainEdit = ({ addDomainToList }) => {
                                                         </div>
                                                         <div className="col-lg-6">
                                                             <div className="mb-3">
-                                                                <label htmlFor="basicpill-servicetax-input" className="form-label">Mail</label>
-                                                                <input type="text" className="form-control" name="mail" onChange={inputChange} id="basicpill-servicetax-input" value={form.mail} />
+                                                                <label htmlFor="basicpill-servicetax-input" className="form-label">MyTarget</label>
+                                                                <input type="text" className="form-control" name="mytarget" onChange={inputChange} id="basicpill-servicetax-input" value={form.mytarget} />
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <div className="row">
                                                         <div className="col-lg-6">
                                                             <div className="mb-3">
-                                                                <label htmlFor="basicpill-servicetax-input" className="form-label">Marquiz</label>
-                                                                <input type="text" className="form-control" name="marquiz" onChange={inputChange} id="basicpill-servicetax-input" value={form.marquiz} />
+                                                                <label htmlFor="basicpill-servicetax-input" className="form-label">VK</label>
+                                                                <input type="text" className="form-control" name="vk" onChange={inputChange} id="basicpill-servicetax-input" value={form.vk} />
                                                             </div>
                                                         </div>
                                                         <div className="col-lg-6">
@@ -693,6 +693,12 @@ const DomainEdit = ({ addDomainToList }) => {
                                                         </div>
                                                     </div>
                                                     <div className="row">
+                                                        <div className="col-lg-6">
+                                                            <div className="mb-3">
+                                                                <label htmlFor="basicpill-servicetax-input" className="form-label">Marquiz</label>
+                                                                <input type="text" className="form-control" name="marquiz" onChange={inputChange} id="basicpill-servicetax-input" value={form.marquiz} />
+                                                            </div>
+                                                        </div>
                                                         <div className="col-lg-6">
                                                             <label htmlFor="basicpill-servicetax-input" className="form-label">Roistat</label>
                                                             <select onChange={inputChange} className="form-select custom-select" id="template" name="roistat" value={form.roistat == true ? "1" : "0"}>
