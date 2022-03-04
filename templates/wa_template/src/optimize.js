@@ -10,6 +10,7 @@ fs.readFile('./build/index.html', 'utf8', (err, data) => {
   data = data.replace('href="favicon.ico"', 'href="/templates/' + templatePath + '/build/favicon.ico"')
   data = data.replace('</body>', '<script> let domainSettings = JSON.parse("{{ .scripts }}")</script></body>')
   data = data.replace('</body>', "{{if .google}}<script async src=\"https://www.googletagmanager.com/gtag/js?id={{.google}}\"></script>{{end}}</body>")
+  data = data.replace('</body>', "{{if .vk}}<script type=\"text/javascript\">!function(){var t=document.createElement(\"script\");t.type=\"text/javascript\",t.async=!0,t.src=\"https://vk.com/js/api/openapi.js?162\",t.onload=function(){VK.Retargeting.Init(\"{{.vk}}\"),VK.Retargeting.Hit()},document.head.appendChild(t)}();</script>{{end}}</body>")
   data = data.replace('</body>', " <script type=\"text/javascript\" > \
       {{if .roistat}}\
         (function(w, d, s, h, id) {\
@@ -32,9 +33,9 @@ fs.readFile('./build/index.html', 'utf8', (err, data) => {
       {{if .google}} window.dataLayer = window.dataLayer || []; function gtag(){window.dataLayer.push(arguments);} gtag(\'js\', new Date()); gtag(\'config\', \'{{.google}}\');{{end}}\
       setTimeout(() => {\
         {{if .yandex}} (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)}; m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)}) (window, document, \"script\", \"https://mc.yandex.ru/metrika/tag.js\", \"ym\"); ym({{ .yandex }}, \"init\", { clickmap:true, trackLinks:true, accurateTrackBounce:true, webvisor:true });{{end}}\
-        {{if .mail}}\
+        {{if .mytarget}}\
           var _tmr = window._tmr || (window._tmr = []); \
-          _tmr.push({id: \"{{ .mail}}\", type: \"pageView\", start: (new Date()).getTime()}); \
+          _tmr.push({id: \"{{ .mytarget}}\", type: \"pageView\", start: (new Date()).getTime()}); \
           (function (d, w, id) { \
             if (d.getElementById(id)) return; \
             var ts = d.createElement(\"script\"); ts.type = \"text/javascript\"; ts.async = true; ts.id = id; \
