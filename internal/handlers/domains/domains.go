@@ -69,7 +69,8 @@ type DomainSettings struct {
 	Facebook     string `json:"facebook"`
 	Yandex       string `json:"yandex"`
 	Google       string `json:"google"`
-	Mail         string `json:"mail"`
+	MyTarget     string `json:"mytarget"`
+	VK           string `json:"vk"`
 	Marquiz      string `json:"marquiz"`
 	Qoopler      bool   `json:"qoopler"`
 	Roistat      bool   `json:"roistat" form:"roistat"`
@@ -166,7 +167,8 @@ func (dh *domainsHandlers) GetTemplate(c *gin.Context) {
 		domainSettings.ScriptTmpl.SecondaryColor = domain.SecondaryColor
 		domainSettings.Yandex = domain.Yandex
 		domainSettings.Google = domain.Google
-		domainSettings.Mail = domain.Mail
+		domainSettings.MyTarget = domain.MyTarget
+		domainSettings.VK = domain.VK
 		domainSettings.Marquiz = domain.Marquiz
 		domainSettings.Facebook = domain.Facebook
 		domainSettings.Qoopler = domain.Qoopler
@@ -237,7 +239,8 @@ func convertForTemplate(domainSettings DomainSettings) map[string]interface{} {
 	settings["yandex"] = domainSettings.Yandex
 	settings["facebook"] = domainSettings.Facebook
 	settings["google"] = domainSettings.Google
-	settings["mail"] = domainSettings.Mail
+	settings["mytarget"] = domainSettings.MyTarget
+	settings["vk"] = domainSettings.VK
 	settings["marquiz"] = domainSettings.Marquiz
 	settings["qoopler"] = domainSettings.Qoopler
 	settings["roistat"] = domainSettings.Roistat
@@ -348,7 +351,8 @@ type DomainInput struct {
 	SecondaryColor string `form:"secondary_color"`
 	Yandex         string `bson:"yandex" form:"yandex"`
 	Google         string `bson:"google" form:"google"`
-	Mail           string `bson:"mail" form:"mail"`
+	MyTarget       string `bson:"mytarget" form:"mytarget"`
+	VK             string `bson:"vk" form:"vk"`
 	Facebook       string `bson:"facebook" form:"facebook"`
 	Marquiz        string `bson:"marquiz" form:"marquiz"`
 	Qoopler        bool   `bson:"qoopler" form:"qoopler"`
@@ -399,7 +403,8 @@ func (dh *domainsHandlers) AddDomainWithSettings(c *gin.Context) {
 		SecondaryColor:  domainInput.SecondaryColor,
 		Yandex:          domainInput.Yandex,
 		Google:          domainInput.Google,
-		Mail:            domainInput.Mail,
+		MyTarget:        domainInput.MyTarget,
+		VK:              domainInput.VK,
 		Facebook:        domainInput.Facebook,
 		Marquiz:         domainInput.Marquiz,
 		Qoopler:         domainInput.Qoopler,
@@ -413,14 +418,6 @@ func (dh *domainsHandlers) AddDomainWithSettings(c *gin.Context) {
 		PhotosTitle:     domainInput.PhotosTitle,
 		PlansTitle:      domainInput.PlansTitle,
 	}
-
-	//Advantages - надо сопоставить json и конвертированные файлы
-	//photos - просто сохранить список файлов []string
-	//plans - надо сопоставить
-
-	//advantages_photos[]
-	//plan_photos[]
-	//photos[]
 
 	if domainInput.Advantages != "" {
 		advantages := []map[string]interface{}{}

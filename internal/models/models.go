@@ -43,7 +43,8 @@ type Domain struct {
 	SecondaryColor  string                   `bson:"secondary_color" json:"secondary_color"`
 	Yandex          string                   `bson:"yandex" json:"yandex"`
 	Google          string                   `bson:"google" json:"google"`
-	Mail            string                   `bson:"mail" json:"mail"`
+	MyTarget        string                   `bson:"mytarget" json:"mytarget"`
+	VK              string                   `bson:"vk" json:"vk"`
 	Facebook        string                   `bson:"facebook" form:"facebook" json:"facebook"`
 	Marquiz         string                   `bson:"marquiz" json:"marquiz"`
 	Steps           []map[string]interface{} `bson:"steps"`

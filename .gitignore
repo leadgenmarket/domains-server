@@ -6,5 +6,6 @@ docker-compose_back.yml
 ./docker-compose.yml
 .env
 .env_test
+.vscode
 moderation
 vars
