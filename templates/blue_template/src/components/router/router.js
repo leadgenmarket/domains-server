@@ -13,13 +13,19 @@ const Router = () => {
     const [sdachaName, setSdachaName] = useState("")
     const [raionsPrice, setRaionsPrice] = useState("")
 
+    const [ignoreFirstStep, setIgnore] = useState(false)
+
     const [form, setForm] = useState({})
     const nextStep = (event) => {
         try {
             event.preventDefault()
         } catch (e) { }
         if (step == null) {
-            setStep(0)
+            if (ignoreFirstStep) {
+                setStep(1)
+            } else {
+                setStep(0)
+            }
         } else {
             setStep(step + 1)
         }
@@ -28,7 +34,11 @@ const Router = () => {
         try {
             event.preventDefault()
         } catch (e) { }
-        setStep(step - 1)
+        if (step - 1 && ignoreFirstStep) {
+            setStep(0)
+        } else {
+            setStep(step - 1)
+        }
     }
 
     const getAvailableRaions = () => {
@@ -58,10 +68,17 @@ const Router = () => {
             Cookies.set('city_id', domainSettings.city.portal_id)
         } catch (e) { }
         let toAdd = []
+        let raionStep = ""
         domainSettings.domain.Steps.forEach((step) => {
             if (step.type == "raions" || step.type == "text" || step.type == "rooms" || step.type == "sdacha") {
                 if (step.type == "raions") {
+                    raionStep = step.title
                     setRaionsName(step.title)
+                    if (domainSettings.rayon !== "") {
+                        setIgnore(true)
+                        return
+                    }
+
                 }
                 if (step.type == "rooms") {
                     setRoomsName(step.title)
@@ -71,19 +88,17 @@ const Router = () => {
                 }
 
                 toAdd.push(step)
+
             }
             if (step.type == "slider_r") {
                 setRaionsPrice(step.title)
             }
         })
-        let formNew = {}
-        toAdd.forEach((add) => {
-            formNew = {
-                ...formNew,
-                [add.title]: ""
-            }
-        })
-        setForm(formNew)
+
+
+
+
+
         domainSettings.domain.title = domainSettings.title
         getAvailableRaions()
         setParams(domainSettings.domain)
@@ -94,10 +109,35 @@ const Router = () => {
                 })
             } catch (e) { }
         }
+
+        let formNew = {}
+        if (domainSettings.rayon !== "" && raionStep != "") {
+            formNew = {
+                [raionStep]: getRaionsNameFull(domainSettings.rayon)
+            }
+        }
+        toAdd.forEach((add) => {
+            formNew = {
+                ...formNew,
+                [add.title]: ""
+            }
+        })
+
+        setForm(formNew)
     }, [])
 
+    const getRaionsNameFull = (raion) => {
+        let name = ""
+        domainSettings.locations.forEach((location) => {
+            if (location.Path == raion) {
+                name = location.NameFull
+            }
+        })
+        return name
+    }
+
     return <div className="container_main" style={{ background: params.background != "" ? `url("/file-store/${params.background}") center / cover no-repeat` : `` }}>
-        {step == null ? <MainScreen params={params} nextStep={nextStep} /> : params.Steps.length <= step ? <FinishSteps form={form} form={form} setForm={setForm} raionsStep={raionsName} raionsPrice={raionsPrice} roomsStep={roomsName} sdachaName={sdachaName} params={params} /> : <Step step={params.Steps[step]} raionsStep={raionsName} raionsPrice={raionsPrice} roomsStep={roomsName} params={params} index={step} length={params.Steps.length} nextStep={nextStep} prevStep={prevStep} form={form} setForm={setForm} />}
+        {step == null ? <MainScreen params={params} nextStep={nextStep} /> : params.Steps.length <= step ? <FinishSteps form={form} form={form} setForm={setForm} raionsStep={raionsName} raionsPrice={raionsPrice} roomsStep={roomsName} sdachaName={sdachaName} params={params} /> : <Step step={params.Steps[step]} ignoreFirst={ignoreFirstStep} raionsStep={raionsName} raionsPrice={raionsPrice} roomsStep={roomsName} params={params} index={step} length={params.Steps.length} nextStep={nextStep} prevStep={prevStep} form={form} setForm={setForm} />}
     </div>
 }
 
