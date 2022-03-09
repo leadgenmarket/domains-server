@@ -71,11 +71,7 @@ func main() {
 }
 
 func groupChanges(service *services.Services, repositories *repositories.Repositories, logger logger.Log) {
-	newTemplate := models.Template{
-		Name: "Кастомный шаблон",
-		Path: "plans_template.html",
-	}
-	repositories.Templates.AddTemplate(newTemplate)
+
 }
 
 func addTemplates(service *services.Services, repositories *repositories.Repositories, logger logger.Log) {
