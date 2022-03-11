@@ -216,7 +216,7 @@ func (p *portal) GetJkListAlt(cityRepo []models.City) ([]models.JK, error) {
 }
 
 func (p *portal) GetPageJKList(page int, cityPref string, city models.City) ([]models.JK, int, error) {
-	url := fmt.Sprintf("%s/?key=%s&met=%s&s_id=%s&P_NUM=%d", p.url, p.key, jkListGetMethod, city.PortalID, page)
+	url := fmt.Sprintf("%s/?key=%s&met=%s&s_id=%s&P_NUM=%d&get_kv=1", p.url, p.key, jkListGetMethod, city.PortalID, page)
 	resp, err := http.Get(url)
 	if err != nil {
 		return nil, 0, err
