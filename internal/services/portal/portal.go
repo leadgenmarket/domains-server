@@ -157,25 +157,27 @@ type InputJson struct {
 }
 
 type JKInput struct {
-	ID        bson.ObjectId  `bson:"_id"`
-	Portal_ID string         `bson:"portal_id" json:"ID"`
-	Name      string         `bson:"name" json:"NAME"`
-	Code      string         `bson:"code" json:"CODE"`
-	CityID    bson.ObjectId  `bson:"city_id"`
-	CityName  string         `bson:"city_name" json:"CITY"`
-	Raion     []models.Raion `bson:"raion" json:"RAION"`
-	Price_OT  string         `bson:"price_ot" json:"PRICE_OT"`
-	Price_0   string         `bson:"price_0" json:"PRICE_0"`
-	Price_1   string         `bson:"price_1" json:"PRICE_1"`
-	Price_2   string         `bson:"price_2" json:"PRICE_2"`
-	Price_3   string         `bson:"price_3" json:"PRICE_3"`
-	Price_4   string         `bson:"price_4" json:"PRICE_4"`
-	Price_5   string         `bson:"price_5" json:"PRICE_5"`
-	Price_6   string         `bson:"price_6" json:"PRICE_6"`
-	Price_7   string         `bson:"price_7" json:"PRICE_7"`
-	Price_8   string         `bson:"price_8" json:"PRICE_8"`
-	Class     string         `bson:"class" json:"CLASS"`
-	Sdacha    []string       `bson:"sdacha" json:"SDA4A"`
+	ID        bson.ObjectId            `bson:"_id"`
+	Portal_ID string                   `bson:"portal_id" json:"ID"`
+	Name      string                   `bson:"name" json:"NAME"`
+	Code      string                   `bson:"code" json:"CODE"`
+	CityID    bson.ObjectId            `bson:"city_id"`
+	CityName  string                   `bson:"city_name" json:"CITY"`
+	Raion     []models.Raion           `bson:"raion" json:"RAION"`
+	Price_OT  string                   `bson:"price_ot" json:"PRICE_OT"`
+	Price_0   string                   `bson:"price_0" json:"PRICE_0"`
+	Price_1   string                   `bson:"price_1" json:"PRICE_1"`
+	Price_2   string                   `bson:"price_2" json:"PRICE_2"`
+	Price_3   string                   `bson:"price_3" json:"PRICE_3"`
+	Price_4   string                   `bson:"price_4" json:"PRICE_4"`
+	Price_5   string                   `bson:"price_5" json:"PRICE_5"`
+	Price_6   string                   `bson:"price_6" json:"PRICE_6"`
+	Price_7   string                   `bson:"price_7" json:"PRICE_7"`
+	Price_8   string                   `bson:"price_8" json:"PRICE_8"`
+	Class     string                   `bson:"class" json:"CLASS"`
+	Photo     string                   `bson:"photo" json:"IMG"`
+	Flats     []map[string]interface{} `bson:"flats" json:"KV"`
+	Sdacha    []string                 `bson:"sdacha" json:"SDA4A"`
 }
 
 type InputJsonAlt struct {
@@ -236,6 +238,8 @@ func (p *portal) GetPageJKList(page int, cityPref string, city models.City) ([]m
 			Raion:     jkInput.Raion,
 			Class:     jkInput.Class,
 			Sdacha:    jkInput.Sdacha,
+			Photo:     jkInput.Photo,
+			FlatsCNT:  len(jkInput.Flats),
 		}
 		jk.CityID = city.ID
 		jk.PortalCityID = city.PortalID

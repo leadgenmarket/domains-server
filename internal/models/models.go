@@ -120,6 +120,8 @@ type JK struct {
 	Price_7      int           `bson:"price_7" json:"PRICE_7"`
 	Price_8      int           `bson:"price_8" json:"PRICE_8"`
 	Class        string        `bson:"class" json:"CLASS"`
+	Photo        string        `bson:"photo" json:"photo"`
+	FlatsCNT     int           `bson:"flats_cnt" json:"flats_cnt"`
 	Sdacha       []string      `bson:"sdacha" json:"SDA4A"`
 }
 
