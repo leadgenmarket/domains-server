@@ -36,7 +36,7 @@ const PhoneStep = ({ params, nextStep, form, setForm, raionsStep, roomsStep, sda
     }
     return <div className="data_step m_step variants_step viewed act">
         <div class="ms_title">Подобрано 135 вариантов <br /> по вашим параметрам</div>
-        <div class="sale_text"><img src="img/sale_tit.png" alt="" /><span>есть варианты со скидками <br /> и спецпредложениями</span></div>
+        <div class="sale_text"><img src="/templates/purple_template/build/img/sale_tit.png" alt="" /><span>есть варианты со скидками <br /> и спецпредложениями</span></div>
         <form className="form_main">
             <span>Для получения доступа к базе укажите свой номер телефона</span>
             <InputMask mask="+7\ (999) 999-99-99" name="phone" value={phone} onChange={inputChange} maskChar={null} >

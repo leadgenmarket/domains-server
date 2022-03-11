@@ -1,6 +1,11 @@
 const fs = require('fs')
 const util = require('util');
 
+/*fs.readFile('./build/css/style.css', 'utf8', (err, data) => {
+  data = data.replaceAll('url(/img', 'url(/templates/purple_template/build/img')
+  data = data.replaceAll("url('/css", "url('/templates/purple_template/css")
+  fs.writeFileSync("./build/css/style.css", data)
+})*/
 fs.readFile('./build/index.html', 'utf8', (err, data) => {
   data = replaceScripts(data)
   data = data.replaceAll('"/static', '"/templates/purple_template/build/static')
@@ -75,6 +80,8 @@ const replaceScripts = (data) => {
 
   let style = "css/style.css"
   let styleContent = fs.readFileSync("build/" + style, 'utf8')
+  styleContent = styleContent.replaceAll('url(/img', 'url(/templates/purple_template/build/img')
+  styleContent = styleContent.replaceAll("url('/css", "url('/templates/purple_template/build/css")
   data = data.replace(`<link rel="stylesheet" href="/css/style.css"/>`, `<style type="text/css">${styleContent}</style>`)
 
   return data
