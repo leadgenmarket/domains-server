@@ -78,7 +78,7 @@ func addTemplates(service *services.Services, repositories *repositories.Reposit
 	template := models.Template{
 		ID:   bson.NewObjectId(),
 		Name: "Фиолетовый квиз",
-		Path: "/templates/blue_template/",
+		Path: "purple_template.html",
 	}
 	_, err := repositories.Templates.AddTemplate(template)
 	if err != nil {

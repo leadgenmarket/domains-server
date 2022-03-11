@@ -34,6 +34,8 @@ portal:
 	@docker-compose run --rm app /go/bin/command -action=portal
 prices:
 	@docker-compose run --rm app /go/bin/command -action=prices
+fixtures:
+	@docker-compose run --rm app /go/bin/command -action=fixtures
 admin:
 	@docker-compose run --rm app /go/bin/command -action=admin
 group:

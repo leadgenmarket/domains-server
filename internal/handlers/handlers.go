@@ -72,7 +72,7 @@ func (h *handlers) Registry() {
 	h.router.Static("/moderation", moderationFolder)
 	h.router.Static("/admin", "./admin/build")
 	h.router.Static("/file-store", "./file-store")
-	h.router.LoadHTMLFiles("./admin/build/index.html", "./templates/plans_template/build/plans_template.html", "./templates/blue_template/build/blue_template.html", "./templates/wa_template/build/wa_template.html", "./templates/test/build/test.html", "./moderation/template/moderation_1.html", "./moderation/template2/moderation_2.html", "./moderation/krd/krd.html", "./moderation/spb/spb.html")
+	h.router.LoadHTMLFiles("./admin/build/index.html", "./templates/plans_template/build/plans_template.html", "./templates/blue_template/build/blue_template.html", "./templates/wa_template/build/wa_template.html", "./templates/purple_template/build/purple_template.html", "./templates/test/build/test.html", "./moderation/template/moderation_1.html", "./moderation/template2/moderation_2.html", "./moderation/krd/krd.html", "./moderation/spb/spb.html")
 	h.router.GET("/", h.Domains.GetTemplate)
 	h.router.GET("/:rayon", h.Domains.GetTemplate)
 	h.router.POST("/sign-in", h.Auth.SignIn)
