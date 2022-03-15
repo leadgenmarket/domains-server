@@ -2,10 +2,13 @@ package services
 
 import (
 	"domain-server/internal/config"
+	"domain-server/internal/repositories"
 	"domain-server/internal/services/backup"
 	"domain-server/internal/services/cookies"
 	filestore "domain-server/internal/services/file_store"
 	"domain-server/internal/services/images"
+	"domain-server/internal/services/plans"
+	"domain-server/internal/services/plans_sites"
 	"domain-server/internal/services/portal"
 	"domain-server/internal/services/storage"
 	"domain-server/internal/services/token_manager"
@@ -21,9 +24,11 @@ type Services struct {
 	CommonStorage   storage.Common
 	Backup          backup.Backup
 	MultipartImages images.MultipartImages
+	Plans           plans.Service
+	PlansSite       plans_sites.Service
 }
 
-func Setup(cfg *config.Config, redis redis.Repository) *Services {
+func Setup(cfg *config.Config, repository repositories.Repositories, redis redis.Repository) *Services {
 	filestore := filestore.NewFileStoreService(cfg.FileStorePath)
 	imagesService := imagesservice.NewImagesService()
 	return &Services{
@@ -34,5 +39,7 @@ func Setup(cfg *config.Config, redis redis.Repository) *Services {
 		CommonStorage:   storage.NewCommonStorage(redis),
 		Backup:          backup.NewBackupService(cfg),
 		MultipartImages: images.NewImages(filestore, imagesService),
+		Plans:           plans.NewService(repository),
+		PlansSite:       plans_sites.NewService(repository),
 	}
 }

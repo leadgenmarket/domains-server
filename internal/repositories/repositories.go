@@ -8,6 +8,8 @@ import (
 	"domain-server/internal/repositories/leads"
 	"domain-server/internal/repositories/locations"
 	organization "domain-server/internal/repositories/organizations"
+	"domain-server/internal/repositories/plans"
+	"domain-server/internal/repositories/plans_sites"
 	"domain-server/internal/repositories/prices"
 	templates "domain-server/internal/repositories/template"
 	"domain-server/internal/repositories/titles"
@@ -27,6 +29,8 @@ type Repositories struct {
 	Locations     locations.Repository
 	Prices        prices.Repository
 	JK            jk.Repository
+	PlansSites    plans_sites.Repository
+	Plans         plans.Repository
 }
 
 func New(dbClient *mongodb.Database, cfg *config.Config) *Repositories {
@@ -41,5 +45,7 @@ func New(dbClient *mongodb.Database, cfg *config.Config) *Repositories {
 		Locations:     locations.New(dbClient),
 		Prices:        prices.New(dbClient),
 		JK:            jk.New(dbClient),
+		Plans:         plans.New(dbClient),
+		PlansSites:    plans_sites.New(dbClient),
 	}
 }
