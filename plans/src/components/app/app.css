@@ -1,0 +1,10 @@
+:root {
+    --toastify-color-light: #3b403d !important;
+}
+
+.Toastify__close-button {
+    color: white !important;
+}
+.Toastify__toast-theme--light {
+    color: #fff !important;
+}

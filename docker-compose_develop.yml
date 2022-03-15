@@ -13,7 +13,7 @@ services:
     ports:
       - 27017:27017
   redis:
-    container_name: redis
+    container_name: redis_
     image: redis:4.0-alpine
     command:
       - 'redis-server'

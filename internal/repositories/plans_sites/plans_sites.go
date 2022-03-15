@@ -15,6 +15,7 @@ type Repository interface {
 	AddPlansSite(plansSite models.PlansSite) error
 	UpdatePlansSite(plansSite models.PlansSite) error
 	DeletePlansSite(plansSiteID string) error
+	GetPlansSites() ([]models.PlansSite, error)
 }
 
 type repository struct {
@@ -49,4 +50,13 @@ func (r *repository) DeletePlansSite(id string) error {
 		return err
 	}
 	return nil
+}
+
+func (r *repository) GetPlansSites() ([]models.PlansSite, error) {
+	plansSites := []models.PlansSite{}
+	err := r.plansSite.Find(bson.M{}).All(&plansSites)
+	if err != nil {
+		return plansSites, err
+	}
+	return plansSites, nil
 }

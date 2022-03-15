@@ -9,6 +9,7 @@ import (
 	"domain-server/internal/handlers/leads"
 	"domain-server/internal/handlers/locations"
 	"domain-server/internal/handlers/organizations"
+	"domain-server/internal/handlers/plans_sites"
 	"domain-server/internal/handlers/templates"
 	"domain-server/internal/handlers/titles"
 	"domain-server/internal/handlers/users"
@@ -42,6 +43,7 @@ type handlers struct {
 	JKs           jks.Handlers
 	Users         users.Handlers
 	Templates     templates.Handlers
+	PlansSites    plans_sites.Handlers
 	router        *gin.Engine
 	repositories  *repositories.Repositories
 	services      *services.Services
@@ -59,6 +61,7 @@ func New(router *gin.Engine, repositories *repositories.Repositories, services *
 		Titles:        titles.New(repositories.Titles, services, logger),
 		Users:         users.New(repositories.Users, services, logger),
 		Templates:     templates.New(repositories.Templates, services, logger),
+		PlansSites:    plans_sites.New(services, logger),
 		JKs:           jks.New(repositories.JK, logger),
 		router:        router,
 		repositories:  repositories,
@@ -135,6 +138,13 @@ func (h *handlers) Registry() {
 		//templates
 		templatesGroup := api.Group("templates")
 		templatesGroup.GET("/", h.Templates.GetTemplatesList)
+
+		//plans_sites
+		plansSitesGroup := api.Group("plans-sites")
+		plansSitesGroup.GET("/", h.PlansSites.GetPlansSites)
+		plansSitesGroup.PUT("/", h.PlansSites.AddPlansSite)
+		plansSitesGroup.DELETE("/:id", h.PlansSites.DeletePlansSite)
+		plansSitesGroup.POST("/", h.PlansSites.UpdatePlansSite)
 
 		api.GET("/ping", func(c *gin.Context) {
 			c.JSON(http.StatusOK, gin.H{"message": "i'm ok"})

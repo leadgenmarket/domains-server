@@ -13,6 +13,7 @@ type Handlers interface {
 	AddPlansSite(c *gin.Context)
 	UpdatePlansSite(c *gin.Context)
 	DeletePlansSite(c *gin.Context)
+	GetPlansSites(c *gin.Context)
 }
 
 type handlers struct {
@@ -64,19 +65,22 @@ func (s *handlers) UpdatePlansSite(c *gin.Context) {
 }
 
 func (s *handlers) DeletePlansSite(c *gin.Context) {
-	input := models.PlansSiteInput{}
-	err := c.BindJSON(&input)
+	id := c.Param("id")
+	err := s.services.PlansSite.DeletePlansSite(id)
 	if err != nil {
-		s.logger.GetInstance().Errorf("error unmarshaling incoming json %s", err)
+		s.logger.GetInstance().Errorf("error deleting plans site %s", err)
 		c.JSON(http.StatusInternalServerError, gin.H{"paylod": "error"})
 		return
 	}
-	plansSite := models.CreatePlansSiteFromInput(input)
-	err = s.services.PlansSite.UpdatePlansSite(plansSite)
+	c.JSON(http.StatusOK, gin.H{"payload": "success"})
+}
+
+func (s *handlers) GetPlansSites(c *gin.Context) {
+	sites, err := s.services.PlansSite.GetPlansSites()
 	if err != nil {
 		s.logger.GetInstance().Errorf("error adding new plans site %s", err)
 		c.JSON(http.StatusInternalServerError, gin.H{"paylod": "error"})
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{"payload": "success"})
+	c.JSON(http.StatusOK, sites)
 }
