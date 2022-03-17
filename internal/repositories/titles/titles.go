@@ -164,6 +164,9 @@ func (r *repositroyDB) GetTitleForDomain(cityID bson.ObjectId, rayon string, k s
 }
 
 func GenerateTitleFromLocation(location models.Location) string {
+	if location.NameSite == "Хамовниках" {
+		return "Вся недвижимость в Хамовниках"
+	}
 	prefix := "Новостройки в"
 	if location.Type == "streets" {
 		fmt.Println(string([]rune(location.NameSite)[0:2]))
