@@ -9,9 +9,6 @@ import { fetchDomains, fetchMore } from "../../../../actions/domains";
 import { Spinner } from "../../../spinner";
 import { useNavigate } from "react-router-dom"
 import { Modals, showModal } from "../../../modals"
-import ApiService from "../../../../services/api-service";
-import { toast } from "react-toastify";
-import { BottomScrollListener } from 'react-bottom-scroll-listener';
 
 const DomainsPage = ({ domains, cursor, loading, fetchDomains, fetchMore }) => {
     const [templates, setTemplates] = useState(null)
@@ -37,9 +34,9 @@ const DomainsPage = ({ domains, cursor, loading, fetchDomains, fetchMore }) => {
         {
             title: 'Добавить домен',
             name: 'addDomain',
-            url:"/api/plans-sites/",
+            url: "/api/plans-sites/",
             type: "put",
-            action: (action) => {console.log('need to close modal'); fetchDomains()},
+            action: (action) => { console.log('need to close modal'); fetchDomains() },
             fields: [
                 {
                     name: 'Название',
@@ -58,11 +55,11 @@ const DomainsPage = ({ domains, cursor, loading, fetchDomains, fetchMore }) => {
             name: 'updateDomain',
             url: "/api/plans-sites/",
             type: "post",
-            action: (action) => {console.log(action); fetchDomains()},
-            edit: (action) => { setEditDomain(action)},
+            action: (action) => { console.log(action); fetchDomains() },
+            edit: (action) => { setEditDomain(action) },
             //imageurl:"public/objects/"+activeObject.ID+"/actions/", //id
             date: editDomain,
-            clear:false,
+            clear: false,
             fields: [
                 {
                     name: 'Name',
@@ -84,12 +81,12 @@ const DomainsPage = ({ domains, cursor, loading, fetchDomains, fetchMore }) => {
             title: 'Удалить домен',
             question: 'Вы действительно хотите удалить домен?',
             name: 'deleteDomain',
-            url:"/api/plans-sites/"+editDomain.ID,
+            url: "/api/plans-sites/" + editDomain.ID,
             type: "delete",
-            action: (action) => { console.log(action); fetchDomains()},
+            action: (action) => { console.log(action); fetchDomains() },
             //edit: () => {},
             date: editDomain,
-            clear:false,
+            clear: false,
             fields: [
                 {
                     json: 'ID',
@@ -97,7 +94,7 @@ const DomainsPage = ({ domains, cursor, loading, fetchDomains, fetchMore }) => {
                 },
             ]
         },
-      ]
+    ]
 
     return (<div className="main-content">
         <div className="page-content">
@@ -124,27 +121,27 @@ const DomainsPage = ({ domains, cursor, loading, fetchDomains, fetchMore }) => {
                                             </div>
                                         </div>*/}
                                         <div className="row">
-                                                <div className="col-sm-12">
-                                                    <table className="table align-middle datatable dt-responsive table-check nowrap dataTable no-footer table-striped" style={{ borderCollapse: "collapse", borderSpacing: "0px 8px", width: "100%" }} >
-                                                        <thead>
-                                                            <tr className="bg-transparent" role="row">
-                                                                <th  className="sorting" >ID</th>
-                                                                <th  className="sorting" >Название</th>
-                                                                <th  className="sorting" >URL</th>
-                                                                <th  className="sorting" >Действия</th>
-                                                            </tr>
-                                                        </thead>
-                                                        {domains == null ? <tbody></tbody> : <tbody>
-                                                            {
-                                                                domains.map((domain) => {
-                                                                    console.log(domain)
-                                                                    domain.templateName = getTemplateById(domain.template_id)
-                                                                    return <TableItem domain={domain} fetchDomains={fetchDomains} setEditDomain={()=>{setEditDomain(domain)}} />
-                                                                })
-                                                            }
-                                                        </tbody>}
-                                                    </table>
-                                                </div>
+                                            <div className="col-sm-12">
+                                                <table className="table align-middle datatable dt-responsive table-check nowrap dataTable no-footer table-striped" style={{ borderCollapse: "collapse", borderSpacing: "0px 8px", width: "100%" }} >
+                                                    <thead>
+                                                        <tr className="bg-transparent" role="row">
+                                                            <th className="sorting" >ID</th>
+                                                            <th className="sorting" >Название</th>
+                                                            <th className="sorting" >URL</th>
+                                                            <th className="sorting" >Действия</th>
+                                                        </tr>
+                                                    </thead>
+                                                    {domains == null ? <tbody></tbody> : <tbody>
+                                                        {
+                                                            domains.map((domain) => {
+                                                                console.log(domain)
+                                                                domain.templateName = getTemplateById(domain.template_id)
+                                                                return <TableItem domain={domain} fetchDomains={fetchDomains} setEditDomain={() => { setEditDomain(domain) }} />
+                                                            })
+                                                        }
+                                                    </tbody>}
+                                                </table>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

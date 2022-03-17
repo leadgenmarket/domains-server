@@ -10,6 +10,7 @@ type Service interface {
 	UpdatePlansSite(plansSite models.PlansSite) error
 	DeletePlansSite(plansSiteID string) error
 	GetPlansSites() ([]models.PlansSite, error)
+	GetPlansSiteDetailInfo(id string) (models.PlansSite, []models.Plan, error)
 }
 
 type service struct {
@@ -36,4 +37,8 @@ func (s *service) DeletePlansSite(plansSiteID string) error {
 
 func (s *service) GetPlansSites() ([]models.PlansSite, error) {
 	return s.repository.PlansSites.GetPlansSites()
+}
+
+func (s *service) GetPlansSiteDetailInfo(id string) (models.PlansSite, []models.Plan, error) {
+	return s.repository.PlansSites.GetPlansSiteDetailInfo(id)
 }

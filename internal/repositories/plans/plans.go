@@ -8,7 +8,7 @@ import (
 )
 
 const (
-	plansTable = "plans"
+	PlansTable = "plans"
 )
 
 type Repository interface {
@@ -23,7 +23,7 @@ type repository struct {
 
 func New(dbClient *mongodb.Database) Repository {
 	return &repository{
-		plans: dbClient.C(plansTable),
+		plans: dbClient.C(PlansTable),
 	}
 }
 

@@ -4,13 +4,14 @@ import { withApiService } from "../../../hoc";
 import { connect } from "react-redux";
 import { bindActionCreators } from 'redux';
 import { useParams } from 'react-router-dom'
-import { Component, useEffect } from "react";
+import { Component, useEffect, useState } from "react";
 import { fetchDomain } from "../../../../actions/domain-detail";
 import { Spinner } from "../../../spinner";
-import axios from "axios";
+import { Modals, showModal } from "../../../modals"
 
-const DomainDetail = ({ domain, loading, fetchDomain }) => {
+const DomainDetail = ({ domain, plans, loading, fetchDomain }) => {
     const { id } = useParams()
+    const [editPlan, setEditPlan] = useState({})
     useEffect(() => {
         fetchDomain(id)
     }, [id])
@@ -21,21 +22,136 @@ const DomainDetail = ({ domain, loading, fetchDomain }) => {
         return [pad(d.getDate()), pad(d.getMonth() + 1), d.getFullYear()].join(' / ')
     }
 
-    const moderationChange = (e) => {
-        e.preventDefault()
-        let data = {
-            id: id,
-            moderation: e.target.checked
-        }
-        domain.Moderation = e.target.checked
-        axios.post("/api/domains/moderation", data).then((response) => {
-            fetchDomain(id)
-        })
-    }
-
     if (loading || domain == null) {
         return <Spinner />
     }
+
+    const forms = [
+        {
+            title: 'Добавить планировку',
+            name: 'addPlan',
+            url: "/api/plans/",
+            type: "put",
+            action: (action) => { console.log('need to close modal'); fetchDomain() },
+            fields: [
+                {
+                    name: 'Фото',
+                    json: 'file',
+                    type: 'file'
+                },
+                {
+                    name: 'Название',
+                    json: 'name',
+                    type: 'text',
+                },
+                {
+                    name: 'Url домена',
+                    json: 'url',
+                    type: 'text',
+                },
+                {
+                    name: 'Количество комнат',
+                    json: 'rooms',
+                    type: 'number'
+                },
+                {
+                    name: 'Общая площадь',
+                    json: 'total_area',
+                    type: 'number'
+                },
+                {
+                    name: 'Жилая площадь',
+                    json: 'living_area',
+                    type: 'number'
+                },
+                {
+                    name: 'Этажи (через запятую, если несколько)',
+                    json: 'floors',
+                    type: 'text'
+                },
+                {
+                    json: 'site_id',
+                    type: 'hidden',
+                    value: id,
+                },
+                //акционная квартира или нет
+                {
+                    json: 'action',
+                    type: 'select',
+                    //value: id,
+                },
+                {
+                    name: 'Цена',
+                    json: 'price',
+                    type: 'number'
+                },
+                {
+                    name: 'Площадь гостинной',
+                    json: 'living_area',
+                    type: 'number'
+                },
+                {
+                    name: 'Площадь спальни',
+                    json: 'bed_room_area',
+                    type: 'number'
+                },
+                {
+                    name: 'Площадь кухни',
+                    json: 'kitchen_area',
+                    type: 'number'
+                },
+            ],
+        },
+        {
+            title: 'Редактировать планировку',
+            name: 'updatePlan',
+            url: "/api/plans/",
+            type: "post",
+            action: (action) => { console.log(action); fetchDomain() },
+            edit: (action) => { setEditPlan(action) },
+            //imageurl:"public/objects/"+activeObject.ID+"/actions/", //id
+            date: editPlan,
+            clear: false,
+            fields: [
+                {
+                    name: 'Фото',
+                    json: 'file',
+                    type: 'file'
+                },
+                {
+                    name: 'Name',
+                    json: 'name',
+                    type: 'text',
+                },
+                {
+                    name: 'Url',
+                    json: 'url',
+                    type: 'text',
+                },
+                {
+                    json: 'ID',
+                    type: 'hidden',
+                },
+            ],
+        },
+        {
+            title: 'Удалить планировку',
+            question: 'Вы действительно хотите удалить домен?',
+            name: 'deletePlan',
+            url: "/api/plans/" + editPlan.ID,
+            type: "delete",
+            action: (action) => { console.log(action); fetchDomain() },
+            //edit: () => {},
+            date: editPlan,
+            clear: false,
+            fields: [
+                {
+                    json: 'ID',
+                    type: 'hidden',
+                },
+            ]
+        },
+    ]
 
     return (<div className="main-content">
         <div className="page-content">
@@ -54,52 +170,20 @@ const DomainDetail = ({ domain, loading, fetchDomain }) => {
                                         </div>
                                         <div className="flex-shrink-0">
                                             <div className="mb-4">
-                                                <a href="#" className="btn btn-primary w-md waves-effect waves-light">Редактировать</a>
+                                                <a href="#" className="btn btn-primary w-md waves-effect waves-light" onClick={(e) => { e.preventDefault(); showModal('addPlan') }}>Добавить планировку</a>
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="d-flex align-items-start" style={{ marginBottom: "10px" }}>
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" onChange={moderationChange} checked={domain.Moderation} type="checkbox" name="moderation" id="flexSwitchCheckDefault" />
-                                            <label class="form-check-label" for="flexSwitchCheckDefault">Модерация</label>
-                                        </div>
-                                    </div>
-                                    <p className="mb-1"><b>Дата создания:</b> {convertDate(Date.parse(domain.CreatedAt))}</p>
-                                    <p className="mb-1"><b>Roistat:</b> {domain.Roistat ? "Да" : "Нет"}</p>
-                                    <p className="mb-1"><b>Yandex:</b> {domain.yandex}</p>
-                                    <p className="mb-1"><b>Google:</b> {domain.google}</p>
-                                    <p className="mb-1"><b>Mail:</b> {domain.mail}</p>
-                                    <p className="mb-1"><b>Facebook:</b> {domain.facebook}</p>
-                                    <p className="mb-1"><b>Marquiz:</b> {domain.marquiz}</p>
-                                    <p className="mb-1"><b>Qoopler:</b> {domain.Qoopler ? "Да" : "Нет"}</p>
+                                    <p className="mb-1"><b>Название:</b> {domain.Name}</p>
+                                    <p className="mb-1"><b>Url:</b> {domain.URL}</p>
+                                    <p className="mb-1"><b>Количество планировок:</b> {plans.length}</p>
                                 </div>
                                 <hr className="my-4" />
 
                                 <div className="py-2 mt-3">
-                                    <h5 className="font-size-15">Шаги</h5>
+                                    <h5 className="font-size-15">Планировки</h5>
                                 </div>
-                                <div className="p-4 border rounded">
-                                    <div className="table-responsive">
-                                        <table className="table table-nowrap align-middle mb-0">
-                                            <thead>
-                                                <tr>
-                                                    <th style={{ width: "70px" }}>Номер</th>
-                                                    <th>Название шага</th>
-                                                    <th className="text-end" style={{ width: "120px" }}>Тип</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {domain.Steps.map((step, index) => <tr>
-                                                    <th scope="row">{index + 1}</th>
-                                                    <td>
-                                                        <h5 className="font-size-15 mb-1">{step.title}</h5>
-                                                        {step.answers ? <p className="font-size-13 text-muted mb-0">{step.answers.join(', ')}</p> : <p></p>}
-                                                    </td>
-                                                    <td className="text-end">{step.type}</td>
-                                                </tr>)}
-                                            </tbody>
-                                        </table>
-                                    </div>
+                                <div className="row">
                                 </div>
                             </div>
                         </div>
@@ -107,6 +191,7 @@ const DomainDetail = ({ domain, loading, fetchDomain }) => {
                 </div>
             </div>
         </div>
+        <Modals forms={forms} />
     </div>
     )
 }
@@ -118,14 +203,14 @@ class DomainPageContainer extends Component {
     }
 
     render() {
-        const { domain, loading, error, fetchDomain } = this.props;
+        const { domain, plans, loading, error, fetchDomain } = this.props;
 
-        return <DomainDetail domain={domain} error={error} fetchDomain={fetchDomain} />;
+        return <DomainDetail domain={domain} plans={plans} error={error} fetchDomain={fetchDomain} />;
     }
 }
 
-const mapStateToProps = ({ domainDetail: { domain, loading, error } }) => {
-    return { domain, loading, error };
+const mapStateToProps = ({ domainDetail: { domain, plans, loading, error } }) => {
+    return { domain, plans, loading, error };
 };
 
 const mapDispatchToProps = (dispatch, { apiService }) => {

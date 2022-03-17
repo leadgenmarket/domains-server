@@ -2,13 +2,14 @@ package plans_sites
 
 import (
 	"domain-server/internal/models"
+	"domain-server/internal/repositories/plans"
 
 	mongodb "github.com/globalsign/mgo"
 	"github.com/globalsign/mgo/bson"
 )
 
 const (
-	plansSiteTable = "plans_sites"
+	PlansSiteTable = "plans_sites"
 )
 
 type Repository interface {
@@ -16,15 +17,18 @@ type Repository interface {
 	UpdatePlansSite(plansSite models.PlansSite) error
 	DeletePlansSite(plansSiteID string) error
 	GetPlansSites() ([]models.PlansSite, error)
+	GetPlansSiteDetailInfo(id string) (models.PlansSite, []models.Plan, error)
 }
 
 type repository struct {
 	plansSite *mongodb.Collection
+	plans     *mongodb.Collection
 }
 
 func New(dbClient *mongodb.Database) Repository {
 	return &repository{
-		plansSite: dbClient.C(plansSiteTable),
+		plansSite: dbClient.C(PlansSiteTable),
+		plans:     dbClient.C(plans.PlansTable),
 	}
 }
 
@@ -59,4 +63,19 @@ func (r *repository) GetPlansSites() ([]models.PlansSite, error) {
 		return plansSites, err
 	}
 	return plansSites, nil
+}
+
+func (r *repository) GetPlansSiteDetailInfo(id string) (models.PlansSite, []models.Plan, error) {
+	plansSite := models.PlansSite{}
+	plans := []models.Plan{}
+	err := r.plansSite.Find(bson.M{"_id": bson.ObjectIdHex(id)}).One(&plansSite)
+	if err != nil {
+		return plansSite, nil, nil
+	}
+
+	err = r.plans.Find(bson.M{"site_id": bson.ObjectIdHex(id)}).All(&plans)
+	if err != nil {
+		return plansSite, nil, nil
+	}
+	return plansSite, plans, nil
 }

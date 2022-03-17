@@ -142,6 +142,7 @@ func (h *handlers) Registry() {
 		//plans_sites
 		plansSitesGroup := api.Group("plans-sites")
 		plansSitesGroup.GET("/", h.PlansSites.GetPlansSites)
+		plansSitesGroup.GET("/:id", h.PlansSites.GetPlansSiteDetailInfo)
 		plansSitesGroup.PUT("/", h.PlansSites.AddPlansSite)
 		plansSitesGroup.DELETE("/:id", h.PlansSites.DeletePlansSite)
 		plansSitesGroup.POST("/", h.PlansSites.UpdatePlansSite)

@@ -14,6 +14,7 @@ type Handlers interface {
 	UpdatePlansSite(c *gin.Context)
 	DeletePlansSite(c *gin.Context)
 	GetPlansSites(c *gin.Context)
+	GetPlansSiteDetailInfo(c *gin.Context)
 }
 
 type handlers struct {
@@ -83,4 +84,19 @@ func (s *handlers) GetPlansSites(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, sites)
+}
+
+func (s *handlers) GetPlansSiteDetailInfo(c *gin.Context) {
+	id := c.Param("id")
+	site, plans, err := s.services.PlansSite.GetPlansSiteDetailInfo(id)
+	if err != nil {
+		s.logger.GetInstance().Errorf("error deleting plans site %s", err)
+		c.JSON(http.StatusInternalServerError, gin.H{"paylod": "error"})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"site":    site,
+		"plans":   plans,
+		"payload": "success",
+	})
 }
