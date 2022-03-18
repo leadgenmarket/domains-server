@@ -18,7 +18,7 @@ const Step = ({
   setForm,
 }) => {
   return (
-    <section className="header" style={{ background: params.background != "" ? `url("/file-store/${params.background}") center / cover no-repeat` : `` }}>
+    <section className="header" style={{ background: params.background != "" ? `url("/file-store/${params.background}") center / cover no-repeat` : `url("https://admin.leadactiv.ru/templates/plans_template/build/img/hd_bg_0810.jpg")` }}>
       <div
         style={{
           backgroundColor: 'rgba(0,0,0, .56)',
