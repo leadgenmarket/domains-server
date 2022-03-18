@@ -140,7 +140,7 @@ table, caption, tbody, tfoot, thead, tr, th, td {
 }
 
 .container_main {
-    min-width: 320px;
+    min-width: 270px;
     overflow: hidden;
     position: relative;
     font-family: 'Nunito', sans-serif;
@@ -186,10 +186,10 @@ input,textarea,button {
 input[type="submit"], button {
     cursor: pointer;
     appearance: none;
-    -webkit- appearance: none;
-    -moz- appearance: none;
-    -ms- appearance: none;
-    -o- appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -ms-appearance: none;
+    -o-appearance: none;
 }
 
 
@@ -517,6 +517,7 @@ h1 span img{display: none!important;}
     text-align: center;
     padding-bottom: 34px;
     border-bottom: 1px solid #eaedf4;
+    padding-bottom: 20px;
 }
 .back_btn{
     display: block;
@@ -544,7 +545,7 @@ h1 span img{display: none!important;}
 .check_list{
     display: block;
     margin-top: 36px;
-    padding-bottom: 40px;
+    padding-bottom: 110px;
 }
 .check_list li{
     display: block;
@@ -914,10 +915,11 @@ button.btn_main:hover{
     height: 156px;
     left: 50%;
     transform: translateX(-50%);
-    top: -164px;
+    top: 0;
     -webkit-transition: .3s;
     -o-transition: .3s;
     transition: .3s;
+    pointer-events: none;
 }
  .step_dec.act{
     top: -10px;
@@ -1239,6 +1241,31 @@ iframe[name='google_conversion_frame'] {
 }
 
 /*@media*/
+@media screen and (max-height: 740px) {
+    .step_dec {
+        height: 10vh;
+        background-position: center bottom !important;
+        background-size: cover;
+    }
+}
+
+@media screen and (max-height: 790px) {
+    .step_title + div {
+        height: 63vh !important;
+    }
+
+    .mw_step .btn_main {
+        bottom: 20px !important;
+    }
+
+    .check_list {
+        padding-bottom: 40px !important;
+    }
+
+    .step_title + div + div {
+        height: auto !important;
+    }
+}
 
 @media screen and (max-width: 1920px){
 }
@@ -1248,7 +1275,9 @@ iframe[name='google_conversion_frame'] {
    
 }
 @media screen and (max-width: 1290px) {
-    
+    .check_list li {
+        display: flex;
+    }
 }
 @media screen and (max-width: 1230px) {
     
@@ -1270,8 +1299,15 @@ iframe[name='google_conversion_frame'] {
 }
 
 @media screen and (max-width: 1280px) {
+    .step_dec {
+        top: -7vh;
+        pointer-events: none;
+        background-position: center bottom !important;
+    }
 .main_wm{
     justify-content: flex-end;
+    padding-left: 40px;
+    padding-right: 40px;
 }
 .main_page {
     height: 80vh;
@@ -1347,6 +1383,7 @@ footer .footer_wm{
 .step_title {
     padding: 0 65px;
     box-sizing: border-box;
+    padding-bottom: 20px;
 }
 
 }
@@ -1474,9 +1511,6 @@ button.btn_main{
 }
 .jk_scroll {
     /*height: 320px;*/
-}
-.main_page {
-    height: 90vh;
 }
 .iphone .main_page {
     height: 80vh;
@@ -1654,14 +1688,6 @@ line-height: 100%;
 .price_step .step_title:after {
     content: '4/4';
     font-size: 16px;
-}
-.back_btn{
-    left: 50%;
-    transform: translateX(-50%);
-    width: 48px;
-    height: 4px;
-    background: #ecebf7;
-    top: -16px;
 }
 .step_ident{
     display: none;
@@ -1847,13 +1873,13 @@ h1.vyborgskiy-rayon-piter{
     text-align: left;
     font-size: 18px;
 }
-.back_btn{
-    left: 50%;
-    transform: translateX(-50%);
+.back_btn {
+    left: 20px;
+    transform: translateX(0);
     width: 48px;
-    height: 4px;
-    background: #ecebf7;
-    top: -16px;
+    height: 15px;
+    background-size: cover;
+    top: -21px;
 }
 .check_list li {
     padding-top: 13px;
@@ -1946,6 +1972,12 @@ h1.vyborgskiy-rayon-piter{
 .jk_step .ms_title {
     font-size: 20px;
 }
+.step_dec.act {
+    top: 0;
+    height: 10vh;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
 }
 
 @media screen and (max-width: 880px) {
@@ -1980,7 +2012,11 @@ h1.vyborgskiy-rayon-piter{
 
 }
 
-@media screen and (max-width: 680px) {
+@media screen and (max-width: 640px) {
+    .main_wm {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
 }
 
 @media screen and (max-width: 620px) {
@@ -2123,6 +2159,10 @@ button.btn_main{
 .mCSB_scrollTools {
     right: 18px;
     }
+    .main_page .btn_main {
+        bottom: 30px;
+        margin-top: 0;
+    }
 }
 
 @media screen and (max-height: 558px){
@@ -2174,15 +2214,31 @@ button.btn_main{
     .fl, .fr{
         font-size: 8px;
     }
+    .mw_step {
+        padding-bottom: 24px;
+    }
+    .mw_step .btn_main {
+        bottom: 20px;
+    }
 }
 
 @media screen and (max-width: 430px) {
 }
 
 @media screen and (max-width: 420px) {
+    .main_page .btn_main {
+        width: auto;
+        padding-left: 10px;
+        padding-right: 10px;
+        white-space: nowrap;
+    }
 }
 
 @media screen and (max-width: 380px) {
+    .check_list li {
+        padding-top: 6px;
+        padding-bottom: 6px;
+    }
     .raion_scroll {
         /*height: 262px;*/
         /*height: calc(100% - 130px) !important;*/
@@ -2195,7 +2251,68 @@ button.btn_main{
 }
 
 @media screen and (max-width: 360px) {
+    .step_dec {
+        height: 17vh;
+    }
 }
 
-@media screen and (max-width: 340px) {
+@media screen and (max-width: 320px) {
+    .mw_step .btn_main {
+        width: 250px;
+    }
+    .check_list {
+        margin-top: 6px;
+    }
+
+    .prpp {
+        font-size: 16px;
+        height: 57px;
+    }
+
+    .jk_img {
+        height: 130px;
+        display: flex;
+    }
+
+    .jk_list li img {
+        object-fit: cover;
+    }
+    .jk_list li span {
+        font-style: 15px;
+    }
+
+    .jk_list li span {
+        margin-top: 5px;
+    }
+}
+
+@media screen and (max-width: 280px) {
+    .main_page .btn_main {
+        white-space: nowrap;
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    .step_dec {
+        height: 15vh;
+    }
+}
+
+
+
+@media screen and (min-height: 850px) and (max-width : 490px) {
+    .main_page .btn_main {
+        margin-top: 30px;
+        bottom: 0;
+    }
+
+    .step_dec {
+        height: 17vh;
+    }
+}
+
+@media screen and (min-height: 840px) and (max-width : 490px) {
+    .step_dec {
+        height: 15vh;
+    }
 }
