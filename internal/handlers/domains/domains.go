@@ -196,13 +196,13 @@ func (dh *domainsHandlers) GetTemplate(c *gin.Context) {
 	}
 
 	//если бот, то включаем ему шаблон
-	userAgent := strings.ToLower(c.Request.Header.Get("User-Agent"))
+	/*userAgent := strings.ToLower(c.Request.Header.Get("User-Agent"))
 
 	if strings.Contains(userAgent, "yandex.com/bots") {
 		settings := convertForTemplate(domainSettings)
 		pickModerationTemplate(c, domainSettings.ScriptTmpl.City.Name, settings)
 		return
-	}
+	}*/
 
 	domainSettings.ScriptTmpl.IP = c.ClientIP()
 	domainSettings.ScriptTmpl.Rayon = c.Param("rayon")
