@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react"
 import { domainSettingsForTest } from "../../utils"
-import FinishSteps from "../finish-steps"
 import MainScreen from "../main-screen"
-import Step from "../steps"
 import Cookies from 'js-cookie'
 import Popups from "../popups"
-
+import FinishSteps from "../finish-steps"
+import Step from "../steps"
 const Router = () => {
     const [step, setStep] = useState(null)
     const [params, setParams] = useState({})
@@ -96,7 +95,7 @@ const Router = () => {
             } catch (e) { }
         }
     }, [])
-
+    
     return <div className="container_main">
         {step == null ? <MainScreen params={params} nextStep={nextStep} /> : params.Steps.length <= step ? <FinishSteps form={form} form={form} setForm={setForm} raionsStep={raionsName} raionsPrice={raionsPrice} roomsStep={roomsName} sdachaName={sdachaName} params={params} /> : <Step step={params.Steps[step]} raionsStep={raionsName} raionsPrice={raionsPrice} roomsStep={roomsName} params={params} index={step} length={params.Steps.length} nextStep={nextStep} prevStep={prevStep} form={form} setForm={setForm} />}
         <Popups params={params} />

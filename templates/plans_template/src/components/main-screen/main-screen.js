@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import BtnComponent from '../btn-component';
 import CityTitle from '../city-title';
 import parse from 'html-react-parser';
@@ -8,6 +8,14 @@ import PlansComponent from '../plans-component';
 import Popups from '../popups';
 
 const MainScreen = ({ params, nextStep }) => {
+  const [showAllContent, setShow] = useState(false)
+  const onScroll = (event) => {
+    window.removeEventListener('scroll', onScroll);
+    setShow(true)
+  }
+  useEffect(()=>{
+    window.addEventListener('scroll', onScroll);
+  },[])
   return (
     <React.Fragment>
       <section className="container_main">
@@ -62,7 +70,6 @@ const MainScreen = ({ params, nextStep }) => {
             </div>
           </div>
         </section>
-
         <div className="cookie">
           <span>
             Мы используем файлы cookie, чтобы убедиться, что наш веб-сайт
@@ -78,7 +85,7 @@ const MainScreen = ({ params, nextStep }) => {
         {domainSettings.domain.Plans.length > 0 ? <PlansComponent params={params} /> : ""}
         <section className="advantages">
           <Advantages />
-          <Gallery params={params} />
+          {showAllContent?<React.Fragment><Gallery params={params} />
           <div className="adv_in">
             <img src="/templates/plans_template/build/img/adv_in.png" />
             <span> {domainSettings.domain.footer_title === undefined || domainSettings.domain.footer_title == ''
@@ -89,10 +96,10 @@ const MainScreen = ({ params, nextStep }) => {
             text={'Начать быстрый поиск'}
             params={params}
             clickFunct={nextStep}
-          />
+          /></React.Fragment>:<div></div>}
         </section>
 
-        <footer>
+        {showAllContent?<React.Fragment><footer>
           <div className="wmain">
             <div className="f_left" style={{ float: 'right' }}>
               <a
@@ -112,7 +119,7 @@ const MainScreen = ({ params, nextStep }) => {
             </div>
             <div className="clr"></div>
           </div>
-        </footer>
+        </footer></React.Fragment>:<div></div>}
       </section>
     </React.Fragment>
   );
