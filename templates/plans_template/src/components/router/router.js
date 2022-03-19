@@ -6,6 +6,7 @@ import Popups from "../popups"
 import FinishSteps from "../finish-steps"
 import Step from "../steps"
 const Router = () => {
+
     const [step, setStep] = useState(null)
     const [params, setParams] = useState({})
     const [raionsName, setRaionsName] = useState("")

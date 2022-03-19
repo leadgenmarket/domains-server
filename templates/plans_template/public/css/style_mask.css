@@ -60,7 +60,12 @@ body {
 }
 .overflow { 
 overflow: hidden; 
-} 
+}
+
+.city_title {
+    display: flex;
+    align-items: center;
+}
 
 .err { 
 color: #FF0000 !important; 
@@ -111,10 +116,10 @@ input,textarea,button {
 input[type="submit"], button {
     cursor: pointer;
     appearance: none;
-    -webkit- appearance: none;
-    -moz- appearance: none;
-    -ms- appearance: none;
-    -o- appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -ms-appearance: none;
+    -o-appearance: none;
 }
 
 
@@ -351,7 +356,8 @@ h1:before{
     width: 58px;
     height: 3px;
     background: #FFF;
-    top: 30px;
+    top: 50%;
+    margin-top: -2px;
     left: -96px;
 }
 .mob_br{
@@ -445,7 +451,8 @@ sub{
     width: 58px;
     height: 3px;
     background: #fff;
-    top: 30px;
+    top: 50%;
+    margin-top: -2px;
     left: -96px;
 }
 .check_list{
@@ -2396,6 +2403,10 @@ iframe[name='google_conversion_frame'] {
     float: left;
 }
 
+.btn_block .btn_main {
+    color: #fff !important;
+}
+
 /*@media*/
 @media screen and (max-height: 850px){
     .check_list li{
@@ -2524,13 +2535,26 @@ h1{
         margin-top: 10px;
     }
     .color_text{
-        margin-top: 10px;
+        margin-top: 20px;
     }
     .main_page sub{
     margin-top: 0;
     }
+    ul.header_list {
+        margin-left: 0;
+        margin-top: 7px;
+    }
+
+    ul.header_list > li {
+        display: block;
+    }
+
+    ul.header_list > li + li {
+        margin-top: 3px;
+    }
+
     .hd_inn .btn_main{
-        margin-top: 10px;
+        margin-top: 20px;
     }
     .hd_inn .variants_step .btn_main,
     .hd_inn .name_step .btn_main,
@@ -2641,7 +2665,10 @@ h1{
 }
 
 @media screen and (max-width: 1000px) {
-
+    .page_inner {
+        padding-left: 40px;
+        padding-right: 40px;
+    }
 }
 
 
@@ -2769,6 +2796,10 @@ h1{
 }
 
 @media screen and (max-width: 780px) {
+    .page_inner {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
 }
 
 @media screen and (max-width: 760px) {
@@ -2803,9 +2834,16 @@ h1{
 .hd_inn .variants_step .btn_main{
         width: 316px;
 }
+.name_step .btn_main {
+    margin-left: 0 !important;
+    margin-top: 20px !important;
+}
 }
 
 @media screen and (max-width: 720px) {
+    .title_inner span {
+        font-size: 30px !important;
+    }
     .remont_ico{
         width: 146px;
     }
@@ -3008,6 +3046,9 @@ h1{
 }
 
 @media screen and (max-width: 480px) {
+    .hd_inn .btn_main {
+        margin-top: 20px;
+    }
     .hd_slid .slick-next{
         right: 2%;
     }
@@ -3076,7 +3117,8 @@ h1{
     h1:before{
         width: 14px;
         left: -22px;
-        top: 15px;
+        top: 12px;
+        height: 2px;
     }
     .title_inner:before{
         width: 14px;
@@ -3112,11 +3154,17 @@ h1{
     color: #fff;
 }
 .hd_inn .btn_main {
-    margin-top: 40px;
+    margin-top: 20px;
     width: 160px;
     height: 38px;
     font-size: 12px;
     line-height: 34px;
+}
+.city_title > div {
+    margin-right: 8px !important;
+}
+.city_title {
+    font-size: 22px !important;
 }
 .tm{
     font-size: 22px;
@@ -3330,6 +3378,34 @@ footer{
 }
 
 @media screen and (max-width: 380px) {
+    .name-header {
+        padding-left: 0 !important;
+    }
+    .bp_inner .in_phone, .bp_inner .btn_main {
+        width: 100% !important;
+    }
+    .btn_block {
+        display: flex;
+    }
+
+    .btn_block .btn_main {
+        width: 50%;
+        color: #fff !important;
+    }
+
+    .check_list_one label {
+        display: flex !important;
+        align-items: center !important;
+    }
+
+    .check_list_one label svg {
+        width: 32px;
+        min-width: 32px;
+    }
+
+    .check_list_one label span {
+        font-size: 16px !important;
+    }
 }
 
 @media screen and (max-width: 360px) {
