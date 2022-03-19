@@ -61,6 +61,7 @@ const DomainDetail = ({ domain, plans, loading, fetchDomain }) => {
                     name: 'Название',
                     json: 'name',
                     type: 'text',
+                    empty: true,
                 },
                 {
                     name: 'Количество комнат',
@@ -76,6 +77,12 @@ const DomainDetail = ({ domain, plans, loading, fetchDomain }) => {
                     name: 'Жилая площадь',
                     json: 'living_area',
                     type: 'number',
+                },
+                {
+                    name: 'Литер',
+                    json: 'liter',
+                    type: 'text',
+                    empty: true,
                 },
                 {
                     name: 'Этажи (через запятую, если несколько)',
@@ -149,6 +156,7 @@ const DomainDetail = ({ domain, plans, loading, fetchDomain }) => {
                     name: 'Название',
                     json: 'name',
                     type: 'text',
+                    empty: true,
                 },
                 {
                     name: 'Количество комнат',
@@ -164,6 +172,12 @@ const DomainDetail = ({ domain, plans, loading, fetchDomain }) => {
                     name: 'Жилая площадь',
                     json: 'living_area',
                     type: 'number',
+                },
+                {
+                    name: 'Литер',
+                    json: 'liter',
+                    type: 'text',
+                    empty: true,
                 },
                 {
                     name: 'Этажи (через запятую, если несколько)',

@@ -70,10 +70,10 @@ const TextModal = ({ form, sendRequest }) => {
                 }
             } else if (element.type == 'hidden') {
                 console.log(element)
-                if (Number.isNaN(parseInt(element.value)) || element.getAttribute('name') == "ID" || element.getAttribute('name') == "site_id") {
+                if (Number.isNaN(parseFloat(element.value)) || element.getAttribute('name') == "ID" || element.getAttribute('name') == "site_id") {
                     json = { ...json, [element.getAttribute('name')]: element.value }
                 } else {
-                    json = { ...json, [element.getAttribute('name')]: parseInt(element.value) }
+                    json = { ...json, [element.getAttribute('name')]: parseFloat(element.value) }
                 }
                 if (element.value == "") {
                     element.closest('.form-group').classList.add('error')
@@ -81,12 +81,12 @@ const TextModal = ({ form, sendRequest }) => {
                 }
             } else if (element.type == 'number') {
                 if (element.getAttribute('empty') !== "1") {
-                    if (Number.isNaN(parseInt(element.value))) {
+                    if (Number.isNaN(parseFloat(element.value))) {
                         element.closest('.form-group').classList.add('error')
                         flag = false
                     } else {
                         element.closest('.form-group').classList.remove('error')
-                        json = { ...json, [element.getAttribute('name')]: parseInt(element.value) }
+                        json = { ...json, [element.getAttribute('name')]: parseFloat(element.value) }
                     }
                 }
             } else if (element.type == 'textarea') {
@@ -98,7 +98,7 @@ const TextModal = ({ form, sendRequest }) => {
                     json = { ...json, [element.getAttribute('name')]: element.value }
                 }
             } else {
-                if (element.value.trim().length == 0) {
+                if (element.value.trim().length == 0 && element.getAttribute('empty') !== "1") {
                     element.closest('.form-group').classList.add('error')
                     flag = false
                 } else {
@@ -111,7 +111,7 @@ const TextModal = ({ form, sendRequest }) => {
                             json = { ...json, [element.getAttribute('name')]: false }
                         } else {
                             if (element.getAttribute('name') !== "role") {
-                                json = { ...json, [element.getAttribute('name')]: parseInt(element.value) }
+                                json = { ...json, [element.getAttribute('name')]: parseFloat(element.value) }
                             } else {
                                 json = { ...json, [element.getAttribute('name')]: element.value }
                             }
