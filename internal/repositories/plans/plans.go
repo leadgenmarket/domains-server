@@ -15,6 +15,8 @@ type Repository interface {
 	AddPlan(plan models.Plan) error
 	UpdatePlan(plan models.Plan) error
 	DeletePlan(planID string) error
+	UpdatePlansActivity(id string, active bool) error
+	GetPlanByID(id string) (models.Plan, error)
 }
 
 type repository struct {
@@ -49,4 +51,27 @@ func (r *repository) DeletePlan(id string) error {
 		return err
 	}
 	return nil
+}
+
+func (r *repository) UpdatePlansActivity(id string, active bool) error {
+	plan := models.Plan{}
+	err := r.plans.Find(bson.M{"_id": bson.ObjectIdHex(id)}).One(&plan)
+	if err != nil {
+		return nil
+	}
+	plan.Active = active
+	err = r.plans.Update(bson.M{"_id": bson.ObjectIdHex(id)}, plan)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (r *repository) GetPlanByID(id string) (models.Plan, error) {
+	plan := models.Plan{}
+	err := r.plans.Find(bson.M{"_id": bson.ObjectIdHex(id)}).One(&plan)
+	if err != nil {
+		return plan, err
+	}
+	return plan, nil
 }

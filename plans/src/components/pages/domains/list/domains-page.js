@@ -121,7 +121,7 @@ const DomainsPage = ({ domains, cursor, loading, fetchDomains, fetchMore }) => {
                                             </div>
                                         </div>*/}
                                         <div className="row">
-                                            <div className="col-sm-12">
+                                            <div className="col-sm-12" style={{ paddingBottom: "50px" }}>
                                                 <table className="table align-middle datatable dt-responsive table-check nowrap dataTable no-footer table-striped" style={{ borderCollapse: "collapse", borderSpacing: "0px 8px", width: "100%" }} >
                                                     <thead>
                                                         <tr className="bg-transparent" role="row">

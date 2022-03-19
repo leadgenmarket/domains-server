@@ -10,8 +10,10 @@ import { Spinner } from "../../../spinner";
 import { Modals, showModal } from "../../../modals"
 
 const DomainDetail = ({ domain, plans, loading, fetchDomain }) => {
+    let url = "https://admin.leadactiv.ru/"//"http://localhost/"
     const { id } = useParams()
     const [editPlan, setEditPlan] = useState({})
+    const [formAdd, editFormAdd] = useState({})
     useEffect(() => {
         fetchDomain(id)
     }, [id])
@@ -32,7 +34,8 @@ const DomainDetail = ({ domain, plans, loading, fetchDomain }) => {
             name: 'addPlan',
             url: "/api/plans/",
             type: "put",
-            action: (action) => { console.log('need to close modal'); fetchDomain() },
+            action: (action) => { console.log('need to close modal'); fetchDomain(); window.location.reload() },
+            edit: (data) => { editFormAdd(data) },
             fields: [
                 {
                     name: 'Фото',
@@ -40,13 +43,23 @@ const DomainDetail = ({ domain, plans, loading, fetchDomain }) => {
                     type: 'file'
                 },
                 {
-                    name: 'Название',
-                    json: 'name',
-                    type: 'text',
+                    name: 'Акционная квартира?',
+                    json: 'action',
+                    type: 'select',
+                    options: [
+                        {
+                            name: "нет",
+                            value: false,
+                        },
+                        {
+                            name: "да",
+                            value: true,
+                        },
+                    ],
                 },
                 {
-                    name: 'Url домена',
-                    json: 'url',
+                    name: 'Название',
+                    json: 'name',
                     type: 'text',
                 },
                 {
@@ -62,43 +75,42 @@ const DomainDetail = ({ domain, plans, loading, fetchDomain }) => {
                 {
                     name: 'Жилая площадь',
                     json: 'living_area',
-                    type: 'number'
+                    type: 'number',
                 },
                 {
                     name: 'Этажи (через запятую, если несколько)',
                     json: 'floors',
-                    type: 'text'
+                    type: 'text',
+                    empty: true,
                 },
                 {
                     json: 'site_id',
                     type: 'hidden',
                     value: id,
                 },
-                //акционная квартира или нет
-                {
-                    json: 'action',
-                    type: 'select',
-                    //value: id,
-                },
                 {
                     name: 'Цена',
                     json: 'price',
-                    type: 'number'
+                    type: 'number',
+                    empty: true,
                 },
                 {
                     name: 'Площадь гостинной',
                     json: 'living_area',
-                    type: 'number'
+                    type: 'number',
+                    empty: true,
                 },
                 {
                     name: 'Площадь спальни',
                     json: 'bed_room_area',
-                    type: 'number'
+                    type: 'number',
+                    empty: true,
                 },
                 {
                     name: 'Площадь кухни',
                     json: 'kitchen_area',
-                    type: 'number'
+                    type: 'number',
+                    empty: true,
                 },
             ],
         },
@@ -107,7 +119,7 @@ const DomainDetail = ({ domain, plans, loading, fetchDomain }) => {
             name: 'updatePlan',
             url: "/api/plans/",
             type: "post",
-            action: (action) => { console.log(action); fetchDomain() },
+            action: (action) => { console.log(action); fetchDomain(); window.location.reload() },
             edit: (action) => { setEditPlan(action) },
             //imageurl:"public/objects/"+activeObject.ID+"/actions/", //id
             date: editPlan,
@@ -119,14 +131,74 @@ const DomainDetail = ({ domain, plans, loading, fetchDomain }) => {
                     type: 'file'
                 },
                 {
-                    name: 'Name',
+                    name: 'Акционная квартира?',
+                    json: 'action',
+                    type: 'select',
+                    options: [
+                        {
+                            name: "нет",
+                            value: false,
+                        },
+                        {
+                            name: "да",
+                            value: true,
+                        },
+                    ],
+                },
+                {
+                    name: 'Название',
                     json: 'name',
                     type: 'text',
                 },
                 {
-                    name: 'Url',
-                    json: 'url',
+                    name: 'Количество комнат',
+                    json: 'rooms',
+                    type: 'number'
+                },
+                {
+                    name: 'Общая площадь',
+                    json: 'total_area',
+                    type: 'number'
+                },
+                {
+                    name: 'Жилая площадь',
+                    json: 'living_area',
+                    type: 'number',
+                },
+                {
+                    name: 'Этажи (через запятую, если несколько)',
+                    json: 'floors',
                     type: 'text',
+                    empty: true,
+                },
+                {
+                    json: 'site_id',
+                    type: 'hidden',
+                    value: id,
+                },
+                {
+                    name: 'Цена',
+                    json: 'price',
+                    type: 'number',
+                    empty: true,
+                },
+                {
+                    name: 'Площадь гостинной',
+                    json: 'living_area',
+                    type: 'number',
+                    empty: true,
+                },
+                {
+                    name: 'Площадь спальни',
+                    json: 'bed_room_area',
+                    type: 'number',
+                    empty: true,
+                },
+                {
+                    name: 'Площадь кухни',
+                    json: 'kitchen_area',
+                    type: 'number',
+                    empty: true,
                 },
                 {
                     json: 'ID',
@@ -140,7 +212,7 @@ const DomainDetail = ({ domain, plans, loading, fetchDomain }) => {
             name: 'deletePlan',
             url: "/api/plans/" + editPlan.ID,
             type: "delete",
-            action: (action) => { console.log(action); fetchDomain() },
+            action: (action) => { window.location.reload() },
             //edit: () => {},
             date: editPlan,
             clear: false,
@@ -184,6 +256,23 @@ const DomainDetail = ({ domain, plans, loading, fetchDomain }) => {
                                     <h5 className="font-size-15">Планировки</h5>
                                 </div>
                                 <div className="row">
+                                    {plans.map((plan) => {
+                                        return (<div className="col-md-6 col-xl-3">
+                                            <div className="card">
+                                                <img className="card-img-top img-fluid" src={url + "file-store/" + plan.photo} style={{ maxHeight: "300px" }} alt="Card image cap" />
+                                                <div className="card-body">
+                                                    <h4 className="card-title">{plan.name}</h4>
+                                                    {plan.Action ? <p className="card-text">Акционная квартира!</p> : <p></p>}
+                                                    <p className="card-text">Кол-во комнат: {plan.rooms}</p>
+                                                    <p className="card-text">Общая площадь: {plan.total_area}</p>
+                                                    <p className="card-text">Жилая площадь: {plan.living_area}</p>
+                                                    <div className="column" style={{ justifyContent: "space-between", width: "100%", display: "flex" }}>
+                                                        <a href="#" className="btn btn-primary waves-effect waves-light" onClick={() => { plan.site_id = id; setEditPlan(plan); showModal("updatePlan") }}>Редактировать</a>
+                                                        <a href="#" className="btn btn-primary waves-effect waves-light" onClick={() => { setEditPlan(plan); showModal("deletePlan") }}>Удалить</a>
+                                                    </div>
+                                                </div>
+                                            </div> </div>)
+                                    })}
                                 </div>
                             </div>
                         </div>

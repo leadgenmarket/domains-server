@@ -1,6 +1,8 @@
 package models
 
-import "github.com/globalsign/mgo/bson"
+import (
+	"github.com/globalsign/mgo/bson"
+)
 
 //фкнкционал для планировок на сайты лидактива
 type PlansSite struct {
@@ -30,18 +32,19 @@ func CreatePlansSiteFromInput(input PlansSiteInput) PlansSite {
 
 type Plan struct {
 	ID             bson.ObjectId `bson:"_id"`
-	SiteID         bson.ObjectId `bson:"site_id"`
-	Name           string        `bson:"name"`
-	Rooms          int           `bson:"rooms"`
-	TotalArea      float64       `bson:"total_area"`
-	LivingArea     float64       `bson:"living_area"`
-	Floors         []int         `bson:"floors"`
-	Action         bool          `bson:"action"`
-	Price          int           `bson:"price"`
-	LivingRoomArea float64       `bson:"living_room_area"`
-	BedRoomArea    float64       `bson:"bed_room_area"`
-	KitchenArea    float64       `bson:"kitchen_area"`
-	Photo          string        `bson:"photo"`
+	SiteID         bson.ObjectId `bson:"site_id" json:"site_id"`
+	Active         bool          `bson:"active" json:"active"`
+	Name           string        `bson:"name" json:"name"`
+	Rooms          int           `bson:"rooms" json:"rooms"`
+	TotalArea      float64       `bson:"total_area" json:"total_area"`
+	LivingArea     float64       `bson:"living_area" json:"living_area"`
+	Floors         []int         `bson:"floors" json:"floors"`
+	Action         bool          `bson:"action" json:"action"`
+	Price          int           `bson:"price" json:"price"`
+	LivingRoomArea float64       `bson:"living_room_area" json:"living_room_area"`
+	BedRoomArea    float64       `bson:"bed_room_area" json:"bed_room_area"`
+	KitchenArea    float64       `bson:"kitchen_area" json:"kitchen_area"`
+	Photo          string        `bson:"photo" json:"photo"`
 }
 
 func CreatePlanFromInput(input PlanInput) Plan {
@@ -50,7 +53,7 @@ func CreatePlanFromInput(input PlanInput) Plan {
 		Rooms:          input.Rooms,
 		TotalArea:      input.TotalArea,
 		LivingArea:     input.LivingArea,
-		Floors:         input.Floors,
+		Floors:         []int{},
 		Action:         input.Action,
 		Price:          input.Price,
 		LivingRoomArea: input.LivingRoomArea,
@@ -64,17 +67,28 @@ func CreatePlanFromInput(input PlanInput) Plan {
 		plan.ID = bson.NewObjectId()
 	}
 	plan.SiteID = bson.ObjectIdHex(input.SiteID)
+
+	/*if input.Floors != "" {
+		floorsStringList := strings.Split(input.Floors, ",")
+		for _, floor := range floorsStringList {
+			fl, err := strconv.Atoi(floor)
+			if err == nil {
+				plan.Floors = append(plan.Floors, fl)
+			}
+		}
+	}*/
+	plan.SiteID = bson.ObjectIdHex(input.SiteID)
 	return plan
 }
 
 type PlanInput struct {
-	ID             string  `json:"id" form:"id"`
+	ID             string  `json:"id" form:"ID"`
 	SiteID         string  `json:"site_id" form:"site_id"`
 	Name           string  `json:"name" form:"name"`
 	Rooms          int     `json:"rooms" form:"rooms"`
 	TotalArea      float64 `json:"total_area" form:"total_area"`
 	LivingArea     float64 `json:"living_area" form:"living_area"`
-	Floors         []int   `json:"floors" form:"floors"`
+	Floors         string  `json:"floors" form:"floors"`
 	Action         bool    `json:"action" form:"action"`
 	Price          int     `json:"price" form:"price"`
 	LivingRoomArea float64 `json:"living_room_area" form:"living_room_area"`

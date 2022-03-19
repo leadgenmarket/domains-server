@@ -1,5 +1,5 @@
 import axios from "axios"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { Edit, Trash } from "react-feather"
 import { showModal } from "."
 import { SpinnerContext } from "../spinner"
@@ -70,7 +70,7 @@ const TextModal = ({ form, sendRequest }) => {
                 }
             } else if (element.type == 'hidden') {
                 console.log(element)
-                if (Number.isNaN(parseInt(element.value)) || element.getAttribute('name') == "ID") {
+                if (Number.isNaN(parseInt(element.value)) || element.getAttribute('name') == "ID" || element.getAttribute('name') == "site_id") {
                     json = { ...json, [element.getAttribute('name')]: element.value }
                 } else {
                     json = { ...json, [element.getAttribute('name')]: parseInt(element.value) }
@@ -80,12 +80,14 @@ const TextModal = ({ form, sendRequest }) => {
                     flag = false
                 }
             } else if (element.type == 'number') {
-                if (Number.isNaN(parseInt(element.value))) {
-                    element.closest('.form-group').classList.add('error')
-                    flag = false
-                } else {
-                    element.closest('.form-group').classList.remove('error')
-                    json = { ...json, [element.getAttribute('name')]: parseInt(element.value) }
+                if (element.getAttribute('empty') !== "1") {
+                    if (Number.isNaN(parseInt(element.value))) {
+                        element.closest('.form-group').classList.add('error')
+                        flag = false
+                    } else {
+                        element.closest('.form-group').classList.remove('error')
+                        json = { ...json, [element.getAttribute('name')]: parseInt(element.value) }
+                    }
                 }
             } else if (element.type == 'textarea') {
                 if (element.value == "") {
@@ -96,7 +98,6 @@ const TextModal = ({ form, sendRequest }) => {
                     json = { ...json, [element.getAttribute('name')]: element.value }
                 }
             } else {
-
                 if (element.value.trim().length == 0) {
                     element.closest('.form-group').classList.add('error')
                     flag = false
@@ -248,7 +249,7 @@ const TextModal = ({ form, sendRequest }) => {
             return <React.Fragment>
                 <label>{field.name}:</label>
                 <div className="form-group">
-                    {value == "" ? <input className="form-control" type={field.type} id={field.name} name={field.json} /> : <input className="form-control" onChange={inputChange} type={field.type} id={field.name} name={field.json} value={value} />}
+                    {value == "" ? <input className="form-control" type={field.type} id={field.name} name={field.json} empty={field.empty ? "1" : "0"} /> : <input className="form-control" onChange={inputChange} type={field.type} id={field.name} name={field.json} value={value} empty={field.empty ? "1" : "0"} />}
                     <div className="invalid-feedback">Проверьте правильность ввода поля.</div>
                 </div>
             </React.Fragment>
@@ -390,7 +391,9 @@ const TextModal = ({ form, sendRequest }) => {
                 element.value = null
                 element.parentNode.parentNode.parentNode.parentNode.querySelector('img').setAttribute('src', "/public/other/placeholder_image.jpg")
             } else if (element.type == "text") {
-                element.value = ""
+                if (!element.value) {
+                    element.value = ""
+                }
             } else if (element.type == "hidden") {
                 //element.value = ""
             } else {
