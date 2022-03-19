@@ -36,9 +36,10 @@ type Plan struct {
 	Active         bool          `bson:"active" json:"active"`
 	Name           string        `bson:"name" json:"name"`
 	Rooms          int           `bson:"rooms" json:"rooms"`
+	Liter          string        `bson:"liter" json:"liter"`
 	TotalArea      float64       `bson:"total_area" json:"total_area"`
 	LivingArea     float64       `bson:"living_area" json:"living_area"`
-	Floors         []int         `bson:"floors" json:"floors"`
+	Floors         string        `bson:"floors" json:"floors"`
 	Action         bool          `bson:"action" json:"action"`
 	Price          int           `bson:"price" json:"price"`
 	LivingRoomArea float64       `bson:"living_room_area" json:"living_room_area"`
@@ -53,7 +54,8 @@ func CreatePlanFromInput(input PlanInput) Plan {
 		Rooms:          input.Rooms,
 		TotalArea:      input.TotalArea,
 		LivingArea:     input.LivingArea,
-		Floors:         []int{},
+		Liter:          input.Liter,
+		Floors:         input.Floors,
 		Action:         input.Action,
 		Price:          input.Price,
 		LivingRoomArea: input.LivingRoomArea,
@@ -68,15 +70,6 @@ func CreatePlanFromInput(input PlanInput) Plan {
 	}
 	plan.SiteID = bson.ObjectIdHex(input.SiteID)
 
-	/*if input.Floors != "" {
-		floorsStringList := strings.Split(input.Floors, ",")
-		for _, floor := range floorsStringList {
-			fl, err := strconv.Atoi(floor)
-			if err == nil {
-				plan.Floors = append(plan.Floors, fl)
-			}
-		}
-	}*/
 	plan.SiteID = bson.ObjectIdHex(input.SiteID)
 	return plan
 }
@@ -86,6 +79,7 @@ type PlanInput struct {
 	SiteID         string  `json:"site_id" form:"site_id"`
 	Name           string  `json:"name" form:"name"`
 	Rooms          int     `json:"rooms" form:"rooms"`
+	Liter          string  `bson:"liter" form:"liter"`
 	TotalArea      float64 `json:"total_area" form:"total_area"`
 	LivingArea     float64 `json:"living_area" form:"living_area"`
 	Floors         string  `json:"floors" form:"floors"`
