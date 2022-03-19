@@ -28,7 +28,6 @@ type Config struct {
 	CloudStorePath      string
 	YandexApiToken      string
 	AdminUrl            string
-	PlansUrl            string
 }
 
 func InitConfig(prefix string) (*Config, error) {

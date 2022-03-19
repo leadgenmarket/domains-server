@@ -111,7 +111,7 @@ func (dh *domainsHandlers) GetTemplate(c *gin.Context) {
 		handleAdminInterface(c, c.Request.URL.Path)
 		return
 	}
-	if domainName == dh.cfg.PlansUrl {
+	if domainName == "plans.leadactiv.ru" {
 		handlePlansInterface(c, c.Request.URL.Path)
 		return
 	}
