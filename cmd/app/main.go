@@ -65,7 +65,7 @@ func main() {
 }
 
 func GetAllDomainUrls(repository domains.Repository, serversIP string) ([]string, error) {
-	domains := []string{serversIP}
+	domains := []string{serversIP, "plans.leadactiv.ru"}
 	listDomain, err := repository.GetAllDomains()
 	if err != nil {
 		return nil, err
