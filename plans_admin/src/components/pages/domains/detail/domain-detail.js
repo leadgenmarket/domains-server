@@ -103,7 +103,7 @@ const DomainDetail = ({ domain, plans, loading, fetchDomain }) => {
                 },
                 {
                     name: 'Площадь гостинной',
-                    json: 'living_area',
+                    json: 'living_room_area',
                     type: 'number',
                     empty: true,
                 },
@@ -198,7 +198,7 @@ const DomainDetail = ({ domain, plans, loading, fetchDomain }) => {
                 },
                 {
                     name: 'Площадь гостинной',
-                    json: 'living_area',
+                    json: 'living_room_area',
                     type: 'number',
                     empty: true,
                 },
