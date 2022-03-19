@@ -7,6 +7,7 @@ import Cookies from 'js-cookie'
 import Popups from "../popups"
 
 const Router = () => {
+
     const [step, setStep] = useState(null)
     const [params, setParams] = useState({})
     const [raionsName, setRaionsName] = useState("")

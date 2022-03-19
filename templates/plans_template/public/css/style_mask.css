@@ -111,10 +111,10 @@ input,textarea,button {
 input[type="submit"], button {
     cursor: pointer;
     appearance: none;
-    -webkit- appearance: none;
-    -moz- appearance: none;
-    -ms- appearance: none;
-    -o- appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -ms-appearance: none;
+    -o-appearance: none;
 }
 
 

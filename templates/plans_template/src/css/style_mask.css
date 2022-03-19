@@ -1,28 +1,28 @@
 @font-face {
     font-family: 'Roboto';
-    src: url('/templates/plans_template/css/fonts/RobotoRegular.eot');
-    src: url('/templates/plans_template/css/fonts/RobotoRegular.eot?#iefix') format('embedded-opentype'),
-         url('/templates/plans_template/css/fonts/RobotoRegular.woff') format('woff'),
-         url('/templates/plans_template/css/fonts/RobotoRegular.ttf') format('truetype');
+    src: url('fonts/RobotoRegular.eot');
+    src: url('fonts/RobotoRegular.eot?#iefix') format('embedded-opentype'),
+         url('fonts/RobotoRegular.woff') format('woff'),
+         url('fonts/RobotoRegular.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
 }
 
 @font-face {
     font-family: 'Roboto';
-    src: url('/templates/plans_template/css/fonts/RobotoMedium.eot');
-    src: url('/templates/plans_template/css/fonts/RobotoMedium.eot?#iefix') format('embedded-opentype'),
-         url('/templates/plans_template/css/fonts/RobotoMedium.woff') format('woff'),
-         url('/templates/plans_template/css/fonts/RobotoMedium.ttf') format('truetype');
+    src: url('fonts/RobotoMedium.eot');
+    src: url('fonts/RobotoMedium.eot?#iefix') format('embedded-opentype'),
+         url('fonts/RobotoMedium.woff') format('woff'),
+         url('fonts/RobotoMedium.ttf') format('truetype');
     font-weight: bold;
     font-style: normal;
 }
 @font-face {
     font-family: 'Roboto';
-    src: url('/templates/plans_template/css/fonts/RobotoLight.eot');
-    src: url('/templates/plans_template/css/fonts/RobotoLight.eot?#iefix') format('embedded-opentype'),
-         url('/templates/plans_template/css/fonts/RobotoLight.woff') format('woff'),
-         url('/templates/plans_template/css/fonts/RobotoLight.ttf') format('truetype');
+    src: url('fonts/RobotoLight.eot');
+    src: url('fonts/RobotoLight.eot?#iefix') format('embedded-opentype'),
+         url('fonts/RobotoLight.woff') format('woff'),
+         url('fonts/RobotoLight.ttf') format('truetype');
     font-weight: 100;
     font-style: normal;
 }
@@ -111,10 +111,10 @@ input,textarea,button {
 input[type="submit"], button {
     cursor: pointer;
     appearance: none;
-    -webkit- appearance: none;
-    -moz- appearance: none;
-    -ms- appearance: none;
-    -o- appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -ms-appearance: none;
+    -o-appearance: none;
 }
 
 
