@@ -53,6 +53,8 @@ footer .wmain{
 
 .city_title {
     /*padding-right: 80px;*/
+    display: flex;
+    align-content: center;
 }
 
 .city_title span {
