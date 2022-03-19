@@ -33,6 +33,7 @@ services:
     volumes:
       - './file-store:/file-store'
       - './admin/build:/admin/build'
+      - './plans_admin/build:/plans_admin/build'
       - './vars:/vars'
       - './templates:/templates'
       - './moderation:/moderation'

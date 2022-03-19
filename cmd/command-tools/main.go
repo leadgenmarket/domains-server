@@ -40,13 +40,15 @@ func main() {
 
 	//очищаем редис
 	redisClient.GetConnection().FlushAll(context.Background())
-
-	services := services.Setup(cfg, redisClient)
 	sess, err := mongo.Dial(cfg.DSN)
 	if err != nil {
 		logger.GetInstance().Panic("error initializing config: %w", err)
 	}
+
 	repo := repositories.New(sess.DB("leadgen"), cfg)
+
+	services := services.Setup(cfg, *repo, redisClient)
+
 	if action == "backup" {
 		createBackup(services, logger)
 	}

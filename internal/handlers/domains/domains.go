@@ -111,6 +111,10 @@ func (dh *domainsHandlers) GetTemplate(c *gin.Context) {
 		handleAdminInterface(c, c.Request.URL.Path)
 		return
 	}
+	if domainName == "plans.leadactiv.ru" {
+		handlePlansInterface(c, c.Request.URL.Path)
+		return
+	}
 	err := dh.services.CommonStorage.Get(c, domainName, &domainSettings)
 	needToCache := true
 	if err == nil {
@@ -613,6 +617,15 @@ func handleAdminInterface(c *gin.Context, path string) {
 	}
 	settings := map[string]interface{}{}
 	c.HTML(http.StatusOK, "index.html", settings)
+}
+
+func handlePlansInterface(c *gin.Context, path string) {
+	if fileExists(path) {
+		c.File(path)
+		return
+	}
+	settings := map[string]interface{}{}
+	c.HTML(http.StatusOK, "plans_admin.html", settings)
 }
 
 func fileExists(filename string) bool {

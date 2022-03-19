@@ -1,0 +1,41 @@
+.media.mb-2{
+    display:flex ;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;   
+}
+
+.media.mb-2 .user-avatar{
+    margin: 0 !important;
+}
+
+.mb-2.error img{
+    border: 2px solid red;
+}
+
+.media .media-body{
+    margin-top: 0 !important;
+}
+
+.form-control[type="file"]{
+    display: none;
+}
+
+.form-group.error input{
+    border-color: red !important;
+}
+.form-group.error select{
+    border-color: red !important;
+}
+
+.form-group.error textarea{
+    border-color: red !important;
+}
+.form-group.error .invalid-feedback {
+    display: block;
+}
+
+img.wide-img {
+    width: 100%;
+    min-height: 80px;
+}

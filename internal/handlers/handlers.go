@@ -9,6 +9,8 @@ import (
 	"domain-server/internal/handlers/leads"
 	"domain-server/internal/handlers/locations"
 	"domain-server/internal/handlers/organizations"
+	"domain-server/internal/handlers/plans"
+	"domain-server/internal/handlers/plans_sites"
 	"domain-server/internal/handlers/templates"
 	"domain-server/internal/handlers/titles"
 	"domain-server/internal/handlers/users"
@@ -42,6 +44,8 @@ type handlers struct {
 	JKs           jks.Handlers
 	Users         users.Handlers
 	Templates     templates.Handlers
+	PlansSites    plans_sites.Handlers
+	Plans         plans.Handlers
 	router        *gin.Engine
 	repositories  *repositories.Repositories
 	services      *services.Services
@@ -59,6 +63,8 @@ func New(router *gin.Engine, repositories *repositories.Repositories, services *
 		Titles:        titles.New(repositories.Titles, services, logger),
 		Users:         users.New(repositories.Users, services, logger),
 		Templates:     templates.New(repositories.Templates, services, logger),
+		PlansSites:    plans_sites.New(services, logger),
+		Plans:         plans.New(services, logger),
 		JKs:           jks.New(repositories.JK, logger),
 		router:        router,
 		repositories:  repositories,
@@ -71,8 +77,9 @@ func (h *handlers) Registry() {
 	h.router.Static("/templates", templatesFolder)
 	h.router.Static("/moderation", moderationFolder)
 	h.router.Static("/admin", "./admin/build")
+	h.router.Static("/plans_admin", "./plans_admin/build")
 	h.router.Static("/file-store", "./file-store")
-	h.router.LoadHTMLFiles("./admin/build/index.html", "./templates/plans_template/build/plans_template.html", "./templates/blue_template/build/blue_template.html", "./templates/wa_template/build/wa_template.html", "./templates/purple_template/build/purple_template.html", "./templates/test/build/test.html", "./moderation/template/moderation_1.html", "./moderation/template2/moderation_2.html", "./moderation/krd/krd.html", "./moderation/spb/spb.html")
+	h.router.LoadHTMLFiles("./admin/build/index.html", "./plans_admin/build/plans_admin.html", "./templates/plans_template/build/plans_template.html", "./templates/blue_template/build/blue_template.html", "./templates/wa_template/build/wa_template.html", "./templates/purple_template/build/purple_template.html", "./templates/test/build/test.html", "./moderation/template/moderation_1.html", "./moderation/template2/moderation_2.html", "./moderation/krd/krd.html", "./moderation/spb/spb.html")
 	h.router.GET("/", h.Domains.GetTemplate)
 	h.router.GET("/:rayon", h.Domains.GetTemplate)
 	h.router.POST("/sign-in", h.Auth.SignIn)
@@ -135,6 +142,21 @@ func (h *handlers) Registry() {
 		//templates
 		templatesGroup := api.Group("templates")
 		templatesGroup.GET("/", h.Templates.GetTemplatesList)
+
+		//plans_sites
+		plansSitesGroup := api.Group("plans-sites")
+		plansSitesGroup.GET("/", h.PlansSites.GetPlansSites)
+		plansSitesGroup.GET("/:id", h.PlansSites.GetPlansSiteDetailInfo)
+		plansSitesGroup.PUT("/", h.PlansSites.AddPlansSite)
+		plansSitesGroup.DELETE("/:id", h.PlansSites.DeletePlansSite)
+		plansSitesGroup.POST("/", h.PlansSites.UpdatePlansSite)
+
+		//plans
+		plansGroup := api.Group("plans")
+		plansGroup.PUT("/", h.Plans.AddPlans)
+		plansGroup.DELETE("/:id", h.Plans.DeletePlans)
+		plansGroup.POST("/", h.Plans.UpdatePlans)
+		plansGroup.POST("/activity", h.Plans.UpdatePlansActivity)
 
 		api.GET("/ping", func(c *gin.Context) {
 			c.JSON(http.StatusOK, gin.H{"message": "i'm ok"})

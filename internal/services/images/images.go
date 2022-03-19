@@ -7,10 +7,12 @@ import (
 	"domain-server/pkg/imagesservice"
 	"image"
 	"image/jpeg"
+	"io"
 	"mime/multipart"
 )
 
 type MultipartImages interface {
+	SaveMultipartImage(imageIn *multipart.FileHeader) (string, error)
 	ResizeAndSaveMultipartImage(imageIn *multipart.FileHeader, width int, height int) (string, error)
 	ResizeAndSaveMultipartImagesList(imagesInput []*multipart.FileHeader, width int, height int) (map[string]string, error)
 }
@@ -25,6 +27,21 @@ func NewImages(fileStore filestore.FileStore, imagesService imagesservice.Images
 		fileStore:     fileStore,
 		imagesService: imagesService,
 	}
+}
+
+func (mi *multipartImages) SaveMultipartImage(imageIn *multipart.FileHeader) (string, error) {
+	fileHeader, _ := imageIn.Open()
+	defer fileHeader.Close()
+	buf := bytes.NewBuffer(nil)
+	if _, err := io.Copy(buf, fileHeader); err != nil {
+		return "", err
+	}
+
+	filename, err := mi.fileStore.SaveFileToStore(buf.Bytes(), imageIn.Filename)
+	if err != nil {
+		return "", err
+	}
+	return filename, nil
 }
 
 func (mi *multipartImages) ResizeAndSaveMultipartImage(imageIn *multipart.FileHeader, width int, height int) (string, error) {

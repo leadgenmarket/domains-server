@@ -54,7 +54,7 @@ func main() {
 		HostPolicy: autocert.HostWhitelist(domainsList...),
 		Cache:      autocert.DirCache("./certs"),
 	}
-	servicesContainer := services.Setup(cfg, redisClient)
+	servicesContainer := services.Setup(cfg, *repo, redisClient)
 	handlersService := handlers.New(router, repo, servicesContainer, logger, cfg)
 	handlersService.Registry()
 	if cfg.SSLServing {
@@ -65,7 +65,7 @@ func main() {
 }
 
 func GetAllDomainUrls(repository domains.Repository, serversIP string) ([]string, error) {
-	domains := []string{serversIP}
+	domains := []string{serversIP, "plans.leadactiv.ru"}
 	listDomain, err := repository.GetAllDomains()
 	if err != nil {
 		return nil, err

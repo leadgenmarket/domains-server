@@ -5,7 +5,6 @@ import (
 	"domain-server/internal/models"
 	"domain-server/internal/repositories/titles"
 	"domain-server/internal/services"
-	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -64,7 +63,6 @@ func (s *titlesHandlers) UpdateTitles(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"paylod": "error"})
 		return
 	}
-	fmt.Println(input)
 
 	errN := s.repository.UpdateTitle(models.Title{
 		ID:    bson.ObjectIdHex(input.ID),
