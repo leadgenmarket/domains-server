@@ -330,7 +330,7 @@ const DomainDetail = ({ domain, plans, loading, fetchDomain }) => {
                                                     <p className="card-text">Жилая площадь: {plan.living_area}</p>
                                                     <div className="column" style={{ justifyContent: "space-between", width: "100%", display: "flex" }}>
                                                         <a href="#" className="btn btn-primary waves-effect waves-light" onClick={(e) => { e.preventDefault(); plan.site_id = id; setEditPlan(plan); showModal("updatePlan") }}>Редактировать</a>
-                                                        <a href="#" className="btn btn-primary waves-effect waves-light" onClick={() => { e.preventDefault(); setEditPlan(plan); showModal("deletePlan") }}>Удалить</a>
+                                                        <a href="#" className="btn btn-primary waves-effect waves-light" onClick={(e) => { e.preventDefault(); setEditPlan(plan); showModal("deletePlan") }}>Удалить</a>
                                                     </div>
                                                 </div>
                                             </div> </div>)

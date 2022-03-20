@@ -249,7 +249,7 @@ const TextModal = ({ form, sendRequest }) => {
             return <React.Fragment>
                 <label>{field.name}:</label>
                 <div className="form-group">
-                    {<input className="form-control" type={field.type} id={field.name} name={field.json} value={value} onChange={inputChange} empty={field.empty ? "1" : "0"} />}
+                    {value==""?<input className="form-control" type={field.type} id={field.name} name={field.json} onChange={inputChange} empty={field.empty ? "1" : "0"} />:<input className="form-control" type={field.type} id={field.name} name={field.json} value={value} onChange={inputChange} empty={field.empty ? "1" : "0"} />}
                     <div className="invalid-feedback">Проверьте правильность ввода поля.</div>
                 </div>
             </React.Fragment>
