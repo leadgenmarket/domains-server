@@ -8,7 +8,7 @@ const showModal = (modal) => {
         modal.style.display = "none"
     })
     //document.querySelector('.modal-backdrop').classList.add('show')
-    if (!document.querySelector('.modal-backdrop')){
+    if (!document.querySelector('.modal-backdrop')) {
         var backdrop = document.createElement("div");
         backdrop.classList.add('modal-backdrop')
         backdrop.classList.add('fade')
@@ -22,11 +22,11 @@ const showModal = (modal) => {
     element.classList.add('fade')
     element.classList.add('show')
     document.querySelector('body').appendChild(element)
-    setTimeout(()=> {
+    setTimeout(() => {
         document.querySelector('#inlineForm').classList.add('show')
-        document.querySelector('.'+modal).style.display = "flex"
-    },200)
-    document.querySelector('.'+modal).style.display = "flex"
+        document.querySelector('.' + modal).style.display = "flex"
+    }, 200)
+    document.querySelector('.' + modal).style.display = "flex"
 }
 
 export {
