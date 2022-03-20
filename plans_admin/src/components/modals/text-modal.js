@@ -80,15 +80,16 @@ const TextModal = ({ form, sendRequest }) => {
                     flag = false
                 }
             } else if (element.type == 'number') {
-                if (element.getAttribute('empty') !== "1") {
-                    if (Number.isNaN(parseFloat(element.value))) {
+                if (Number.isNaN(parseFloat(element.value))) {
+                    if (element.getAttribute('empty') !== "1") {
                         element.closest('.form-group').classList.add('error')
                         flag = false
-                    } else {
-                        element.closest('.form-group').classList.remove('error')
-                        json = { ...json, [element.getAttribute('name')]: parseFloat(element.value) }
                     }
+                } else {
+                    element.closest('.form-group').classList.remove('error')
+                    json = { ...json, [element.getAttribute('name')]: parseFloat(element.value) }
                 }
+
             } else if (element.type == 'textarea') {
                 if (element.value == "") {
                     element.closest('.form-group').classList.add('error')
@@ -102,7 +103,6 @@ const TextModal = ({ form, sendRequest }) => {
                     element.closest('.form-group').classList.add('error')
                     flag = false
                 } else {
-
                     element.closest('.form-group').classList.remove('error')
                     if (element.type == "select-one") {
                         if (element.value == "true") {
@@ -249,7 +249,7 @@ const TextModal = ({ form, sendRequest }) => {
             return <React.Fragment>
                 <label>{field.name}:</label>
                 <div className="form-group">
-                    {value == "" ? <input className="form-control" type={field.type} id={field.name} name={field.json} empty={field.empty ? "1" : "0"} /> : <input className="form-control" onChange={inputChange} type={field.type} id={field.name} name={field.json} value={value} empty={field.empty ? "1" : "0"} />}
+                    {<input className="form-control" type={field.type} id={field.name} name={field.json} value={value} onChange={inputChange} empty={field.empty ? "1" : "0"} />}
                     <div className="invalid-feedback">Проверьте правильность ввода поля.</div>
                 </div>
             </React.Fragment>
