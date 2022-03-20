@@ -44,6 +44,10 @@ type Plan struct {
 	Price          int           `bson:"price" json:"price"`
 	LivingRoomArea float64       `bson:"living_room_area" json:"living_room_area"`
 	BedRoomArea    float64       `bson:"bed_room_area" json:"bed_room_area"`
+	BedRoomArea2   float64       `bson:"bed_room_area_2" json:"bed_room_area_2"`
+	BedRoomArea3   float64       `bson:"bed_room_area_3" json:"bed_room_area_3"`
+	BathRoomArea   float64       `bson:"bath_room_area" json:"bath_room_area"`
+	BathRoomArea2  float64       `bson:"bath_room_area_2" json:"bath_room_area_2"`
 	KitchenArea    float64       `bson:"kitchen_area" json:"kitchen_area"`
 	Photo          string        `bson:"photo" json:"photo"`
 }
@@ -60,6 +64,10 @@ func CreatePlanFromInput(input PlanInput) Plan {
 		Price:          input.Price,
 		LivingRoomArea: input.LivingRoomArea,
 		BedRoomArea:    input.BedRoomArea,
+		BedRoomArea2:   input.BedRoomArea2,
+		BedRoomArea3:   input.BedRoomArea3,
+		BathRoomArea:   input.BathRoomArea,
+		BathRoomArea2:  input.BathRoomArea2,
 		KitchenArea:    input.KitchenArea,
 		Photo:          input.Photo,
 	}
@@ -87,6 +95,10 @@ type PlanInput struct {
 	Price          int     `json:"price" form:"price"`
 	LivingRoomArea float64 `json:"living_room_area" form:"living_room_area"`
 	BedRoomArea    float64 `json:"bed_room_area" form:"bed_room_area"`
+	BedRoomArea2   float64 `json:"bed_room_area_2" form:"bed_room_area_2"`
+	BedRoomArea3   float64 `json:"bed_room_area_3" form:"bed_room_area_3"`
+	BathRoomArea   float64 `json:"bath_room_area" form:"bath_room_area"`
+	BathRoomArea2  float64 `json:"bath_room_area_2" form:"bath_room_area_2"`
 	KitchenArea    float64 `json:"kitchen_area" form:"kitchen_area"`
 	Photo          string  `json:"photo" form:"photo"`
 }
