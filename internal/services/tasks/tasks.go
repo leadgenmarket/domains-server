@@ -77,6 +77,7 @@ func (s *service) AddTask(task models.Task) (string, error) {
 		int(tomorrowAt12.Unix()),
 	}
 	task.Finished = false
+	task.Phone = pregPhone(phone)
 
 	return s.repository.Tasks.AddTask(task)
 }

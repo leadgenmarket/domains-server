@@ -61,7 +61,9 @@ func (s *repository) GetUnfinishedTasks() ([]models.Task, error) {
 
 func (s *repository) GetTaskByPhone(phone string) (models.Task, error) {
 	task := models.Task{}
-	err := s.repository.Find(bson.M{"phone": phone}).One(&task)
+	//убираем первый символ
+	phone = phone[1:]
+	err := s.repository.Find(bson.M{"phone": bson.M{"$regex": phone}}).One(&task)
 	if err != nil {
 		return task, err
 	}
