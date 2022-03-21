@@ -52,10 +52,6 @@ func (s *service) AddTask(task models.Task) (string, error) {
 		return "", err
 	}
 	task.Phone = phone
-	msk, err := time.LoadLocation("Europe/Moscow")
-	if err != nil {
-		panic(err)
-	}
 	now := time.Now()
 	tomorrowAt10 := now.Add(time.Hour * 24)
 	if tomorrowAt10.Hour() > 10 {
@@ -65,7 +61,7 @@ func (s *service) AddTask(task models.Task) (string, error) {
 		diff := 10 - tomorrowAt10.Hour()
 		tomorrowAt10.Add(time.Duration(diff) * time.Hour)
 	}
-	tomorrowAt12 := time.Date(now.Year(), now.Month(), now.Day(), 12, 0, 0, 0, msk).Add(time.Hour * 24)
+	tomorrowAt12 := now.Add(time.Hour * 24)
 	if tomorrowAt12.Hour() > 10 {
 		diff := tomorrowAt12.Hour() - 10
 		tomorrowAt12.Add(-time.Duration(diff) * time.Hour)
