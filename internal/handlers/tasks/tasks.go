@@ -52,7 +52,7 @@ func (s *taskHandlers) AmoTriggerHandler(c *gin.Context) {
 	input := AmoInput{}
 	// test
 	jsonData, _ := c.GetRawData()
-	fmt.Println(jsonData)
+	fmt.Println(string(jsonData))
 	// test
 	err := c.BindJSON(&input)
 	if err != nil {
