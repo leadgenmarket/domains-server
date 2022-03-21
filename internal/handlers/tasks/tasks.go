@@ -66,6 +66,7 @@ func (s *taskHandlers) AmoTriggerHandler(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, err)
 		return
 	}
+	fmt.Println(input)
 	/*leadID := 0
 	if len(input.Leads.Add) > 0 {
 		leadID = input.Leads.Add[0].ID
