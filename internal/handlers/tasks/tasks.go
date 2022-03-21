@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	"github.com/gin-gonic/gin"
+	"github.com/gin-gonic/gin/binding"
 )
 
 type Handlers interface {
@@ -48,18 +49,18 @@ type AmoInputStatus struct {
 
 func (s *taskHandlers) AmoTriggerHandler(c *gin.Context) {
 	//scenarioID := c.Param("scenarioID")
-	//input := AmoInput{}
-	input := map[string]interface{}{}
+	input := AmoInput{}
+	//input := map[string]interface{}{}
 	// test
 	/*jsonData, _ := c.()
 	fmt.Println(string(jsonData))*/
 	// test
-	c.Request.ParseMultipartForm(1000)
+
+	/*c.Request.ParseMultipartForm(1000)
 	for key, value := range c.Request.PostForm {
 		fmt.Println(key, value)
-	}
-	fmt.Println(input)
-	err := c.ShouldBind(&input)
+	}*/
+	err := c.ShouldBindWith(&input, binding.FormMultipart)
 	if err != nil {
 		s.logger.GetInstance().Errorf("error unmarshaling incoming json %s", err)
 		c.JSON(http.StatusBadRequest, err)
