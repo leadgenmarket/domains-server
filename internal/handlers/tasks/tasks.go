@@ -56,10 +56,20 @@ func (s *taskHandlers) AmoTriggerHandler(c *gin.Context) {
 	fmt.Println(string(jsonData))*/
 	// test
 
-	/*c.Request.ParseMultipartForm(1000)
-	for key, value := range c.Request.PostForm {
-		fmt.Println(key, value)
-	}*/
+	for key, values := range c.Request.PostForm {
+		if key == "leads" {
+			for _, value := range values {
+				if strings.Contains(value, "add") {
+					fmt.Println("add")
+					fmt.Println(value)
+				}
+				if strings.Contains(value, "status") {
+					fmt.Println("status")
+					fmt.Println(value)
+				}
+			}
+		}
+	}
 	err := c.ShouldBindWith(&input, binding.FormMultipart)
 	if err != nil {
 		s.logger.GetInstance().Errorf("error unmarshaling incoming json %s", err)
