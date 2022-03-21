@@ -103,6 +103,7 @@ func (s *service) MakeCalls() error {
 
 				//обновляем таску
 				task.Call = task.Call[1:]
+				task.Tries += 1
 				if len(task.Call) == 0 {
 					task.Finished = true
 				}
