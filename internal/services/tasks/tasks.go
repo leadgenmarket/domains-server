@@ -57,8 +57,22 @@ func (s *service) AddTask(task models.Task) (string, error) {
 		panic(err)
 	}
 	now := time.Now()
-	tomorrowAt10 := time.Date(now.Year(), now.Month(), now.Day(), 10, 0, 0, 0, msk).Add(time.Hour * 24)
+	tomorrowAt10 := now.Add(time.Hour * 24)
+	if tomorrowAt10.Hour() > 10 {
+		diff := tomorrowAt10.Hour() - 10
+		tomorrowAt10.Add(-time.Duration(diff) * time.Hour)
+	} else {
+		diff := 10 - tomorrowAt10.Hour()
+		tomorrowAt10.Add(time.Duration(diff) * time.Hour)
+	}
 	tomorrowAt12 := time.Date(now.Year(), now.Month(), now.Day(), 12, 0, 0, 0, msk).Add(time.Hour * 24)
+	if tomorrowAt12.Hour() > 10 {
+		diff := tomorrowAt12.Hour() - 10
+		tomorrowAt12.Add(-time.Duration(diff) * time.Hour)
+	} else {
+		diff := 10 - tomorrowAt12.Hour()
+		tomorrowAt12.Add(time.Duration(diff) * time.Hour)
+	}
 	task.Call = []int{
 		int(now.Unix() + 5*60),
 		int(now.Unix() + 60*60),
