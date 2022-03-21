@@ -58,6 +58,7 @@ func (s *taskHandlers) AmoTriggerHandler(c *gin.Context) {
 	c.Request.ParseMultipartForm(1000)
 	for key, values := range c.Request.PostForm {
 		if key == "leads" {
+			fmt.Println("leads")
 			for _, value := range values {
 				if strings.Contains(value, "add") {
 					fmt.Println("add")
