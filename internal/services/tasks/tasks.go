@@ -106,6 +106,7 @@ func (s *service) MakeCalls() error {
 				if len(task.Call) == 0 {
 					task.Finished = true
 				}
+				s.logger.GetInstance().Info("updating task: %d phone - %s", task.ID, task.Phone)
 				err = s.repository.Tasks.UpdateTask(task)
 				if err != nil {
 					s.logger.GetInstance().Errorf("error updating task after call: %s", err)
