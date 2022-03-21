@@ -2,13 +2,15 @@ package tasks
 
 import (
 	"domain-server/internal/logger"
+	"domain-server/internal/models"
 	"domain-server/internal/services"
 	"fmt"
 	"net/http"
+	"net/url"
+	"strconv"
 	"strings"
 
 	"github.com/gin-gonic/gin"
-	"github.com/gin-gonic/gin/binding"
 )
 
 type Handlers interface {
@@ -48,39 +50,15 @@ type AmoInputStatus struct {
 }
 
 func (s *taskHandlers) AmoTriggerHandler(c *gin.Context) {
-	//scenarioID := c.Param("scenarioID")
-	input := AmoInput{}
-	//input := map[string]interface{}{}
-	// test
-	/*jsonData, _ := c.()
-	fmt.Println(string(jsonData))*/
-	// test
+	scenarioID := c.Param("scenarioID")
 	c.Request.ParseMultipartForm(1000)
 
-	/*if strings.Contains(c.Request.PostForm["leads"], "add") {
-		fmt.Println("add")
-		fmt.Println(value)
-	}
-	if strings.Contains(c.Request.PostForm["leads"], "status") {
-		fmt.Println("status")
-		fmt.Println(value)
-	}*/
-
-	fmt.Println(c.Request.PostForm.Encode())
-	err := c.ShouldBindWith(&input, binding.FormMultipart)
+	leadID, _, err := parseIdFromForm(c.Request.PostForm.Encode())
 	if err != nil {
-		s.logger.GetInstance().Errorf("error unmarshaling incoming json %s", err)
-		c.JSON(http.StatusBadRequest, err)
-		return
+		s.logger.GetInstance().Errorf("erorr parsing id from form: %s", err)
+		c.JSON(http.StatusBadRequest, "erorr parsing id from form")
 	}
-	fmt.Println(input)
-	/*leadID := 0
-	if len(input.Leads.Add) > 0 {
-		leadID = input.Leads.Add[0].ID
-	}
-	if len(input.Leads.Status) > 0 {
-		leadID = input.Leads.Status[0].ID
-	}
+
 	if leadID == 0 {
 		s.logger.GetInstance().Error("trigger: no lead id specified")
 		c.JSON(http.StatusBadRequest, "no lead id specified")
@@ -98,7 +76,7 @@ func (s *taskHandlers) AmoTriggerHandler(c *gin.Context) {
 		s.logger.GetInstance().Errorf("erorr adding task: %s", err)
 		c.JSON(http.StatusBadRequest, "erorr adding task")
 	}
-	c.JSON(http.StatusOK, taskID)*/
+	c.JSON(http.StatusOK, taskID)
 }
 
 type ResultInput struct {
@@ -181,4 +159,30 @@ func (s *taskHandlers) GetAllUnfinishedTasks(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, tasks)
+}
+
+func parseIdFromForm(val string) (int, bool, error) {
+	flag := false
+	decodedValue, err := url.QueryUnescape(val)
+	if err != nil {
+		return 0, false, err
+	}
+	id := 0
+	for _, res := range strings.Split(decodedValue, "&") {
+		tmp := strings.Split(res, "=")
+		if tmp[0] == "leads[add][0][id]" {
+			id, err = strconv.Atoi(tmp[1])
+			if err != nil {
+				return 0, false, err
+			}
+			flag = true
+		}
+		if tmp[0] == "leads[status][0][id]" {
+			id, err = strconv.Atoi(tmp[1])
+			if err != nil {
+				return 0, false, err
+			}
+		}
+	}
+	return id, flag, nil
 }
