@@ -103,6 +103,7 @@ func (h *handlers) Registry() {
 
 	//tasks handlers
 	tasksGorup := h.router.Group("tasks")
+	tasksGorup.GET("/", h.Tasks.GetAllUnfinishedTasks)
 	tasksGorup.GET("/call", h.Tasks.MakeCalls)
 	tasksGorup.POST("/amo/:scenarioID", h.Tasks.AmoTriggerHandler)
 	tasksGorup.POST("/result/:result", h.Tasks.ResultHandler)

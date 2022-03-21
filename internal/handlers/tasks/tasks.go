@@ -15,6 +15,7 @@ type Handlers interface {
 	AmoTriggerHandler(c *gin.Context)
 	ResultHandler(c *gin.Context)
 	MakeCalls(c *gin.Context)
+	GetAllUnfinishedTasks(c *gin.Context)
 }
 
 type taskHandlers struct {
@@ -152,4 +153,14 @@ func (s *taskHandlers) MakeCalls(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, "ok")
+}
+
+func (s *taskHandlers) GetAllUnfinishedTasks(c *gin.Context) {
+	tasks, err := s.services.Tasks.GetUnfinishedTasks()
+	if err != nil {
+		s.logger.GetInstance().Errorf("error while getting unfinished tasks: %s", err)
+		c.JSON(http.StatusBadRequest, "error while getting unfinished tasks")
+		return
+	}
+	c.JSON(http.StatusOK, tasks)
 }
