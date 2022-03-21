@@ -66,7 +66,7 @@ func (s *taskHandlers) AmoTriggerHandler(c *gin.Context) {
 		fmt.Println(value)
 	}*/
 
-	fmt.Println(c.Request.PostForm["leads"])
+	fmt.Println(c.Request.PostForm.Encode())
 	err := c.ShouldBindWith(&input, binding.FormMultipart)
 	if err != nil {
 		s.logger.GetInstance().Errorf("error unmarshaling incoming json %s", err)
