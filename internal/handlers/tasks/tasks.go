@@ -55,7 +55,7 @@ func (s *taskHandlers) AmoTriggerHandler(c *gin.Context) {
 	/*jsonData, _ := c.()
 	fmt.Println(string(jsonData))*/
 	// test
-
+	c.Request.ParseMultipartForm(1000)
 	for key, values := range c.Request.PostForm {
 		if key == "leads" {
 			for _, value := range values {
