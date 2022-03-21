@@ -2,7 +2,6 @@ package tasks
 
 import (
 	"domain-server/internal/logger"
-	"domain-server/internal/models"
 	"domain-server/internal/services"
 	"fmt"
 	"net/http"
@@ -48,19 +47,21 @@ type AmoInputStatus struct {
 }
 
 func (s *taskHandlers) AmoTriggerHandler(c *gin.Context) {
-	scenarioID := c.Param("scenarioID")
-	input := AmoInput{}
+	//scenarioID := c.Param("scenarioID")
+	//input := AmoInput{}
+	input := map[string]interface{}{}
 	// test
-	jsonData, _ := c.GetRawData()
-	fmt.Println(string(jsonData))
+	/*jsonData, _ := c.()
+	fmt.Println(string(jsonData))*/
 	// test
-	err := c.BindJSON(&input)
+	fmt.Println(input)
+	err := c.ShouldBind(&input)
 	if err != nil {
 		s.logger.GetInstance().Errorf("error unmarshaling incoming json %s", err)
 		c.JSON(http.StatusBadRequest, err)
 		return
 	}
-	leadID := 0
+	/*leadID := 0
 	if len(input.Leads.Add) > 0 {
 		leadID = input.Leads.Add[0].ID
 	}
@@ -84,7 +85,7 @@ func (s *taskHandlers) AmoTriggerHandler(c *gin.Context) {
 		s.logger.GetInstance().Errorf("erorr adding task: %s", err)
 		c.JSON(http.StatusBadRequest, "erorr adding task")
 	}
-	c.JSON(http.StatusOK, taskID)
+	c.JSON(http.StatusOK, taskID)*/
 }
 
 type ResultInput struct {
