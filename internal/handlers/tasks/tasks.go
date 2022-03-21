@@ -50,6 +50,10 @@ type AmoInputStatus struct {
 func (s *taskHandlers) AmoTriggerHandler(c *gin.Context) {
 	scenarioID := c.Param("scenarioID")
 	input := AmoInput{}
+	// test
+	jsonData, _ := c.GetRawData()
+	fmt.Println(jsonData)
+	// test
 	err := c.BindJSON(&input)
 	if err != nil {
 		s.logger.GetInstance().Errorf("error unmarshaling incoming json %s", err)
