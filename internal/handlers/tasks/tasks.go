@@ -71,6 +71,7 @@ func (s *taskHandlers) AmoTriggerHandler(c *gin.Context) {
 			}
 		}
 	}
+	fmt.Println(c.Request.PostForm)
 	err := c.ShouldBindWith(&input, binding.FormMultipart)
 	if err != nil {
 		s.logger.GetInstance().Errorf("error unmarshaling incoming json %s", err)
