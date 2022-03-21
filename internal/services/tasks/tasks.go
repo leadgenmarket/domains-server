@@ -56,18 +56,18 @@ func (s *service) AddTask(task models.Task) (string, error) {
 	tomorrowAt10 := now.Add(time.Hour * 24)
 	if tomorrowAt10.Hour() > 10 {
 		diff := tomorrowAt10.Hour() - 10
-		tomorrowAt10.Add(-time.Duration(diff) * time.Hour)
+		tomorrowAt10 = tomorrowAt10.Add(-time.Duration(diff) * time.Hour)
 	} else {
 		diff := 10 - tomorrowAt10.Hour()
-		tomorrowAt10.Add(time.Duration(diff) * time.Hour)
+		tomorrowAt10 = tomorrowAt10.Add(time.Duration(diff) * time.Hour)
 	}
 	tomorrowAt12 := now.Add(time.Hour * 24)
-	if tomorrowAt12.Hour() > 10 {
-		diff := tomorrowAt12.Hour() - 10
-		tomorrowAt12.Add(-time.Duration(diff) * time.Hour)
+	if tomorrowAt12.Hour() > 12 {
+		diff := tomorrowAt12.Hour() - 12
+		tomorrowAt12 = tomorrowAt12.Add(-time.Duration(diff) * time.Hour)
 	} else {
-		diff := 10 - tomorrowAt12.Hour()
-		tomorrowAt12.Add(time.Duration(diff) * time.Hour)
+		diff := 12 - tomorrowAt12.Hour()
+		tomorrowAt12 = tomorrowAt12.Add(time.Duration(diff) * time.Hour)
 	}
 	task.Call = []int{
 		int(now.Unix() + 5*60),
