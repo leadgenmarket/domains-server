@@ -54,6 +54,10 @@ func (s *taskHandlers) AmoTriggerHandler(c *gin.Context) {
 	/*jsonData, _ := c.()
 	fmt.Println(string(jsonData))*/
 	// test
+	c.Request.ParseMultipartForm(1000)
+	for key, value := range c.Request.PostForm {
+		fmt.Println(key, value)
+	}
 	fmt.Println(input)
 	err := c.ShouldBind(&input)
 	if err != nil {
