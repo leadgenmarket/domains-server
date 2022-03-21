@@ -56,22 +56,17 @@ func (s *taskHandlers) AmoTriggerHandler(c *gin.Context) {
 	fmt.Println(string(jsonData))*/
 	// test
 	c.Request.ParseMultipartForm(1000)
-	for key, values := range c.Request.PostForm {
-		if key == "leads" {
-			fmt.Println("leads")
-			for _, value := range values {
-				if strings.Contains(value, "add") {
-					fmt.Println("add")
-					fmt.Println(value)
-				}
-				if strings.Contains(value, "status") {
-					fmt.Println("status")
-					fmt.Println(value)
-				}
-			}
-		}
+
+	/*if strings.Contains(c.Request.PostForm["leads"], "add") {
+		fmt.Println("add")
+		fmt.Println(value)
 	}
-	fmt.Println(c.Request.PostForm)
+	if strings.Contains(c.Request.PostForm["leads"], "status") {
+		fmt.Println("status")
+		fmt.Println(value)
+	}*/
+
+	fmt.Println(c.Request.PostForm["leads"])
 	err := c.ShouldBindWith(&input, binding.FormMultipart)
 	if err != nil {
 		s.logger.GetInstance().Errorf("error unmarshaling incoming json %s", err)
