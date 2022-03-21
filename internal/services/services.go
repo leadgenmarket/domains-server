@@ -2,6 +2,7 @@ package services
 
 import (
 	"domain-server/internal/config"
+	"domain-server/internal/logger"
 	"domain-server/internal/repositories"
 	"domain-server/internal/services/backup"
 	"domain-server/internal/services/cookies"
@@ -10,7 +11,9 @@ import (
 	"domain-server/internal/services/plans"
 	"domain-server/internal/services/plans_sites"
 	"domain-server/internal/services/portal"
+	"domain-server/internal/services/scenario"
 	"domain-server/internal/services/storage"
+	"domain-server/internal/services/tasks"
 	"domain-server/internal/services/token_manager"
 	"domain-server/internal/system/database/redis"
 	"domain-server/pkg/imagesservice"
@@ -26,9 +29,11 @@ type Services struct {
 	MultipartImages images.MultipartImages
 	Plans           plans.Service
 	PlansSite       plans_sites.Service
+	Scenarios       scenario.Service
+	Tasks           tasks.Service
 }
 
-func Setup(cfg *config.Config, repository repositories.Repositories, redis redis.Repository) *Services {
+func Setup(cfg *config.Config, repository repositories.Repositories, redis redis.Repository, logger logger.Log) *Services {
 	filestore := filestore.NewFileStoreService(cfg.FileStorePath)
 	imagesService := imagesservice.NewImagesService()
 	return &Services{
@@ -41,5 +46,7 @@ func Setup(cfg *config.Config, repository repositories.Repositories, redis redis
 		MultipartImages: images.NewImages(filestore, imagesService),
 		Plans:           plans.NewService(repository),
 		PlansSite:       plans_sites.NewService(repository),
+		Scenarios:       scenario.NewService(repository),
+		Tasks:           tasks.NewService(repository, logger),
 	}
 }

@@ -11,6 +11,8 @@ import (
 	"domain-server/internal/repositories/plans"
 	"domain-server/internal/repositories/plans_sites"
 	"domain-server/internal/repositories/prices"
+	"domain-server/internal/repositories/scenario"
+	"domain-server/internal/repositories/tasks"
 	templates "domain-server/internal/repositories/template"
 	"domain-server/internal/repositories/titles"
 	"domain-server/internal/repositories/users"
@@ -31,6 +33,8 @@ type Repositories struct {
 	JK            jk.Repository
 	PlansSites    plans_sites.Repository
 	Plans         plans.Repository
+	Scenarios     scenario.Repository
+	Tasks         tasks.Repository
 }
 
 func New(dbClient *mongodb.Database, cfg *config.Config) *Repositories {
@@ -47,5 +51,7 @@ func New(dbClient *mongodb.Database, cfg *config.Config) *Repositories {
 		JK:            jk.New(dbClient),
 		Plans:         plans.New(dbClient),
 		PlansSites:    plans_sites.New(dbClient),
+		Scenarios:     scenario.New(dbClient),
+		Tasks:         tasks.New(dbClient),
 	}
 }

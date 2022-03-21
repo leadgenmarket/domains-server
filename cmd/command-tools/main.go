@@ -47,7 +47,7 @@ func main() {
 
 	repo := repositories.New(sess.DB("leadgen"), cfg)
 
-	services := services.Setup(cfg, *repo, redisClient)
+	services := services.Setup(cfg, *repo, redisClient, logger)
 
 	if action == "backup" {
 		createBackup(services, logger)
