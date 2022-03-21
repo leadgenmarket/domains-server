@@ -54,7 +54,7 @@ func main() {
 		HostPolicy: autocert.HostWhitelist(domainsList...),
 		Cache:      autocert.DirCache("./certs"),
 	}
-	servicesContainer := services.Setup(cfg, *repo, redisClient)
+	servicesContainer := services.Setup(cfg, *repo, redisClient, logger)
 	handlersService := handlers.New(router, repo, servicesContainer, logger, cfg)
 	handlersService.Registry()
 	if cfg.SSLServing {
