@@ -110,6 +110,8 @@ func (h *handlers) Registry() {
 	tasksGorup.POST("/amo/:scenarioID", h.Tasks.AmoTriggerHandler)
 	tasksGorup.POST("/result/:result", h.Tasks.ResultHandler)
 
+	h.router.GET("/api/plans-sites/:id", h.PlansSites.GetPlansSiteDetailInfo)
+
 	api := h.router.Group("/api", middlewares.TokenAuthMiddleware(h.logger, h.services))
 	{
 		//domains
@@ -166,7 +168,6 @@ func (h *handlers) Registry() {
 		//plans_sites
 		plansSitesGroup := api.Group("plans-sites")
 		plansSitesGroup.GET("/", h.PlansSites.GetPlansSites)
-		plansSitesGroup.GET("/:id", h.PlansSites.GetPlansSiteDetailInfo)
 		plansSitesGroup.PUT("/", h.PlansSites.AddPlansSite)
 		plansSitesGroup.DELETE("/:id", h.PlansSites.DeletePlansSite)
 		plansSitesGroup.POST("/", h.PlansSites.UpdatePlansSite)
