@@ -23,6 +23,7 @@ type Service interface {
 	GetTaskByPhone(phone string) (models.Task, error)
 	UpdateTask(task models.Task) error
 	UpdateLeadStatus(leadID int, leadStatus int, msg string) (bool, error)
+	DeleteTask(taskID string) error
 }
 
 type service struct {
@@ -135,6 +136,10 @@ func (s *service) GetTaskByPhone(phone string) (models.Task, error) {
 
 func (s *service) UpdateLeadStatus(leadID int, leadStatus int, msg string) (bool, error) {
 	return s.amoService.UpdateLeadStatus(leadID, leadStatus, msg)
+}
+
+func (s *service) DeleteTask(taskID string) error {
+	return s.repository.Tasks.DeleteTask(taskID)
 }
 
 func sendCall(scenario models.Scenario, callPhone string, logger logger.Log) error {

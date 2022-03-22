@@ -18,6 +18,7 @@ type Handlers interface {
 	ResultHandler(c *gin.Context)
 	MakeCalls(c *gin.Context)
 	GetAllUnfinishedTasks(c *gin.Context)
+	DeleteTask(c *gin.Context)
 }
 
 type taskHandlers struct {
@@ -159,6 +160,17 @@ func (s *taskHandlers) GetAllUnfinishedTasks(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, tasks)
+}
+
+func (s *taskHandlers) DeleteTask(c *gin.Context) {
+	id := c.Param("id")
+	err := s.services.Tasks.DeleteTask(id)
+	if err != nil {
+		s.logger.GetInstance().Errorf("error while deleting task: %s", err)
+		c.JSON(http.StatusBadRequest, "error while deleting task")
+		return
+	}
+	c.JSON(http.StatusOK, "success")
 }
 
 func parseIdFromForm(val string) (int, bool, error) {
