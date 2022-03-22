@@ -100,6 +100,8 @@ func (h *handlers) Registry() {
 	scenariosGroup := h.router.Group("scenarios")
 	scenariosGroup.PUT("/", h.Scenarios.AddScenario)
 	scenariosGroup.GET("/", h.Scenarios.GetAllScenarios)
+	scenariosGroup.POST("/", h.Scenarios.UpdateScenario)
+	scenariosGroup.DELETE("/:id", h.Scenarios.DeleteScenario)
 
 	//tasks handlers
 	tasksGorup := h.router.Group("tasks")

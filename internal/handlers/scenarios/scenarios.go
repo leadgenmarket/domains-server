@@ -7,12 +7,14 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/globalsign/mgo/bson"
 )
 
 type Handlers interface {
 	AddScenario(c *gin.Context)
 	UpdateScenario(c *gin.Context)
 	GetAllScenarios(c *gin.Context)
+	DeleteScenario(c *gin.Context)
 }
 
 type scenariosHandlers struct {
@@ -43,9 +45,46 @@ func (s *scenariosHandlers) AddScenario(c *gin.Context) {
 	c.JSON(http.StatusOK, id)
 }
 
+func (s *scenariosHandlers) DeleteScenario(c *gin.Context) {
+	id := c.Param("id")
+	err := s.services.Scenarios.DeleteScenario(id)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"paylod": "error deliting scenario"})
+	}
+	c.JSON(http.StatusOK, gin.H{"paylod": "success"})
+}
+
+type ScenarioInput struct {
+	ID             string   `bson:"_id" json:"id"`
+	Name           string   `bson:"name" json:"name"`
+	ScriptTemplate string   `bson:"script_template" json:"script_template"`
+	PhonesList     []string `bson:"phones_list" json:"phones_list"`
+	SuccessStatus  int      `bson:"success_status" json:"success_status"`
+	DiscardStatus  int      `bson:"discard_status" json:"discard_status"`
+}
+
 func (s *scenariosHandlers) UpdateScenario(c *gin.Context) {
-	// спрогать тоже
-	c.JSON(http.StatusOK, gin.H{"payload": "not implemented yet"})
+	scenarioInput := ScenarioInput{}
+	err := c.BindJSON(&scenarioInput)
+	if err != nil {
+		s.logger.GetInstance().Errorf("error unmarshaling incoming json %s", err)
+		c.JSON(http.StatusBadRequest, err)
+		return
+	}
+	scenario := models.Scenario{
+		ID:             bson.ObjectIdHex(scenarioInput.ID),
+		Name:           scenarioInput.Name,
+		ScriptTemplate: scenarioInput.ScriptTemplate,
+		PhonesList:     scenarioInput.PhonesList,
+		SuccessStatus:  scenarioInput.SuccessStatus,
+		DiscardStatus:  scenarioInput.DiscardStatus,
+	}
+
+	err = s.services.Scenarios.UpdateScenario(scenario)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"paylod": "error updating scenario"})
+	}
+	c.JSON(http.StatusOK, gin.H{"payload": "scenario successfully updated"})
 }
 
 func (s *scenariosHandlers) GetAllScenarios(c *gin.Context) {
