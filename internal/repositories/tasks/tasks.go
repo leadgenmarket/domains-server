@@ -35,13 +35,13 @@ func (s *repository) AddTask(task models.Task) (string, error) {
 }
 
 func (s *repository) UpdateTask(task models.Task) error {
-	if task.Finished {
+	/*if task.Finished {
 		err := s.repository.Remove(bson.M{"_id": task.ID})
 		if err != nil {
 			return err
 		}
 		return nil
-	}
+	}*/
 	err := s.repository.Update(bson.M{"_id": task.ID}, task)
 	if err != nil {
 		return err
