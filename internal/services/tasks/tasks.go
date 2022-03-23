@@ -106,6 +106,12 @@ func (s *service) MakeCalls() error {
 				task.Call = task.Call[1:]
 				task.Tries += 1
 				if len(task.Call) == 0 {
+					//вот тут надо пререслать в след воронку
+					msg := fmt.Sprintf("Недозвонились_сценарием_'%s'.", strings.Replace(scenario.Name, " ", "_", 10))
+					updated, err := s.UpdateLeadStatus(task.LeadID, scenario.DiscardStatus, msg)
+					if err != nil || !updated {
+						s.logger.GetInstance().Errorf("error updating task status on scenario max calls exceeded %s", err)
+					}
 					task.Finished = true
 				}
 				s.logger.GetInstance().Info("updating task: %d phone - %s", task.ID, task.Phone)
