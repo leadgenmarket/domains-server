@@ -307,7 +307,7 @@ const DomainEdit = ({ addDomainToList }) => {
                                                     <div className="col-lg-6">
                                                         <div className="mb-3">
                                                             <label htmlFor="basicpill-lastname-input" className="form-label">Шаблон</label>
-                                                            <select onChange={inputChange} className="form-select custom-select" id="template" name="template_id" name="template_id" value={form.template_id}>
+                                                            <select onChange={inputChange} className="form-select custom-select" id="template" name="template_id" value={form.template_id}>
                                                                 <option></option>
                                                                 {templates.map((template) => {
                                                                     return <option value={template.ID}>{template.Name}</option>
@@ -412,6 +412,14 @@ const DomainEdit = ({ addDomainToList }) => {
                                                             <div className="mb-3">
                                                                 <label htmlFor="basicpill-companyuin-input" className="form-label">Заголовок блока быстрого поиска перед футером</label>
                                                                 <input type="text" className="form-control" name="footer_title" onChange={inputChange} value={form.footer_title} id="basicpill-companyuin-input" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div className="row">
+                                                        <div className="col-lg-6">
+                                                            <div className="mb-3">
+                                                                <label htmlFor="basicpill-companyuin-input" className="form-label">Тайтл финального шага, текст после имени</label>
+                                                                <input type="text" className="form-control" name="result_step_text" onChange={inputChange} value={form.result_step_text} id="basicpill-companyuin-input" />
                                                             </div>
                                                         </div>
                                                     </div>
