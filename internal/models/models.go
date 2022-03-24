@@ -57,6 +57,7 @@ type Domain struct {
 	PhotosTitle     string                   `bson:"photos_title" form:"photos_title"`
 	Photos          map[string]string        `bson:"photos" form:"photos"`
 	PlansTitle      string                   `bson:"plans_title" form:"plans_title"`
+	ResultStepText  string                   `bson:"result_step_text" form:"result_step_text"`
 	Plans           []map[string]interface{} `bson:"plans" form:"plans"`
 	CreatedAt       time.Time                `bson:"created_at"`
 	UpdatedAt       time.Time                `bson:"updated_at"`

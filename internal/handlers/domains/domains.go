@@ -85,6 +85,7 @@ type DomainSettings struct {
 	PhotosTitle     string                   `bson:"photos_title" form:"photos_title"`
 	Photos          map[string]string        `bson:"photos" form:"photos"`
 	PlansTitle      string                   `bson:"plans_title" form:"plans_title"`
+	ResultStepText  string                   `bson:"result_step_text" form:"result_step_text"`
 	Plans           []map[string]interface{} `bson:"plans" form:"plans"`
 	ScriptTmpl      TamplateSettings         `json:"scripts"`
 }
@@ -187,6 +188,7 @@ func (dh *domainsHandlers) GetTemplate(c *gin.Context) {
 		domainSettings.PhotosTitle = domain.PhotosTitle
 		domainSettings.Photos = domain.Photos
 		domainSettings.PlansTitle = domain.PlansTitle
+		domainSettings.ResultStepText = domain.ResultStepText
 		domainSettings.Plans = domain.Plans
 
 		if domain.OrganizationID != "" {
@@ -373,6 +375,7 @@ type DomainInput struct {
 	PhotosTitle     string `bson:"photos_title" form:"photos_title"`
 	Photos          string `bson:"photos" form:"photos"`
 	PlansTitle      string `bson:"plans_title" form:"plans_title"`
+	ResultStepText  string `bson:"result_step_text" form:"result_step_text"`
 	Plans           string `bson:"plans" form:"plans"`
 }
 
@@ -420,6 +423,7 @@ func (dh *domainsHandlers) AddDomainWithSettings(c *gin.Context) {
 		Phone:           domainInput.Phone,
 		AdvantagesTitle: domainInput.AdvantagesTitle,
 		PhotosTitle:     domainInput.PhotosTitle,
+		ResultStepText:  domainInput.ResultStepText,
 		PlansTitle:      domainInput.PlansTitle,
 	}
 
