@@ -70,10 +70,15 @@ func (s *service) AddTask(task models.Task) (string, error) {
 		diff := 12 - tomorrowAt12.Hour()
 		tomorrowAt12 = tomorrowAt12.Add(time.Duration(diff) * time.Hour)
 	}*/
+	//проверяем, если нужно добавить день
+	timeIncrease := int64(0)
+	if scenario.AddDay {
+		timeIncrease = 60 * 60 * 24
+	}
 	task.Call = []int{
-		int(now.Unix() + 5*60),
-		int(now.Unix() + 60*60),
-		int(now.Unix() + 120*60),
+		int(now.Unix() + 5*60 + timeIncrease),
+		int(now.Unix() + 60*60 + timeIncrease),
+		int(now.Unix() + 120*60 + timeIncrease),
 		//int(tomorrowAt10.Unix()),
 		//int(tomorrowAt12.Unix()),
 	}

@@ -21,4 +21,5 @@ type Scenario struct {
 	SuccessStatus       int           `bson:"success_status" json:"success_status"`
 	DiscardStatus       int           `bson:"discard_status" json:"discard_status"`
 	CallsFinishedStatus int           `bson:"calls_finished_status" json:"calls_finished_status"`
+	AddDay              bool          `bson:"add_day" json:"add_day"`
 }
