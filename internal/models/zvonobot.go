@@ -14,10 +14,11 @@ type Task struct {
 }
 
 type Scenario struct {
-	ID             bson.ObjectId `bson:"_id" json:"id"`
-	Name           string        `bson:"name" json:"name"`
-	ScriptTemplate string        `bson:"script_template" json:"script_template"`
-	PhonesList     []string      `bson:"phones_list" json:"phones_list"`
-	SuccessStatus  int           `bson:"success_status" json:"success_status"`
-	DiscardStatus  int           `bson:"discard_status" json:"discard_status"`
+	ID                  bson.ObjectId `bson:"_id" json:"id"`
+	Name                string        `bson:"name" json:"name"`
+	ScriptTemplate      string        `bson:"script_template" json:"script_template"`
+	PhonesList          []string      `bson:"phones_list" json:"phones_list"`
+	SuccessStatus       int           `bson:"success_status" json:"success_status"`
+	DiscardStatus       int           `bson:"discard_status" json:"discard_status"`
+	CallsFinishedStatus int           `bson:"calls_finished_status" json:"calls_finished_status"`
 }

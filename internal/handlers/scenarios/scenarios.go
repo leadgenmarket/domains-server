@@ -55,12 +55,13 @@ func (s *scenariosHandlers) DeleteScenario(c *gin.Context) {
 }
 
 type ScenarioInput struct {
-	ID             string   `bson:"_id" json:"id"`
-	Name           string   `bson:"name" json:"name"`
-	ScriptTemplate string   `bson:"script_template" json:"script_template"`
-	PhonesList     []string `bson:"phones_list" json:"phones_list"`
-	SuccessStatus  int      `bson:"success_status" json:"success_status"`
-	DiscardStatus  int      `bson:"discard_status" json:"discard_status"`
+	ID                  string   `bson:"_id" json:"id"`
+	Name                string   `bson:"name" json:"name"`
+	ScriptTemplate      string   `bson:"script_template" json:"script_template"`
+	PhonesList          []string `bson:"phones_list" json:"phones_list"`
+	SuccessStatus       int      `bson:"success_status" json:"success_status"`
+	DiscardStatus       int      `bson:"discard_status" json:"discard_status"`
+	CallsFinishedStatus int      `bson:"calls_finished_status" json:"calls_finished_status"`
 }
 
 func (s *scenariosHandlers) UpdateScenario(c *gin.Context) {
@@ -72,12 +73,13 @@ func (s *scenariosHandlers) UpdateScenario(c *gin.Context) {
 		return
 	}
 	scenario := models.Scenario{
-		ID:             bson.ObjectIdHex(scenarioInput.ID),
-		Name:           scenarioInput.Name,
-		ScriptTemplate: scenarioInput.ScriptTemplate,
-		PhonesList:     scenarioInput.PhonesList,
-		SuccessStatus:  scenarioInput.SuccessStatus,
-		DiscardStatus:  scenarioInput.DiscardStatus,
+		ID:                  bson.ObjectIdHex(scenarioInput.ID),
+		Name:                scenarioInput.Name,
+		ScriptTemplate:      scenarioInput.ScriptTemplate,
+		PhonesList:          scenarioInput.PhonesList,
+		SuccessStatus:       scenarioInput.SuccessStatus,
+		DiscardStatus:       scenarioInput.DiscardStatus,
+		CallsFinishedStatus: scenarioInput.CallsFinishedStatus,
 	}
 
 	err = s.services.Scenarios.UpdateScenario(scenario)
