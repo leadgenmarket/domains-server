@@ -8,7 +8,7 @@ import (
 )
 
 type Proxy interface {
-	ProxyRequest(url string, data map[string]interface{}) (resp map[string]string, err error)
+	ProxyRequest(url string, data interface{}) (resp map[string]string, err error)
 }
 
 type proxy struct{}
@@ -17,7 +17,7 @@ func NewProxyService() Proxy {
 	return &proxy{}
 }
 
-func (p *proxy) ProxyRequest(url string, data map[string]interface{}) (resp map[string]string, err error) {
+func (p *proxy) ProxyRequest(url string, data interface{}) (resp map[string]string, err error) {
 	jsonStr, err := json.Marshal(data)
 	if err != nil {
 		return nil, err

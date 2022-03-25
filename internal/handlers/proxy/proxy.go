@@ -25,8 +25,8 @@ func New(services *services.Services, logger logger.Log) Handlers {
 }
 
 type ProxyRequest struct {
-	Url  string                 `json:"url" binding:"required"`
-	Data map[string]interface{} `json:"data" binding:"required"`
+	Url  string      `json:"url" binding:"required"`
+	Data interface{} `json:"data" binding:"required"`
 }
 
 func (s *handlers) ProxyRequest(c *gin.Context) {
