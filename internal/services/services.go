@@ -11,6 +11,7 @@ import (
 	"domain-server/internal/services/plans"
 	"domain-server/internal/services/plans_sites"
 	"domain-server/internal/services/portal"
+	"domain-server/internal/services/proxy"
 	"domain-server/internal/services/scenario"
 	"domain-server/internal/services/storage"
 	"domain-server/internal/services/tasks"
@@ -31,6 +32,7 @@ type Services struct {
 	PlansSite       plans_sites.Service
 	Scenarios       scenario.Service
 	Tasks           tasks.Service
+	Proxy           proxy.Proxy
 }
 
 func Setup(cfg *config.Config, repository repositories.Repositories, redis redis.Repository, logger logger.Log) *Services {
@@ -48,5 +50,6 @@ func Setup(cfg *config.Config, repository repositories.Repositories, redis redis
 		PlansSite:       plans_sites.NewService(repository),
 		Scenarios:       scenario.NewService(repository),
 		Tasks:           tasks.NewService(repository, logger),
+		Proxy:           proxy.NewProxyService(),
 	}
 }

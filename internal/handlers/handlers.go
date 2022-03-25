@@ -11,6 +11,7 @@ import (
 	"domain-server/internal/handlers/organizations"
 	"domain-server/internal/handlers/plans"
 	"domain-server/internal/handlers/plans_sites"
+	"domain-server/internal/handlers/proxy"
 	"domain-server/internal/handlers/scenarios"
 	"domain-server/internal/handlers/tasks"
 	"domain-server/internal/handlers/templates"
@@ -50,6 +51,7 @@ type handlers struct {
 	Plans         plans.Handlers
 	Scenarios     scenarios.Handlers
 	Tasks         tasks.Handlers
+	Proxy         proxy.Handlers
 	router        *gin.Engine
 	repositories  *repositories.Repositories
 	services      *services.Services
@@ -72,6 +74,7 @@ func New(router *gin.Engine, repositories *repositories.Repositories, services *
 		Scenarios:     scenarios.New(services, logger),
 		Tasks:         tasks.New(services, logger),
 		JKs:           jks.New(repositories.JK, logger),
+		Proxy:         proxy.New(services, logger),
 		router:        router,
 		repositories:  repositories,
 		services:      services,
@@ -95,6 +98,7 @@ func (h *handlers) Registry() {
 	h.router.POST("/jks/", h.JKs.GetFilteredJKList)
 	h.router.GET("/portal-info", h.Locations.UpdatePortalInfo)
 	h.router.GET("/domain-city/:url", h.Domains.DomainsGetCityByUrl) //возвращает город домена, для want-result
+	h.router.POST("/proxy", h.Proxy.ProxyRequest)
 
 	//scenarios handlers
 	scenariosGroup := h.router.Group("scenarios")
