@@ -54,7 +54,7 @@ func (s *service) AddTask(task models.Task) (string, error) {
 	}
 	task.Phone = phone
 	now := time.Now()
-	tomorrowAt10 := now.Add(time.Hour * 24)
+	/*tomorrowAt10 := now.Add(time.Hour * 24)
 	if tomorrowAt10.Hour() > 10 {
 		diff := tomorrowAt10.Hour() - 10
 		tomorrowAt10 = tomorrowAt10.Add(-time.Duration(diff) * time.Hour)
@@ -69,13 +69,13 @@ func (s *service) AddTask(task models.Task) (string, error) {
 	} else {
 		diff := 12 - tomorrowAt12.Hour()
 		tomorrowAt12 = tomorrowAt12.Add(time.Duration(diff) * time.Hour)
-	}
+	}*/
 	task.Call = []int{
 		int(now.Unix() + 5*60),
 		int(now.Unix() + 60*60),
 		int(now.Unix() + 120*60),
-		int(tomorrowAt10.Unix()),
-		int(tomorrowAt12.Unix()),
+		//int(tomorrowAt10.Unix()),
+		//int(tomorrowAt12.Unix()),
 	}
 	task.Finished = false
 	task.Phone = pregPhone(phone)
