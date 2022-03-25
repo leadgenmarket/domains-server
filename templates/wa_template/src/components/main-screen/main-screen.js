@@ -99,12 +99,14 @@ const MainScreen = ({ params, nextStep, rooms, setRooms, sroks, setSroks, number
     }
 
     console.log(params.main_color)
+    let mainColor = params.main_color == "5ABBB0" ? "linear-gradient( 0deg, rgba(46, 193, 111, 1) 20%, rgba(54, 115, 105, 1) 100% )" : "#" + params.main_color
+    let secondaryColor = params.secondary_color == "27353E" ? "#1d3887" : "#" + params.secondary_color
 
     return <React.Fragment>
         <div className="content">
             <div className="page_one">
                 <div className="content_title">
-                    {getTitle()} <br /><img src="/templates/wa_template/build/img/title_street_ico.png" /><span>{getCity()}</span><div className="head_price" style={{ background: `#${params.main_color}` }}>от {price} млн  ₽</div>
+                    {getTitle()} <br /><img src="/templates/wa_template/build/img/title_street_ico.png" /><span>{getCity()}</span><div className="head_price" style={{ background: secondaryColor }}>от {price} млн  ₽</div>
                 </div>
                 <div className="get">
                     Получите самые выгодные <br />предложения уже <span>через 7 секунд</span>
@@ -113,19 +115,19 @@ const MainScreen = ({ params, nextStep, rooms, setRooms, sroks, setSroks, number
                 <ul className="filtr_list">
                     <li> <div className="fl_title">Выберите количество комнат</div>
                         <ul className="fl_inner_list fl_room " id="kv_list">
-                            {checkIfExists("0") ? <li><a style={{ background: rooms.includes("0") ? `#${params.main_color}` : `#${params.secondary_color}` }} className={rooms.includes("0") ? "act" : ""} onClick={(e) => { e.preventDefault(); updateList("0", rooms, setRooms, true) }} href="#">Студия</a></li> : ""}
-                            {checkIfExists("1") ? <li><a style={{ background: rooms.includes("1") ? `#${params.main_color}` : `#${params.secondary_color}` }} className={rooms.includes("1") ? "act" : ""} onClick={(e) => { e.preventDefault(); updateList("1", rooms, setRooms, true) }} href="#">1к</a></li> : ""}
-                            {checkIfExists("2") ? <li><a style={{ background: rooms.includes("2") ? `#${params.main_color}` : `#${params.secondary_color}` }} className={rooms.includes("2") ? "act" : ""} onClick={(e) => { e.preventDefault(); updateList("2", rooms, setRooms, true) }} href="#">2к</a></li> : ""}
-                            {checkIfExists("3") ? <li><a style={{ background: rooms.includes("3") ? `#${params.main_color}` : `#${params.secondary_color}` }} className={rooms.includes("3") ? "act" : ""} onClick={(e) => { e.preventDefault(); updateList("3", rooms, setRooms, true) }} href="#">3к</a></li> : ""}
+                            {checkIfExists("0") ? <li><a style={{ background: rooms.includes("0") ? mainColor : secondaryColor }} className={rooms.includes("0") ? "act" : ""} onClick={(e) => { e.preventDefault(); updateList("0", rooms, setRooms, true) }} href="#">Студия</a></li> : ""}
+                            {checkIfExists("1") ? <li><a style={{ background: rooms.includes("1") ? mainColor : secondaryColor }} className={rooms.includes("1") ? "act" : ""} onClick={(e) => { e.preventDefault(); updateList("1", rooms, setRooms, true) }} href="#">1к</a></li> : ""}
+                            {checkIfExists("2") ? <li><a style={{ background: rooms.includes("2") ? mainColor : secondaryColor }} className={rooms.includes("2") ? "act" : ""} onClick={(e) => { e.preventDefault(); updateList("2", rooms, setRooms, true) }} href="#">2к</a></li> : ""}
+                            {checkIfExists("3") ? <li><a style={{ background: rooms.includes("3") ? mainColor : secondaryColor }} className={rooms.includes("3") ? "act" : ""} onClick={(e) => { e.preventDefault(); updateList("3", rooms, setRooms, true) }} href="#">3к</a></li> : ""}
                         </ul>
                     </li>
                     <li>
                         <div className="fl_title">Год сдачи объекта</div>
                         <ul className="fl_inner_list " id="sroki_list">
-                            <li><a className={sroks.includes("2022") ? "act" : ""} style={{ background: sroks.includes("2022") ? `#${params.main_color}` : `#${params.secondary_color}` }} onClick={(e) => { e.preventDefault(); updateList("2022", sroks, setSroks, false) }} href="#">2022</a></li>
-                            <li><a className={sroks.includes("2023") ? "act" : ""} style={{ background: sroks.includes("2023") ? `#${params.main_color}` : `#${params.secondary_color}` }} onClick={(e) => { e.preventDefault(); updateList("2023", sroks, setSroks, false) }} href="#">2023</a></li>
-                            <li><a className={sroks.includes("2024") ? "act" : ""} style={{ background: sroks.includes("2024") ? `#${params.main_color}` : `#${params.secondary_color}` }} onClick={(e) => { e.preventDefault(); updateList("2024", sroks, setSroks, false) }} href="#">2024</a></li>
-                            <li><a className={sroks.includes("2025") ? "act" : ""} style={{ background: sroks.includes("2025") ? `#${params.main_color}` : `#${params.secondary_color}` }} onClick={(e) => { e.preventDefault(); updateList("2025", sroks, setSroks, false) }} href="#">2025</a></li>
+                            <li><a className={sroks.includes("2022") ? "act" : ""} style={{ background: sroks.includes("2022") ? mainColor : secondaryColor }} onClick={(e) => { e.preventDefault(); updateList("2022", sroks, setSroks, false) }} href="#">2022</a></li>
+                            <li><a className={sroks.includes("2023") ? "act" : ""} style={{ background: sroks.includes("2023") ? mainColor : secondaryColor }} onClick={(e) => { e.preventDefault(); updateList("2023", sroks, setSroks, false) }} href="#">2023</a></li>
+                            <li><a className={sroks.includes("2024") ? "act" : ""} style={{ background: sroks.includes("2024") ? mainColor : secondaryColor }} onClick={(e) => { e.preventDefault(); updateList("2024", sroks, setSroks, false) }} href="#">2024</a></li>
+                            <li><a className={sroks.includes("2025") ? "act" : ""} style={{ background: sroks.includes("2025") ? mainColor : secondaryColor }} onClick={(e) => { e.preventDefault(); updateList("2025", sroks, setSroks, false) }} href="#">2025</a></li>
                         </ul>
                     </li>
                 </ul>
