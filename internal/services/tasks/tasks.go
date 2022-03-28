@@ -53,35 +53,21 @@ func (s *service) AddTask(task models.Task) (string, error) {
 		return "", err
 	}
 	task.Phone = phone
-	now := time.Now()
-	/*tomorrowAt10 := now.Add(time.Hour * 24)
-	if tomorrowAt10.Hour() > 10 {
-		diff := tomorrowAt10.Hour() - 10
-		tomorrowAt10 = tomorrowAt10.Add(-time.Duration(diff) * time.Hour)
-	} else {
-		diff := 10 - tomorrowAt10.Hour()
-		tomorrowAt10 = tomorrowAt10.Add(time.Duration(diff) * time.Hour)
+
+	//формируем список прозвонов
+	loc, _ := time.LoadLocation("Europe/Moscow")
+	current := time.Now().In(loc)
+	times := []int{}
+	for i := 0; i < 3; i++ {
+		if current.Hour() > 21 {
+			current = current.Add(time.Hour * 24)
+			current = time.Date(current.Year(), current.Month(), current.Day(), 10, 00, 00, 00, loc)
+		}
+		times = append(times, int(current.Unix()))
+		current = current.Add(time.Hour)
 	}
-	tomorrowAt12 := now.Add(time.Hour * 24)
-	if tomorrowAt12.Hour() > 12 {
-		diff := tomorrowAt12.Hour() - 12
-		tomorrowAt12 = tomorrowAt12.Add(-time.Duration(diff) * time.Hour)
-	} else {
-		diff := 12 - tomorrowAt12.Hour()
-		tomorrowAt12 = tomorrowAt12.Add(time.Duration(diff) * time.Hour)
-	}*/
-	//проверяем, если нужно добавить день
-	timeIncrease := int64(0)
-	if scenario.AddDay {
-		timeIncrease = 60 * 60 * 24
-	}
-	task.Call = []int{
-		int(now.Unix() + 5*60 + timeIncrease),
-		int(now.Unix() + 60*60 + timeIncrease),
-		int(now.Unix() + 120*60 + timeIncrease),
-		//int(tomorrowAt10.Unix()),
-		//int(tomorrowAt12.Unix()),
-	}
+
+	task.Call = times
 	task.Finished = false
 	task.Phone = pregPhone(phone)
 

@@ -2,7 +2,7 @@ import { useState } from 'react'
 import InputMask from 'react-input-mask'
 import { SendData } from "../../utils"
 
-export const PhoneScreen = ({ phone, rooms, sroks, setPhone, number }) => {
+export const PhoneScreen = ({ phone, rooms, sroks, setPhone, number, params }) => {
     const [error, setError] = useState(false)
 
     const inputChange = (event) => {
@@ -27,6 +27,9 @@ export const PhoneScreen = ({ phone, rooms, sroks, setPhone, number }) => {
         }, 200)
 
     }
+
+    let secondaryColor = params.secondary_color == "27353E" ? "#1d3887" : "#" + params.secondary_color
+
     return (<div className="page_two">
         <div className="content_title ct_two">
             Подборка квартир по вашему запросу будет отправлена вам на WhatsApp
@@ -37,7 +40,7 @@ export const PhoneScreen = ({ phone, rooms, sroks, setPhone, number }) => {
         <form className="form_main">
             <div className="fl_title">Номер телефона</div>
             <InputMask mask="+7\ (999) 999-99-99" name="phone" value={phone} onChange={inputChange} maskChar={null} >
-                {(inputProps) => <input id="q_phone" className={error ? "in_phone ym-record-keys err" : "in_phone ym-record-keys"}  {...inputProps} placeholder="+7 ( ___ ) ___ - __ - __" />}
+                {(inputProps) => <input id="q_phone" style={{ background: secondaryColor }} className={error ? "in_phone ym-record-keys err" : "in_phone ym-record-keys"}  {...inputProps} placeholder="+7 ( ___ ) ___ - __ - __" />}
             </InputMask>
         </form>
         <div className="btn_text">

@@ -13,7 +13,14 @@ RUN GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -ldflags='-w -s' -o /go/bin/c
 CMD /go/bin/service --port 8090 --host '0.0.0.0'
 
 #---Final stage---
-FROM alpine:latest
+FROM alpine:latest AS alpine
 COPY --from=builder /go/bin/service /go/bin/service
 COPY --from=builder /go/bin/command /go/bin/command
 CMD /go/bin/service --port 8090 --host '0.0.0.0'
+
+FROM scratch as final
+COPY --from=alpine /go/bin/service service
+COPY --from=builder /usr/local/go/lib/time/zoneinfo.zip /
+ENV TZ=Europe/Moscow
+ENV ZONEINFO=/zoneinfo.zip
+CMD ["/service"]
