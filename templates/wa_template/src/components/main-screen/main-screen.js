@@ -98,7 +98,6 @@ const MainScreen = ({ params, nextStep, rooms, setRooms, sroks, setSroks, number
         setPrice(price)
     }
 
-    console.log(params.main_color)
     let mainColor = params.main_color == "5ABBB0" ? "linear-gradient( 0deg, rgba(46, 193, 111, 1) 20%, rgba(54, 115, 105, 1) 100% )" : "#" + params.main_color
     let secondaryColor = params.secondary_color == "27353E" ? "#1d3887" : "#" + params.secondary_color
 
