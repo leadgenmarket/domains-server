@@ -5,7 +5,7 @@ import parse from 'html-react-parser'
 
 const MainScreen = ({ params, nextStep }) => {
     return <React.Fragment>
-        <section class="main_wm h100">
+        <section class="main_wm h100" style={{ background: params.background != "" ? `url("https://admin.leadactiv.ru/file-store/${params.background}") center / cover no-repeat` : `` }}>
             <div class="sect_wm">
 
                 <div class="data_step main_page act" id="main_page">
