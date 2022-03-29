@@ -16,12 +16,7 @@ CMD /go/bin/service --port 8090 --host '0.0.0.0'
 FROM alpine:latest AS alpine
 COPY --from=builder /go/bin/service /go/bin/service
 COPY --from=builder /go/bin/command /go/bin/command
-CMD /go/bin/service --port 8090 --host '0.0.0.0'
-
-FROM scratch as final
-COPY --from=alpine /go/bin/service service
 COPY --from=builder /usr/local/go/lib/time/zoneinfo.zip /
-COPY --from=go-builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 ENV TZ=Europe/Moscow
 ENV ZONEINFO=/zoneinfo.zip
-CMD ["/service"]
+CMD /go/bin/service --port 8090 --host '0.0.0.0'
