@@ -11,7 +11,6 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"time"
 
 	"github.com/gin-gonic/autotls"
 	"github.com/gin-gonic/gin"
@@ -22,14 +21,15 @@ import (
 
 func main() {
 
-	//set timezone
-	if tz := os.Getenv("TZ"); tz != "" {
-		var err error
-		time.Local, err = time.LoadLocation(tz)
-		if err != nil {
-			log.Printf("error loading location '%s': %v\n", tz, err)
+	/*
+		if tz := os.Getenv("TZ"); tz != "" {
+			var err error
+			time.Local, err = time.LoadLocation(tz)
+			if err != nil {
+				log.Printf("error loading location '%s': %v\n", tz, err)
+			}
 		}
-	}
+	*/
 
 	cfg, err := config.InitConfig("APP")
 	if err != nil {
