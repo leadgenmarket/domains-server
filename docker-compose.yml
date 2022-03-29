@@ -10,8 +10,6 @@ services:
       - app-net
     volumes:
       - './data:/data/db'
-    ports:
-      - 27017:27017
   redis:
     container_name: redis
     image: redis:4.0-alpine
