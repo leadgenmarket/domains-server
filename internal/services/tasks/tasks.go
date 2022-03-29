@@ -62,6 +62,8 @@ func (s *service) AddTask(task models.Task) (string, error) {
 		if current.Hour() > 21 {
 			current = current.Add(time.Hour * 24)
 			current = time.Date(current.Year(), current.Month(), current.Day(), 10, 00, 00, 00, loc)
+		} else if current.Hour() < 9 {
+			current = time.Date(current.Year(), current.Month(), current.Day(), 10, 00, 00, 00, loc)
 		}
 		times = append(times, int(current.Unix()))
 		current = current.Add(time.Hour)
