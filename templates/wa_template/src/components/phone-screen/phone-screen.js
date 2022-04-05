@@ -17,7 +17,7 @@ export const PhoneScreen = ({ phone, rooms, sroks, setPhone, number, params }) =
     const continueClick = (event) => {
         if (phone.length === 18) {
             setError(false)
-            SendData(phone, sroks, rooms, "form")
+            SendData(phone, sroks, rooms, "getForm")
         } else {
             event.preventDefault()
             setError(true)
