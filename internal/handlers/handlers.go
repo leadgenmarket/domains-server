@@ -100,6 +100,7 @@ func (h *handlers) Registry() {
 	h.router.GET("/domain-city/:url", h.Domains.DomainsGetCityByUrl) //возвращает город домена, для want-result
 	h.router.POST("/proxy", h.Proxy.ProxyRequest)
 
+	/*zvonobot off
 	//scenarios handlers
 	scenariosGroup := h.router.Group("scenarios")
 	scenariosGroup.PUT("/", h.Scenarios.AddScenario)
@@ -113,7 +114,7 @@ func (h *handlers) Registry() {
 	tasksGorup.GET("/call", h.Tasks.MakeCalls)
 	tasksGorup.POST("/amo/:scenarioID", h.Tasks.AmoTriggerHandler)
 	tasksGorup.POST("/result/:result", h.Tasks.ResultHandler)
-	tasksGorup.DELETE("/:id", h.Tasks.DeleteTask)
+	tasksGorup.DELETE("/:id", h.Tasks.DeleteTask)*/
 
 	h.router.GET("/api/plans-sites/:id", h.PlansSites.GetPlansSiteDetailInfo)
 
