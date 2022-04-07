@@ -265,7 +265,7 @@ button {
     height: 100vh;
     width: 100%;
     box-sizing: border-box;
-    background: url(/img/main_bg.jpg)no-repeat center top;
+    /*background: url(/img/main_bg.jpg)no-repeat center top;*/
     -webkit-background-size: cover;
     background-size: cover;
 }
@@ -1527,7 +1527,7 @@ button.btn_main{
 }
 @media screen and (max-height: 850px) and (max-width : 380px){
     .main_wm {
-    background: url(/img/main_bg_m.jpg)no-repeat center top;
+    background: no-repeat center top;
     -webkit-background-size: cover;
     background-size: cover;
 }
@@ -2079,7 +2079,7 @@ h1 {
     bottom: 116px;
 }
 .main_wm {
-    background: url(/img/main_bg_m.jpg)no-repeat center top!important;
+    background: no-repeat center top!important;
     -webkit-background-size: cover!important;
     background-size: cover!important;
    
