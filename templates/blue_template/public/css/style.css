@@ -505,6 +505,25 @@ footer .wmain{
     color: #87F3E0;
 }
 
+.box {
+    overflow: hidden !important;
+    overflow-y: auto !important;
+}
+
+.box::-webkit-scrollbar {
+    width: 6px;
+}
+
+.box::-webkit-scrollbar-track {
+    background-color: rgba(255,255,255,0.3);
+    border-radius: 100px;
+}
+
+.box::-webkit-scrollbar-thumb {
+    background-color: rgb(246, 201, 50);
+    border-radius: 100px;
+}
+
 /*@media*/
 @media screen and (max-width: 1400px) {
     .title_inner:before{
