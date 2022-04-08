@@ -136,7 +136,7 @@ const Router = () => {
         return name
     }
 
-    return <div className="container_main" style={{ background: params.background != "" ? `url("https://admin.leadactiv.ru/file-store/${params.background}") center / cover no-repeat` : `` }}>
+    return <div className="container_main" style={{ background: params.background != "" && params.background !== undefined ? `url("https://admin.leadactiv.ru/file-store/${params.background}") center / cover no-repeat` : `url("https://admin.leadactiv.ru/templates/purple_template/build/img/main_bg.jpg") center / cover no-repeat` }}>
         {step == null ? <MainScreen params={params} nextStep={nextStep} /> : params.Steps.length <= step ? <FinishSteps form={form} setForm={setForm} raionsStep={raionsName} raionsPrice={raionsPrice} roomsStep={roomsName} sdachaName={sdachaName} params={params} /> : <Step step={params.Steps[step]} ignoreFirst={ignoreFirstStep} raionsStep={raionsName} raionsPrice={raionsPrice} roomsStep={roomsName} params={params} index={step} length={params.Steps.length} nextStep={nextStep} prevStep={prevStep} form={form} setForm={setForm} />}
     </div>
 }
