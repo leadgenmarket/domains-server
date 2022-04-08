@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
+import './scroll.css';
 
 export default class ColoredScrollbars extends Component {
-
     constructor(props, ...rest) {
         super(props, ...rest);
         this.state = { top: 0 };
@@ -27,7 +27,7 @@ export default class ColoredScrollbars extends Component {
             <div
                 className="box"
                 style={{ ...style, ...viewStyle }}
-                {...props}/>
+                {...props} />
         );
     }
 
@@ -40,7 +40,7 @@ export default class ColoredScrollbars extends Component {
         return (
             <div
                 style={{ ...style, ...thumbStyle }}
-                {...props}/>
+                {...props} />
         );
     }
 
@@ -51,7 +51,7 @@ export default class ColoredScrollbars extends Component {
                 renderThumbHorizontal={this.renderThumb}
                 renderThumbVertical={this.renderThumb}
                 onUpdate={this.handleUpdate}
-                {...this.props}/>
+                {...this.props} />
         );
     }
 }
