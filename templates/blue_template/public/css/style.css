@@ -1,4 +1,9 @@
 
+.simplebar-scrollbar:before {
+    opacity: 1 !important;
+    background-color: white !important;
+}
+
 footer{
     display: block;
     position: fixed;
@@ -230,7 +235,6 @@ footer .wmain{
         float: left;
         margin-right: 20px;
     }
-
 
 .in_slider {
     position: relative;
