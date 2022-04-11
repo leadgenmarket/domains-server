@@ -144,7 +144,7 @@ table, caption, tbody, tfoot, thead, tr, th, td {
     overflow: hidden;
     position: relative;
     font-family: 'Nunito', sans-serif;
-    }
+}
 
 
 body {
@@ -2231,6 +2231,16 @@ button.btn_main{
         padding-left: 10px;
         padding-right: 10px;
         white-space: nowrap;
+        bottom: 90px;
+    }
+
+    .step_title + div {
+        height: 53vh !important;
+    }
+
+    .mw_step .btn_main {
+        margin-top: 0 !important;
+        bottom: 80px !important;
     }
 }
 
