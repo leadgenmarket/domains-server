@@ -19,16 +19,6 @@ fs.readFile('./build/index.html', 'utf8', (err, data) => {
           var js = d.createElement(s); js.charset=\"UTF-8\"; js.async = 1; js.src = p+h+u; var js2 = d.getElementsByTagName(s)[0]; js2.parentNode.insertBefore(js, js2);\
         })(window, document, 'script', 'cloud.roistat.com', 'ae9cbfdb4a59f3dd07844cef447758ca');\
       {{end}}\
-      {{if .qoopler}}\
-        (function (d, w) {\
-          var n = d.getElementsByTagName(\"script\")[0],\
-            s = d.createElement(\"script\");\
-            s.type = \"text/javascript\";\
-            s.async = true;\
-            s.src = \"https://qoopler.ru/index.php?ref=\"+d.referrer+\"&page=\" + encodeURIComponent(w.location.href);\
-            n.parentNode.insertBefore(s, n);\
-        })(document, window);\
-      {{end}}\
       {{if .google}} window.dataLayer = window.dataLayer || []; function gtag(){window.dataLayer.push(arguments);} gtag(\'js\', new Date()); gtag(\'config\', \'{{.google}}\');{{end}}\
       setTimeout(() => {\
         {{if .yandex}} (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)}; m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)}) (window, document, \"script\", \"https://mc.yandex.ru/metrika/tag.js\", \"ym\"); ym({{ .yandex }}, \"init\", { clickmap:true, trackLinks:true, accurateTrackBounce:true, webvisor:true });{{end}}\
@@ -61,6 +51,21 @@ fs.readFile('./build/index.html', 'utf8', (err, data) => {
   fs.writeFileSync("./build/plans_template.html", data)
   fs.unlink("./build/index.html", () => { })
 })
+
+/*
+
+ {{if .qoopler}}\
+        (function (d, w) {\
+          var n = d.getElementsByTagName(\"script\")[0],\
+            s = d.createElement(\"script\");\
+            s.type = \"text/javascript\";\
+            s.async = true;\
+            s.src = \"https://qoopler.ru/index.php?ref=\"+d.referrer+\"&page=\" + encodeURIComponent(w.location.href);\
+            n.parentNode.insertBefore(s, n);\
+        })(document, window);\
+      {{end}}\
+
+*/
 
 
 const replaceScripts = (data) => {
