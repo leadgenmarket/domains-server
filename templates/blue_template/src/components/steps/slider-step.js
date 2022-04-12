@@ -29,7 +29,7 @@ const SliderStep = ({ step, params, raionsStep, roomsStep, index, length, nextSt
         }
     }
     useEffect(()=> {
-        if (step.type === "slider_r") {
+        /*if (step.type === "slider_r") {
             let minV
             let maxV
             let raions = form[raionsStep].split(", ")
@@ -66,24 +66,24 @@ const SliderStep = ({ step, params, raionsStep, roomsStep, index, length, nextSt
                 let prices = []
                 Object.keys(domainSettings.prices.prices).map((key) => {
                     let price = domainSettings.prices.prices[key]
-                    if (parseFloat(price.min)>0 && (minV === undefined || minV > parseFloat(price.min))) {
+                    if (parseFloat(price.min) > 0 && (minV === undefined || minV > parseFloat(price.min))) {
                         minV = Math.round(parseFloat(price.min))
                     }
-                    if (parseFloat(price.max)>0 && (maxV === undefined || maxV < parseFloat(price.max))) {
+                    if (parseFloat(price.max) > 0 && (maxV === undefined || maxV < parseFloat(price.max))) {
                         maxV = Math.round(parseFloat(price.max))
                     }
                 })
             } else {
                 console.log("считаем нужные районы и цены")
                 let prices = []
-               
+
                 raions.forEach((raion) => {
                     if (raion != "Все") {
                         prices.push(domainSettings.prices.prices[getRaionsID(raion)])
                     }
                 })
-                
-                
+
+
                 prices.forEach((price) => {
                     typedRoomsMin.forEach((filed) => {
                         if (minV === undefined || minV > parseFloat(price[filed])) {
@@ -96,11 +96,11 @@ const SliderStep = ({ step, params, raionsStep, roomsStep, index, length, nextSt
                         }
                     })
                 })
-                
+
             }
-            setMin(minV*1000000)
-            setMax(maxV*1000000)
-            //let value = (((maxV - minV)/4)+minV)*1000000
+            setMin(minV * 1000000)
+            setMax(maxV * 1000000)
+            //let value = (((maxV - minV) / 4) + minV) * 1000000
             let value = minV * 1000000
             setValue(value)
             form[step.title] = value
@@ -110,12 +110,19 @@ const SliderStep = ({ step, params, raionsStep, roomsStep, index, length, nextSt
             let maxV = parseFloat(step.to)
             setMin(minV)
             setMax(maxV)
-            //let value = (((maxV - minV)/4)+minV)
+            //let value = (((maxV - minV) / 4) + minV)
             let value = minV * 1000000
             setValue(value)
             form[step.title] = value
             setForm(form)
-        }
+        }*/
+        let minV = 3000000
+        let maxV = 15000000
+        setMin(minV)
+        setMax(maxV)
+        setValue(minV)
+        form[step.title] = minV
+        setForm(form)
     },[index])
 
    

@@ -40,3 +40,7 @@ admin:
 	@docker-compose run --rm app /go/bin/command -action=admin
 group:
 	@docker-compose run --rm app /go/bin/command -action=group-changes
+templates_build:
+	@cd templates/blue_template && npm run build
+	@cd templates/plans_template && npm run build
+	@cd templates/purple_template && npm run build

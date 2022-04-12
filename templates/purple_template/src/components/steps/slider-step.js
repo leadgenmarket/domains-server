@@ -29,7 +29,7 @@ const SliderStep = ({ step, params, raionsStep, roomsStep, index, length, nextSt
         }
     }
     useEffect(() => {
-        if (step.type === "slider_r") {
+        /*if (step.type === "slider_r") {
             let minV
             let maxV
             let raions = form[raionsStep].split(", ")
@@ -115,7 +115,14 @@ const SliderStep = ({ step, params, raionsStep, roomsStep, index, length, nextSt
             setValue(value)
             form[step.title] = value
             setForm(form)
-        }
+        }*/
+        let minV = 3000000
+        let maxV = 15000000
+        setMin(minV)
+        setMax(maxV)
+        setValue(minV)
+        form[step.title] = minV
+        setForm(form)
     }, [index])
 
 
