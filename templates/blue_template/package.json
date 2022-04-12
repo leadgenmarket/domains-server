@@ -29,8 +29,8 @@
     "web-vitals": "^2.1.2"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build && node src/optimize.js",
+    "start": "node src/test-data-add.js && react-scripts start",
+    "build": "node src/test-data-remove.js && react-scripts build && node src/optimize.js",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
