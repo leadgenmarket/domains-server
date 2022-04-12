@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react"
 import CheckBoxItem from "./checkbox-item"
-import ColoredScrollbars from "../colored-scrollbars/colored-scrollbars";
 import SimpleBarReact from "simplebar-react";
 import "simplebar/src/simplebar.css";
 
