@@ -101,7 +101,8 @@ const SliderStep = ({ step, params, raionsStep, roomsStep, index, length, nextSt
             }
             setMin(minV * 1000000)
             setMax(maxV * 1000000)
-            let value = (((maxV - minV) / 4) + minV) * 1000000
+            //let value = (((maxV - minV) / 4) + minV) * 1000000
+            let value = minV * 1000000
             setValue(value)
             form[step.title] = value
             setForm(form)
@@ -110,7 +111,8 @@ const SliderStep = ({ step, params, raionsStep, roomsStep, index, length, nextSt
             let maxV = parseFloat(step.to)
             setMin(minV)
             setMax(maxV)
-            let value = (((maxV - minV) / 4) + minV)
+            //let value = (((maxV - minV) / 4) + minV)
+            let value = minV * 1000000
             setValue(value)
             form[step.title] = value
             setForm(form)
