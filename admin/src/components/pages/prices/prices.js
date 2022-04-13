@@ -9,8 +9,9 @@ import { fetchPrices, updatePricesList } from "../../../actions/prices";
 import { Spinner } from "../../spinner";
 import axios from "axios";
 import ApiService from "../../../services/api-service";
+import { toast } from "react-toastify";
 
-const PricesPage = ({ prices, loading, fetchPrices }) => {
+const PricesPage = ({ prices, loading, updatePricesList }) => {
     const [citiesList, setList] = useState([])
 
     const [form, setForm] = useState([])
@@ -42,28 +43,36 @@ const PricesPage = ({ prices, loading, fetchPrices }) => {
         e.preventDefault()
         let id = e.currentTarget.getAttribute('data')
         let name = e.currentTarget.getAttribute('name')
-        let value = e.target.value
-        console.log(id)
-        let data = form
+        let value = parseInt(e.target.value)
         setForm((prevState) => {
             let newState = []
             prevState.forEach((price)=>{
                 if (price.ID == id){
                     if (name == "min") {
-                        price.min_value = value
+                        price.min_price = value
                     } else {
-                        price.max_value = value
+                        price.max_price = value
                     }
-                    console.log(price)
                 }
                 newState.push(price)
             })
-            console.log(newState)
             return newState
         })
     }
 
-    console.log(prices)
+    const saveClick =(e) =>{
+        e.preventDefault()
+        let promise = new ApiService().updatePricesList(form)
+
+        toast.promise(
+            promise,
+            {
+                pending: 'Сохраняю данные',
+                success: 'Данные успешно сохраненны 👌',
+                error: 'Ошибка при сохранении данных 🤯'
+            }
+        )
+    }
 
 
     return (<div className="main-content">
@@ -83,7 +92,7 @@ const PricesPage = ({ prices, loading, fetchPrices }) => {
                                         </div>
                                         <div className="flex-shrink-0">
                                             <div className="mb-4">
-                                                <a href="#" className="btn btn-primary w-md waves-effect waves-light">Сохранить</a>
+                                                <a href="#" onClick={saveClick} className="btn btn-primary w-md waves-effect waves-light">Сохранить</a>
                                             </div>
                                         </div>
                                     </div>
@@ -110,13 +119,12 @@ const PricesPage = ({ prices, loading, fetchPrices }) => {
                                     </form>
                                 </div>
                                 <hr className="my-4" />
-
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-                                                </div>
+        </div>
     </div>
     )
 }
