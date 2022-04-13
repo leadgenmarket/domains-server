@@ -2,8 +2,9 @@ import React,{  useEffect, useState } from "react"
 import Slider from "@material-ui/core/Slider";
 import { ThemeProvider } from "@material-ui/styles";
 import { createTheme } from "@mui/material";
+import axios from "axios";
 
-const SliderStep = ({ step, params, raionsStep, roomsStep, index, length, nextStep, prevStep, form, setForm }) => {
+const SliderStep = ({ step, params, prices, raionsStep, roomsStep, index, length, nextStep, prevStep, form, setForm }) => {
     const [sliderValue, setValue] = useState(null)
     const [min, setMin] = useState(null)
     const [max, setMax] = useState(null)
@@ -28,7 +29,7 @@ const SliderStep = ({ step, params, raionsStep, roomsStep, index, length, nextSt
             }
         }
     }
-    useEffect(()=> {
+    useEffect(async ()=> {
         /*if (step.type === "slider_r") {
             let minV
             let maxV
@@ -116,8 +117,8 @@ const SliderStep = ({ step, params, raionsStep, roomsStep, index, length, nextSt
             form[step.title] = value
             setForm(form)
         }*/
-        let minV = 3000000
-        let maxV = 15000000
+        let minV = prices.min_price
+        let maxV = prices.max_price
         setMin(minV)
         setMax(maxV)
         setValue(minV)

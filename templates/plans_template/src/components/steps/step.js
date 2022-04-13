@@ -1,24 +1,19 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import CityTitle from '../city-title';
 import BtnComponent from '../btn-component';
 import SliderStep from './slider-step';
 import TextStep from './text-step';
 import RoomsStep from './rooms-step';
+import axios from 'axios';
 
-const Step = ({
-  step,
-  params,
-  index,
-  length,
-  nextStep,
-  prevStep,
-  raionsStep,
-  roomsStep,
-  form,
-  setForm,
-}) => {
+const Step = ({ step, params, index, length, nextStep, prevStep, raionsStep, roomsStep, form, setForm, }) => {
+  const [prices, setPrices] = useState({min_value:3000000, max_value:15000000})
+  useEffect(async ()=>{
+    let response = await axios.get("/tmp_prices/"+domainSettings.city.ID)
+    setPrices(response.data.payload)
+  })
   return (
-    <section className="header" style={{ background: params.background != "" ? `url("/file-store/${params.background}") center / cover no-repeat` : `url("https://admin.leadactiv.ru/templates/plans_template/build/img/hd_bg_0810.jpg")` }}>
+    <section className="header" style={{ background: params.background != "" ? `url("https://admin.leadactiv.ru/file-store/${params.background}") center / cover no-repeat` : `url("https://admin.leadactiv.ru/templates/plans_template/build/img/hd_bg_0810.jpg")` }}>
       <div
         style={{
           backgroundColor: 'rgba(0,0,0, .56)',
@@ -67,6 +62,7 @@ const Step = ({
                 nextStep={nextStep}
                 prevStep={prevStep}
                 form={form}
+                prices={prices}
                 setForm={setForm}
               />
             )}

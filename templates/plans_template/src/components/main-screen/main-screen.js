@@ -38,7 +38,7 @@ const MainScreen = ({ params, nextStep }) => {
             </div>
           </div>
         </section>
-        <section className="header" style={{ background: params.background != "" ? `url("/file-store/${params.background}") center / cover no-repeat` : `url("https://admin.leadactiv.ru/templates/plans_template/build/img/hd_bg_0810.jpg")` }}>
+        <section className="header" style={{ background: params.background != "" ? `url("https://admin.leadactiv.ru/file-store/${params.background}") center / cover no-repeat` : `url("https://admin.leadactiv.ru/templates/plans_template/build/img/hd_bg_0810.jpg")` }}>
           <div style={{ width: '100%', padding: '100px 0px' }}>
             <div className="hd_inn">
               <CityTitle params={params} />

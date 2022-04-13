@@ -10,7 +10,7 @@ const FinishSteps = ({ params, form, setForm, raionsPrice, raionsStep, roomsStep
         event.preventDefault()
         setStage(stage + 1)
     }
-    return <section className={stage == 2 ? "header name-header" : "header"} style={{ background: params.background != "" ? `url("/file-store/${params.background}") center / cover no-repeat` : `url("https://admin.leadactiv.ru/templates/plans_template/build/img/hd_bg_0810.jpg")` }}>
+    return <section className={stage == 2 ? "header name-header" : "header"} style={{ background: params.background != "" ? `url("https://admin.leadactiv.ru/file-store/${params.background}") center / cover no-repeat` : `url("https://admin.leadactiv.ru/templates/plans_template/build/img/hd_bg_0810.jpg")` }}>
         <div className={stage == 2 ? "page name_step" : "page"}>
             <div className="page_inner">
                 <div className="wmain">
