@@ -14,6 +14,7 @@ import (
 	"domain-server/internal/handlers/proxy"
 	"domain-server/internal/handlers/scenarios"
 	"domain-server/internal/handlers/tasks"
+	"domain-server/internal/handlers/template_prices"
 	"domain-server/internal/handlers/templates"
 	"domain-server/internal/handlers/titles"
 	"domain-server/internal/handlers/users"
@@ -37,48 +38,50 @@ type Handlers interface {
 }
 
 type handlers struct {
-	Auth          auth.Handlers
-	Domains       domains.Handlers
-	Cities        cities.Handlers
-	Locations     locations.Handlers
-	Leads         leads.Handlers
-	Organizations organizations.Handlers
-	Titles        titles.Handlers
-	JKs           jks.Handlers
-	Users         users.Handlers
-	Templates     templates.Handlers
-	PlansSites    plans_sites.Handlers
-	Plans         plans.Handlers
-	Scenarios     scenarios.Handlers
-	Tasks         tasks.Handlers
-	Proxy         proxy.Handlers
-	router        *gin.Engine
-	repositories  *repositories.Repositories
-	services      *services.Services
-	logger        logger.Log
+	Auth           auth.Handlers
+	Domains        domains.Handlers
+	Cities         cities.Handlers
+	Locations      locations.Handlers
+	Leads          leads.Handlers
+	Organizations  organizations.Handlers
+	Titles         titles.Handlers
+	JKs            jks.Handlers
+	Users          users.Handlers
+	Templates      templates.Handlers
+	PlansSites     plans_sites.Handlers
+	Plans          plans.Handlers
+	Scenarios      scenarios.Handlers
+	Tasks          tasks.Handlers
+	Proxy          proxy.Handlers
+	TemplatePrices template_prices.Handlers
+	router         *gin.Engine
+	repositories   *repositories.Repositories
+	services       *services.Services
+	logger         logger.Log
 }
 
 func New(router *gin.Engine, repositories *repositories.Repositories, services *services.Services, logger logger.Log, cfg *config.Config) Handlers {
 	return &handlers{
-		Auth:          auth.New(repositories.Users, services, logger),
-		Domains:       domains.New(repositories.Domains, repositories.Locations, repositories.Cities, repositories.Prices, repositories.Titles, repositories.Templates, repositories.Organizations, services, logger, cfg),
-		Cities:        cities.New(repositories.Cities, services, logger),
-		Locations:     locations.New(repositories.Locations, repositories.Cities, repositories.Prices, repositories.JK, services, logger),
-		Leads:         leads.New(repositories.Leads, services, logger),
-		Organizations: organizations.New(repositories.Organizations, services, logger),
-		Titles:        titles.New(repositories.Titles, services, logger),
-		Users:         users.New(repositories.Users, services, logger),
-		Templates:     templates.New(repositories.Templates, services, logger),
-		PlansSites:    plans_sites.New(services, logger),
-		Plans:         plans.New(services, logger),
-		Scenarios:     scenarios.New(services, logger),
-		Tasks:         tasks.New(services, logger),
-		JKs:           jks.New(repositories.JK, logger),
-		Proxy:         proxy.New(services, logger),
-		router:        router,
-		repositories:  repositories,
-		services:      services,
-		logger:        logger,
+		Auth:           auth.New(repositories.Users, services, logger),
+		Domains:        domains.New(repositories.Domains, repositories.Locations, repositories.Cities, repositories.Prices, repositories.Titles, repositories.Templates, repositories.Organizations, services, logger, cfg),
+		Cities:         cities.New(repositories.Cities, services, logger),
+		Locations:      locations.New(repositories.Locations, repositories.Cities, repositories.Prices, repositories.JK, services, logger),
+		Leads:          leads.New(repositories.Leads, services, logger),
+		Organizations:  organizations.New(repositories.Organizations, services, logger),
+		Titles:         titles.New(repositories.Titles, services, logger),
+		Users:          users.New(repositories.Users, services, logger),
+		Templates:      templates.New(repositories.Templates, services, logger),
+		PlansSites:     plans_sites.New(services, logger),
+		Plans:          plans.New(services, logger),
+		Scenarios:      scenarios.New(services, logger),
+		Tasks:          tasks.New(services, logger),
+		JKs:            jks.New(repositories.JK, logger),
+		Proxy:          proxy.New(services, logger),
+		TemplatePrices: template_prices.New(services, logger),
+		router:         router,
+		repositories:   repositories,
+		services:       services,
+		logger:         logger,
 	}
 }
 
@@ -184,6 +187,11 @@ func (h *handlers) Registry() {
 		plansGroup.DELETE("/:id", h.Plans.DeletePlans)
 		plansGroup.POST("/", h.Plans.UpdatePlans)
 		plansGroup.POST("/activity", h.Plans.UpdatePlansActivity)
+
+		//template prices
+		pricesGroup := api.Group("tmp_prices")
+		pricesGroup.GET("/", h.TemplatePrices.GetTemplatesPricesList)
+		pricesGroup.POST("/", h.TemplatePrices.UpdateTemplatePrices)
 
 		api.GET("/ping", func(c *gin.Context) {
 			c.JSON(http.StatusOK, gin.H{"message": "i'm ok"})

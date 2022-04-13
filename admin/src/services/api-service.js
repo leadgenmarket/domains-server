@@ -55,6 +55,16 @@ export default class ApiService {
         })
     }
 
+    pricesList = () => {
+        return axios.get("/api/prices/")
+    }
+
+    updatePricesList = (pricesList) => {
+        return axios.post("/api/prices/", {
+            list: pricesList
+        })
+    }
+
     domain = (id) => {
         return axios.get("/api/domains/" + id)
     }

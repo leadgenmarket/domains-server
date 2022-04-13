@@ -4,6 +4,7 @@ import updateDomainsList from "./updateDomainsList";
 import updateLeadsList from "./updateLeadsList";
 import updateOrganizationsList from "./updateOrganizations";
 import updateTitlesList from "./updateTitles";
+import updatePricesList from "./updatePrices";
 
 
 const reducer = (state, action) => {
@@ -14,6 +15,7 @@ const reducer = (state, action) => {
         domainDetail: updateDomainDetail(state, action),
         titlesList: updateTitlesList(state, action),
         organizationsList: updateOrganizationsList(state, action),
+        updatePricesList: updatePricesList(state, action)
     }
 }
 

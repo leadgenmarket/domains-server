@@ -8,13 +8,6 @@ export default [
         url: "/",
         children: []
     },
-    /*{
-        name: 'Шаблоны',
-        icon: <i className="feather-clipboard" />,
-        status: false,
-        url: "/templates",
-        children: []
-    },*/
     {
         name: 'Лиды',
         icon: <i className="feather-dollar-sign" />,
@@ -27,6 +20,13 @@ export default [
         icon: <i className="feather-repeat" />,
         status: false,
         url: "/titles",
+        children: []
+    },
+    {
+        name: 'Цены по районам',  
+        icon: <i className="feather-dollar-sign" />,
+        status: false,
+        url: "/prices",
         children: []
     },
     {

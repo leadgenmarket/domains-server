@@ -73,7 +73,63 @@ func main() {
 }
 
 func groupChanges(service *services.Services, repositories *repositories.Repositories, logger logger.Log) {
-
+	prices := []models.TemplatePrice{
+		{
+			ID:       bson.NewObjectId(),
+			CityID:   bson.ObjectIdHex("61d08c81d447fb00010754e8"), //мск
+			MinPrice: 20000000,
+			MaxPrice: 150000000,
+		},
+		{
+			ID:       bson.NewObjectId(),
+			CityID:   bson.ObjectIdHex("61d08c81d447fb0001075551"), //питер
+			MinPrice: 3000000,
+			MaxPrice: 15000000,
+		},
+		{
+			ID:       bson.NewObjectId(),
+			CityID:   bson.ObjectIdHex("61d08c81d447fb0001075548"), //новосиб
+			MinPrice: 3000000,
+			MaxPrice: 15000000,
+		},
+		{
+			ID:       bson.NewObjectId(),
+			CityID:   bson.ObjectIdHex("61d08c81d447fb00010754da"), //тула
+			MinPrice: 3000000,
+			MaxPrice: 15000000,
+		},
+		{
+			ID:       bson.NewObjectId(),
+			CityID:   bson.ObjectIdHex("61d08c81d447fb0001075564"), //крд
+			MinPrice: 3000000,
+			MaxPrice: 15000000,
+		},
+		{
+			ID:       bson.NewObjectId(),
+			CityID:   bson.ObjectIdHex("61d08c81d447fb0001075567"), //пермь
+			MinPrice: 3000000,
+			MaxPrice: 15000000,
+		},
+		{
+			ID:       bson.NewObjectId(),
+			CityID:   bson.ObjectIdHex("61d08c81d447fb000107556b"), //ростов
+			MinPrice: 3000000,
+			MaxPrice: 15000000,
+		},
+		{
+			ID:       bson.NewObjectId(),
+			CityID:   bson.ObjectIdHex("61d08c81d447fb000107554c"), //екб
+			MinPrice: 3000000,
+			MaxPrice: 15000000,
+		},
+		{
+			ID:       bson.NewObjectId(),
+			CityID:   bson.ObjectIdHex("61d08c81d447fb000107554e"), //voronezh
+			MinPrice: 3000000,
+			MaxPrice: 15000000,
+		},
+	}
+	service.TempltePrices.AddTemplatePricesList(prices)
 }
 
 func addTemplates(service *services.Services, repositories *repositories.Repositories, logger logger.Log) {

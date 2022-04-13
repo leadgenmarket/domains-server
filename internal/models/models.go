@@ -144,3 +144,10 @@ type PaginationListInput struct {
 	ItemsCnt int    `json:"items_cnt" binding:"required"`
 	Search   string `json:"search"`
 }
+
+type TemplatePrice struct {
+	ID       bson.ObjectId `bson:"_id"`
+	CityID   bson.ObjectId `bson:"city_id" json:"city_id"`
+	MinPrice int           `bson:"min_price" json:"min_price"`
+	MaxPrice int           `bson:"max_price" json:"max_price"`
+}

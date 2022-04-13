@@ -14,6 +14,7 @@ import (
 	"domain-server/internal/repositories/scenario"
 	"domain-server/internal/repositories/tasks"
 	templates "domain-server/internal/repositories/template"
+	"domain-server/internal/repositories/template_prices"
 	"domain-server/internal/repositories/titles"
 	"domain-server/internal/repositories/users"
 
@@ -21,37 +22,39 @@ import (
 )
 
 type Repositories struct {
-	Cities        cities.Repository
-	Domains       domains.Repository
-	Leads         leads.Repository
-	Organizations organization.Repository
-	Templates     templates.Repository
-	Titles        titles.Repository
-	Users         users.Repository
-	Locations     locations.Repository
-	Prices        prices.Repository
-	JK            jk.Repository
-	PlansSites    plans_sites.Repository
-	Plans         plans.Repository
-	Scenarios     scenario.Repository
-	Tasks         tasks.Repository
+	Cities         cities.Repository
+	Domains        domains.Repository
+	Leads          leads.Repository
+	Organizations  organization.Repository
+	Templates      templates.Repository
+	Titles         titles.Repository
+	Users          users.Repository
+	Locations      locations.Repository
+	Prices         prices.Repository
+	JK             jk.Repository
+	PlansSites     plans_sites.Repository
+	Plans          plans.Repository
+	Scenarios      scenario.Repository
+	Tasks          tasks.Repository
+	TemplatePrices template_prices.Repository
 }
 
 func New(dbClient *mongodb.Database, cfg *config.Config) *Repositories {
 	return &Repositories{
-		Cities:        cities.New(dbClient),
-		Domains:       domains.New(dbClient),
-		Leads:         leads.New(dbClient),
-		Organizations: organization.New(dbClient),
-		Templates:     templates.New(dbClient),
-		Titles:        titles.New(dbClient),
-		Users:         users.New(dbClient, cfg),
-		Locations:     locations.New(dbClient),
-		Prices:        prices.New(dbClient),
-		JK:            jk.New(dbClient),
-		Plans:         plans.New(dbClient),
-		PlansSites:    plans_sites.New(dbClient),
-		Scenarios:     scenario.New(dbClient),
-		Tasks:         tasks.New(dbClient),
+		Cities:         cities.New(dbClient),
+		Domains:        domains.New(dbClient),
+		Leads:          leads.New(dbClient),
+		Organizations:  organization.New(dbClient),
+		Templates:      templates.New(dbClient),
+		Titles:         titles.New(dbClient),
+		Users:          users.New(dbClient, cfg),
+		Locations:      locations.New(dbClient),
+		Prices:         prices.New(dbClient),
+		JK:             jk.New(dbClient),
+		Plans:          plans.New(dbClient),
+		PlansSites:     plans_sites.New(dbClient),
+		Scenarios:      scenario.New(dbClient),
+		Tasks:          tasks.New(dbClient),
+		TemplatePrices: template_prices.New(dbClient),
 	}
 }

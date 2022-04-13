@@ -15,6 +15,7 @@ import (
 	"domain-server/internal/services/scenario"
 	"domain-server/internal/services/storage"
 	"domain-server/internal/services/tasks"
+	"domain-server/internal/services/template_prices"
 	"domain-server/internal/services/token_manager"
 	"domain-server/internal/system/database/redis"
 	"domain-server/pkg/imagesservice"
@@ -33,6 +34,7 @@ type Services struct {
 	Scenarios       scenario.Service
 	Tasks           tasks.Service
 	Proxy           proxy.Proxy
+	TempltePrices   template_prices.Service
 }
 
 func Setup(cfg *config.Config, repository repositories.Repositories, redis redis.Repository, logger logger.Log) *Services {
@@ -51,5 +53,6 @@ func Setup(cfg *config.Config, repository repositories.Repositories, redis redis
 		Scenarios:       scenario.NewService(repository),
 		Tasks:           tasks.NewService(repository, logger),
 		Proxy:           proxy.NewProxyService(),
+		TempltePrices:   template_prices.NewService(repository, redis),
 	}
 }

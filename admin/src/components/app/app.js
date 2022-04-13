@@ -23,6 +23,7 @@ import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import LeadDetail from "../pages/leads/detail/lead-detail";
 import { OrganizationsPage } from "../pages/organizations/organizations-list";
+import Prices from "../pages/prices/prices";
 
 
 const App = ({ auth, phone, checkAuth }) => {
@@ -54,6 +55,7 @@ const App = ({ auth, phone, checkAuth }) => {
                 <ToolBar />
                 <SideMenu />
                 <Routes>
+                    <Route path="/prices" element={<Prices />} />
                     <Route path="/organizations/" element={<OrganizationsPage />} />
                     <Route path="/leads/:id" element={<LeadDetail />} />
                     <Route path="/leads/" element={<LeadsList />} />
