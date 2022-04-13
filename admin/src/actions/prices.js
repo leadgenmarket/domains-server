@@ -39,7 +39,9 @@ const pricesUpdateError = () => {
 const fetchPrices = (apiService) => () => (dispatch) => {
     dispatch(pricesRequested)
     apiService.pricesList()
-        .then((response) => dispatch(pricesRequestSuccess(response.data)))
+        .then((response) => {
+            dispatch(pricesRequestSuccess(response.data))
+        })
         .catch((err) => dispatch(pricesRequestError(err)))
 }
 

@@ -4,16 +4,23 @@ import { withApiService } from "../../hoc";
 import { connect } from "react-redux";
 import { bindActionCreators } from 'redux';
 import { useParams } from 'react-router-dom'
-import { Component, useEffect } from "react";
+import { Component, useEffect, useState } from "react";
 import { fetchPrices, updatePricesList } from "../../../actions/prices";
 import { Spinner } from "../../spinner";
 import axios from "axios";
+import ApiService from "../../../services/api-service";
 
-const PricesPage = ({ domain, loading, fetchDomain }) => {
-    const { id } = useParams()
+const PricesPage = ({ prices, loading, fetchPrices }) => {
+    const [citiesList, setList] = useState([])
+
+    const [form, setForm] = useState([])
     useEffect(() => {
-        fetchDomain(id)
-    }, [id])
+        new ApiService().citiesList().then((resp)=>{
+            setList(resp.data)
+            
+        })
+        setForm(prices)
+    }, [prices])
 
     const convertDate = (inputFormat) => {
         function pad(s) { return (s < 10) ? '0' + s : s; }
@@ -21,21 +28,43 @@ const PricesPage = ({ domain, loading, fetchDomain }) => {
         return [pad(d.getDate()), pad(d.getMonth() + 1), d.getFullYear()].join(' / ')
     }
 
-    const moderationChange = (e) => {
+    const getCityById =(cityID) =>{
+        let name = ""
+        citiesList.forEach((city)=>{
+            if (city.ID == cityID) {
+                name = city.Name
+            }
+        })
+        return name
+    }
+
+    const inputChange = (e) => {
         e.preventDefault()
-        let data = {
-            id: id,
-            moderation: e.target.checked
-        }
-        domain.Moderation = e.target.checked
-        axios.post("/api/domains/moderation", data).then((response) => {
-            fetchDomain(id)
+        let id = e.currentTarget.getAttribute('data')
+        let name = e.currentTarget.getAttribute('name')
+        let value = e.target.value
+        console.log(id)
+        let data = form
+        setForm((prevState) => {
+            let newState = []
+            prevState.forEach((price)=>{
+                if (price.ID == id){
+                    if (name == "min") {
+                        price.min_value = value
+                    } else {
+                        price.max_value = value
+                    }
+                    console.log(price)
+                }
+                newState.push(price)
+            })
+            console.log(newState)
+            return newState
         })
     }
 
-    if (loading || domain == null) {
-        return <Spinner />
-    }
+    console.log(prices)
+
 
     return (<div className="main-content">
         <div className="page-content">
@@ -49,64 +78,45 @@ const PricesPage = ({ domain, loading, fetchDomain }) => {
                                     <div className="d-flex align-items-start">
                                         <div className="flex-grow-1">
                                             <div className="mb-4">
-                                                <span className="logo-txt">{domain.url}</span>
+                                                <span className="logo-txt">Цены в слайдерах по районам</span>
                                             </div>
                                         </div>
                                         <div className="flex-shrink-0">
                                             <div className="mb-4">
-                                                <a href="#" className="btn btn-primary w-md waves-effect waves-light">Редактировать</a>
+                                                <a href="#" className="btn btn-primary w-md waves-effect waves-light">Сохранить</a>
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="d-flex align-items-start" style={{ marginBottom: "10px" }}>
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" onChange={moderationChange} checked={domain.Moderation} type="checkbox" name="moderation" id="flexSwitchCheckDefault" />
-                                            <label class="form-check-label" for="flexSwitchCheckDefault">Модерация</label>
-                                        </div>
-                                    </div>
-                                    <p className="mb-1"><b>Дата создания:</b> {convertDate(Date.parse(domain.CreatedAt))}</p>
-                                    <p className="mb-1"><b>Roistat:</b> {domain.Roistat ? "Да" : "Нет"}</p>
-                                    <p className="mb-1"><b>Yandex:</b> {domain.yandex}</p>
-                                    <p className="mb-1"><b>Google:</b> {domain.google}</p>
-                                    <p className="mb-1"><b>Mail:</b> {domain.mail}</p>
-                                    <p className="mb-1"><b>Facebook:</b> {domain.facebook}</p>
-                                    <p className="mb-1"><b>Marquiz:</b> {domain.marquiz}</p>
-                                    <p className="mb-1"><b>Qoopler:</b> {domain.Qoopler ? "Да" : "Нет"}</p>
+                                    <form>
+                                        {form.map((price)=>{
+                                            return(
+                                                <div className="row">
+                                                    <div className="col-lg-6">
+                                                        <div className="mb-3">
+                                                            <label htmlFor="basicpill-firstname-input" name="url" className="form-label">{getCityById(price.city_id)} от</label>
+                                                            <input type="text" className="form-control" id="basicpill-firstname-input" name="min" onChange={inputChange} data={price.ID} value={price.min_price}  />
+                                                        </div>
+                                                    </div>
+                                                    <div className="col-lg-6">
+                                                        <div className="mb-3">
+                                                            <label htmlFor="basicpill-firstname-input" name="url" className="form-label">до</label>
+                                                            <input type="text" className="form-control" id="basicpill-firstname-input" name="max" onChange={inputChange} data={price.ID} value={price.max_price}  />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            )
+                                        })}
+                                        
+                                    </form>
                                 </div>
                                 <hr className="my-4" />
 
-                                <div className="py-2 mt-3">
-                                    <h5 className="font-size-15">Шаги</h5>
-                                </div>
-                                <div className="p-4 border rounded">
-                                    <div className="table-responsive">
-                                        <table className="table table-nowrap align-middle mb-0">
-                                            <thead>
-                                                <tr>
-                                                    <th style={{ width: "70px" }}>Номер</th>
-                                                    <th>Название шага</th>
-                                                    <th className="text-end" style={{ width: "120px" }}>Тип</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {domain.Steps.map((step, index) => <tr>
-                                                    <th scope="row">{index + 1}</th>
-                                                    <td>
-                                                        <h5 className="font-size-15 mb-1">{step.title}</h5>
-                                                        {step.answers ? <p className="font-size-13 text-muted mb-0">{step.answers.join(', ')}</p> : <p></p>}
-                                                    </td>
-                                                    <td className="text-end">{step.type}</td>
-                                                </tr>)}
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+                                                </div>
     </div>
     )
 }
@@ -119,14 +129,18 @@ class PricesPageContainer extends Component {
     }
 
     render() {
-        const { prices, loading, error, fetchPrices, updatePricesList } = this.props;
+        const { list, loading, error, fetchPrices, updatePricesList } = this.props;
 
-        return <PricesPage prices={prices} error={error} fetchDomain={fetchPrices} updatePricesList={updatePricesList} />;
+        if (loading || list == null) {
+            return <Spinner />
+        }
+
+        return <PricesPage prices={list} error={error} fetchPrices={fetchPrices} updatePricesList={updatePricesList} />;
     }
 }
 
-const mapStateToProps = ({ pricesList: { prices, loading, error } }) => {
-    return { prices, loading, error };
+const mapStateToProps = ({ pricesList: { list, loading, error } }) => {
+    return { list, loading, error };
 };
 
 const mapDispatchToProps = (dispatch, { apiService }) => {
