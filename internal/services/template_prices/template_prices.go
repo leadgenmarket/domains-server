@@ -74,5 +74,6 @@ func (s *service) GetTemplatePriceByCityID(id string) (price models.TemplatePric
 	}
 	priceID := bson.ObjectIdHex(id)
 	price, err = s.repository.TemplatePrices.GetTemplatePriceByCityID(priceID)
+	s.commonStorage.Set(context.Background(), REDIS_KEY_PREF+id, &price, time.Hour)
 	return
 }
