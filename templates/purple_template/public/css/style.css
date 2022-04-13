@@ -2231,14 +2231,18 @@ button.btn_main{
         padding-left: 10px;
         padding-right: 10px;
         white-space: nowrap;
+        bottom: 30px;
+    }
+
+    .iphone .main_page .btn_main {
         bottom: 90px;
     }
 
-    .step_title + div {
+    .iphone .step_title + div {
         height: 53vh !important;
     }
 
-    .mw_step .btn_main {
+    .iphone .mw_step .btn_main {
         margin-top: 0 !important;
         bottom: 80px !important;
     }
