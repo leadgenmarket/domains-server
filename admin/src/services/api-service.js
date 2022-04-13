@@ -56,11 +56,11 @@ export default class ApiService {
     }
 
     pricesList = () => {
-        return axios.get("/api/prices/")
+        return axios.get("/api/tmp_prices/")
     }
 
     updatePricesList = (pricesList) => {
-        return axios.post("/api/prices/", {
+        return axios.post("/api/tmp_prices/", {
             list: pricesList
         })
     }

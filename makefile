@@ -1,4 +1,26 @@
 include .env
+export APP_PORT
+export APP_DSN
+export APP_SERVICE_NAME
+export APP_LOG_LEVEL
+export APP_PORTAL_URL
+export APP_GRAY_LOG_HOST
+export APP_PORTAL_KEY
+export APP_INITIAL_ROOT_USER
+export APP_INITIAL_ROOT_PASSWORD
+export APP_SALT
+export APP_TOKEN_TTL
+export APP_REFRESH_TOKEN_TTL
+export APP_TOKEN_SECRET
+export APP_FILE_STORE_PATH
+export APP_SSL_SERVING
+export APP_SERVER_IP_ADRESS
+export APP_REDIS_URL
+export APP_CACHE_DURATION
+export APP_CLOUD_STORE_PATH
+export APP_YANDEX_API_TOKEN
+export APP_ADMIN_URL
+export APP_PLANS_URL
 
 up:
 	@docker-compose up -d & disown
@@ -15,7 +37,7 @@ client-run:
 run:
 	@go run cmd/app/main.go
 setup:
-	@go run cmd/setup/main.go
+	@go run cmd/command-tools/main.go -action=group-changes
 build:
 	@cd cmd/app && go build -o ../../main main.go && cd ../..
 daemon:

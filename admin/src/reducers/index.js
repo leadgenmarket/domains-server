@@ -15,7 +15,7 @@ const reducer = (state, action) => {
         domainDetail: updateDomainDetail(state, action),
         titlesList: updateTitlesList(state, action),
         organizationsList: updateOrganizationsList(state, action),
-        updatePricesList: updatePricesList(state, action)
+        pricesList: updatePricesList(state, action)
     }
 }
 

@@ -31,7 +31,7 @@ func NewService(repository repositories.Repositories, redis redis.Repository) Se
 
 func (s *service) AddTemplatePricesList(templatePrices []models.TemplatePrice) (err error) {
 	for _, templatemplatePrice := range templatePrices {
-		err = s.repository.TemplatePrices.UpdateTemplatePrice(templatemplatePrice)
+		err = s.repository.TemplatePrices.AddTemplatePrice(templatemplatePrice)
 		if err != nil {
 			return
 		}

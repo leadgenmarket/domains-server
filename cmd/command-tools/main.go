@@ -9,6 +9,7 @@ import (
 	"domain-server/internal/services"
 	"domain-server/internal/system/database/redis"
 	"flag"
+	"fmt"
 	"log"
 	"os"
 
@@ -129,6 +130,7 @@ func groupChanges(service *services.Services, repositories *repositories.Reposit
 			MaxPrice: 15000000,
 		},
 	}
+	fmt.Println("sdsd")
 	service.TempltePrices.AddTemplatePricesList(prices)
 }
 
