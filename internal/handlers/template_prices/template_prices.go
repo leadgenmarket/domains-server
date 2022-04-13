@@ -42,7 +42,7 @@ type updateTemplatePricesInput struct {
 }
 
 type TemplatePrice struct {
-	ID       string `bson:"_id"`
+	ID       string `bson:"_id" json:"id"`
 	CityID   string `bson:"city_id" json:"city_id"`
 	MinPrice int    `bson:"min_price" json:"min_price"`
 	MaxPrice int    `bson:"max_price" json:"max_price"`
@@ -60,8 +60,8 @@ func (s *handlers) UpdateTemplatePrices(c *gin.Context) {
 	tmpPriceList := []models.TemplatePrice{}
 	for _, price := range input.Prices {
 		tmpPrice := models.TemplatePrice{
-			ID:       bson.ObjectId(price.ID),
-			CityID:   bson.ObjectId(price.CityID),
+			ID:       bson.ObjectIdHex(price.ID),
+			CityID:   bson.ObjectIdHex(price.CityID),
 			MinPrice: price.MinPrice,
 			MaxPrice: price.MaxPrice,
 		}
