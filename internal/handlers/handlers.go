@@ -102,6 +102,7 @@ func (h *handlers) Registry() {
 	h.router.GET("/portal-info", h.Locations.UpdatePortalInfo)
 	h.router.GET("/domain-city/:url", h.Domains.DomainsGetCityByUrl) //возвращает город домена, для want-result
 	h.router.POST("/proxy", h.Proxy.ProxyRequest)
+	h.router.GET("/tmp_prices/:id", h.TemplatePrices.GetTemplatePriceByCityID)
 
 	/*zvonobot off
 	//scenarios handlers

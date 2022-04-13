@@ -13,6 +13,7 @@ import (
 type Handlers interface {
 	GetTemplatesPricesList(c *gin.Context)
 	UpdateTemplatePrices(c *gin.Context)
+	GetTemplatePriceByCityID(c *gin.Context)
 }
 
 type handlers struct {
@@ -74,4 +75,15 @@ func (s *handlers) UpdateTemplatePrices(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{"payload": "success"})
+}
+
+func (s *handlers) GetTemplatePriceByCityID(c *gin.Context) {
+	id := c.Param("id")
+	price, err := s.services.TempltePrices.GetTemplatePriceByCityID(id)
+	if err != nil {
+		s.logger.GetInstance().Errorf("error getting template price %s", err)
+		c.JSON(http.StatusInternalServerError, gin.H{"paylod": "error"})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"payload": price})
 }

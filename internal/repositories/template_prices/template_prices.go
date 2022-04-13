@@ -10,6 +10,7 @@ import (
 type Repository interface {
 	AddTemplatePrice(price models.TemplatePrice) error
 	GetTemplatePrices() ([]models.TemplatePrice, error)
+	GetTemplatePriceByCityID(id bson.ObjectId) (price models.TemplatePrice, err error)
 	UpdateTemplatePrice(price models.TemplatePrice) error
 }
 
@@ -47,4 +48,9 @@ func (r *repositroyDB) UpdateTemplatePrice(price models.TemplatePrice) error {
 		return err
 	}
 	return nil
+}
+
+func (r *repositroyDB) GetTemplatePriceByCityID(id bson.ObjectId) (price models.TemplatePrice, err error) {
+	err = r.templatePrices.Find(bson.M{"city_id": id}).One(&price)
+	return
 }

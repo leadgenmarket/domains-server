@@ -87,7 +87,7 @@ const PricesPage = ({ prices, loading, updatePricesList }) => {
                                     <div className="d-flex align-items-start">
                                         <div className="flex-grow-1">
                                             <div className="mb-4">
-                                                <span className="logo-txt">Цены в слайдерах по районам</span>
+                                                <span className="logo-txt">Цены в слайдерах по городам</span>
                                             </div>
                                         </div>
                                         <div className="flex-shrink-0">

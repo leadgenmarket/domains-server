@@ -7,14 +7,18 @@ import (
 	"domain-server/internal/services/storage"
 	"domain-server/internal/system/database/redis"
 	"time"
+
+	"github.com/globalsign/mgo/bson"
 )
 
 const REDIS_KEY = "template_prices_list"
+const REDIS_KEY_PREF = "tmpl_price_"
 
 type Service interface {
 	AddTemplatePricesList(templatePrices []models.TemplatePrice) (err error)
 	GetTemplatePrices() ([]models.TemplatePrice, error)
 	UpdateTemplatePricesList(templatePrices []models.TemplatePrice) (err error)
+	GetTemplatePriceByCityID(id string) (price models.TemplatePrice, err error)
 }
 
 type service struct {
@@ -60,5 +64,15 @@ func (s *service) UpdateTemplatePricesList(templatePrices []models.TemplatePrice
 			return
 		}
 	}
+	return
+}
+
+func (s *service) GetTemplatePriceByCityID(id string) (price models.TemplatePrice, err error) {
+	err = s.commonStorage.Get(context.Background(), REDIS_KEY_PREF+id, &price)
+	if err == nil {
+		return
+	}
+	priceID := bson.ObjectIdHex(id)
+	price, err = s.repository.TemplatePrices.GetTemplatePriceByCityID(priceID)
 	return
 }
