@@ -26,7 +26,7 @@ const Step = ({ step, params, index, length, nextStep, prevStep, raionsStep, roo
     useEffect(async ()=>{
         let response = await axios.get("/tmp_prices/"+domainSettings.city.ID)
         setPrices(response.data.payload)
-    })
+    }, [])
     return (<div style={{ display: "block" }} className="page_main pages ">
         <div className="page">
             <div className="page_inner">

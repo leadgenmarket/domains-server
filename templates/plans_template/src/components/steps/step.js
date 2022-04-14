@@ -11,7 +11,7 @@ const Step = ({ step, params, index, length, nextStep, prevStep, raionsStep, roo
   useEffect(async ()=>{
     let response = await axios.get("/tmp_prices/"+domainSettings.city.ID)
     setPrices(response.data.payload)
-  })
+  }, [])
   return (
     <section className="header" style={{ background: params.background != "" ? `url("https://admin.leadactiv.ru/file-store/${params.background}") center / cover no-repeat` : `url("https://admin.leadactiv.ru/templates/plans_template/build/img/hd_bg_0810.jpg")` }}>
       <div
