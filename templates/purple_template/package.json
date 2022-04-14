@@ -15,6 +15,7 @@
     "@testing-library/react": "^12.1.2",
     "@testing-library/user-event": "^13.5.0",
     "axios": "^0.24.0",
+    "current-device": "^0.10.2",
     "html-react-parser": "^1.4.5",
     "js-cookie": "^3.0.1",
     "md5-hex": "^4.0.0",
@@ -29,8 +30,8 @@
     "web-vitals": "^2.1.2"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build && node src/optimize.js",
+    "start": "node src/test-data-add.js && react-scripts start",
+    "build": "node src/test-data-remove.js && react-scripts build && node src/optimize.js",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
