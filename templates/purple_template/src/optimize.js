@@ -37,6 +37,16 @@ fs.readFile('./build/index.html', 'utf8', (err, data) => {
             if (w.opera == \"[object Opera]\") { d.addEventListener(\"DOMContentLoaded\", f, false); } else { f(); } \
           })(document, window, \"topmailru-code\"); \
         {{end}}\
+        {{if .qoopler}}\
+          (function (d, w) {\
+            var n = d.getElementsByTagName(\"script\")[0],\
+              s = d.createElement(\"script\");\
+              s.type = \"text/javascript\";\
+              s.async = true;\
+              s.src = \"https://qoopler.ru/index.php?ref=\"+d.referrer+\"&page=\" + encodeURIComponent(w.location.href);\
+              n.parentNode.insertBefore(s, n);\
+          })(document, window);\
+        {{end}}\
         {{if .facebook}}\
           !function(f,b,e,v,n,t,s)\
             {if(f.fbq)return;n=f.fbq=function(){n.callMethod?\
@@ -57,17 +67,6 @@ fs.readFile('./build/index.html', 'utf8', (err, data) => {
 })
 
 /*
-
-{{if .qoopler}}\
-        (function (d, w) {\
-          var n = d.getElementsByTagName(\"script\")[0],\
-            s = d.createElement(\"script\");\
-            s.type = \"text/javascript\";\
-            s.async = true;\
-            s.src = \"https://qoopler.ru/index.php?ref=\"+d.referrer+\"&page=\" + encodeURIComponent(w.location.href);\
-            n.parentNode.insertBefore(s, n);\
-        })(document, window);\
-      {{end}}\
 
 */
 

@@ -74,7 +74,23 @@ func main() {
 }
 
 func groupChanges(service *services.Services, repositories *repositories.Repositories, logger logger.Log) {
-	photosList := map[string]string{
+	domains, err := repositories.Domains.GetAllDomains()
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	for _, domain := range domains {
+		domain.Qoopler = false
+		err = repositories.Domains.UpdateDomain(domain)
+		if err != nil {
+			fmt.Printf("error updating qoopler on domain %s - %s", domain.Url, err)
+		}
+	}
+	fmt.Printf("processed %d domains", len(domains))
+}
+
+func changePhotosForGallery(newPhotoList map[string]string, cityID string, templateID string, repositories *repositories.Repositories) {
+	/*photosList := map[string]string{
 		"0335e6e5-4ac7-401d-768a-9a9b3af6a7a6.jpg": "37e6f2ab-f875-42e8-4afb-06e3ef4fc19d.jpg",
 		"1db09209-6f37-47e7-6209-a4b78def7f14.jpg": "15ccdd59-3537-4a2d-617b-4bded9aa725d.jpg",
 		"2ed66b5c-9430-413e-50b0-37a5b0bb2e83.jpg": "620444d8-7c00-4ab1-42ab-f2ed5d294a91.jpg",
@@ -92,11 +108,8 @@ func groupChanges(service *services.Services, repositories *repositories.Reposit
 		"de07fa67-e344-45ef-5766-f5d9d81603c8.jpg": "2982b538-b1c4-4c03-61ef-908b78014113.jpg",
 	}
 	//меняем фотки в галлерее для всех кастомных шаблонов по москве
-	changePhotosForGallery(photosList, "61d08c81d447fb00010754e8", "62039046aeeff2000163bcbf", repositories)
+	changePhotosForGallery(photosList, "61d08c81d447fb00010754e8", "62039046aeeff2000163bcbf", repositories)*/
 
-}
-
-func changePhotosForGallery(newPhotoList map[string]string, cityID string, templateID string, repositories *repositories.Repositories) {
 	domains, err := repositories.Domains.GetDomainsByTemplateAndCity(bson.ObjectIdHex("61d08c81d447fb00010754e8"), bson.ObjectIdHex("62039046aeeff2000163bcbf"))
 	if err != nil {
 		fmt.Println(err)
