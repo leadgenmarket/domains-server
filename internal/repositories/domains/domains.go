@@ -26,6 +26,7 @@ type Repository interface {
 	UpdateDomainsModeration(id string, modearation bool) (string, error)
 	CopyDomain(id string, newDomainName string, yandex string) (models.Domain, error)
 	GetDomainsListWithPaginationAndFiltered(searchUrl string, cursor string, itemsCnt int) (domains []models.Domain, newCursor string, err error)
+	GetDomainsByTemplateAndCity(cityID bson.ObjectId, templateID bson.ObjectId) (domains []models.Domain, err error)
 }
 
 type repositroyDB struct {
@@ -186,6 +187,11 @@ func (r *repositroyDB) CopyDomain(id string, newDomainName string, yandex string
 		return domain, err
 	}
 	return domain, nil
+}
+
+func (r *repositroyDB) GetDomainsByTemplateAndCity(cityID bson.ObjectId, templateID bson.ObjectId) (domains []models.Domain, err error) {
+	err = r.domains.Find(bson.M{"city_id": cityID, "template_id": templateID}).All(&domains)
+	return
 }
 
 func (r *repositroyDB) GetDefaultSteps() []map[string]interface{} {

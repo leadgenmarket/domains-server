@@ -1,63 +1,115 @@
 let domainSettings = {
   "ip": "178.217.152.251",
   "domain": {
-    "id": "61d19e2c89c1890001c84ba8",
-    "url": "kwartiri-msk.ru",
-    "template_id": "61d091c9699f9b0001538b6c",
+    "id": "620cc6a3260ab80001625cc9",
+    "url": "msk-nowostroi.ru",
+    "template_id": "62039046aeeff2000163bcbf",
     "CreatedBy": "61d089ade68dba0001665d66",
     "city_id": "61d08c81d447fb00010754e8",
     "background": "",
-    "main_color": "5ABBB0",
-    "sub_title": "",
+    "main_color": "ae9674",
+    "sub_title": "Бесплатный сервис по подбору недвижимости:",
     "sub_title_items": "",
     "phone_step_title": "",
     "footer_title": "",
     "phone": "",
-    "secondary_color": "27353E",
-    "yandex": "87015009",
+    "secondary_color": "fff",
+    "yandex": "87504330",
     "google": "",
-    "mytarget": "3240004",
-    "vk": "VK-RTRG-1223392-75WsW",
+    "mytarget": "",
+    "vk": "",
     "facebook": "",
     "marquiz": "",
     "Steps": [
       {
-        "title": "Выберите районы",
-        "type": "raions"
-      },
-      {
-        "title": "Сколько комнат Вам нужно?",
-        "type": "rooms"
+        "answers": [
+          "Студии",
+          "1-комнатная",
+          "2-комнатная",
+          "3-комнатная",
+          "4-комнатная"
+        ],
+        "title": "Выберите количество комнат:",
+        "type": "text"
       },
       {
         "answers": [
-          "ЖК сдается в 2022 году",
-          "ЖК сдается в 2023 году",
-          "ЖК сдается в 2024 году",
-          "ЖК сдается в 2025 году",
-          "ЖК сдается в 2026 году"
+          "Наличный расчет",
+          "Ипотека",
+          "Материнский капитал",
+          "Рассрочка без %"
         ],
-        "title": "Когда жилой комплекс должен быть сдан?",
-        "type": "sdacha"
+        "title": "Какой способ покупки Вы планируете использовать?",
+        "type": "text"
       },
       {
-        "title": "Укажите максимальную стоимость квартиры, выше которой вы не готовы рассматривать предложения",
-        "type": "slider_r"
+        "answers": [
+          "10 - 15 млн руб.",
+          "16 - 20 млн руб.",
+          "21 - 25 млн руб.",
+          "26 - 30 млн руб.",
+          "Более 30 млн руб."
+        ],
+        "title": "В пределах какого бюджета рассматриваете покупку?",
+        "type": "text"
+      },
+      {
+        "answers": [
+          "Проживание",
+          "Инвестиции (сдача в аренду)",
+          "Инвестиции (перепродажа)"
+        ],
+        "title": "Для какой цели планируется покупка?",
+        "type": "text"
       }
     ],
     "organization_id": "61f7bc29f009a50001d80481",
     "Qoopler": true,
     "Roistat": false,
     "Moderation": false,
-    "AdvantagesTitle": "",
-    "Advantages": [],
-    "PhotosTitle": "",
-    "Photos": {},
+    "AdvantagesTitle": "Преимущества портала новостроек",
+    "Advantages": [
+      {
+        "image": "00f9d82f-d9b0-44f7-7e1a-5214ea1e3643.jpg",
+        "name": "Консультации экспертов"
+      },
+      {
+        "image": "d68690ff-168d-4055-4b3c-fb36fde47265.jpeg",
+        "name": "Запись на просмотр объекта"
+      },
+      {
+        "image": "9aa36d01-f628-4381-6b7f-1270a17a66f9.jpg",
+        "name": "Бронирование квартиры"
+      },
+      {
+        "image": "ff40c37f-0085-4ff0-76ef-c9a5006c3056.jpeg",
+        "name": "Подготовка к покупке"
+      },
+      {
+        "image": "ab748bcd-9e77-4cca-7423-6acc35239417.jpg",
+        "name": "Ипотека в ведущих банках"
+      },
+      {
+        "image": "962d7dfb-ffdf-4130-67fc-9d1c865b3875.jpeg",
+        "name": "Комиссия 0%"
+      }
+    ],
+    "PhotosTitle": "Фотогалерея",
+    "Photos": {
+      "1deca505-6f29-4bfd-7882-13af4ec6b3ee.jpg": "c76ee959-021d-4cfe-4b3e-d345c3df95c3.jpg",
+      "7029c920-3d4e-409b-7e38-f4d0b6414807.jpeg": "b208fc95-40af-4f0e-4f4e-59983ad0c7b4.jpeg",
+      "75f28c8f-baa0-4c3d-49f2-c7c03fd4b654.jpeg": "433e58d1-a675-4215-5081-beb211ee7d5a.jpeg",
+      "7a6bfa29-b917-42e1-4b96-98c93601720f.jpeg": "5ca06a71-6bbc-4a01-5b66-a385b73974ce.jpeg",
+      "ba8938fd-0a30-409d-635e-8642706d7335.png": "4b9585d2-7555-4ba0-58ff-5469f9525ae5.png",
+      "c93cd511-40f6-4ea6-6ddf-05a5e8a4cb70.jpeg": "23d29dda-6e0b-4e5d-57ad-245510c47c00.jpeg",
+      "cfcd53e2-e8ea-448e-5544-c1a70f4340fc.jpeg": "5cc81112-6377-4965-769f-52552bb3d32a.jpeg",
+      "d3a1fdaa-926c-4d19-775c-77141ceeaeb9.jpeg": "89035d13-6549-40bb-57cf-762783835a0a.jpeg"
+    },
     "PlansTitle": "",
     "result_step_text": "",
     "Plans": [],
-    "CreatedAt": "2022-01-25T12:40:33.857Z",
-    "UpdatedAt": "2022-03-19T13:50:46.458Z",
+    "CreatedAt": "2022-02-16T09:40:51.653Z",
+    "UpdatedAt": "2022-03-18T13:50:24.396Z",
     "title": ""
   },
   "city": {
@@ -476,7 +528,7 @@ let domainSettings = {
     }
   ],
   "prices": {
-    "_id": "6255ee335b75a5743e60fabc",
+    "_id": "62573fb3543df1f8679b6b61",
     "city_id": "61d08c81d447fb00010754e8",
     "portal_city_id": "258828",
     "prices": {
@@ -593,20 +645,20 @@ let domainSettings = {
         "min_5": "31.913"
       },
       "1615": {
-        "max": 48.5,
+        "max": 41.5,
         "max_0": 0,
         "max_1": 0,
         "max_2": 21,
         "max_3": 0,
         "max_4": 0,
-        "max_5": 48.5,
+        "max_5": 41.5,
         "min": "20.051",
         "min_0": 2.5,
         "min_1": 2.5,
         "min_2": "20.051",
         "min_3": 2.5,
         "min_4": 2.5,
-        "min_5": "47.645"
+        "min_5": "40.654"
       },
       "1619": {
         "max": 38.5,
@@ -792,11 +844,11 @@ let domainSettings = {
         "max_3": 65,
         "max_4": 100,
         "max_5": 85.5,
-        "min": "20.169",
+        "min": "20.055",
         "min_0": "38.006",
-        "min_1": "20.169",
-        "min_2": "20.403",
-        "min_3": "26.362",
+        "min_1": "20.055",
+        "min_2": "20.099",
+        "min_3": "28.256",
         "min_4": "44.009",
         "min_5": "50.210"
       },
@@ -1187,10 +1239,10 @@ let domainSettings = {
     }
   },
   "title": "",
-  "sub_title": "",
+  "sub_title": "Бесплатный сервис по подбору недвижимости:",
   "rayon": "",
-  "main_color": "5ABBB0",
-  "secondary_color": "27353E",
+  "main_color": "ae9674",
+  "secondary_color": "fff",
   "organization": {
     "id": "61f7bc29f009a50001d80481",
     "name": "ООО ДОМ ГРУПП",
