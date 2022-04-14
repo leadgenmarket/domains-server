@@ -1240,6 +1240,14 @@ iframe[name='google_conversion_frame'] {
     min-width: 180px;
 }
 
+.main_page .btn_main {
+    bottom: 0 !important;
+}
+
+input.err {
+    box-shadow: 0px 0px 0px 1px red !important;
+}
+
 /*@media*/
 @media screen and (max-height: 740px) {
     .step_dec {
