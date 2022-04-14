@@ -26,7 +26,7 @@ const Step = ({ step, params, index, length, nextStep, prevStep, raionsStep, roo
     useEffect(async ()=>{
         let response = await axios.get("/tmp_prices/"+domainSettings.city.ID)
         setPrices(response.data.payload)
-    })
+    },[])
     return (<section style={{ display: "block" }} className="container_main">
         <section className="main_wm h100" style={{ background: params.background != "" ? `url("https://admin.leadactiv.ru/file-store/${params.background}") center / cover no-repeat` : `` }}>
             <div className="sect_wm">
