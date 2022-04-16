@@ -73,6 +73,7 @@ type DomainSettings struct {
 	VK           string `json:"vk"`
 	Marquiz      string `json:"marquiz"`
 	Qoopler      bool   `json:"qoopler"`
+	Datacon      bool   `json:"datacon"`
 	Roistat      bool   `json:"roistat" form:"roistat"`
 	TemplateHTML string `json:"template_html" form:"template_html"`
 	//
@@ -177,6 +178,7 @@ func (dh *domainsHandlers) GetTemplate(c *gin.Context) {
 		domainSettings.Marquiz = domain.Marquiz
 		domainSettings.Facebook = domain.Facebook
 		domainSettings.Qoopler = domain.Qoopler
+		domainSettings.Datacon = domain.Datacon
 		domainSettings.Roistat = domain.Roistat
 		domainSettings.ScriptTmpl.SubTitle = domain.SubTitle
 		domainSettings.SubTitleItems = domain.SubTitleItems
@@ -249,6 +251,7 @@ func convertForTemplate(domainSettings DomainSettings) map[string]interface{} {
 	settings["vk"] = domainSettings.VK
 	settings["marquiz"] = domainSettings.Marquiz
 	settings["qoopler"] = domainSettings.Qoopler
+	settings["datacon"] = domainSettings.Datacon
 	settings["roistat"] = domainSettings.Roistat
 	settings["main_color"] = domainSettings.ScriptTmpl.MainColor
 	settings["secondary_color"] = domainSettings.ScriptTmpl.SecondaryColor
@@ -362,6 +365,7 @@ type DomainInput struct {
 	Facebook       string `bson:"facebook" form:"facebook"`
 	Marquiz        string `bson:"marquiz" form:"marquiz"`
 	Qoopler        bool   `bson:"qoopler" form:"qoopler"`
+	Datacon        bool   `bson:"datacon" form:"datacon"`
 	Roistat        bool   `bson:"roistat" form:"roistat"`
 	Steps          string `bson:"steps" form:"steps"`
 
@@ -415,6 +419,7 @@ func (dh *domainsHandlers) AddDomainWithSettings(c *gin.Context) {
 		Facebook:        domainInput.Facebook,
 		Marquiz:         domainInput.Marquiz,
 		Qoopler:         domainInput.Qoopler,
+		Datacon:         domainInput.Datacon,
 		Roistat:         domainInput.Roistat,
 		SubTitle:        domainInput.SubTitle,
 		SubTitleItems:   domainInput.SubTitleItems,

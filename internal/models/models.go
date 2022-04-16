@@ -50,6 +50,7 @@ type Domain struct {
 	Steps           []map[string]interface{} `bson:"steps"`
 	OrganizationID  bson.ObjectId            `bson:"organization_id" json:"organization_id"`
 	Qoopler         bool                     `bson:"qoopler" form:"qoopler"`
+	Datacon         bool                     `bson:"datacon" json:"datacon"`
 	Roistat         bool                     `bson:"roistat" form:"roistat"`
 	Moderation      bool                     `bson:"moderation" form:"moderation"`
 	AdvantagesTitle string                   `bson:"advantages_title" form:"advantages_title"`
