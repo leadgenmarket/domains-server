@@ -66,3 +66,4 @@ templates_build:
 	@cd templates/blue_template && npm run build
 	@cd templates/plans_template && npm run build
 	@cd templates/purple_template && npm run build
+	@cd templates/wa_template && npm run build

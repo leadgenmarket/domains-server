@@ -43,9 +43,6 @@ fs.readFile('./build/index.html', 'utf8', (err, data) => {
               n.parentNode.insertBefore(s, n);\
           })(document, window);\
         {{end}}\
-        {{if .datacon}}\
-         <script src=\"https://topvisit.ru/metrika/tag.js\"></script>\
-        {{end}}\
         {{if .facebook}}\
           !function(f,b,e,v,n,t,s)\
             {if(f.fbq)return;n=f.fbq=function(){n.callMethod?\
@@ -60,6 +57,9 @@ fs.readFile('./build/index.html', 'utf8', (err, data) => {
         {{end}}\
       }, 2700)\
     </script>\
+    {{if .datacon}}\
+         <script src=\"https://topvisit.ru/metrika/tag.js\"></script>\
+    {{end}}\
     </body>")
   fs.writeFileSync("./build/blue_template.html", data)
   fs.unlink("./build/index.html", () => { })

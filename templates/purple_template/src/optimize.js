@@ -24,9 +24,6 @@ fs.readFile('./build/index.html', 'utf8', (err, data) => {
           var js = d.createElement(s); js.charset=\"UTF-8\"; js.async = 1; js.src = p+h+u; var js2 = d.getElementsByTagName(s)[0]; js2.parentNode.insertBefore(js, js2);\
         })(window, document, 'script', 'cloud.roistat.com', 'ae9cbfdb4a59f3dd07844cef447758ca');\
       {{end}}\
-      {{if .datacon}}\
-        <script src=\"https://topvisit.ru/metrika/tag.js\"></script>\
-      {{end}}\
       setTimeout(() => {\
         {{if .yandex}} (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)}; m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)}) (window, document, \"script\", \"https://mc.yandex.ru/metrika/tag.js\", \"ym\"); ym({{ .yandex }}, \"init\", { clickmap:true, trackLinks:true, accurateTrackBounce:true, webvisor:true });{{end}}\
         {{if .mytarget}}\
@@ -64,6 +61,9 @@ fs.readFile('./build/index.html', 'utf8', (err, data) => {
         {{end}}\
       }, 2700)\
     </script>\
+    {{if .datacon}}\
+        <script src=\"https://topvisit.ru/metrika/tag.js\"></script>\
+    {{end}}\
     </body>")
   fs.writeFileSync("./build/purple_template.html", data)
   fs.unlink("./build/index.html", () => { })
