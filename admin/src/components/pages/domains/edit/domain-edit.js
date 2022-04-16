@@ -715,6 +715,15 @@ const DomainEdit = ({ addDomainToList }) => {
                                                             </select>
                                                         </div>
                                                     </div>
+                                                    <div className="row">
+                                                        <div className="col-lg-6">
+                                                            <label htmlFor="basicpill-servicetax-input" className="form-label">Datacon</label>
+                                                            <select onChange={inputChange} className="form-select custom-select" id="template" name="datacon" value={form.qoopler == true ? "1" : "0"}>
+                                                                <option value="0">Нет</option>
+                                                                <option value="1">Да</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
                                                 </form>
                                                 <ul className="pager wizard
                                                             twitter-bs-wizard-pager-link">
