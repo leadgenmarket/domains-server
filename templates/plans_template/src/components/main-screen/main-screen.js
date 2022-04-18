@@ -74,15 +74,15 @@ const MainScreen = ({ params, nextStep }) => {
           <span>
             Мы используем файлы cookie, чтобы убедиться, что наш веб-сайт
             работает должным образом. Вы можете продолжить пользоваться нашим
-            сайтом и принять нашу{' '}
+            сайтом и принять нашу
             <a href="Cookie_policy.pdf" target="_blank">
               Политику cookie
             </a>
             . Изменить ваши настройки cookie можно будет в любой момент.
-          </span>{' '}
-          <a className="cookie_btn" onClick={(e) => { e.preventDefault(); document.querySelector('.cookie').style.display = "none" }}>Я принимаю</a>
+          </span>
+          <a className="cookie_btn" onClick={(e) => { e.preventDefault(); document.querySelector('.cookie').style.display = "none" }}> Я принимаю</a>
         </div>
-        {domainSettings.domain.Plans.length > 0 ? <PlansComponent params={params} /> : ""}
+        {domainSettings.domain.Plans.length > 0 ? <PlansComponent params={params} /> : <div></div>}
         <section className="advantages">
           <Advantages />
           {showAllContent?<React.Fragment><Gallery params={params} />

@@ -74,9 +74,7 @@ const Step = ({ step, params, index, length, nextStep, prevStep, raionsStep, roo
                   clickFunct={prevStep}
                   analog={true}
                 />
-              ) : (
-                ''
-              )}
+              ) : <div></div>}
               <BtnComponent
                 text={'Дальше'}
                 params={params}
