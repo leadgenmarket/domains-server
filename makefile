@@ -38,6 +38,8 @@ run:
 	@go run cmd/app/main.go
 setup:
 	@go run cmd/command-tools/main.go -action=group-changes
+change-admin-pass:
+	@docker-compose run --rm app /go/bin/command -action=admin_pass -pass=$(pass)
 build:
 	@cd cmd/app && go build -o ../../main main.go && cd ../..
 daemon:

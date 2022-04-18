@@ -8,6 +8,7 @@ import (
 	"domain-server/internal/repositories"
 	"domain-server/internal/services"
 	"domain-server/internal/system/database/redis"
+	"domain-server/internal/utils"
 	"flag"
 	"fmt"
 	"log"
@@ -21,7 +22,9 @@ import (
 
 func main() {
 	var action string
+	var pass string
 	flag.StringVar(&action, "action", "", "defines action need to do")
+	flag.StringVar(&pass, "pass", "", "new password")
 	flag.Parse()
 	cfg, err := config.InitConfig("APP")
 	if err != nil {
@@ -71,6 +74,25 @@ func main() {
 	if action == "group-changes" {
 		groupChanges(services, repo, logger)
 	}
+	if action == "admin_pass" {
+		changeAdminPass(pass, repo, cfg.Salt)
+	}
+}
+
+func changeAdminPass(pass string, repositories *repositories.Repositories, salt string) {
+	admin, err := repositories.Users.GetUserByLogin("admin")
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	admin.Pass = utils.GenerateHashPassword(pass, salt)
+	fmt.Println(admin)
+	err = repositories.Users.UpdateUser(admin)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	fmt.Println("pass successfuly updated")
 }
 
 func groupChanges(service *services.Services, repositories *repositories.Repositories, logger logger.Log) {

@@ -41,7 +41,7 @@ func (r *repositroyDB) AddUser(user models.User) (models.User, error) {
 }
 
 func (r *repositroyDB) UpdateUser(user models.User) error {
-	err := r.users.Find(bson.M{"_id": user}).One(&user)
+	err := r.users.Update(bson.M{"_id": user.ID}, bson.M{"$set": user})
 	if err != nil {
 		return err
 	}
