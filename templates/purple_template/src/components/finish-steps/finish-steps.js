@@ -10,8 +10,8 @@ const FinishSteps = ({ params, form, setForm, raionsPrice, raionsStep, roomsStep
         event.preventDefault()
         setStage(stage + 1)
     }
-    return <section style={{ display: "block", background: params.background != "" ? `url("https://admin.leadactiv.ru/file-store/${params.background}") center / cover no-repeat` : `` }} className="container_main">
-        <section className="main_wm h100" style={{ background: params.background != "" ? `url("https://admin.leadactiv.ru/file-store/${params.background}") center / cover no-repeat` : `` }}>
+    return <section style={{ display: "block", background: params.background != "" ? `url("/file-store/${params.background}") center / cover no-repeat` : `` }} className="container_main">
+        <section className="main_wm h100" style={{ background: params.background != "" ? `url("/file-store/${params.background}") center / cover no-repeat` : `` }}>
             <div className="sect_wm">
                 {stage === 0 ? <Loading params={params} setStage={setStage} /> : stage === 1 ? <PhoneStep params={params} raionsStep={raionsStep} roomsStep={roomsStep} sdachaName={sdachaName} nextStep={nextStep} form={form} setForm={setForm} /> : stage === 2 ? <NameStep raionsStep={raionsStep} roomsStep={roomsStep} sdachaName={sdachaName} params={params} nextStep={nextStep} form={form} setForm={setForm} /> : <ResultStep params={params} raionsPrice={raionsPrice} raionsStep={raionsStep} roomsStep={roomsStep} sdachaName={sdachaName} form={form} />}
             </div>

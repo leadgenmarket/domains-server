@@ -52,7 +52,7 @@ const Router = () => {
         setPrice(Math.round(prices["min"] * 10) / 10)
     }, [])
 
-    return <div className="container_main " style={{ background: params.background != "" ? `url("https://admin.leadactiv.ru/file-store/${params.background}") center / cover no-repeat` : `` }}>
+    return <div className="container_main " style={{ background: params.background != "" ? `url("/file-store/${params.background}") center / cover no-repeat` : `` }}>
         {step === 0 ? <MainScreen params={params} price={price} setPrice={setPrice} rooms={rooms} setRooms={setRooms} sroks={sroks} setSroks={setSroks} nextStep={nextStep} generateNumber={generateNumber} number={number} /> : <PhoneScreen params={params} phone={phone} sroks={sroks} rooms={rooms} setPhone={setPhone} number={number} />}
         {domainSettings.organization.name.length > 0 ? <footer>
             <div class="wmain">

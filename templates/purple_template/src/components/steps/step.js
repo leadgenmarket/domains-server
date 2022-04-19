@@ -28,7 +28,7 @@ const Step = ({ step, params, index, length, nextStep, prevStep, raionsStep, roo
         setPrices(response.data.payload)
     },[])
     return (<section style={{ display: "block" }} className="container_main">
-        <section className="main_wm h100" style={{ background: params.background != "" ? `url("https://admin.leadactiv.ru/file-store/${params.background}") center / cover no-repeat` : `` }}>
+        <section className="main_wm h100" style={{ background: params.background != "" ? `url("/file-store/${params.background}") center / cover no-repeat` : `` }}>
             <div className="sect_wm">
                 <div className="data_step mw_step district_step act">
                     <StepTitle params={params} title={step.title} index={index} length={length} showBack={backBtn(index, ignoreFirst)} prevStep={prevStep} />

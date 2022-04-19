@@ -40,8 +40,8 @@ const Gallery = ({params}) => {
               return (
                 <div key={key} className="hod_in">
                   <div className="hod_gal">
-                    <LightgalleryItem group={"photo"} src={"https://admin.leadactiv.ru/file-store/" + images[key]} thumb={"https://admin.leadactiv.ru/file-store/" + key}>
-                      <img src={"https://admin.leadactiv.ru/file-store/" + key} />
+                    <LightgalleryItem group={"photo"} src={"/file-store/" + images[key]} thumb={"/file-store/" + key}>
+                      <img src={"/file-store/" + key} />
                     </LightgalleryItem>
                   </div>
                 </div>

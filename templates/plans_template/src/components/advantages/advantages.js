@@ -13,7 +13,7 @@ const Advantages = () => {
           {advantages.map((advantage) => {
             return (
               <li key={advantage.name}>
-                <img src={"https://admin.leadactiv.ru/file-store/" + advantage.image} />
+                <img src={"/file-store/" + advantage.image} />
                 <span>{advantage.name}</span>
               </li>
             );

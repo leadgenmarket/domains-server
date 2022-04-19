@@ -18,7 +18,7 @@ const PlansComponent = ({ params }) => {
     let id = parseInt(e.currentTarget.getAttribute('data-id'))
     let plan = plans[id]
     document.querySelector('.popup_plans .pu_title span').innerHTML = plan.title
-    document.querySelector('.img_kv').setAttribute('src', "https://admin.leadactiv.ru/file-store/" + plan.image)
+    document.querySelector('.img_kv').setAttribute('src', "/file-store/" + plan.image)
     document.querySelector('.popups .text').value = "Узнать стоимость " + plan.title
     console.log(plan)
   }
@@ -31,7 +31,7 @@ const PlansComponent = ({ params }) => {
           if (key < show) {
             return <li class="rommsL actkv r_0" onClick={showPopup} data-id={key} style={{ display: "inline-block" }}>
               <p>{plan.title}</p>
-              <div class="jk_pl_img show_popup" data-popup="popup_plan" data-id="1"><img src={"https://admin.leadactiv.ru/file-store/" + plan.image} /></div>
+              <div class="jk_pl_img show_popup" data-popup="popup_plan" data-id="1"><img src={"/file-store/" + plan.image} /></div>
               <div class="jk_inn">
                 <BtnComponent
                   text={'Узнать стоимость'}
