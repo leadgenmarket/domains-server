@@ -45,11 +45,15 @@ fs.readFile('./build/index.html', 'utf8', (err, data) => {
             fbq('init', '{{ .facebook}}');\
             fbq('track', 'PageView');\
         {{end}}\
-      }, 2700)\
+      }, 2700);\
+      {{if .datacon}}\
+        setTimeout(() => {\
+          let script = document.createElement('script');\
+          script.setAttribute('src', 'https://topvisit.ru/metrika/tag.js');\
+          document.querySelector('body').append(script)\
+        }, 1500)\
+      {{end}}\
     </script>\
-    {{if .datacon}}\
-      <script src=\"https://topvisit.ru/metrika/tag.js\"></script>\
-    {{end}}\
     </body>")
   fs.writeFileSync("./build/plans_template.html", data)
   fs.unlink("./build/index.html", () => { })
