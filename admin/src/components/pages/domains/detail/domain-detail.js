@@ -72,6 +72,7 @@ const DomainDetail = ({ domain, loading, fetchDomain }) => {
                                     <p className="mb-1"><b>Facebook:</b> {domain.facebook}</p>
                                     <p className="mb-1"><b>Marquiz:</b> {domain.marquiz}</p>
                                     <p className="mb-1"><b>Qoopler:</b> {domain.Qoopler ? "Да" : "Нет"}</p>
+                                    <p className="mb-1"><b>Datacon:</b> {domain.datacon ? "Да" : "Нет"}</p>
                                 </div>
                                 <hr className="my-4" />
 
