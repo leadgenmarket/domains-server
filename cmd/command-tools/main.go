@@ -96,19 +96,27 @@ func changeAdminPass(pass string, repositories *repositories.Repositories, salt 
 }
 
 func groupChanges(service *services.Services, repositories *repositories.Repositories, logger logger.Log) {
-	domains, err := repositories.Domains.GetAllDomains()
+	addCityToTemplatePrice(repositories)
+}
+
+func addCityToTemplatePrice(repositories *repositories.Repositories) {
+	city, err := repositories.Cities.GetCityByPortalId("189838")
 	if err != nil {
 		fmt.Println(err)
+		return
 	}
-
-	for _, domain := range domains {
-		domain.Qoopler = false
-		err = repositories.Domains.UpdateDomain(domain)
-		if err != nil {
-			fmt.Printf("error updating qoopler on domain %s - %s", domain.Url, err)
-		}
+	tumenPrice := models.TemplatePrice{
+		ID:       bson.NewObjectId(),
+		CityID:   city.ID,
+		MinPrice: 3000000,
+		MaxPrice: 15000000,
 	}
-	fmt.Printf("processed %d domains", len(domains))
+	err = repositories.TemplatePrices.AddTemplatePrice(tumenPrice)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	fmt.Println("price added")
 }
 
 func changePhotosForGallery(newPhotoList map[string]string, cityID string, templateID string, repositories *repositories.Repositories) {

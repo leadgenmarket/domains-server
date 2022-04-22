@@ -62,7 +62,7 @@ func (p *portal) GetCitiesList() ([]models.City, error) {
 }
 
 func (p *portal) GetAllCitiesLocations() ([]models.Location, error) {
-	locationCities := []string{"258828", "99793", "161617", "75871", "303819", "31477", "12309", "156373", "154285"} //Москва, Питер, Новосиб, Краснодар, Тула
+	locationCities := []string{"258828", "99793", "161617", "75871", "303819", "31477", "12309", "156373", "154285", "189838"} //Москва, Питер, Новосиб, Краснодар, Тула
 	locationsRes := []models.Location{}
 	for _, cityId := range locationCities {
 		locations, err := p.GetLocationsOfCity(cityId)
@@ -115,7 +115,7 @@ func (p *portal) GetLocationsOfCity(portalCityID string) ([]models.Location, err
 }
 
 func (p *portal) GetCitiesPrices() ([]map[string]interface{}, error) {
-	var citiesList = map[string]string{"msk": "258828", "spb": "99793", "novosibirsk": "161617", "tula": "303819", "krd": "75871", "perm": "31477", "rostov": "12309", "ekb": "156373", "voronezh": "154285"}
+	var citiesList = map[string]string{"msk": "258828", "spb": "99793", "novosibirsk": "161617", "tula": "303819", "krd": "75871", "perm": "31477", "rostov": "12309", "ekb": "156373", "voronezh": "154285", "tyumen": "189838"}
 	pricesResult := []map[string]interface{}{}
 	for city, portalCityId := range citiesList {
 		resp, err := http.Get(fmt.Sprintf("http://api.g-n.ru/local/api/lp/locIn.php?city=%s", city))
@@ -186,7 +186,7 @@ type InputJsonAlt struct {
 }
 
 func (p *portal) GetJkListAlt(cityRepo []models.City) ([]models.JK, error) {
-	var citiesList = map[string]string{"msk": "258828", "spb": "99793", "novosibirsk": "161617", "tula": "303819", "krd": "75871", "perm": "31477", "rostov": "12309", "ekb": "156373", "voronezh": "154285"} //"99793", "161617", "75871", "303819"} //Москва, Питер, Новосиб, Краснодар, Тула
+	var citiesList = map[string]string{"msk": "258828", "spb": "99793", "novosibirsk": "161617", "tula": "303819", "krd": "75871", "perm": "31477", "rostov": "12309", "ekb": "156373", "voronezh": "154285", "tyumen": "189838"} //"99793", "161617", "75871", "303819"} //Москва, Питер, Новосиб, Краснодар, Тула
 	jkResultList := []models.JK{}
 	for cityPref, portalCityId := range citiesList {
 		cityJKList := []models.JK{}
