@@ -25,8 +25,9 @@ func New(dbClient *mongodb.Database) Repository {
 }
 
 func (r *repositroyDB) GetAllCities() ([]models.City, error) {
+
 	cities := []models.City{}
-	err := r.cities.Find(bson.M{}).All(&cities)
+	err := r.cities.Find(bson.M{}).Sort("name").All(&cities)
 	if err != nil {
 		return cities, err
 	}

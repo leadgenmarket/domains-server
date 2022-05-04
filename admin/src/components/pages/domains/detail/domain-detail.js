@@ -8,12 +8,14 @@ import { Component, useEffect } from "react";
 import { fetchDomain } from "../../../../actions/domain-detail";
 import { Spinner } from "../../../spinner";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const DomainDetail = ({ domain, loading, fetchDomain }) => {
     const { id } = useParams()
     useEffect(() => {
         fetchDomain(id)
     }, [id])
+    const navigate = useNavigate()
 
     const convertDate = (inputFormat) => {
         function pad(s) { return (s < 10) ? '0' + s : s; }
@@ -37,6 +39,11 @@ const DomainDetail = ({ domain, loading, fetchDomain }) => {
         return <Spinner />
     }
 
+    const editClick = (event) => {
+        event.preventDefault()
+        navigate(event.target.getAttribute('href'), { replace: false })
+    }
+
     return (<div className="main-content">
         <div className="page-content">
             <div className="container-fluid">
@@ -54,7 +61,7 @@ const DomainDetail = ({ domain, loading, fetchDomain }) => {
                                         </div>
                                         <div className="flex-shrink-0">
                                             <div className="mb-4">
-                                                <a href="#" className="btn btn-primary w-md waves-effect waves-light">Редактировать</a>
+                                                <a href={"/edit/" + id} className="btn btn-primary w-md waves-effect waves-light" onClick={editClick}>Редактировать</a>
                                             </div>
                                         </div>
                                     </div>
