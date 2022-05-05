@@ -35,6 +35,18 @@ const DomainDetail = ({ domain, loading, fetchDomain }) => {
         })
     }
 
+    const sendToCcChange = (e) => {
+        e.preventDefault()
+        let data = {
+            id: id,
+            flag: e.target.checked
+        }
+        domain.Moderation = e.target.checked
+        axios.post("/api/domains/sendtocc", data).then((response) => {
+            fetchDomain(id)
+        })
+    }
+
     if (loading || domain == null) {
         return <Spinner />
     }
@@ -69,6 +81,12 @@ const DomainDetail = ({ domain, loading, fetchDomain }) => {
                                         <div class="form-check form-switch">
                                             <input class="form-check-input" onChange={moderationChange} checked={domain.Moderation} type="checkbox" name="moderation" id="flexSwitchCheckDefault" />
                                             <label class="form-check-label" for="flexSwitchCheckDefault">Модерация</label>
+                                        </div>
+                                    </div>
+                                    <div className="d-flex align-items-start" style={{ marginBottom: "10px" }}>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" onChange={sendToCcChange} checked={domain.send_to_call_center} type="checkbox" name="send_to_call_center" id="flexSwitchCheckDefault" />
+                                            <label class="form-check-label" for="flexSwitchCheckDefault">Отправка на КЦ</label>
                                         </div>
                                     </div>
                                     <p className="mb-1"><b>Дата создания:</b> {convertDate(Date.parse(domain.CreatedAt))}</p>

@@ -119,6 +119,10 @@ const SendData = (form, setForm, callback, raionsName, roomsName, sdachaName, ce
 		leadgen["utm_send"] = getParam('utm_send')
 	}
 
+	if (domainSettings.domain.send_to_call_center) {
+		leadgen["utm_send"] = "cc"
+	}
+
 	//console.log(raionsName)
 	let text = []
 	Object.keys(form).map((key) => {

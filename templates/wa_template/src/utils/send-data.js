@@ -119,6 +119,10 @@ const SendData = (phone, sdacha, rooms, celtype) => {
 		leadgen["utm_send"] = getParam('utm_send')
 	}
 
+	if (domainSettings.domain.send_to_call_center) {
+		leadgen["utm_send"] = "cc"
+	}
+
 	//console.log(raionsName)
 	let text = []
 	leadgen.phone = phone
