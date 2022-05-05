@@ -24,6 +24,7 @@ type Repository interface {
 	FindDomainByID(id string) (models.Domain, error)
 	DeleteDomainById(id string) error
 	UpdateDomainsModeration(id string, modearation bool) (string, error)
+	UpdateSendToCallCenter(id string, flag bool) (url string, err error)
 	CopyDomain(id string, newDomainName string, yandex string) (models.Domain, error)
 	GetDomainsListWithPaginationAndFiltered(searchUrl string, cursor string, itemsCnt int) (domains []models.Domain, newCursor string, err error)
 	GetDomainsByTemplateAndCity(cityID bson.ObjectId, templateID bson.ObjectId) (domains []models.Domain, err error)
@@ -169,6 +170,21 @@ func (r *repositroyDB) UpdateDomainsModeration(id string, modearation bool) (str
 		return "", err
 	}
 	return domain.Url, nil
+}
+
+func (r *repositroyDB) UpdateSendToCallCenter(id string, flag bool) (url string, err error) {
+	domain, err := r.FindDomainByID(id)
+	if err != nil {
+		return "", err
+	}
+	domain.UpdatedAt = time.Now()
+	domain.SendToCallCanter = flag
+	err = r.domains.Update(bson.M{"_id": domain.ID}, domain)
+	if err != nil {
+		return
+	}
+	url = domain.Url
+	return
 }
 
 func (r *repositroyDB) CopyDomain(id string, newDomainName string, yandex string) (models.Domain, error) {

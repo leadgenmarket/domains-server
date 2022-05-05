@@ -131,6 +131,7 @@ func (h *handlers) Registry() {
 		domainsGroup.POST("/copy", h.Domains.CopyDomain)
 		domainsGroup.POST("/", h.Domains.UpdateDomain)
 		domainsGroup.POST("/moderation", h.Domains.DomainsModerationChange)
+		domainsGroup.POST("/sendtocc", h.Domains.DomainSendToCallCenter)
 		domainsGroup.DELETE("/:id", h.Domains.DeleteDomain)
 		domainsGroup.GET("/:id", h.Domains.FindDomainByID)
 		domainsGroup.POST("/add", h.Domains.AddDomainWithSettings)

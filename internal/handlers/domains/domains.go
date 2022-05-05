@@ -33,6 +33,7 @@ type Handlers interface {
 	FindDomainByID(c *gin.Context)
 	AddDomainWithSettings(c *gin.Context)
 	DomainsModerationChange(c *gin.Context)
+	DomainSendToCallCenter(c *gin.Context)
 	DomainsGetCityByUrl(c *gin.Context)
 	CopyDomain(c *gin.Context)
 }
@@ -66,16 +67,17 @@ func New(repository domains.Repository, repoLoc locations.Repository, cityRepo c
 }
 
 type DomainSettings struct {
-	Facebook     string `json:"facebook"`
-	Yandex       string `json:"yandex"`
-	Google       string `json:"google"`
-	MyTarget     string `json:"mytarget"`
-	VK           string `json:"vk"`
-	Marquiz      string `json:"marquiz"`
-	Qoopler      bool   `json:"qoopler"`
-	Datacon      bool   `json:"datacon"`
-	Roistat      bool   `json:"roistat" form:"roistat"`
-	TemplateHTML string `json:"template_html" form:"template_html"`
+	Facebook         string `json:"facebook"`
+	Yandex           string `json:"yandex"`
+	Google           string `json:"google"`
+	MyTarget         string `json:"mytarget"`
+	VK               string `json:"vk"`
+	Marquiz          string `json:"marquiz"`
+	Qoopler          bool   `json:"qoopler"`
+	Datacon          bool   `json:"datacon"`
+	Roistat          bool   `json:"roistat" form:"roistat"`
+	SendToCallCanter bool   `json:"send_to_callcenter" form:"send_to_callcenter"`
+	TemplateHTML     string `json:"template_html" form:"template_html"`
 	//
 	SubTitleItems   string                   `bson:"sub_title_items" json:"sub_title_items"`
 	PhoneStepTitle  string                   `bson:"phone_step_title" json:"phone_step_title"`
@@ -180,6 +182,7 @@ func (dh *domainsHandlers) GetTemplate(c *gin.Context) {
 		domainSettings.Qoopler = domain.Qoopler
 		domainSettings.Datacon = domain.Datacon
 		domainSettings.Roistat = domain.Roistat
+		domainSettings.SendToCallCanter = domain.SendToCallCanter
 		domainSettings.ScriptTmpl.SubTitle = domain.SubTitle
 		domainSettings.SubTitleItems = domain.SubTitleItems
 		domainSettings.PhoneStepTitle = domain.PhoneStepTitle
@@ -253,6 +256,7 @@ func convertForTemplate(domainSettings DomainSettings) map[string]interface{} {
 	settings["qoopler"] = domainSettings.Qoopler
 	settings["datacon"] = domainSettings.Datacon
 	settings["roistat"] = domainSettings.Roistat
+	settings["send_to_callcenter"] = domainSettings.SendToCallCanter
 	settings["main_color"] = domainSettings.ScriptTmpl.MainColor
 	settings["secondary_color"] = domainSettings.ScriptTmpl.SecondaryColor
 	settings["scripts"] = utils.ScriptForTemplate(domainSettings.ScriptTmpl)
@@ -574,6 +578,28 @@ func (dh *domainsHandlers) DomainsModerationChange(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{"message": "domains modeartion updated"})
+	dh.services.CommonStorage.DeleteKey(c, url) //удаляем кэш
+}
+
+type flagInput struct {
+	ID   string `json:"id" form:"id"`
+	Flag bool   `json:"flag"`
+}
+
+func (dh *domainsHandlers) DomainSendToCallCenter(c *gin.Context) {
+	ccInput := flagInput{}
+	if err := c.ShouldBind(&ccInput); err != nil {
+		dh.logger.GetInstance().Errorf("error binding json %s", err)
+		c.JSON(http.StatusInternalServerError, gin.H{"paylod": err})
+		return
+	}
+	url, err := dh.repository.UpdateSendToCallCenter(ccInput.ID, ccInput.Flag)
+	if err != nil {
+		dh.logger.GetInstance().Errorf("error updating send to cc %s", err)
+		c.JSON(http.StatusInternalServerError, gin.H{"paylod": err})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"message": "domains send to cc"})
 	dh.services.CommonStorage.DeleteKey(c, url) //удаляем кэш
 }
 
