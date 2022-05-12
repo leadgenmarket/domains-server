@@ -34,6 +34,7 @@ type Domain struct {
 	CreatedBy        bson.ObjectId            `bson:"created_by"`
 	CityID           bson.ObjectId            `bson:"city_id" json:"city_id" binding:"required"`
 	Background       string                   `bson:"background" json:"background"`
+	BackgroundMobile string                   `bson:"background_mobile" json:"background_mobile"`
 	MainColor        string                   `bson:"main_color" json:"main_color"`
 	SubTitle         string                   `bson:"sub_title" json:"sub_title"`
 	SubTitleItems    string                   `bson:"sub_title_items" json:"sub_title_items"`

@@ -19,6 +19,7 @@ const DomainEdit = ({ addDomainToList }) => {
     const [cities, setCities] = useState([])
     const [organizations, setOrganzations] = useState([])
     const [file, setFile] = useState(null)
+    const [fileMobile, setMobileFile] = useState(null)
     const [photos, setPhotos] = useState([])
     const [advantages, setAdvantages] = useState([
         {
@@ -133,6 +134,10 @@ const DomainEdit = ({ addDomainToList }) => {
             bodyFormData.append('file', file)
         }
 
+        if (fileMobile != null) {
+            bodyFormData.append('mobile', fileMobile)
+        }
+
         let jsonAdv = []
         advantages.forEach((advantage) => {
             if (advantage.image != null && advantage.image != undefined) {
@@ -174,6 +179,11 @@ const DomainEdit = ({ addDomainToList }) => {
     const fileInputChange = (event) => {
         if (event.target.files.length > 0) {
             setFile(event.target.files[0])
+        }
+    }
+    const fileInputMobileChange = (event) => {
+        if (event.target.files.length > 0) {
+            setMobileFile(event.target.files[0])
         }
     }
     const photosDropZoneChange = (acceptedFiles) => {
@@ -365,57 +375,69 @@ const DomainEdit = ({ addDomainToList }) => {
                                                                 </div>
                                                             </div>
                                                         </div>
-
+                                                        <div className="col-lg-6">
+                                                            <div className="mb-3">
+                                                                <label htmlFor="upload-background-input-mobile" id="upload-background_mobile" className="form-label">
+                                                                    Фоновая картинка (Мобильная Версия)
+                                                                </label>
+                                                                <input type="file" onChange={fileInputMobileChange} className="form-control" id="upload-background-input-mobile" />
+                                                                <div className="col-lg-12 d-flex">
+                                                                    <input onClick={(event) => { document.querySelector("#upload-background_mobile").click() }} value={fileMobile != null ? fileMobile.name : ""} type="text" disabled className="form-control" id="basicpill-cstno-input" />
+                                                                    <button className="btn btn-primary" onClick={(event) => { event.preventDefault(); document.querySelector("#upload-background_mobile").click() }}>Загрузить</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div className="row">
                                                         <div className="col-lg-6">
                                                             <div className="mb-3">
                                                                 <label htmlFor="basicpill-servicetax-input" className="form-label">Главный цвет (прим. FF0000)</label>
                                                                 <input type="text" className="form-control" name="main_color" id="basicpill-servicetax-input" onChange={inputChange} value={form.main_color} />
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                    <div className="row">
                                                         <div className="col-lg-6">
                                                             <div className="mb-3">
                                                                 <label htmlFor="basicpill-companyuin-input" className="form-label">Вторичный цвет (прим. FF0000)</label>
                                                                 <input type="text" className="form-control" name="secondary_color" onChange={inputChange} value={form.secondary_color} id="basicpill-companyuin-input" />
                                                             </div>
                                                         </div>
+                                                    </div>
+                                                    <div className="row">
                                                         <div className="col-lg-6">
                                                             <div className="mb-3">
                                                                 <label htmlFor="basicpill-companyuin-input" className="form-label">Подзаголовок</label>
                                                                 <input type="text" className="form-control" name="sub_title" onChange={inputChange} value={form.sub_title} id="basicpill-companyuin-input" />
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                    <div className="row">
                                                         <div className="col-lg-6">
                                                             <div className="mb-3">
                                                                 <label htmlFor="basicpill-companyuin-input" className="form-label">Преимущества подбора (после подзаголовка идет)</label>
                                                                 <input type="text" className="form-control" name="sub_title_items" onChange={inputChange} value={form.sub_title_items} id="basicpill-companyuin-input" />
                                                             </div>
                                                         </div>
+                                                      
+                                                    </div>
+                                                    <div className="row">
                                                         <div className="col-lg-6">
                                                             <div className="mb-3">
                                                                 <label htmlFor="basicpill-companyuin-input" className="form-label">Номер на сайте</label>
                                                                 <input type="text" className="form-control" name="phone" onChange={inputChange} value={form.phone} id="basicpill-companyuin-input" />
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                    <div className="row">
                                                         <div className="col-lg-6">
                                                             <div className="mb-3">
                                                                 <label htmlFor="basicpill-companyuin-input" className="form-label">Тайтл шага с вводом номера телефона</label>
                                                                 <input type="text" className="form-control" name="phone_step_title" onChange={inputChange} value={form.phone_step_title} id="basicpill-companyuin-input" />
                                                             </div>
                                                         </div>
+                                                    </div>
+                                                    <div className="row">
                                                         <div className="col-lg-6">
                                                             <div className="mb-3">
                                                                 <label htmlFor="basicpill-companyuin-input" className="form-label">Заголовок блока быстрого поиска перед футером</label>
                                                                 <input type="text" className="form-control" name="footer_title" onChange={inputChange} value={form.footer_title} id="basicpill-companyuin-input" />
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                    <div className="row">
                                                         <div className="col-lg-6">
                                                             <div className="mb-3">
                                                                 <label htmlFor="basicpill-companyuin-input" className="form-label">Тайтл финального шага, текст после имени</label>

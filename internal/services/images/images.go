@@ -52,11 +52,13 @@ func (mi *multipartImages) ResizeAndSaveMultipartImage(imageIn *multipart.FileHe
 	if err != nil {
 		return "", err
 	}
+	img := mi.imagesService.ResizeImage(imageDec, width, height)
 	buf := new(bytes.Buffer)
-	err = jpeg.Encode(buf, imageDec, nil)
+	err = jpeg.Encode(buf, img, nil)
 	if err != nil {
 		return "", err
 	}
+
 	filename, err := mi.fileStore.SaveFileToStore(buf.Bytes(), imageIn.Filename)
 	if err != nil {
 		return "", err

@@ -403,7 +403,16 @@ func (dh *domainsHandlers) AddDomainWithSettings(c *gin.Context) {
 	files := form.File["file"]
 	fileName := ""
 	if len(files) > 0 {
-		fileName, err = dh.services.MultipartImages.ResizeAndSaveMultipartImage(files[0], 1280, 0)
+		fileName, err = dh.services.MultipartImages.ResizeAndSaveMultipartImage(files[0], 1920, 0)
+		if err != nil {
+			dh.logger.GetInstance().Errorf("error saving background image %s", err)
+			return
+		}
+	}
+	filesM := form.File["mobile"]
+	fileMobileName := ""
+	if len(files) > 0 {
+		fileMobileName, err = dh.services.MultipartImages.ResizeAndSaveMultipartImage(filesM[0], 1280, 0)
 		if err != nil {
 			dh.logger.GetInstance().Errorf("error saving background image %s", err)
 			return
@@ -511,6 +520,10 @@ func (dh *domainsHandlers) AddDomainWithSettings(c *gin.Context) {
 
 	if fileName != "" {
 		domain.Background = fileName
+	}
+
+	if fileMobileName != "" {
+		domain.BackgroundMobile = fileMobileName
 	}
 
 	if domainInput.Steps != "" {
